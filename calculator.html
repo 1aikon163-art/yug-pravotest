@@ -1169,17 +1169,17 @@
                     res.actualTemp = temp;
                     latestCalculation = { type: 'heating', data: res };
 
-                    document.getElementById('res-main-label').innerText = 'Сумма перерасчета за отопление:';
-                    document.getElementById('res-total').innerText = res.totalCompensation.toLocaleString('ru-RU') + ' ₽';
+                    document.getElementById('res-main-label').innerText = 'Сумма перерасчета (снижение платы):';
+                    document.getElementById('res-total').innerText = res.reductionAmount.toLocaleString('ru-RU') + ' ₽';
 
                     document.getElementById('res-line1-label').innerText = 'Снижение платы (' + res.reductionPercent + '%):';
                     document.getElementById('res-line1-val').innerText = '-' + res.reductionAmount.toLocaleString('ru-RU') + ' ₽';
                     
-                    document.getElementById('res-line2-label').innerText = 'Штраф 50% по ч. 4 ст. 157 ЖК РФ:';
-                    document.getElementById('res-line2-val').innerText = '+' + res.penaltyFine.toLocaleString('ru-RU') + ' ₽';
+                    document.getElementById('res-line2-label').innerText = 'Новая плата за месяц:';
+                    document.getElementById('res-line2-val').innerText = res.newMonthlyFee.toLocaleString('ru-RU') + ' ₽';
 
-                    document.getElementById('res-line3-label').innerText = 'Новая плата за месяц:';
-                    document.getElementById('res-line3-val').innerText = res.newMonthlyFee.toLocaleString('ru-RU') + ' ₽';
+                    document.getElementById('res-line3-label').innerText = 'Штраф 50% по ч. 4 ст. 157 ЖК (по суду/ГЖИ):';
+                    document.getElementById('res-line3-val').innerText = '+' + res.penaltyFine.toLocaleString('ru-RU') + ' ₽';
 
                     document.getElementById('res-law-basis').innerText = res.lawBasis;
                 }
@@ -1190,17 +1190,17 @@
                     const res = LegalCalculator.calculateWaterOutage(fee, hours);
                     latestCalculation = { type: 'water', data: res };
 
-                    document.getElementById('res-main-label').innerText = 'Сумма перерасчета за воду:';
-                    document.getElementById('res-total').innerText = res.totalCompensation.toLocaleString('ru-RU') + ' ₽';
+                    document.getElementById('res-main-label').innerText = 'Сумма перерасчета (снижение платы):';
+                    document.getElementById('res-total').innerText = res.reductionAmount.toLocaleString('ru-RU') + ' ₽';
 
                     document.getElementById('res-line1-label').innerText = 'Снижение платы (' + res.reductionPercent + '%):';
                     document.getElementById('res-line1-val').innerText = '-' + res.reductionAmount.toLocaleString('ru-RU') + ' ₽';
 
-                    document.getElementById('res-line2-label').innerText = 'Штраф 50% по ч. 4 ст. 157 ЖК:';
-                    document.getElementById('res-line2-val').innerText = '+' + res.penaltyFine.toLocaleString('ru-RU') + ' ₽';
+                    document.getElementById('res-line2-label').innerText = 'Новая плата за месяц:';
+                    document.getElementById('res-line2-val').innerText = res.newMonthlyFee.toLocaleString('ru-RU') + ' ₽';
 
-                    document.getElementById('res-line3-label').innerText = 'Новая плата за месяц:';
-                    document.getElementById('res-line3-val').innerText = res.newMonthlyFee.toLocaleString('ru-RU') + ' ₽';
+                    document.getElementById('res-line3-label').innerText = 'Штраф 50% по ч. 4 ст. 157 ЖК (по суду/ГЖИ):';
+                    document.getElementById('res-line3-val').innerText = '+' + res.penaltyFine.toLocaleString('ru-RU') + ' ₽';
 
                     document.getElementById('res-law-basis').innerText = res.lawBasis;
                 }
@@ -1446,11 +1446,11 @@
         function getClaimContent() {
             if (!latestCalculation || !window.LegalCalculator) return '';
             return LegalCalculator.generateClaimText(latestCalculation.type, latestCalculation.data, {
-                userName: '[ФИО Гражданина]',
-                userAddress: '[Адрес проживания: г. Самара, ул. ..., д. ..., кв. ...]',
-                userPhone: '[Телефон для связи: +7 (___) ___-__-__]',
-                recipientName: '[Наименование Организации / Банка / Управляющей компании]',
-                recipientAddress: '[Адрес организации / суда]'
+                userName: '_______________________________________________________',
+                userAddress: '_______________________________________________________',
+                userPhone: '+7 (___) ___-__-__',
+                recipientName: '_______________________________________________________',
+                recipientAddress: '_______________________________________________________'
             });
         }
 
