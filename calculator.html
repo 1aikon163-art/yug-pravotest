@@ -861,6 +861,17 @@
                         <p id="res-law-basis" class="text-xs text-[#2C3E50] font-medium">п. 15 Приложения № 1 к ПП РФ № 354, ч. 4 ст. 157 ЖК РФ</p>
                     </div>
 
+                    <!-- Official Legal Disclaimer -->
+                    <div class="p-3.5 rounded-xl bg-[#FAF4E6] border border-[#E8DCC0] text-[11px] text-[#8C6826] leading-relaxed mb-6">
+                        <div class="font-bold flex items-center gap-1.5 mb-1 font-mono uppercase tracking-wider text-[10px]">
+                            <span class="material-symbols-outlined text-sm">gavel</span>
+                            Официальный процессуальный дисклеймер:
+                        </div>
+                        <p class="m-0 text-[#2C3E50]">
+                            Расчет и проект претензии носят ориентировочный характер и предназначены для соблюдения обязательного досудебного порядка (ГК РФ, ЗоЗПП, ЖК РФ, ТК РФ, ПП РФ № 354). Потребительский штраф 50% (п. 6 ст. 13 ЗоЗПП) подлежит взысканию судом при отказе должника удовлетворить законные требования добровольно.
+                        </p>
+                    </div>
+
                     <!-- Action Buttons -->
                     <div class="space-y-2.5">
                         <button onclick="previewClaimModal()" class="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 bg-[#0F2439] text-white text-xs uppercase font-bold tracking-wider hover:bg-[#1e3a5f] transition-all button-glow rounded-xl shadow-md cursor-pointer">
@@ -874,7 +885,7 @@
                                 Скачать .TXT
                             </button>
                             <button onclick="downloadClaimDoc()" class="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 bg-[#F8F7F4] border border-[#E0E0E0] text-[#0F2439] text-[11px] font-bold uppercase tracking-wider hover:bg-[#EBEAE5] transition-all rounded-lg cursor-pointer">
-                                <span class="material-symbols-outlined text-sm text-[#1E5631]">article</span>
+                                <span class="material-symbols-outlined text-sm text-[#8C6826]">article</span>
                                 Скачать .DOC (Word)
                             </button>
                         </div>
@@ -1029,43 +1040,54 @@
         </div>
     </div>
 
-    <!-- ── CLAIM PREVIEW MODAL ── -->
+    <!-- ── CLAIM PREVIEW MODAL (СТРОГИЙ НЕОКЛАССИЧЕСКИЙ СТИЛЬ АНО «ЮГ-ПРАВО») ── -->
     <div class="modal-overlay" id="modal-claim-preview">
-        <div class="modal-container p-0 max-w-2xl overflow-hidden flex flex-col max-h-[90vh]">
-            <!-- Header -->
-            <div class="p-5 bg-gradient-to-r from-[#0F2439] to-[#1e3a5f] text-white flex justify-between items-center">
-                <div class="flex items-center gap-2.5">
-                    <span class="material-symbols-outlined text-[#C5A059] text-2xl">description</span>
+        <div class="modal-container p-0 max-w-3xl overflow-hidden flex flex-col max-h-[92vh] bg-[#F8F7F4] border border-[#E0E0E0] shadow-2xl rounded-2xl">
+            <!-- Neoclassical Header -->
+            <div class="p-5 sm:p-6 bg-white border-b border-[#E0E0E0] flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-[#FAF4E6] border border-[#E8DCC0] flex items-center justify-center text-[#8C6826]">
+                        <span class="material-symbols-outlined text-xl">gavel</span>
+                    </div>
                     <div>
-                        <h3 class="font-['Source_Serif_4'] text-lg font-bold">Предпросмотр готовой претензии</h3>
-                        <p class="text-[11px] text-[#C5A059] font-mono">Юридически выверенный документ по нормам законодательства РФ (2026)</p>
+                        <div class="flex items-center gap-2">
+                            <h3 class="font-['Source_Serif_4'] text-lg sm:text-xl font-bold text-[#0F2439]">Предпросмотр процессуального документа</h3>
+                            <span class="hidden sm:inline px-2 py-0.5 rounded bg-[#FAF4E6] text-[#8C6826] border border-[#E8DCC0] text-[10px] font-mono font-bold uppercase">Досудебный порядок РФ</span>
+                        </div>
+                        <p class="text-xs text-[#5f5e5e] mt-0.5">Сформировано согласно ГК РФ, ЗоЗПП, ЖК РФ, ТК РФ и Постановлению Правительства РФ № 354</p>
                     </div>
                 </div>
-                <button class="text-stone-300 hover:text-white transition-colors p-1" onclick="closeModal('modal-claim-preview')">
-                    <span class="material-symbols-outlined">close</span>
+                <button class="text-[#5f5e5e] hover:text-[#0F2439] transition-colors p-2 rounded-lg hover:bg-[#F8F7F4]" onclick="closeModal('modal-claim-preview')" title="Закрыть">
+                    <span class="material-symbols-outlined text-xl">close</span>
                 </button>
             </div>
 
-            <!-- Notice bar -->
-            <div class="px-5 py-2.5 bg-[#FAF4E6] border-b border-[#E8DCC0] flex items-center justify-between text-xs text-[#8C6826]">
+            <!-- Procedural Guide Notice -->
+            <div class="px-5 py-3 bg-[#FAF4E6] border-b border-[#E8DCC0] flex flex-wrap items-center justify-between gap-2 text-xs text-[#8C6826]">
                 <span class="flex items-center gap-1.5 font-medium">
-                    <span class="material-symbols-outlined text-sm">info</span>
-                    Суммы и правовые основания подставлены автоматически из вашего расчета.
+                    <span class="material-symbols-outlined text-base text-[#8C6826]">info</span>
+                    Суммы основного долга, законной неустойки и ссылки на НПА рассчитаны автоматически.
                 </span>
-                <span class="font-mono text-[10px] uppercase font-bold text-[#1E5631] bg-[#EBF5EE] px-2 py-0.5 rounded border border-[#C8E6C9]">Готово к печати</span>
+                <span class="font-mono text-[10px] uppercase font-bold text-[#1E5631] bg-[#EBF5EE] px-2.5 py-0.5 rounded border border-[#C8E6C9]">Готово к печати</span>
             </div>
 
-            <!-- Document Text Body -->
-            <div class="p-6 overflow-y-auto flex-1 bg-[#FBFBFA]">
-                <div class="bg-white p-6 rounded-xl border border-[#E0E0E0] shadow-xs font-mono text-xs text-[#0F2439] leading-relaxed whitespace-pre-wrap select-all" id="claim-preview-content">
+            <!-- White Judicial Paper Canvas -->
+            <div class="p-4 sm:p-6 overflow-y-auto flex-1 bg-[#F5F4F0]">
+                <div class="bg-white p-6 sm:p-10 rounded-xl border border-[#E0E0E0] shadow-sm font-sans text-xs sm:text-[13px] text-[#0F2439] leading-relaxed whitespace-pre-wrap select-all max-w-2xl mx-auto" id="claim-preview-content">
                     <!-- Live Claim text injected here -->
                 </div>
             </div>
 
+            <!-- Legal Warning & Disclaimer Inside Modal -->
+            <div class="px-6 py-2.5 bg-[#FAF8F5] border-t border-[#E8E7E2] text-[11px] text-[#5f5e5e] flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm text-[#8C6826] flex-shrink-0">verified_user</span>
+                <span><strong>Процессуальное примечание:</strong> Потребительский штраф 50% (п. 6 ст. 13 ЗоЗПП) взыскивается судом при отказе должника удовлетворить требования добровольно.</span>
+            </div>
+
             <!-- Footer Actions -->
-            <div class="p-4 bg-[#F8F7F4] border-t border-[#E0E0E0] flex flex-wrap items-center justify-between gap-3">
-                <button onclick="copyClaimToClipboard()" id="copy-claim-btn" class="px-4 py-2.5 bg-white border border-[#0F2439]/30 text-[#0F2439] rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-[#0F2439]/5 transition-all inline-flex items-center gap-1.5 cursor-pointer">
-                    <span class="material-symbols-outlined text-sm">content_copy</span>
+            <div class="p-4 sm:p-5 bg-white border-t border-[#E0E0E0] flex flex-wrap items-center justify-between gap-3">
+                <button onclick="copyClaimToClipboard()" id="copy-claim-btn" class="px-4 py-2.5 bg-white border border-[#0F2439]/30 text-[#0F2439] rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-[#0F2439]/5 transition-all inline-flex items-center gap-1.5 cursor-pointer shadow-xs">
+                    <span class="material-symbols-outlined text-sm text-[#8C6826]">content_copy</span>
                     <span id="copy-claim-text">Скопировать текст</span>
                 </button>
                 <div class="flex items-center gap-2">
@@ -1073,9 +1095,9 @@
                         <span class="material-symbols-outlined text-sm text-[#C5A059]">description</span>
                         Скачать .TXT
                     </button>
-                    <button onclick="downloadClaimDoc()" class="px-4 py-2.5 bg-[#1E5631] text-white rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-[#2d7a47] transition-all inline-flex items-center gap-1.5 shadow-sm cursor-pointer">
-                        <span class="material-symbols-outlined text-sm text-emerald-300">article</span>
-                        Скачать в Word (.doc)
+                    <button onclick="downloadClaimDoc()" class="px-4 py-2.5 bg-[#8C6826] text-white rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-[#72531e] transition-all inline-flex items-center gap-1.5 shadow-sm cursor-pointer">
+                        <span class="material-symbols-outlined text-sm text-[#FAF4E6]">article</span>
+                        Скачать .DOC (Word)
                     </button>
                 </div>
             </div>
@@ -1238,16 +1260,17 @@
                 const res = LegalCalculator.calculateProductReturn(price, days, moral);
                 latestCalculation = { type: 'product', data: res };
 
-                document.getElementById('res-main-label').innerText = 'Итого к взысканию с продавца:';
-                document.getElementById('res-total').innerText = res.totalToRecover.toLocaleString('ru-RU') + ' ₽';
+                const preTrialSum = price + res.penaltyAmount;
+                document.getElementById('res-main-label').innerText = 'К добровольной выплате в претензии:';
+                document.getElementById('res-total').innerText = preTrialSum.toLocaleString('ru-RU') + ' ₽';
 
                 document.getElementById('res-line1-label').innerText = 'Стоимость товара (возврат):';
                 document.getElementById('res-line1-val').innerText = price.toLocaleString('ru-RU') + ' ₽';
 
-                document.getElementById('res-line2-label').innerText = 'Неустойка 1% в день (ст. 23):';
+                document.getElementById('res-line2-label').innerText = 'Неустойка 1% в день (ст. 23 ЗоЗПП):';
                 document.getElementById('res-line2-val').innerText = '+' + res.penaltyAmount.toLocaleString('ru-RU') + ' ₽';
 
-                document.getElementById('res-line3-label').innerText = 'Штраф 50% (ст. 13) + Моральный вред:';
+                document.getElementById('res-line3-label').innerText = 'По суду (+50% штраф + моральный):';
                 document.getElementById('res-line3-val').innerText = '+' + (res.consumerFine50 + moral).toLocaleString('ru-RU') + ' ₽';
 
                 document.getElementById('res-law-basis').innerText = res.lawBasis;
@@ -1260,17 +1283,17 @@
                 const res = LegalCalculator.calculateServiceDelay(price, days, moral);
                 latestCalculation = { type: 'service', data: res };
 
-                document.getElementById('res-main-label').innerText = 'Итого к взысканию с подрядчика:';
-                document.getElementById('res-total').innerText = res.totalToRecover.toLocaleString('ru-RU') + ' ₽';
+                document.getElementById('res-main-label').innerText = 'Сумма неустойки в претензии:';
+                document.getElementById('res-total').innerText = res.penaltyAmount.toLocaleString('ru-RU') + ' ₽';
 
-                document.getElementById('res-line1-label').innerText = 'Неустойка 3% в день (ст. 28):';
+                document.getElementById('res-line1-label').innerText = 'Неустойка 3% в день (ст. 28 ЗоЗПП):';
                 document.getElementById('res-line1-val').innerText = '+' + res.penaltyAmount.toLocaleString('ru-RU') + ' ₽';
 
-                document.getElementById('res-line2-label').innerText = 'Штраф 50% по п. 6 ст. 13 ЗоЗПП:';
-                document.getElementById('res-line2-val').innerText = '+' + res.consumerFine50.toLocaleString('ru-RU') + ' ₽';
+                document.getElementById('res-line2-label').innerText = 'Стоимость работ по договору:';
+                document.getElementById('res-line2-val').innerText = price.toLocaleString('ru-RU') + ' ₽';
 
-                document.getElementById('res-line3-label').innerText = 'Компенсация морального вреда:';
-                document.getElementById('res-line3-val').innerText = '+' + moral.toLocaleString('ru-RU') + ' ₽';
+                document.getElementById('res-line3-label').innerText = 'По суду (+50% штраф + моральный):';
+                document.getElementById('res-line3-val').innerText = '+' + (res.consumerFine50 + moral).toLocaleString('ru-RU') + ' ₽';
 
                 document.getElementById('res-law-basis').innerText = res.lawBasis;
             }
@@ -1288,6 +1311,8 @@
                 document.getElementById('res-line1-label').innerText = 'Сумма основного долга:';
                 document.getElementById('res-line1-val').innerText = debt.toLocaleString('ru-RU') + ' ₽';
 
+                document.getElementById('res-line2-label').innerText = 'Ключевая ставка ЦБ РФ:';
+                document.getElementById('res-line2-val').innerText = rate + '%';
 
                 document.getElementById('res-line3-label').innerText = 'Период просрочки:';
                 document.getElementById('res-line3-val').innerText = days + ' дн.';
@@ -1319,17 +1344,17 @@
                 const res = LegalCalculator.calculateInsuranceRefund(cost, days, totalMonths, elapsedMonths, contractType, isCourt);
                 latestCalculation = { type: 'insurance', data: res };
 
-                document.getElementById('res-main-label').innerText = 'Итого к возврату со страховой/банка:';
-                document.getElementById('res-total').innerText = res.totalToRecover.toLocaleString('ru-RU') + ' ₽';
+                document.getElementById('res-main-label').innerText = 'Сумма к возврату со страховой/банка:';
+                document.getElementById('res-total').innerText = res.baseRefund.toLocaleString('ru-RU') + ' ₽';
 
                 document.getElementById('res-line1-label').innerText = 'Возврат премии / сертификата:';
                 document.getElementById('res-line1-val').innerText = res.baseRefund.toLocaleString('ru-RU') + ' ₽';
 
-                document.getElementById('res-line2-label').innerText = isCourt ? 'Штраф 50% + ст. 395 ГК:' : 'Досудебный возврат:';
-                document.getElementById('res-line2-val').innerText = isCourt ? '+' + (res.fine50 + res.penalty395).toLocaleString('ru-RU') + ' ₽' : '0 ₽';
+                document.getElementById('res-line2-label').innerText = 'Срок возврата по 353-ФЗ:';
+                document.getElementById('res-line2-val').innerText = '7 рабочих дней';
 
-                document.getElementById('res-line3-label').innerText = isCourt ? 'Моральный вред ст. 15:' : 'Статус:';
-                document.getElementById('res-line3-val').innerText = isCourt ? '+' + res.moralDamage.toLocaleString('ru-RU') + ' ₽' : '100% по закону';
+                document.getElementById('res-line3-label').innerText = isCourt ? 'По суду (+50% штраф + 395 ГК):' : 'Статус возврата:';
+                document.getElementById('res-line3-val').innerText = isCourt ? '+' + (res.fine50 + res.penalty395 + res.moralDamage).toLocaleString('ru-RU') + ' ₽' : '100% по закону';
 
                 document.getElementById('res-law-basis').innerText = res.lawBasis;
             }
@@ -1378,17 +1403,18 @@
                 const res = LegalCalculator.calculateSalaryDelay(debt, days, rate, isIllegal, avgDaily, forcedDays);
                 latestCalculation = { type: 'salary', data: res };
 
-                document.getElementById('res-main-label').innerText = 'Итого к выплате работодателем:';
-                document.getElementById('res-total').innerText = res.totalToRecover.toLocaleString('ru-RU') + ' ₽';
+                const totalDebtDue = debt + res.delayCompensation;
+                document.getElementById('res-main-label').innerText = 'Задолженность работодателя к выплате:';
+                document.getElementById('res-total').innerText = totalDebtDue.toLocaleString('ru-RU') + ' ₽';
 
                 document.getElementById('res-line1-label').innerText = 'Задолженность по зарплате:';
                 document.getElementById('res-line1-val').innerText = debt.toLocaleString('ru-RU') + ' ₽';
 
-                document.getElementById('res-line2-label').innerText = 'Компенсация 1/150 ставки ЦБ (без НДФЛ):';
+                document.getElementById('res-line2-label').innerText = 'Компенсация 1/150 ставки ЦБ (ст. 236 ТК):';
                 document.getElementById('res-line2-val').innerText = '+' + res.delayCompensation.toLocaleString('ru-RU') + ' ₽';
 
-                document.getElementById('res-line3-label').innerText = isIllegal ? 'Вынужденный прогул + моральный:' : 'Статус просрочки:';
-                document.getElementById('res-line3-val').innerText = isIllegal ? '+' + (res.forcedAbsencePay + res.moralDamage).toLocaleString('ru-RU') + ' ₽' : days + ' дн.';
+                document.getElementById('res-line3-label').innerText = isIllegal ? 'Вынужденный прогул + моральный (по суду):' : 'Срок добровольной выплаты:';
+                document.getElementById('res-line3-val').innerText = isIllegal ? '+' + (res.forcedAbsencePay + res.moralDamage).toLocaleString('ru-RU') + ' ₽' : '3 рабочих дня';
 
                 document.getElementById('res-law-basis').innerText = res.lawBasis;
             }
@@ -1401,16 +1427,16 @@
                 const res = LegalCalculator.calculatePropertyDamage(repair, property, expert, delay);
                 latestCalculation = { type: 'damage', data: res };
 
-                document.getElementById('res-main-label').innerText = 'Итого к возмещению за ущерб:';
-                document.getElementById('res-total').innerText = res.totalToRecover.toLocaleString('ru-RU') + ' ₽';
+                document.getElementById('res-main-label').innerText = 'Прямой ущерб к добровольному возмещению:';
+                document.getElementById('res-total').innerText = res.principalDebt.toLocaleString('ru-RU') + ' ₽';
 
                 document.getElementById('res-line1-label').innerText = 'Восстановительный ремонт:';
                 document.getElementById('res-line1-val').innerText = repair.toLocaleString('ru-RU') + ' ₽';
 
-                document.getElementById('res-line2-label').innerText = 'Имущество + Оценка эксперта:';
+                document.getElementById('res-line2-label').innerText = 'Имущество + Экспертиза:';
                 document.getElementById('res-line2-val').innerText = '+' + (property + expert).toLocaleString('ru-RU') + ' ₽';
 
-                document.getElementById('res-line3-label').innerText = 'Проценты 395 ГК + Моральный:';
+                document.getElementById('res-line3-label').innerText = 'По суду (ст. 395 ГК + моральный):';
                 document.getElementById('res-line3-val').innerText = '+' + (res.interest395 + res.moralDamage).toLocaleString('ru-RU') + ' ₽';
 
                 document.getElementById('res-law-basis').innerText = res.lawBasis;
