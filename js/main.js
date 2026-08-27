@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
         activeLoopFrameId = requestAnimationFrame(runDesktopPingPong);
 
       } else {
-        // РЕЖИМ СКРАББИНГА ПО СКРОЛЛУ НА ДЕСКТОПЕ
+        // РЕЖИМ СКРАББИНГА ПО СКРОЛЛУ НА ДЕСКТОПЕ (Плавная кинематографичная синхронизация)
         let targetTime = 0;
         let smoothedTime = 0;
         const maxDuration = (activeVideo.duration && !isNaN(activeVideo.duration) && activeVideo.duration > 0) ? activeVideo.duration : 4.8;
@@ -163,7 +163,8 @@ document.addEventListener('DOMContentLoaded', () => {
           const delta = Math.min((now - lastTimestamp) / 1000, 0.1);
           lastTimestamp = now;
 
-          const lambda = speedMultiplier > 1.0 ? 16.0 : 10.0;
+          // Мягкое экспоненциальное демпфирование для шелковистой плавности без рывков
+          const lambda = 7.5;
           const t = 1.0 - Math.exp(-lambda * delta);
           smoothedTime += (targetTime - smoothedTime) * t;
 
