@@ -66,16 +66,30 @@ const watchPaths = [__dirname, path.join(__dirname, 'css'), path.join(__dirname,
 
 watchPaths.forEach(dir => {
   if (fs.existsSync(dir)) {
-    fs.watch(dir, { recursive: false }, (eventType, filename) => {
-      if (!filename || filename.startsWith('.') || filename.includes('dev-qr.png')) return;
-      if (reloadTimeout) clearTimeout(reloadTimeout);
-      reloadTimeout = setTimeout(() => {
-        const isCss = filename.endsWith('.css');
-        console.log(`⚡ [LiveReload] Detected change in: ${filename} -> Triggering ${isCss ? 'CSS refresh' : 'page reload'}...`);
-        const payload = JSON.stringify({ type: isCss ? 'css-refresh' : 'reload', file: filename });
-        sseClients.forEach(client => client.write(`data: ${payload}\n\n`));
-      }, 100);
-    });
+    try {
+      fs.watch(dir, { recursive: false }, (eventType, filename) => {
+        if (!filename || filename.startsWith('.') || filename.includes('dev-qr.png')) return;
+        if (reloadTimeout) clearTimeout(reloadTimeout);
+        reloadTimeout = setTimeout(() => {
+          const isCss = filename.endsWith('.css');
+          console.log(`⚡ [LiveReload] Detected change in: ${filename} -> Triggering ${isCss ? 'CSS refresh' : 'page reload'}...`);
+          const payload = JSON.stringify({ type: isCss ? 'css-refresh' : 'reload', file: filename });
+          sseClients.forEach(client => {
+            try {
+              if (client && !client.destroyed && !client.writableEnded) {
+                client.write(`data: ${payload}\n\n`);
+              } else {
+                sseClients.delete(client);
+              }
+            } catch (e) {
+              sseClients.delete(client);
+            }
+          });
+        }, 100);
+      });
+    } catch (watchErr) {
+      console.warn(`[Watch Warning] Could not watch ${dir}:`, watchErr.message);
+    }
   }
 });
 
@@ -320,6 +334,27 @@ const server = http.createServer((req, res) => {
 });
 
 const PORT = 8080;
+
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`[Server Error] Port ${PORT} is already in use.`);
+  } else {
+    console.error('[Server Error]', err);
+  }
+});
+
+process.on('uncaughtException', (err) => {
+  console.error('[Dev Server Uncaught Exception]', err.message || err);
+});
+
+process.on('unhandledRejection', (reason) => {
+  console.error('[Dev Server Unhandled Rejection]', reason);
+});
+
 server.listen(PORT, async () => {
-  await generateQr();
+  try {
+    await generateQr();
+  } catch (qrErr) {
+    console.warn('[QR Generator Warning]', qrErr.message);
+  }
 });
