@@ -44,6 +44,26 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="css/styles.css"/>
     <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .calc-tab-btn {
+            flex-shrink: 0;
+            white-space: nowrap;
+            padding: 10px 18px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 12px;
+            border: 1px solid #E0E0E0;
+            background: #ffffff;
+            color: #2C3E50;
+            transition: all 0.2s ease;
+        }
+        .calc-tab-btn.active {
+            background: #0F2439;
+            color: #ffffff;
+            border-color: #0F2439;
+            box-shadow: 0 4px 12px rgba(15, 36, 57, 0.15);
+        }
         .calc-slider {
             -webkit-appearance: none;
             width: 100%;
@@ -55,8 +75,8 @@
         .calc-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
             background: #8C6826;
             cursor: pointer;
@@ -171,10 +191,10 @@
         </section>
 
         <!-- ── CALCULATOR MAIN SUITE (Content Wrapper) ── -->
-        <div id="calculator-suite" class="max-w-[1240px] mx-auto px-4 sm:px-6 py-12 md:py-16">
+        <div id="calculator-suite" class="max-w-[1240px] mx-auto px-4 sm:px-6 py-10 md:py-16">
 
-        <!-- Module Switcher Tabs (Liquid Glassmorphism) -->
-        <div class="flex flex-wrap gap-2 pb-2 mb-8">
+            <!-- Module Switcher Tabs (Liquid Glassmorphism with Touch Scroll on Mobile) -->
+            <div class="flex overflow-x-auto no-scrollbar scroll-smooth gap-2 pb-2 mb-8 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap">
                 <button onclick="switchTab('jkh')" id="tab-jkh" class="calc-tab-btn active flex items-center gap-2">
                     <span class="material-symbols-outlined text-base">home_work</span>
                     ЖКХ и Услуги (354-ПП)
@@ -201,24 +221,24 @@
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 
                 <!-- Left Column: Dynamic Inputs Form (7 cols) -->
-                <div class="lg:col-span-7 material-glass-card p-6 sm:p-8 rounded-2xl border border-[#E0E0E0] shadow-sm">
+                <div class="lg:col-span-7 material-glass-card p-5 sm:p-8 rounded-2xl border border-[#E0E0E0] shadow-sm">
                     
                     <!-- TAB 1: ЖКХ MULTI-SUBMODULE (Отопление, Вода, Сверка счетчиков, Отсутствие) -->
                     <div id="content-jkh" class="calc-module space-y-6">
                         
                         <!-- Sub-module pills (Apple segmented glass) -->
-                        <div class="p-1.5 rounded-xl bg-[#F0EFEA]/80 border border-[#E0E0E0] flex flex-wrap gap-1">
-                            <button onclick="switchJkhSub('heating')" id="sub-heating" class="flex-1 py-2 px-3 text-xs font-bold uppercase tracking-wider rounded-lg transition-all text-[#0F2439] bg-white shadow-xs">
+                        <div class="p-1.5 rounded-xl bg-[#F0EFEA]/80 border border-[#E0E0E0] grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+                            <button onclick="switchJkhSub('heating')" id="sub-heating" class="py-2.5 px-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all text-[#0F2439] bg-white shadow-xs text-center">
                                 🌡️ Батареи
                             </button>
-                            <button onclick="switchJkhSub('water')" id="sub-water" class="flex-1 py-2 px-3 text-xs font-semibold uppercase tracking-wider rounded-lg transition-all text-[#5f5e5e] hover:text-[#0F2439]">
-                                💧 Отключение воды
+                            <button onclick="switchJkhSub('water')" id="sub-water" class="py-2.5 px-2 text-xs font-semibold uppercase tracking-wider rounded-lg transition-all text-[#5f5e5e] hover:text-[#0F2439] text-center">
+                                💧 Вода
                             </button>
-                            <button onclick="switchJkhSub('meter')" id="sub-meter" class="flex-1 py-2 px-3 text-xs font-semibold uppercase tracking-wider rounded-lg transition-all text-[#5f5e5e] hover:text-[#0F2439]">
-                                📊 Сверка счетчиков
+                            <button onclick="switchJkhSub('meter')" id="sub-meter" class="py-2.5 px-2 text-xs font-semibold uppercase tracking-wider rounded-lg transition-all text-[#5f5e5e] hover:text-[#0F2439] text-center">
+                                📊 Счетчики
                             </button>
-                            <button onclick="switchJkhSub('absence')" id="sub-absence" class="flex-1 py-2 px-3 text-xs font-semibold uppercase tracking-wider rounded-lg transition-all text-[#5f5e5e] hover:text-[#0F2439]">
-                                ✈️ Отсутствие (ТКО)
+                            <button onclick="switchJkhSub('absence')" id="sub-absence" class="py-2.5 px-2 text-xs font-semibold uppercase tracking-wider rounded-lg transition-all text-[#5f5e5e] hover:text-[#0F2439] text-center">
+                                ✈️ Отсутствие
                             </button>
                         </div>
 
@@ -642,7 +662,7 @@
 
             </div>
 
-        </section>
+        </div>
 
         <!-- LEGAL EXPLANATIONS ACCORDION -->
         <section class="mt-16">
@@ -1074,6 +1094,7 @@
             recalculate();
         });
     </script>
+    <script src="js/effects.js"></script>
     <script src="js/main.js"></script>
     <script src="js/legal-security.js"></script>
 </body>

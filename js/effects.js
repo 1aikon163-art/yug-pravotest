@@ -13,7 +13,42 @@
     initForms();
     initCookieBanner();
     initFloatingMessengerWidget();
+    initMobileNavToggle();
   });
+
+  /* ── 0. UNIVERSAL MOBILE NAV TOGGLE ── */
+  function initMobileNavToggle() {
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileNav = document.getElementById('mobile-nav');
+    if (!menuBtn || !mobileNav) return;
+    if (menuBtn.dataset.bound) return;
+    menuBtn.dataset.bound = 'true';
+
+    menuBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isHidden = mobileNav.classList.toggle('hidden');
+      const icon = menuBtn.querySelector('.material-symbols-outlined');
+      if (icon) {
+        icon.textContent = isHidden ? 'menu' : 'close';
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!mobileNav.contains(e.target) && !menuBtn.contains(e.target)) {
+        mobileNav.classList.add('hidden');
+        const icon = menuBtn.querySelector('.material-symbols-outlined');
+        if (icon) icon.textContent = 'menu';
+      }
+    });
+
+    mobileNav.querySelectorAll('a, button').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileNav.classList.add('hidden');
+        const icon = menuBtn.querySelector('.material-symbols-outlined');
+        if (icon) icon.textContent = 'menu';
+      });
+    });
+  }
 
   /* ── 1. FROSTED GLASS HEADER SCROLL SHADOW ── */
   function initHeaderScroll() {

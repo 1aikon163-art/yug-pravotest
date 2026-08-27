@@ -189,7 +189,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initMode();
   window.addEventListener('resize', initMode, { passive: true });
+  initMobileMenu();
 });
+
+// ─── УНИВЕРСАЛЬНОЕ МОБИЛЬНОЕ МЕНЮ (ДЛЯ ВСЕХ СТРАНИЦ) ───
+function initMobileMenu() {
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const mobileNav = document.getElementById('mobile-nav');
+  if (!menuBtn || !mobileNav) return;
+
+  menuBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isHidden = mobileNav.classList.toggle('hidden');
+    const icon = menuBtn.querySelector('.material-symbols-outlined');
+    if (icon) {
+      icon.textContent = isHidden ? 'menu' : 'close';
+    }
+  });
+
+  // Закрытие при клике вне меню
+  document.addEventListener('click', (e) => {
+    if (!mobileNav.contains(e.target) && !menuBtn.contains(e.target)) {
+      mobileNav.classList.add('hidden');
+      const icon = menuBtn.querySelector('.material-symbols-outlined');
+      if (icon) icon.textContent = 'menu';
+    }
+  });
+
+  // Закрытие при клике на любую ссылку в меню
+  mobileNav.querySelectorAll('a, button').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileNav.classList.add('hidden');
+      const icon = menuBtn.querySelector('.material-symbols-outlined');
+      if (icon) icon.textContent = 'menu';
+    });
+  });
+}
 
 // ─── ДИНАМИЧЕСКИЙ СЧЕТЧИК СТАТЕЙ И ИНСТРУКЦИЙ ───
 function initDynamicCounters() {
@@ -230,9 +265,13 @@ function initDynamicCounters() {
 }
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initDynamicCounters);
+  document.addEventListener('DOMContentLoaded', () => {
+    initDynamicCounters();
+    initMobileMenu();
+  });
 } else {
   initDynamicCounters();
+  initMobileMenu();
 }
 
 // Service Worker Registration for Instant Offline Cache
