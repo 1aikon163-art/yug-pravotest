@@ -213,7 +213,19 @@
                 </button>
                 <button onclick="switchTab('insurance')" id="tab-insurance" class="calc-tab-btn flex items-center gap-2">
                     <span class="material-symbols-outlined text-base">verified_user</span>
-                    Страховка по кредиту (353-ФЗ)
+                    Страховка и Допуслуги (353-ФЗ)
+                </button>
+                <button onclick="switchTab('duty')" id="tab-duty" class="calc-tab-btn flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base">gavel</span>
+                    Госпошлина в суд 2026 (333.19 НК)
+                </button>
+                <button onclick="switchTab('salary')" id="tab-salary" class="calc-tab-btn flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base">payments</span>
+                    Задержка зарплаты (236 ТК)
+                </button>
+                <button onclick="switchTab('damage')" id="tab-damage" class="calc-tab-btn flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base">water_damage</span>
+                    Залив квартиры / Ущерб (1064 ГК)
                 </button>
             </div>
 
@@ -472,7 +484,7 @@
                             </div>
                             <div class="space-y-1 text-[11.5px] leading-relaxed">
                                 <p><strong>1. Досудебная претензия:</strong> Письменное требование продавцу (срок ответа — 10 дней по ст. 22 ЗоЗПП). Далее начисляется неустойка 1% в день.</p>
-                                <p><strong>2. Обращение в суд:</strong> Компенсация морального вреда (ст. 15 ЗоЗПП) и штраф 50% (п. 6 ст. 13 ЗоЗПП) взыскиваются <strong>исключительно судом</strong> за отказ удовлетворить претензию добровольно. Госпошлина не взимается во всех регионах РФ.</p>
+                                <p><strong>2. Обращение в суд:</strong> Компенсация морального вреда (ст. 15 ЗоЗПП) и штраф 50% (п. 6 ст. 13 ЗоЗПП) взыскиваются <strong>исключительно судом</strong> за отказ удовлетворить претензию добровольно. Госпошлина не взимается при цене иска до 1 млн руб.</p>
                             </div>
                         </div>
                     </div>
@@ -557,47 +569,251 @@
                         </div>
                     </div>
 
-                    <!-- TAB 5: INSURANCE 353-FZ -->
+                    <!-- TAB 5: INSURANCE & ADDITIONAL SERVICES (353-FZ, 123-FZ) -->
                     <div id="content-insurance" class="calc-module space-y-6 hidden">
                         <div class="border-b border-[#E0E0E0] pb-4">
                             <h2 class="font-['Source_Serif_4'] text-xl font-bold text-[#0F2439] flex items-center gap-2">
                                 <span class="material-symbols-outlined text-[#8C6826]">verified_user</span>
-                                Возврат навязанной страховки и допуслуг по кредиту (353-ФЗ)
+                                Возврат навязанных страховок, сертификатов и допуслуг
                             </h2>
-                            <p class="text-xs text-[#5f5e5e] mt-1">«Период охлаждения» увеличен до 30 календарных дней (Федеральный закон № 353-ФЗ). Полный возврат 100% стоимости.</p>
+                            <p class="text-xs text-[#5f5e5e] mt-1">Федеральный закон № 353-ФЗ, Закон о финомбудсмене № 123-ФЗ, ст. 32 ЗоЗПП и ст. 429.3 ГК РФ.</p>
+                        </div>
+
+                        <!-- Contract Type / Situation Selector -->
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-1.5">
+                                Основание для возврата денег:
+                            </label>
+                            <select id="ins-contract-type" onchange="recalculate()" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-xs font-semibold text-[#0F2439] py-2.5 px-3 focus:border-[#0F2439] focus:ring-0">
+                                <option value="cooling" selected>1. В течение 30 дней с даты договора («Период охлаждения» по 353-ФЗ) — 100% возврат</option>
+                                <option value="early_repayment">2. Прошло больше 30 дней: Кредит погашен досрочно (ч. 12 ст. 11 353-ФЗ) — возврат за остаток срока</option>
+                                <option value="option_contract">3. Прошло больше 30 дней: Навязанная автокарта / опционный сертификат (ст. 32 ЗоЗПП, 429.3 ГК РФ)</option>
+                            </select>
                         </div>
 
                         <div>
                             <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-2">
                                 Стоимость страхового полиса / доппакета по кредиту (руб.)
                             </label>
-                            <input type="number" id="ins-cost" value="85000" min="1000" max="2000000" step="1000" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-lg font-bold text-[#0F2439] focus:border-[#0F2439] focus:ring-0 py-3 px-4" oninput="recalculate()">
+                            <input type="number" id="ins-cost" value="95000" min="1000" max="2000000" step="1000" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-lg font-bold text-[#0F2439] focus:border-[#0F2439] focus:ring-0 py-3 px-4" oninput="recalculate()">
+                        </div>
+
+                        <!-- Sub-options for cooling vs early repayment -->
+                        <div id="ins-cooling-pane" class="space-y-4">
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <label class="text-xs font-bold uppercase tracking-wider text-[#0F2439]">
+                                        Сколько дней прошло с момента оформления: <span id="ins-days-val" class="text-base text-[#8C6826] font-bold">14 дней</span>
+                                    </label>
+                                </div>
+                                <input type="range" id="ins-days" min="1" max="60" value="14" step="1" class="calc-slider" oninput="document.getElementById('ins-days-val').innerText = this.value + ' дней'; recalculate()">
+                                <div class="flex justify-between text-[11px] text-[#5f5e5e] mt-1">
+                                    <span>1 день</span>
+                                    <span class="font-bold text-[#8C6826]">30 дней (Лимит 353-ФЗ)</span>
+                                    <span>60 дней</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="ins-early-pane" class="grid grid-cols-2 gap-4 hidden">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-1">Срок кредита (мес.)</label>
+                                <input type="number" id="ins-total-months" value="36" min="6" max="120" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-base font-bold text-[#0F2439] py-2 px-3" oninput="recalculate()">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-1">Погашен через (мес.)</label>
+                                <input type="number" id="ins-elapsed-months" value="6" min="1" max="120" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-base font-bold text-[#0F2439] py-2 px-3" oninput="recalculate()">
+                            </div>
+                        </div>
+
+                        <!-- Checkbox for Court + Finombudsman Recovery (+50% Fine, Moral, 395 GK) -->
+                        <label class="flex items-start gap-3 p-3.5 rounded-lg border border-[#C5A059]/50 bg-[#FAF4E6]/70 cursor-pointer hover:border-[#8C6826] transition-colors">
+                            <input type="checkbox" id="ins-court-route" checked onchange="recalculate()" class="mt-0.5 rounded border-[#E0E0E0] text-[#0F2439] focus:ring-[#0F2439]">
+                            <span class="text-xs text-[#2C3E50]">
+                                <strong class="text-[#0F2439]">Взыскание через Финомбудсмена и суд</strong> (+50% потребительский штраф по п. 6 ст. 13 ЗоЗПП, моральный вред и проценты ст. 395 ГК РФ — итоговая сумма к получению увеличивается в 1.5–2 раза).
+                            </span>
+                        </label>
+
+                        <!-- Expert Legal Memo for Post-30-Day Recovery -->
+                        <div class="p-4 rounded-xl bg-white border border-[#C5A880]/60 text-xs text-[#2C3E50] space-y-3 shadow-xs">
+                            <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider border-b border-[#E0E0E0] pb-2">
+                                <span class="material-symbols-outlined text-base">psychology</span>
+                                Памятка юриста: как вернуть деньги, если прошло больше 30 дней
+                            </div>
+                            <div class="space-y-2 text-[11.5px] leading-relaxed">
+                                <p><strong>1. Досрочное закрытие кредита (ч. 12 ст. 11 353-ФЗ):</strong> Закон прямо обязывает страховую компанию вернуть часть страховой премии пропорционально неистекшему сроку кредита при отсутствии страховых случаев.</p>
+                                <p><strong>2. Навязанные опционные договоры и автокарты («Автодруг», «VIP-помощь», телемедицина):</strong> Банки и автосалоны часто маскируют допуслуги под опционные договоры (ст. 429.3 ГК РФ). По позиции Верховного Суда РФ и ст. 32 ЗоЗПП потребитель вправе отказаться от них в любой момент и вернуть всю сумму за вычетом документально подтвержденных фактических расходов исполнителя.</p>
+                                <p><strong>3. Досудебный Финансовый уполномоченный (123-ФЗ):</strong> Споры до 500 000 ₽ со страховыми и банками рассматриваются Финомбудсменом бесплатно. Срок — всего 15 рабочих дней, а его решение имеет силу исполнительного листа.</p>
+                                <p><strong>4. Судебный штраф 50%:</strong> Если банк или страховая не вернули деньги в добровольный срок по претензии, суд присуждает в вашу пользу дополнительные 50% от всей взысканной суммы.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 6: STATE COURT DUTY 2026 (333.19 NK RF) -->
+                    <div id="content-duty" class="calc-module space-y-6 hidden">
+                        <div class="border-b border-[#E0E0E0] pb-4">
+                            <h2 class="font-['Source_Serif_4'] text-xl font-bold text-[#0F2439] flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[#8C6826]">gavel</span>
+                                Расчет судебной государственной пошлины (ст. 333.19 НК РФ)
+                            </h2>
+                            <p class="text-xs text-[#5f5e5e] mt-1">Новые увеличенные ставки в суды общей юрисдикции и мировым судьям РФ (в ред. Федерального закона № 259-ФЗ от 08.08.2024, актуально на 2025–2026 гг.).</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-1.5">
+                                Характер искового требования:
+                            </label>
+                            <select id="duty-claim-type" onchange="recalculate()" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-xs font-semibold text-[#0F2439] py-2.5 px-3 focus:border-[#0F2439] focus:ring-0">
+                                <option value="property" selected>1. Имущественный иск, подлежащий оценке (взыскание долга, убытков, ущерба)</option>
+                                <option value="non_property">2. Неимущественный иск физического лица (защита чести, признание права, 3 000 ₽)</option>
+                                <option value="divorce">3. Иск о расторжении брака (5 000 ₽)</option>
+                            </select>
+                        </div>
+
+                        <div id="duty-price-container">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-2">
+                                Цена иска (сумма заявляемых имущественных требований в рублях)
+                            </label>
+                            <input type="number" id="duty-price" value="350000" min="0" max="100000000" step="5000" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-lg font-bold text-[#0F2439] focus:border-[#0F2439] focus:ring-0 py-3 px-4" oninput="recalculate()">
+                        </div>
+
+                        <div class="space-y-3">
+                            <label class="flex items-center gap-3 p-3.5 rounded-lg border border-[#E0E0E0] bg-[#F8F7F4] cursor-pointer hover:border-[#8C6826] transition-colors">
+                                <input type="checkbox" id="duty-court-order" onchange="recalculate()" class="rounded border-[#E0E0E0] text-[#0F2439] focus:ring-[#0F2439]">
+                                <span class="text-xs font-semibold text-[#0F2439]">Заявление о вынесении судебного приказа (ставка снижается на 50%)</span>
+                            </label>
+                            <label class="flex items-center gap-3 p-3.5 rounded-lg border border-[#E0E0E0] bg-[#F8F7F4] cursor-pointer hover:border-[#8C6826] transition-colors">
+                                <input type="checkbox" id="duty-consumer-exempt" checked onchange="recalculate()" class="rounded border-[#E0E0E0] text-[#0F2439] focus:ring-[#0F2439]">
+                                <span class="text-xs font-semibold text-[#0F2439]">Иск о защите прав потребителей (100% освобождение от пошлины при цене иска до 1 000 000 ₽ по ст. 333.36 НК РФ)</span>
+                            </label>
+                        </div>
+
+                        <!-- Accounting / Legal Note on State Duty -->
+                        <div class="p-4 rounded-xl bg-[#FAF4E6]/90 border border-[#C5A059]/40 text-xs text-[#2C3E50] space-y-2">
+                            <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider">
+                                <span class="material-symbols-outlined text-base">info</span>
+                                Справка юриста и бухгалтера по госпошлине 2026:
+                            </div>
+                            <div class="space-y-1 text-[11.5px] leading-relaxed">
+                                <p>• <strong>Минимальный размер госпошлины:</strong> по имущественным искам составляет <strong>4 000 ₽</strong> (до 100 тыс. ₽).</p>
+                                <p>• <strong>Шкала 259-ФЗ:</strong> от 100 001 до 300 000 ₽ — 4 000 ₽ + 3%; от 300 001 до 500 000 ₽ — 10 000 ₽ + 2.5%; от 500 001 до 1 000 000 ₽ — 15 000 ₽ + 2%; от 1 000 001 до 3 000 000 ₽ — 25 000 ₽ + 1%.</p>
+                                <p>• <strong>Возврат госпошлины с ответчика:</strong> в соответствии со ст. 98 ГПК РФ при удовлетворении иска все расходы по уплате госпошлины взыскиваются с ответчика в пользу истца в полном объеме.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 7: SALARY DELAY (236 TK RF) -->
+                    <div id="content-salary" class="calc-module space-y-6 hidden">
+                        <div class="border-b border-[#E0E0E0] pb-4">
+                            <h2 class="font-['Source_Serif_4'] text-xl font-bold text-[#0F2439] flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[#8C6826]">payments</span>
+                                Задержка зарплаты и компенсация при увольнении (ст. 236 ТК РФ)
+                            </h2>
+                            <p class="text-xs text-[#5f5e5e] mt-1">Обязательная выплата денежной компенсации не ниже 1/150 ключевой ставки ЦБ РФ за каждый день просрочки + оплата вынужденного прогула (ст. 394 ТК РФ).</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-2">
+                                Сумма невыплаченной заработной платы / расчета (руб.)
+                            </label>
+                            <input type="number" id="sal-debt" value="120000" min="1000" max="10000000" step="5000" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-lg font-bold text-[#0F2439] focus:border-[#0F2439] focus:ring-0 py-3 px-4" oninput="recalculate()">
                         </div>
 
                         <div>
                             <div class="flex justify-between items-center mb-2">
                                 <label class="text-xs font-bold uppercase tracking-wider text-[#0F2439]">
-                                    Сколько дней прошло с момента оформления кредита: <span id="ins-days-val" class="text-base text-[#8C6826] font-bold">14 дней</span>
+                                    Количество дней задержки выплаты: <span id="sal-days-val" class="text-base text-[#8C6826] font-bold">45 дней</span>
                                 </label>
                             </div>
-                            <input type="range" id="ins-days" min="1" max="60" value="14" step="1" class="calc-slider" oninput="document.getElementById('ins-days-val').innerText = this.value + ' дней'; recalculate()">
-                            <div class="flex justify-between text-[11px] text-[#5f5e5e] mt-1">
-                                <span>1 день</span>
-                                <span class="font-bold text-[#8C6826]">30 дней (Лимит 353-ФЗ)</span>
-                                <span>60 дней</span>
+                            <input type="range" id="sal-days" min="1" max="365" value="45" step="1" class="calc-slider" oninput="document.getElementById('sal-days-val').innerText = this.value + ' дней'; recalculate()">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-2">
+                                Ключевая ставка ЦБ РФ (% годовых)
+                            </label>
+                            <input type="number" id="sal-rate" value="18.0" min="1.0" max="40.0" step="0.5" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-sm font-semibold text-[#0F2439] focus:border-[#0F2439] focus:ring-0 py-2.5 px-4" oninput="recalculate()">
+                        </div>
+
+                        <!-- Checkbox: Illegal Dismissal -->
+                        <label class="flex items-start gap-3 p-3.5 rounded-lg border border-[#E0E0E0] bg-[#F8F7F4] cursor-pointer hover:border-[#8C6826] transition-colors">
+                            <input type="checkbox" id="sal-illegal" onchange="recalculate()" class="mt-0.5 rounded border-[#E0E0E0] text-[#0F2439] focus:ring-[#0F2439]">
+                            <span class="text-xs font-semibold text-[#0F2439]">Незаконное увольнение (требуется взыскание среднего заработка за все время вынужденного прогула по ст. 394 ТК РФ + моральный вред)</span>
+                        </label>
+
+                        <div id="sal-forced-pane" class="grid grid-cols-2 gap-4 hidden">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-1">Среднедневной заработок (руб.)</label>
+                                <input type="number" id="sal-avg-daily" value="2800" min="500" max="50000" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-base font-bold text-[#0F2439] py-2 px-3" oninput="recalculate()">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-1">Рабочих дней прогула</label>
+                                <input type="number" id="sal-forced-days" value="30" min="1" max="250" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-base font-bold text-[#0F2439] py-2 px-3" oninput="recalculate()">
                             </div>
                         </div>
 
-                        <!-- Legal Finombudsman / Court Route Banner -->
+                        <!-- Accountant Note on Tax Exemption -->
                         <div class="p-4 rounded-xl bg-[#FAF4E6]/90 border border-[#C5A059]/40 text-xs text-[#2C3E50] space-y-2">
                             <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider">
-                                <span class="material-symbols-outlined text-base">account_balance</span>
-                                Маршрут взыскания с банков и страховых (123-ФЗ):
+                                <span class="material-symbols-outlined text-base">account_balance_wallet</span>
+                                Налоговые и бухгалтерские особенности (ст. 217 НК РФ):
                             </div>
                             <div class="space-y-1 text-[11.5px] leading-relaxed">
-                                <p><strong>1. Претензия в банк / страховую:</strong> Подайте заявление об отказе в 30-дневный срок.</p>
-                                <p><strong>2. Финансовый уполномоченный (123-ФЗ):</strong> При отказе или молчании до 500 тыс. ₽ обращение к Финомбудсмену обязательно. Он взыскивает сумму страховки и проценты, но <strong>не начисляет моральный вред и 50% штраф</strong>.</p>
-                                <p><strong>3. Суд:</strong> После решения Финомбудсмена вы вправе взыскать через суд моральный вред (ст. 15 ЗоЗПП) и штраф 50% (п. 6 ст. 13 ЗоЗПП).</p>
+                                <p>• <strong>НДФЛ 0%:</strong> Проценты (денежная компенсация) по ст. 236 ТК РФ относятся к компенсационным выплатам и <strong>не облагаются налогом на доходы физических лиц (НДФЛ)</strong> в силу п. 1 ст. 217 НК РФ.</p>
+                                <p>• <strong>Срок обращения в суд (ст. 392 ТК РФ):</strong> По спорам о невыплате заработной платы работник вправе обратиться в суд в течение <strong>1 года</strong> со дня установленного срока выплаты, а по спорам об увольнении — в течение <strong>1 месяца</strong> со дня вручения трудовой книжки.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 8: PROPERTY DAMAGE & FLOOD (1064 GK RF) -->
+                    <div id="content-damage" class="calc-module space-y-6 hidden">
+                        <div class="border-b border-[#E0E0E0] pb-4">
+                            <h2 class="font-['Source_Serif_4'] text-xl font-bold text-[#0F2439] flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[#8C6826]">water_damage</span>
+                                Ущерб при заливе квартиры / повреждении имущества (ст. 1064 ГК РФ)
+                            </h2>
+                            <p class="text-xs text-[#5f5e5e] mt-1">Полное возмещение вреда: восстановительный ремонт, поврежденное имущество, затраты на независимую экспертизу и проценты ст. 395 ГК РФ.</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-2">
+                                Стоимость восстановительного ремонта помещений (руб.)
+                            </label>
+                            <input type="number" id="dam-repair" value="280000" min="1000" max="50000000" step="5000" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-lg font-bold text-[#0F2439] focus:border-[#0F2439] focus:ring-0 py-3 px-4" oninput="recalculate()">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-2">
+                                Стоимость поврежденного имущества / мебели / техники (руб.)
+                            </label>
+                            <input type="number" id="dam-property" value="95000" min="0" max="50000000" step="5000" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-base font-bold text-[#0F2439] focus:border-[#0F2439] focus:ring-0 py-2.5 px-4" oninput="recalculate()">
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-1">
+                                    Расходы на независимую экспертизу / оценку (руб.)
+                                </label>
+                                <input type="number" id="dam-expert" value="18000" min="0" max="200000" step="1000" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-base font-bold text-[#0F2439] py-2 px-3" oninput="recalculate()">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-1">
+                                    Дней просрочки выплаты ущерба
+                                </label>
+                                <input type="number" id="dam-delay-days" value="30" min="0" max="365" step="1" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-base font-bold text-[#0F2439] py-2 px-3" oninput="recalculate()">
+                            </div>
+                        </div>
+
+                        <!-- Legal Guide for Water Flood Disputes -->
+                        <div class="p-4 rounded-xl bg-[#FAF4E6]/90 border border-[#C5A059]/40 text-xs text-[#2C3E50] space-y-2">
+                            <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider">
+                                <span class="material-symbols-outlined text-base">warning</span>
+                                Чек-лист действий при заливе (Кто отвечает — УК или соседи?):
+                            </div>
+                            <div class="space-y-1 text-[11.5px] leading-relaxed">
+                                <p><strong>1. Фиксация (Акт УК за 12 часов):</strong> Управляющая компания обязана составить Акт осмотра не позднее 12 часов с момента обращения (п. 152 ПП РФ № 354).</p>
+                                <p><strong>2. Разграничение ответственности:</strong> За стояки до первого запирающего крана отвечает <strong>Управляющая компания</strong>. За гибкую подводку, стиральные машины и смесители после крана отвечают <strong>соседи сверху</strong>.</p>
+                                <p><strong>3. Независимая оценка:</strong> При отказе виновника возместить ущерб добровольно эксперт-оценщик определяет рыночную стоимость ремонта. Расходы на оценку взыскиваются в суде со 100% компенсацией (ст. 98 ГПК РФ).</p>
                             </div>
                         </div>
                     </div>
@@ -723,24 +939,6 @@
                     </div>
                 </details>
 
-                <details class="material-glass-card rounded-xl p-6 border border-[#E0E0E0] open:border-[#C5A880]/60 open:shadow-sm">
-                    <summary class="flex items-center justify-between font-['Source_Serif_4'] text-base font-bold text-[#0F2439] list-none cursor-pointer select-none">
-                        <span class="flex items-center gap-2.5">
-                            <span class="material-symbols-outlined text-[#8C6826]">volume_off</span>
-                            Региональные различия в «Законе о тишине»
-                        </span>
-                        <span class="material-symbols-outlined text-stone-400 group-open:rotate-180 transition-transform">expand_more</span>
-                    </summary>
-                    <div class="mt-3 pt-3 border-t border-[#E0E0E0] text-xs text-[#2C3E50] leading-relaxed space-y-2">
-                        <p>В России нет единого федерального закона о тишине — в каждом регионе действуют свои временные рамки:</p>
-                        <ul class="list-disc pl-4 space-y-1">
-                            <li><strong>Самарская область (Закон № 115-ГД):</strong> тихий час 13:00–15:00; ночной режим: будни 22:00–08:00, выходные 22:00–10:00.</li>
-                            <li><strong>Москва (Закон № 42):</strong> ночной режим 23:00–07:00, тихий час для ремонта 13:00–15:00, в воскресенье шумный ремонт запрещен.</li>
-                            <li><strong>Санкт-Петербург (Закон № 273-70):</strong> тишина с 22:00 до 08:00 (в выходные до 12:00).</li>
-                        </ul>
-                    </div>
-                </details>
-
             </div>
         </section>
 
@@ -820,43 +1018,53 @@
         </div>
     </div>
 
-    <!-- SCRIPTS -->
-    <script src="js/effects.js"></script>
+    <!-- CALCULATION LOGIC JAVASCRIPT -->
     <script src="js/legal-calculator.js"></script>
     <script>
         let currentTab = 'jkh';
         let currentJkhSub = 'heating';
         let latestCalculation = null;
 
+        const allTabs = ['jkh', 'product', 'service', 'interest', 'insurance', 'duty', 'salary', 'damage'];
+
         function switchTab(tabId) {
             currentTab = tabId;
-            document.querySelectorAll('.calc-tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.calc-module').forEach(mod => mod.classList.add('hidden'));
-
-            const activeBtn = document.getElementById('tab-' + tabId);
-            const activeMod = document.getElementById('content-' + tabId);
-            if (activeBtn) activeBtn.classList.add('active');
-            if (activeMod) activeMod.classList.remove('hidden');
-
+            allTabs.forEach(t => {
+                const btn = document.getElementById('tab-' + t);
+                const content = document.getElementById('content-' + t);
+                if (btn) {
+                    if (t === tabId) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                }
+                if (content) {
+                    if (t === tabId) {
+                        content.classList.remove('hidden');
+                    } else {
+                        content.classList.add('hidden');
+                    }
+                }
+            });
             recalculate();
         }
 
         function switchJkhSub(subId) {
             currentJkhSub = subId;
-            const subBtns = ['heating', 'water', 'meter', 'absence'];
-            subBtns.forEach(id => {
-                const btn = document.getElementById('sub-' + id);
-                const pane = document.getElementById('jkh-pane-' + id);
-                if (btn && pane) {
-                    if (id === subId) {
-                        btn.classList.add('bg-white', 'text-[#0F2439]', 'shadow-xs', 'font-bold');
-                        btn.classList.remove('text-[#5f5e5e]');
-                        pane.classList.remove('hidden');
+            ['heating', 'water', 'meter', 'absence'].forEach(s => {
+                const btn = document.getElementById('sub-' + s);
+                const pane = document.getElementById('jkh-pane-' + s);
+                if (btn) {
+                    if (s === subId) {
+                        btn.className = "py-2.5 px-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all text-[#0F2439] bg-white shadow-xs text-center";
                     } else {
-                        btn.classList.remove('bg-white', 'text-[#0F2439]', 'shadow-xs', 'font-bold');
-                        btn.classList.add('text-[#5f5e5e]');
-                        pane.classList.add('hidden');
+                        btn.className = "py-2.5 px-2 text-xs font-semibold uppercase tracking-wider rounded-lg transition-all text-[#5f5e5e] hover:text-[#0F2439] text-center";
                     }
+                }
+                if (pane) {
+                    if (s === subId) pane.classList.remove('hidden');
+                    else pane.classList.add('hidden');
                 }
             });
             recalculate();
@@ -869,38 +1077,27 @@
                 if (currentJkhSub === 'heating') {
                     const fee = parseFloat(document.getElementById('heat-fee').value) || 0;
                     const temp = parseFloat(document.getElementById('heat-temp').value) || 18;
-                    const corner = document.querySelector('input[name="heat-corner"]:checked').value === '1';
+                    const corner = document.querySelector('input[name="heat-corner"]:checked')?.value === '1';
                     const hours = parseFloat(document.getElementById('heat-hours').value) || 0;
                     const isCold = document.getElementById('heat-climate').value === 'cold';
 
-                    // Update UI labels dynamically
-                    const normBadge = document.getElementById('heat-norm-badge');
-                    const lbl0 = document.getElementById('lbl-corner-0');
-                    const lbl1 = document.getElementById('lbl-corner-1');
-                    if (isCold) {
-                        if (normBadge) normBadge.innerText = '20°C / 22°C (Норма Севера)';
-                        if (lbl0) lbl0.innerText = 'Обычная комната (+20°C)';
-                        if (lbl1) lbl1.innerText = 'Угловая комната (+22°C)';
-                    } else {
-                        if (normBadge) normBadge.innerText = '18°C / 20°C (Норма РФ)';
-                        if (lbl0) lbl0.innerText = 'Обычная комната (+18°C)';
-                        if (lbl1) lbl1.innerText = 'Угловая комната (+20°C)';
-                    }
+                    const badge = document.getElementById('heat-norm-badge');
+                    if (badge) badge.innerText = isCold ? '20°C / 22°C (Норма)' : '18°C / 20°C (Норма)';
 
                     const res = LegalCalculator.calculateHeating(fee, temp, corner, hours, isCold);
-                    latestCalculation = { type: 'heating', data: { actualTemp: temp, normTemp: res.normTemp, deltaTemp: res.deltaTemp, violationHours: hours, isColdRegion: isCold, reductionAmount: res.reductionAmount, reductionPercent: res.reductionPercent, penaltyFine: res.penaltyFine, totalCompensation: res.totalCompensation } };
+                    latestCalculation = { type: 'heating', data: res };
 
-                    document.getElementById('res-main-label').innerText = 'Сумма компенсации и снижения платы:';
+                    document.getElementById('res-main-label').innerText = 'Сумма компенсации за отопление:';
                     document.getElementById('res-total').innerText = res.totalCompensation.toLocaleString('ru-RU') + ' ₽';
-                    
-                    document.getElementById('res-line1-label').innerText = 'Снижение платы за отопление:';
-                    document.getElementById('res-line1-val').innerText = '-' + res.reductionAmount.toLocaleString('ru-RU') + ' ₽ (' + res.reductionPercent + '%)';
-                    
-                    document.getElementById('res-line2-label').innerText = 'Штраф УК (ч. 4 ст. 157 ЖК РФ):';
+
+                    document.getElementById('res-line1-label').innerText = 'Снижение платы (' + res.reductionPercent + '%):';
+                    document.getElementById('res-line1-val').innerText = '-' + res.reductionAmount.toLocaleString('ru-RU') + ' ₽';
+
+                    document.getElementById('res-line2-label').innerText = 'Штраф 50% по ч. 4 ст. 157 ЖК РФ:';
                     document.getElementById('res-line2-val').innerText = '+' + res.penaltyFine.toLocaleString('ru-RU') + ' ₽';
 
-                    document.getElementById('res-line3-label').innerText = 'Итого к зачету/выплате:';
-                    document.getElementById('res-line3-val').innerText = res.totalCompensation.toLocaleString('ru-RU') + ' ₽';
+                    document.getElementById('res-line3-label').innerText = 'Новая плата за месяц:';
+                    document.getElementById('res-line3-val').innerText = res.newMonthlyFee.toLocaleString('ru-RU') + ' ₽';
 
                     document.getElementById('res-law-basis').innerText = res.lawBasis;
                 }
@@ -909,19 +1106,19 @@
                     const hours = parseFloat(document.getElementById('water-hours').value) || 0;
 
                     const res = LegalCalculator.calculateWaterOutage(fee, hours);
-                    latestCalculation = { type: 'water_outage', data: { outageHours: hours, excessHours: res.excessHours, reductionAmount: res.reductionAmount, reductionPercent: res.reductionPercent, penaltyFine: res.penaltyFine, totalCompensation: res.totalCompensation } };
+                    latestCalculation = { type: 'water_outage', data: res };
 
-                    document.getElementById('res-main-label').innerText = 'Сумма компенсации за воду:';
+                    document.getElementById('res-main-label').innerText = 'Сумма перерасчета за воду:';
                     document.getElementById('res-total').innerText = res.totalCompensation.toLocaleString('ru-RU') + ' ₽';
 
-                    document.getElementById('res-line1-label').innerText = 'Снижение платы за воду:';
-                    document.getElementById('res-line1-val').innerText = '-' + res.reductionAmount.toLocaleString('ru-RU') + ' ₽ (' + res.reductionPercent + '%)';
+                    document.getElementById('res-line1-label').innerText = 'Снижение платы (' + res.reductionPercent + '%):';
+                    document.getElementById('res-line1-val').innerText = '-' + res.reductionAmount.toLocaleString('ru-RU') + ' ₽';
 
-                    document.getElementById('res-line2-label').innerText = 'Штраф УК 50% (ст. 157 ЖК):';
+                    document.getElementById('res-line2-label').innerText = 'Штраф 50% по ст. 157 ЖК:';
                     document.getElementById('res-line2-val').innerText = '+' + res.penaltyFine.toLocaleString('ru-RU') + ' ₽';
 
-                    document.getElementById('res-line3-label').innerText = 'Итого к компенсации:';
-                    document.getElementById('res-line3-val').innerText = res.totalCompensation.toLocaleString('ru-RU') + ' ₽';
+                    document.getElementById('res-line3-label').innerText = 'Новая плата за месяц:';
+                    document.getElementById('res-line3-val').innerText = res.newMonthlyFee.toLocaleString('ru-RU') + ' ₽';
 
                     document.getElementById('res-law-basis').innerText = res.lawBasis;
                 }
@@ -932,7 +1129,7 @@
                     const has15 = document.getElementById('meter-mult15').checked;
 
                     const res = LegalCalculator.calculateMeterReconciliation(billed, units, rate, has15);
-                    latestCalculation = { type: 'meter_reconciliation', data: { billedAmount: billed, actualUnits: units, tariffRate: rate, realCost: res.realCost, overpayment: res.overpayment, multiplierAmount: res.multiplierAmount } };
+                    latestCalculation = { type: 'meter_reconciliation', data: res };
 
                     document.getElementById('res-main-label').innerText = 'Сумма переплаты к зачету:';
                     document.getElementById('res-total').innerText = res.overpayment.toLocaleString('ru-RU') + ' ₽';
@@ -956,7 +1153,7 @@
                     const billingType = document.getElementById('abs-billing-type').value;
 
                     const res = LegalCalculator.calculateAbsenceRefund(fee, days, totalRes, absentRes, billingType);
-                    latestCalculation = { type: 'absence', data: { monthlyFee: fee, absenceDays: days, totalResidents: totalRes, absentResidents: absentRes, billingType: billingType, reductionAmount: res.reductionAmount, newMonthlyFee: res.newMonthlyFee } };
+                    latestCalculation = { type: 'absence', data: res };
 
                     document.getElementById('res-main-label').innerText = 'Сумма снятия платы (перерасчет):';
                     document.getElementById('res-total').innerText = res.reductionAmount.toLocaleString('ru-RU') + ' ₽';
@@ -1041,22 +1238,122 @@
             }
             else if (currentTab === 'insurance') {
                 const cost = parseFloat(document.getElementById('ins-cost').value) || 0;
-                const days = parseFloat(document.getElementById('ins-days').value) || 0;
+                const contractType = document.getElementById('ins-contract-type').value;
+                const days = parseFloat(document.getElementById('ins-days')?.value) || 14;
+                const totalMonths = parseFloat(document.getElementById('ins-total-months')?.value) || 36;
+                const elapsedMonths = parseFloat(document.getElementById('ins-elapsed-months')?.value) || 6;
+                const isCourt = document.getElementById('ins-court-route')?.checked ?? true;
 
-                const res = LegalCalculator.calculateInsuranceRefund(cost, days);
-                latestCalculation = { type: 'insurance', data: { insuranceCost: cost, daysPassed: days, isEligible: res.isEligible, refundableAmount: res.refundableAmount } };
+                // Show/hide subpanels
+                const coolingPane = document.getElementById('ins-cooling-pane');
+                const earlyPane = document.getElementById('ins-early-pane');
+                if (contractType === 'cooling') {
+                    coolingPane?.classList.remove('hidden');
+                    earlyPane?.classList.add('hidden');
+                } else if (contractType === 'early_repayment') {
+                    coolingPane?.classList.add('hidden');
+                    earlyPane?.classList.remove('hidden');
+                } else {
+                    coolingPane?.classList.add('hidden');
+                    earlyPane?.classList.add('hidden');
+                }
 
-                document.getElementById('res-main-label').innerText = 'Сумма к возврату со страховой:';
-                document.getElementById('res-total').innerText = res.refundableAmount.toLocaleString('ru-RU') + ' ₽';
+                const res = LegalCalculator.calculateInsuranceRefund(cost, days, totalMonths, elapsedMonths, contractType, isCourt);
+                latestCalculation = { type: 'insurance', data: res };
 
-                document.getElementById('res-line1-label').innerText = 'Стоимость полиса / услуг:';
-                document.getElementById('res-line1-val').innerText = cost.toLocaleString('ru-RU') + ' ₽';
+                document.getElementById('res-main-label').innerText = 'Итого к возврату со страховой/банка:';
+                document.getElementById('res-total').innerText = res.totalToRecover.toLocaleString('ru-RU') + ' ₽';
 
-                document.getElementById('res-line2-label').innerText = 'Срок подачи заявления:';
-                document.getElementById('res-line2-val').innerText = days + ' дн. (' + (res.isEligible ? 'В срок' : 'Превышен') + ')';
+                document.getElementById('res-line1-label').innerText = 'Возврат премии / сертификата:';
+                document.getElementById('res-line1-val').innerText = res.baseRefund.toLocaleString('ru-RU') + ' ₽';
 
-                document.getElementById('res-line3-label').innerText = 'Статус по 353-ФЗ:';
-                document.getElementById('res-line3-val').innerText = res.isEligible ? '100% возврат' : 'Отказ по сроку';
+                document.getElementById('res-line2-label').innerText = isCourt ? 'Штраф 50% + ст. 395 ГК:' : 'Досудебный возврат:';
+                document.getElementById('res-line2-val').innerText = isCourt ? '+' + (res.fine50 + res.penalty395).toLocaleString('ru-RU') + ' ₽' : '0 ₽';
+
+                document.getElementById('res-line3-label').innerText = isCourt ? 'Моральный вред ст. 15:' : 'Статус:';
+                document.getElementById('res-line3-val').innerText = isCourt ? '+' + res.moralDamage.toLocaleString('ru-RU') + ' ₽' : '100% по закону';
+
+                document.getElementById('res-law-basis').innerText = res.lawBasis;
+            }
+            else if (currentTab === 'duty') {
+                const claimType = document.getElementById('duty-claim-type').value;
+                const price = parseFloat(document.getElementById('duty-price').value) || 0;
+                const isCourtOrder = document.getElementById('duty-court-order').checked;
+                const isExempt = document.getElementById('duty-consumer-exempt').checked;
+
+                const priceContainer = document.getElementById('duty-price-container');
+                if (claimType === 'property') {
+                    priceContainer?.classList.remove('hidden');
+                } else {
+                    priceContainer?.classList.add('hidden');
+                }
+
+                const res = LegalCalculator.calculateStateDuty(price, claimType, isCourtOrder, isExempt);
+                latestCalculation = { type: 'duty', data: res };
+
+                document.getElementById('res-main-label').innerText = 'Государственная пошлина к уплате:';
+                document.getElementById('res-total').innerText = res.dutyAmount.toLocaleString('ru-RU') + ' ₽';
+
+                document.getElementById('res-line1-label').innerText = 'Цена иска (требований):';
+                document.getElementById('res-line1-val').innerText = (claimType === 'property' ? price.toLocaleString('ru-RU') + ' ₽' : 'Неимущественный');
+
+                document.getElementById('res-line2-label').innerText = 'Льгота (ст. 333.36 НК РФ):';
+                document.getElementById('res-line2-val').innerText = res.isExempt ? '100% Освобожден' : 'Обычный тариф';
+
+                document.getElementById('res-line3-label').innerText = 'Взыскание с ответчика:';
+                document.getElementById('res-line3-val').innerText = res.dutyAmount > 0 ? '100% возврат по суду' : '0 ₽ (льгота)';
+
+                document.getElementById('res-law-basis').innerText = res.lawBasis;
+            }
+            else if (currentTab === 'salary') {
+                const debt = parseFloat(document.getElementById('sal-debt').value) || 0;
+                const days = parseFloat(document.getElementById('sal-days').value) || 0;
+                const rate = parseFloat(document.getElementById('sal-rate').value) || 18;
+                const isIllegal = document.getElementById('sal-illegal').checked;
+                const avgDaily = parseFloat(document.getElementById('sal-avg-daily')?.value) || 2800;
+                const forcedDays = parseFloat(document.getElementById('sal-forced-days')?.value) || 30;
+
+                const forcedPane = document.getElementById('sal-forced-pane');
+                if (isIllegal) forcedPane?.classList.remove('hidden');
+                else forcedPane?.classList.add('hidden');
+
+                const res = LegalCalculator.calculateSalaryDelay(debt, days, rate, isIllegal, avgDaily, forcedDays);
+                latestCalculation = { type: 'salary', data: res };
+
+                document.getElementById('res-main-label').innerText = 'Итого к выплате работодателем:';
+                document.getElementById('res-total').innerText = res.totalToRecover.toLocaleString('ru-RU') + ' ₽';
+
+                document.getElementById('res-line1-label').innerText = 'Задолженность по зарплате:';
+                document.getElementById('res-line1-val').innerText = debt.toLocaleString('ru-RU') + ' ₽';
+
+                document.getElementById('res-line2-label').innerText = 'Компенсация 1/150 ставки ЦБ (без НДФЛ):';
+                document.getElementById('res-line2-val').innerText = '+' + res.delayCompensation.toLocaleString('ru-RU') + ' ₽';
+
+                document.getElementById('res-line3-label').innerText = isIllegal ? 'Вынужденный прогул + моральный:' : 'Статус просрочки:';
+                document.getElementById('res-line3-val').innerText = isIllegal ? '+' + (res.forcedAbsencePay + res.moralDamage).toLocaleString('ru-RU') + ' ₽' : days + ' дн.';
+
+                document.getElementById('res-law-basis').innerText = res.lawBasis;
+            }
+            else if (currentTab === 'damage') {
+                const repair = parseFloat(document.getElementById('dam-repair').value) || 0;
+                const property = parseFloat(document.getElementById('dam-property').value) || 0;
+                const expert = parseFloat(document.getElementById('dam-expert').value) || 0;
+                const delay = parseFloat(document.getElementById('dam-delay-days').value) || 0;
+
+                const res = LegalCalculator.calculatePropertyDamage(repair, property, expert, delay);
+                latestCalculation = { type: 'damage', data: res };
+
+                document.getElementById('res-main-label').innerText = 'Итого к возмещению за ущерб:';
+                document.getElementById('res-total').innerText = res.totalToRecover.toLocaleString('ru-RU') + ' ₽';
+
+                document.getElementById('res-line1-label').innerText = 'Восстановительный ремонт:';
+                document.getElementById('res-line1-val').innerText = repair.toLocaleString('ru-RU') + ' ₽';
+
+                document.getElementById('res-line2-label').innerText = 'Имущество + Оценка эксперта:';
+                document.getElementById('res-line2-val').innerText = '+' + (property + expert).toLocaleString('ru-RU') + ' ₽';
+
+                document.getElementById('res-line3-label').innerText = 'Проценты 395 ГК + Моральный:';
+                document.getElementById('res-line3-val').innerText = '+' + (res.interest395 + res.moralDamage).toLocaleString('ru-RU') + ' ₽';
 
                 document.getElementById('res-law-basis').innerText = res.lawBasis;
             }
@@ -1066,9 +1363,9 @@
             if (!latestCalculation || !window.LegalCalculator) return;
             const text = LegalCalculator.generateClaimText(latestCalculation.type, latestCalculation.data, {
                 userName: '[ФИО Гражданина]',
-                userAddress: '[Адрес проживания]',
-                userPhone: '[Телефон для связи]',
-                recipientName: '[Наименование УК / Магазина / Банка]',
+                userAddress: '[Адрес проживания: г. Самара, ул. ..., д. ..., кв. ...]',
+                userPhone: '[Телефон для связи: +7 ...]',
+                recipientName: '[Наименование Организации / Суда / Банка]',
                 recipientAddress: '[Адрес организации]'
             });
 
@@ -1081,7 +1378,7 @@
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            showToast('Претензия успешно сгенерирована и скачана!');
+            showToast('Документ успешно сформирован и скачан!');
         }
 
         function handleConsultationSubmit(e) {

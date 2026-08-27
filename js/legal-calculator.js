@@ -6,9 +6,11 @@
  * - Постановление Правительства РФ № 354 (ЖКХ, Отопление, Вода, ТКО, Сверка ИПУ, Отсутствие)
  * - ГОСТ Р 51617-2014, СанПиН 1.2.3685-21 (Климатические нормы отопления по регионам РФ)
  * - Жилищный кодекс РФ (ст. 157 ЖК РФ)
- * - Закон РФ № 2300-1 «О защите прав потребителей» (ст. 13, 15, 22, 23, 28, 31)
- * - Гражданский кодекс РФ (ст. 395 ГК РФ)
- * - Федеральный закон № 353-ФЗ «О потребительском кредите»
+ * - Закон РФ № 2300-1 «О защите прав потребителей» (ст. 13, 15, 22, 23, 28, 31, 32)
+ * - Гражданский кодекс РФ (ст. 15, 395, 429.3, 1064 ГК РФ)
+ * - Налоговый кодекс РФ (ст. 333.19, ст. 333.36 в ред. 259-ФЗ от 08.08.2024 — новые госпошлины 2025–2026)
+ * - Трудовой кодекс РФ (ст. 236, ст. 394 ТК РФ — 1/150 ключевой ставки ЦБ РФ, вынужденный прогул)
+ * - Федеральный закон № 353-ФЗ «О потребительском кредите» (период охлаждения 30 дней, досрочное погашение)
  * - Федеральный закон № 123-ФЗ «Об уполномоченном по правам потребителей финансовых услуг»
  */
 
@@ -22,12 +24,6 @@
 
         /**
          * 1.1 ЖКХ: Отопление ниже нормы (+18°C/+20°C или +20°C/+22°C для холодных регионов)
-         * п. 15 Приложения № 1 к ПП РФ № 354, ч. 4 ст. 157 ЖК РФ, СанПиН 1.2.3685-21
-         * @param {number} monthlyFee - Начисленная плата за отопление за месяц (руб)
-         * @param {number} actualTemp - Фактическая температура в помещении (град. C)
-         * @param {boolean} isCornerRoom - Угловая комната
-         * @param {number} violationHours - Часы нарушения
-         * @param {boolean} isColdRegion - Холодный регион (пятидневка -31°C и ниже: норма +20°C/+22°C)
          */
         calculateHeating: function (monthlyFee, actualTemp, isCornerRoom, violationHours, isColdRegion = false) {
             let normTemp = 18;
@@ -54,13 +50,11 @@
                 };
             }
 
-            // 0.15% за каждый градус и за каждый час
             const reductionPercent = Math.min(100, deltaTemp * 0.15 * violationHours);
             const reductionAmount = Math.min(monthlyFee, Math.round((monthlyFee * (reductionPercent / 100)) * 100) / 100);
             const penaltyFine = Math.round((reductionAmount * 0.5) * 100) / 100;
             const totalCompensation = Math.round((reductionAmount + penaltyFine) * 100) / 100;
             const newMonthlyFee = Math.max(0, Math.round((monthlyFee - reductionAmount) * 100) / 100);
-
             const regionNotice = isColdRegion ? 'холодный регион (пятидневка ≤ -31°C)' : 'стандартная климатическая зона РФ';
 
             return {
@@ -78,10 +72,10 @@
         },
 
         /**
-         * 1.2 ЖКХ: Отключение / перебои подачи воды сверх лимита
+         * 1.2 ЖКХ: Отключение воды
          */
         calculateWaterOutage: function (monthlyFee, outageHours) {
-            const allowedHours = 8; // допустимый лимит за месяц
+            const allowedHours = 8;
             const excessHours = Math.max(0, outageHours - allowedHours);
 
             if (excessHours <= 0) {
@@ -116,7 +110,7 @@
         },
 
         /**
-         * 1.3 ЖКХ: Сверка счетчиков ИПУ (Перерасчет со среднего/норматива на факт)
+         * 1.3 ЖКХ: Сверка счетчиков ИПУ
          */
         calculateMeterReconciliation: function (billedAmount, actualUnits, tariffRate, hasMultiplier15 = false) {
             const realCost = Math.round((actualUnits * tariffRate) * 100) / 100;
@@ -137,10 +131,9 @@
         },
 
         /**
-         * 1.4 ЖКХ: Временное отсутствие потребителя (ТКО и нормативные услуги)
-         * Учитывает региональный способ начисления ТКО (по людям ИЛИ по площади жилья)
+         * 1.4 ЖКХ: Временное отсутствие (ТКО)
          */
-        calculateAbsenceRefund: function (monthlyFee, absenceDays, totalResidents = 1, absentResidents = 1, billingType = 'people', areaSqM = 54) {
+        calculateAbsenceRefund: function (monthlyFee, absenceDays, totalResidents = 1, absentResidents = 1, billingType = 'people') {
             if (absenceDays < 5) {
                 return {
                     eligible: false,
@@ -153,13 +146,10 @@
 
             let reductionAmount = 0;
             if (billingType === 'area') {
-                // Региональный расчет ТКО с площади (Москва, МО и др. регионы по ПП РФ от 01.03.2023)
-                // Снижение пропорционально доле отсутствующих жильцов и количеству дней
                 const residentRatio = Math.min(1, Math.max(0, absentResidents / Math.max(1, totalResidents)));
                 const dailyFee = monthlyFee / 30;
                 reductionAmount = Math.min(monthlyFee, Math.round((dailyFee * absenceDays * residentRatio) * 100) / 100);
             } else {
-                // Классический расчет ТКО с человека (Самарская область и большинство регионов РФ)
                 const residentRatio = Math.min(1, Math.max(0, absentResidents / Math.max(1, totalResidents)));
                 const feePerPerson = monthlyFee * residentRatio;
                 const dailyRate = feePerPerson / 30;
@@ -181,10 +171,10 @@
         },
 
         /**
-         * 2. ЗоЗПП: Неустойка за задержку возврата денег за ТОВАР (ст. 22, 23 ЗоЗПП)
+         * 2. ЗоЗПП: Товар (1% в день)
          */
         calculateProductPenalty: function (productPrice, delayDays, moralDamage = 3000) {
-            const dailyRate = 0.01; // 1% в день
+            const dailyRate = 0.01;
             const penaltyAmount = Math.round((productPrice * dailyRate * Math.max(0, delayDays)) * 100) / 100;
             const subtotal = productPrice + penaltyAmount;
             const consumerFine50 = Math.round(((subtotal + moralDamage) * 0.5) * 100) / 100;
@@ -203,10 +193,10 @@
         },
 
         /**
-         * 3. ЗоЗПП: Неустойка 3% в день за срыв сроков РАБОТ / УСЛУГ / РЕМОНТА (ст. 28 ЗоЗПП)
+         * 3. ЗоЗПП: Работы / Услуги / Ремонт (3% в день)
          */
         calculateServicePenalty: function (servicePrice, delayDays, moralDamage = 5000) {
-            const dailyRate = 0.03; // 3% в день
+            const dailyRate = 0.03;
             const rawPenalty = servicePrice * dailyRate * Math.max(0, delayDays);
             const penaltyAmount = Math.round(Math.min(servicePrice, rawPenalty) * 100) / 100;
             const subtotal = servicePrice + penaltyAmount;
@@ -226,7 +216,7 @@
         },
 
         /**
-         * 4. Проценты за пользование чужими денежными средствами (ст. 395 ГК РФ)
+         * 4. Проценты по ключевой ставке ЦБ РФ (ст. 395 ГК РФ)
          */
         calculateInterest395: function (debtAmount, days, keyRate = CURRENT_KEY_RATE) {
             const daysInYear = 365;
@@ -245,47 +235,323 @@
         },
 
         /**
-         * 5. Возврат страховок по кредитам в Период охлаждения 30 дней (353-ФЗ)
+         * 5. Возврат страховок и допуслуг (353-ФЗ, 123-ФЗ, ст. 32 ЗоЗПП, ст. 429.3 ГК РФ)
+         * Поддерживает 3 сценария:
+         * 1) В пределах 30 дней (Период охлаждения по 353-ФЗ) -> 100% возврат
+         * 2) При досрочном погашении кредита (ч. 12 ст. 11 353-ФЗ) -> возврат за неистекший срок
+         * 3) Навязанные опционные сертификаты / карты помощи на дорогах -> отказ по ст. 32 ЗоЗПП / ст. 429.3 ГК РФ
+         * 4) Взыскание через Финомбудсмена и суд -> +50% штраф + моральный вред + ст. 395 ГК РФ
          */
-        calculateInsuranceRefund: function (insuranceCost, daysPassed) {
+        calculateInsuranceRefund: function (insuranceCost, daysPassed, creditTotalMonths = 36, monthsElapsed = 6, contractType = 'cooling', isCourtRoute = false) {
             const coolingPeriodDays = 30;
 
-            if (daysPassed <= coolingPeriodDays) {
+            if (contractType === 'cooling' || daysPassed <= coolingPeriodDays) {
+                const subtotal = insuranceCost;
+                const penalty395 = isCourtRoute ? Math.round(insuranceCost * (CURRENT_KEY_RATE / 100 / 365) * 30 * 100) / 100 : 0;
+                const moralDamage = isCourtRoute ? 5000 : 0;
+                const fine50 = isCourtRoute ? Math.round((subtotal + penalty395 + moralDamage) * 0.5 * 100) / 100 : 0;
+                const totalToRecover = Math.round((subtotal + penalty395 + moralDamage + fine50) * 100) / 100;
+
                 return {
+                    status: 'cooling_period',
                     isCoolingPeriod: true,
                     daysPassed: daysPassed,
                     refundPercent: 100,
-                    refundAmount: insuranceCost,
-                    refundableAmount: insuranceCost,
+                    baseRefund: insuranceCost,
+                    penalty395: penalty395,
+                    moralDamage: moralDamage,
+                    fine50: fine50,
+                    totalToRecover: totalToRecover,
+                    refundableAmount: totalToRecover,
                     isEligible: true,
                     lawBasis: 'ч. 2.4 ст. 7 Федерального закона № 353-ФЗ (100% возврат в период охлаждения 30 дней)'
                 };
-            } else {
+            } 
+            else if (contractType === 'early_repayment') {
+                // Досрочное погашение кредита (ч. 12 ст. 11 353-ФЗ)
+                const totalDays = creditTotalMonths * 30.416;
+                const usedDays = monthsElapsed * 30.416;
+                const unusedRatio = Math.max(0, Math.min(1, (totalDays - usedDays) / totalDays));
+                const baseRefund = Math.round(insuranceCost * unusedRatio * 100) / 100;
+                const penalty395 = isCourtRoute ? Math.round(baseRefund * (CURRENT_KEY_RATE / 100 / 365) * 30 * 100) / 100 : 0;
+                const moralDamage = isCourtRoute ? 5000 : 0;
+                const fine50 = isCourtRoute ? Math.round((baseRefund + penalty395 + moralDamage) * 0.5 * 100) / 100 : 0;
+                const totalToRecover = Math.round((baseRefund + penalty395 + moralDamage + fine50) * 100) / 100;
+
                 return {
+                    status: 'early_repayment',
                     isCoolingPeriod: false,
                     daysPassed: daysPassed,
-                    refundPercent: 0,
-                    refundAmount: 0,
-                    refundableAmount: 0,
-                    isEligible: false,
-                    note: 'Период охлаждения (30 дней) истек. Возврат возможен при досрочном погашении кредита по ч. 2.4 ст. 11 353-ФЗ.',
-                    lawBasis: 'ч. 2.4 ст. 11 Федерального закона № 353-ФЗ'
+                    creditTotalMonths: creditTotalMonths,
+                    monthsElapsed: monthsElapsed,
+                    unusedRatioPercent: Math.round(unusedRatio * 100),
+                    baseRefund: baseRefund,
+                    penalty395: penalty395,
+                    moralDamage: moralDamage,
+                    fine50: fine50,
+                    totalToRecover: totalToRecover,
+                    refundableAmount: totalToRecover,
+                    isEligible: true,
+                    lawBasis: 'ч. 12 ст. 11 Федерального закона № 353-ФЗ (пропорциональный возврат за неистекший срок кредита)'
+                };
+            }
+            else {
+                // Навязанные опционные договоры / автокарты (ст. 32 ЗоЗПП, ст. 429.3 ГК РФ)
+                const baseRefund = insuranceCost; // Опционный платеж подлежит возврату за вычетом реально понесенных расходов
+                const penalty395 = isCourtRoute ? Math.round(baseRefund * (CURRENT_KEY_RATE / 100 / 365) * 45 * 100) / 100 : 0;
+                const moralDamage = isCourtRoute ? 7000 : 0;
+                const fine50 = isCourtRoute ? Math.round((baseRefund + penalty395 + moralDamage) * 0.5 * 100) / 100 : 0;
+                const totalToRecover = Math.round((baseRefund + penalty395 + moralDamage + fine50) * 100) / 100;
+
+                return {
+                    status: 'option_contract',
+                    isCoolingPeriod: false,
+                    daysPassed: daysPassed,
+                    baseRefund: baseRefund,
+                    penalty395: penalty395,
+                    moralDamage: moralDamage,
+                    fine50: fine50,
+                    totalToRecover: totalToRecover,
+                    refundableAmount: totalToRecover,
+                    isEligible: true,
+                    lawBasis: 'ст. 32 ЗоЗПП, ст. 429.3 ГК РФ, п. 6 ст. 13 ЗоЗПП (Отказ от навязанных сертификатов в любой момент)'
                 };
             }
         },
 
         /**
-         * 6. Генератор юридического текста досудебной претензии
+         * 6. ГОСУДАРСТВЕННАЯ ПОШЛИНА В СУД ОБЩЕЙ ЮРИСДИКЦИИ И МИРОВЫМ СУДЬЯМ (ст. 333.19 НК РФ в ред. 259-ФЗ от 08.08.2024)
+         * Новые ставки, вступившие в силу с 09.09.2024 и действующие в 2025–2026 гг.
+         */
+        calculateStateDuty: function (claimPrice, claimType = 'property', isCourtOrder = false, isConsumerExempt = false) {
+            // Освобождение по защите прав потребителей до 1 000 000 руб. (п. 3 ст. 333.36 НК РФ)
+            if (isConsumerExempt && claimPrice <= 1000000 && claimType === 'property') {
+                return {
+                    claimPrice: claimPrice,
+                    claimType: claimType,
+                    dutyAmount: 0,
+                    originalDuty: this._rawPropertyDuty(claimPrice),
+                    isExempt: true,
+                    exemptReason: 'Освобождение от уплаты госпошлины по искам о защите прав потребителей при цене иска до 1 000 000 ₽ (п. 3 ст. 333.36 НК РФ).',
+                    lawBasis: 'п. 3 ст. 333.36 НК РФ, ст. 17 Закона РФ № 2300-1 (Льгота 100%)'
+                };
+            }
+
+            if (claimType === 'non_property') {
+                // Неимущественный иск физического лица (ст. 333.19 пп. 3)
+                const base = 3000;
+                return {
+                    claimPrice: 0,
+                    claimType: 'non_property',
+                    dutyAmount: base,
+                    isExempt: false,
+                    lawBasis: 'пп. 3 п. 1 ст. 333.19 НК РФ (Исковые заявления неимущественного характера для физлиц — 3 000 ₽)'
+                };
+            }
+
+            if (claimType === 'divorce') {
+                // Расторжение брака (ст. 333.19 пп. 5)
+                const base = 5000;
+                return {
+                    claimPrice: 0,
+                    claimType: 'divorce',
+                    dutyAmount: base,
+                    isExempt: false,
+                    lawBasis: 'пп. 5 п. 1 ст. 333.19 НК РФ (Иск о расторжении брака — 5 000 ₽)'
+                };
+            }
+
+            // Имущественный иск
+            let rawDuty = this._rawPropertyDuty(claimPrice);
+
+            // Если по иску ЗоЗПП цена свыше 1 000 000 руб., пошлина уменьшается на сумму пошлины для 1 млн руб. (25 000 руб.)
+            if (isConsumerExempt && claimPrice > 1000000) {
+                const dutyFor1M = 25000;
+                rawDuty = Math.max(4000, rawDuty - dutyFor1M);
+            }
+
+            // При подаче заявления о вынесении судебного приказа — 50% ставки
+            let finalDuty = isCourtOrder ? Math.round(rawDuty * 0.5) : rawDuty;
+
+            return {
+                claimPrice: claimPrice,
+                claimType: 'property',
+                dutyAmount: finalDuty,
+                rawDuty: rawDuty,
+                isCourtOrder: isCourtOrder,
+                isConsumerExempt: isConsumerExempt,
+                lawBasis: isCourtOrder 
+                    ? 'пп. 1, 2 п. 1 ст. 333.19 НК РФ (Судебный приказ — 50% ставки имущественного иска)' 
+                    : 'пп. 1 п. 1 ст. 333.19 НК РФ в ред. Федерального закона № 259-ФЗ'
+            };
+        },
+
+        _rawPropertyDuty: function (price) {
+            price = Math.max(0, price);
+            if (price <= 100000) {
+                return 4000;
+            } else if (price <= 300000) {
+                return Math.round(4000 + (price - 100000) * 0.03);
+            } else if (price <= 500000) {
+                return Math.round(10000 + (price - 300000) * 0.025);
+            } else if (price <= 1000000) {
+                return Math.round(15000 + (price - 500000) * 0.02);
+            } else if (price <= 3000000) {
+                return Math.round(25000 + (price - 1000000) * 0.01);
+            } else if (price <= 8000000) {
+                return Math.round(45000 + (price - 3000000) * 0.007);
+            } else if (price <= 24000000) {
+                return Math.round(80000 + (price - 8000000) * 0.0035);
+            } else {
+                return Math.min(900000, Math.round(136000 + (price - 24000000) * 0.003));
+            }
+        },
+
+        /**
+         * 7. ЗАДЕРЖКА ЗАРПЛАТЫ И ВЫНУЖДЕННЫЙ ПРОГУЛ (ст. 236, 394 ТК РФ, ст. 217 НК РФ)
+         */
+        calculateSalaryDelay: function (salaryDebt, delayDays, keyRate = CURRENT_KEY_RATE, isIllegalDismissal = false, averageDailySalary = 2500, forcedDays = 45, moralDamage = 15000) {
+            // Компенсация за задержку зарплаты по ст. 236 ТК РФ: не ниже 1/150 ключевой ставки ЦБ РФ в день
+            const dailyFraction = 1 / 150;
+            const ratePercent = keyRate / 100;
+            const delayCompensation = Math.round((salaryDebt * ratePercent * dailyFraction * Math.max(0, delayDays)) * 100) / 100;
+
+            let forcedAbsencePay = 0;
+            if (isIllegalDismissal) {
+                // Оплата вынужденного прогула по ст. 394 ТК РФ
+                forcedAbsencePay = Math.round(averageDailySalary * Math.max(0, forcedDays) * 100) / 100;
+            }
+
+            const totalToRecover = Math.round((salaryDebt + delayCompensation + forcedAbsencePay + (isIllegalDismissal ? moralDamage : 0)) * 100) / 100;
+
+            return {
+                salaryDebt: salaryDebt,
+                delayDays: delayDays,
+                keyRate: keyRate,
+                delayCompensation: delayCompensation,
+                isIllegalDismissal: isIllegalDismissal,
+                forcedAbsencePay: forcedAbsencePay,
+                forcedDays: forcedDays,
+                moralDamage: isIllegalDismissal ? moralDamage : 0,
+                totalToRecover: totalToRecover,
+                lawBasis: 'ст. 236, ст. 394, ст. 395 ТК РФ (Компенсация 1/150 ключевой ставки ЦБ РФ не облагается НДФЛ по п. 1 ст. 217 НК РФ)'
+            };
+        },
+
+        /**
+         * 8. УЩЕРБ ПРИ ЗАЛИВЕ КВАРТИРЫ / ПОВРЕЖДЕНИИ ИМУЩЕСТВА (ст. 15, ст. 1064 ГК РФ)
+         */
+        calculatePropertyDamage: function (repairCost, propertyLoss, expertCost, delayDays = 30, keyRate = CURRENT_KEY_RATE) {
+            const principalDebt = repairCost + propertyLoss + expertCost;
+            const daysInYear = 365;
+            const dailyRate = (keyRate / 100) / daysInYear;
+            const interest395 = Math.round((principalDebt * dailyRate * Math.max(0, delayDays)) * 100) / 100;
+            const moralDamage = 5000;
+            const totalToRecover = Math.round((principalDebt + interest395 + moralDamage) * 100) / 100;
+
+            return {
+                repairCost: repairCost,
+                propertyLoss: propertyLoss,
+                expertCost: expertCost,
+                principalDebt: principalDebt,
+                delayDays: delayDays,
+                interest395: interest395,
+                moralDamage: moralDamage,
+                totalToRecover: totalToRecover,
+                lawBasis: 'ст. 15, ст. 1064, ст. 1082, ст. 395 ГК РФ (Полное возмещение вреда, восстановительный ремонт и затраты на экспертизу)'
+            };
+        },
+
+        /**
+         * 9. Генератор юридического текста процессуальных документов
          */
         generateClaimText: function (type, data, userDetails = {}) {
             const today = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
             const sender = userDetails.userName || '[ФИО Гражданина]';
             const senderAddr = userDetails.userAddress || '[Адрес проживания: г. Самара, ул. ..., д. ..., кв. ...]';
             const senderPhone = userDetails.userPhone || '[Телефон для связи]';
-            const recipient = userDetails.recipientName || 'Руководителю Управляющей организации / Поставщика услуг';
-            const recipientAddr = userDetails.recipientAddress || '[Адрес организации]';
+            const recipient = userDetails.recipientName || 'Руководителю организации / суда';
+            const recipientAddr = userDetails.recipientAddress || '[Адрес организации / суда]';
 
             let header = `КОМУ: ${recipient}\nАДРЕС: ${recipientAddr}\n\nОТ КОГО: ${sender}\nАДРЕС: ${senderAddr}\nТЕЛЕФОН: ${senderPhone}\nДАТА: ${today}\n\n`;
+
+            if (type === 'duty') {
+                return header + 
+`РАСЧЕТ ЦЕНЫ ИСКА И РАЗМЕРА ГОСУДАРСТВЕННОЙ ПОШЛИНЫ
+(для подачи в суд в соответствии со ст. 131, 132 ГПК РФ и ст. 333.19 НК РФ)
+
+1. Цена иска (размер имущественных требований): ${data.claimPrice.toLocaleString('ru-RU')} руб.
+2. Категория иска: ${data.claimType === 'property' ? 'Имущественный характер' : (data.claimType === 'non_property' ? 'Неимущественный' : 'Расторжение брака')}.
+3. Освобождение от уплаты (ст. 333.36 НК РФ): ${data.isConsumerExempt ? 'Да (Защита прав потребителей)' : 'Нет'}.
+4. Итоговая сумма государственной пошлины к уплате: ${data.dutyAmount.toLocaleString('ru-RU')} руб.
+
+ПРАВОВОЕ ОБОСНОВАНИЕ: ${data.lawBasis}
+
+Подпись: _________________ / ${sender} /`;
+            }
+
+            if (type === 'salary') {
+                return header + 
+`ТРЕБОВАНИЕ (ПРЕТЕНЗИЯ)
+о выплате задолженности по заработной плате и денежной компенсации по ст. 236 ТК РФ
+
+Я состою (состоял) в трудовых отношениях с организацией.
+Сумма невыплаченной заработной платы (задолженности) составляет: ${data.salaryDebt.toLocaleString('ru-RU')} руб.
+Период задержки выплаты: ${data.delayDays} дней.
+
+В соответствии со ст. 236 Трудового кодекса РФ при нарушении работодателем установленного срока выплаты заработной платы работодатель обязан выплатить их с уплатой денежной компенсации в размере не ниже 1/150 действующей ключевой ставки ЦБ РФ (${data.keyRate}%) за каждый день задержки.
+Размер денежной компенсации составляет: ${data.delayCompensation.toLocaleString('ru-RU')} руб.
+${data.isIllegalDismissal ? `Оплата вынужденного прогула (ст. 394 ТК РФ, ${data.forcedDays} раб. дн.): ${data.forcedAbsencePay.toLocaleString('ru-RU')} руб.\nКомпенсация морального вреда (ст. 237 ТК РФ): ${data.moralDamage.toLocaleString('ru-RU')} руб.\n` : ''}
+ИТОГО К ВЫПЛАТЕ: ${data.totalToRecover.toLocaleString('ru-RU')} руб.
+
+В случае неисполнения требования жалоба будет направлена в Государственную инспекцию труда (ГИТ), Прокуратуру и суд.
+
+Подпись: _________________ / ${sender} /`;
+            }
+
+            if (type === 'damage') {
+                return header + 
+`ПРЕТЕНЗИЯ
+о возмещении имущественного вреда, причиненного заливом жилого помещения (ст. 1064 ГК РФ)
+
+Я являюсь собственником жилого помещения по адресу: ${senderAddr}.
+В результате залива/повреждения имуществу причинен материальный ущерб:
+1. Стоимость восстановительного ремонта: ${data.repairCost.toLocaleString('ru-RU')} руб.
+2. Стоимость поврежденного имущества: ${data.propertyLoss.toLocaleString('ru-RU')} руб.
+3. Расходы на проведение независимой оценки: ${data.expertCost.toLocaleString('ru-RU')} руб.
+4. Проценты за неправомерное удержание средств (ст. 395 ГК РФ): ${data.interest395.toLocaleString('ru-RU')} руб.
+
+В соответствии со ст. 15, 1064 Гражданского кодекса РФ вред, причиненный имуществу гражданина, подлежит возмещению в полном объеме лицом, причинившим вред (либо управляющей организацией).
+
+ТРЕБУЮ:
+Возместить причиненный ущерб в сумме ${data.totalToRecover.toLocaleString('ru-RU')} руб. в течение 10 календарных дней.
+
+Приложение: копия акта о заливе, копия отчета эксперта, квитанции об оплате экспертизы.
+
+Подпись: _________________ / ${sender} /`;
+            }
+
+            if (type === 'insurance') {
+                const isCool = data.isCoolingPeriod;
+                return header + 
+`ЗАЯВЛЕНИЕ (ПРЕТЕНЗИЯ)
+о возврате денежных средств, уплаченных за договор страхования / дополнительные финансовые услуги
+
+При заключении кредитного договора мною был оплачен договор страхования / пакет допуслуг стоимостью ${data.baseRefund || data.insuranceCost} руб.
+${isCool 
+    ? `С момента оформления прошло ${data.daysPassed} дней, что укладывается в 30-дневный «период охлаждения» (ч. 2.4 ст. 7 Федерального закона № 353-ФЗ).`
+    : (data.status === 'early_repayment' 
+        ? `Кредит был полностью досрочно погашен. В соответствии с ч. 12 ст. 11 Федерального закона № 353-ФЗ страховая премия подлежит возврату за неистекший период (${data.unusedRatioPercent}% от суммы).`
+        : `Мною заявлен отказ от абонентского/опционного договора (ст. 32 ЗоЗПП, ст. 429.3 ГК РФ) с требованием возврата уплаченных средств.`
+    )
+}
+
+В соответствии с нормами Закона РФ № 2300-1 и Федерального закона № 123-ФЗ при отказе в добровольном возврате вопрос будет передан Финансовому уполномоченному и в суд со взысканием 50% штрафа (${data.fine50} руб.), компенсации морального вреда (${data.moralDamage} руб.) и процентов ст. 395 ГК РФ (${data.penalty395} руб.).
+
+ИТОГО К ВОЗВРАТУ: ${data.totalToRecover || data.refundableAmount} руб.
+
+Подпись: _________________ / ${sender} /`;
+            }
 
             if (type === 'heating') {
                 const regionStr = data.isColdRegion ? 'для районов с температурой холодной пятидневки ≤ -31°C' : 'для районов с температурой пятидневки > -31°C';
@@ -293,99 +559,26 @@
 `ЗАЯВЛЕНИЕ (ПРЕТЕНЗИЯ)
 об уменьшении платы за коммунальную услугу по отоплению ненадлежащего качества и выплате штрафа
 
-Я являюсь собственником (потребителем) жилого помещения по адресу: ${senderAddr}.
-В период с нарушением температурного режима продолжительностью ${data.violationHours} часов температура воздуха в жилом помещении составляла ${data.actualTemp}°C при установленном нормативе не менее ${data.normTemp}°C (${regionStr}, отклонение: ${data.deltaTemp}°C).
-
-В соответствии с п. 15 Приложения № 1 к Правилам предоставления коммунальных услуг (утв. Постановлением Правительства РФ № 354) и СанПиН 1.2.3685-21, за каждый час отклонения температуры воздуха размер платы за отопление снижается на 0,15% за каждый градус отклонения.
-Сумма снижения платы составляет: ${data.reductionAmount} руб. (${data.reductionPercent}%).
-
-В соответствии с ч. 4 ст. 157 Жилищного кодекса РФ лицо, предоставляющее коммунальные услуги, обязано уплатить потребителю штраф в размере 50% величины превышения платы (${data.penaltyFine} руб.).
-
-НА ОСНОВАНИИ ИЗЛОЖЕННОГО, ТРЕБУЮ:
-1. Произвести перерасчет платы за отопление в сторону уменьшения на сумму ${data.reductionAmount} руб.
-2. Выплатить (зачесть в счет будущих платежей) штраф в размере ${data.penaltyFine} руб. в соответствии с ч. 4 ст. 157 ЖК РФ.
-3. Общая сумма к зачету/выплате: ${data.totalCompensation} руб.
-
-В случае отказа вопрос будет передан в Государственную жилищную инспекцию (ГЖИ), Роспотребнадзор и суд.
-
-Подпись: _________________ / ${sender} /`;
-            }
-
-            if (type === 'water_outage') {
-                return header + 
-`ПРЕТЕНЗИЯ
-о перерасчете платы за перерыв в предоставлении коммунальной услуги водоснабжения
-
-Я являюсь потребителем коммунальных услуг по адресу: ${senderAddr}.
-В текущем расчетном периоде суммарная продолжительность отсутствия водоснабжения составила ${data.outageHours} ч., что превышает допустимый норматив (8 часов в месяц согласно Приложению № 1 к ПП РФ № 354) на ${data.excessHours} ч.
-
-В соответствии с п. 1, 4 Приложения № 1 к Правилам, утвержденным Постановлением Правительства РФ № 354, за каждый час превышения допустимой продолжительности перерыва размер платы снижается на 0,15%.
-Сумма перерасчета составляет: ${data.reductionAmount} руб.
+Я являюсь собственником жилого помещения по адресу: ${senderAddr}.
+В период с нарушением температурного режима продолжительностью ${data.violationHours} часов температура составляла ${data.actualTemp}°C при нормативе не менее ${data.normTemp}°C (${regionStr}).
+Сумма снижения платы по п. 15 Приложения № 1 к ПП РФ № 354: ${data.reductionAmount} руб.
 Штраф по ч. 4 ст. 157 ЖК РФ (50%): ${data.penaltyFine} руб.
+ИТОГО К ЗАЧЕТУ: ${data.totalCompensation} руб.
 
-НА ОСНОВАНИИ ИЗЛОЖЕННОГО, ТРЕБУЮ:
-1. Произвести перерасчет платы за водоснабжение со снижением на ${data.reductionAmount} руб.
-2. Начислить штраф 50% в размере ${data.penaltyFine} руб.
-Итого к компенсации: ${data.totalCompensation} руб.
-
-Подпись: _________________ / ${sender} /`;
-            }
-
-            if (type === 'meter_reconciliation') {
-                return header + 
-`ЗАЯВЛЕНИЕ
-о проведении сверки показаний индивидуального прибора учета и обязательном перерасчете платы
-
-Я являюсь потребителем коммунальных услуг по адресу: ${senderAddr}.
-Ранее начисления производились исходя из среднемесячного объема / норматива потребления. Начисленная сумма за расчетный период составила ${data.billedAmount} руб.
-
-Настоящим передаю фактические показания поверенного и исправного прибора учета: фактический расход составил ${data.actualUnits} ед., что по тарифу ${data.tariffRate} руб. составляет реальную стоимость ${data.realCost} руб.
-Сумма излишне начисленных и уплаченных средств (переплата): ${data.overpayment} руб.
-
-В соответствии с п. 61 и п. 84 Правил предоставления коммунальных услуг (утв. Постановлением Правительства РФ № 354 от 06.05.2011), исполнитель обязан произвести перерасчет размера платы исходя из снятых фактических показаний прибора учета. Излишне уплаченные суммы подлежат зачету при оплате будущих расчетных периодов.
-
-НА ОСНОВАНИИ ИЗЛОЖЕННОГО, ТРЕБУЮ:
-1. Произвести перерасчет размера платы на основании фактических показаний ИПУ.
-2. Зачесть сумму переплаты ${data.overpayment} руб. в счет будущих платежей по лицевому счету.
-
-Подпись: _________________ / ${sender} /`;
-            }
-
-            if (type === 'absence') {
-                const typeStr = data.billingType === 'area' ? 'начисление по нормативу с площади жилья' : 'начисление по нормативу с числа проживающих';
-                return header + 
-`ЗАЯВЛЕНИЕ
-о перерасчете платы за коммунальные услуги (ТКО) в связи с временным отсутствием
-
-Я проживаю по адресу: ${senderAddr}.
-В период с [дата начала] по [дата окончания] включительно я (${data.absentResidents} чел.) временно отсутствовал в жилом помещении в течение ${data.absenceDays} полных календарных дней подряд. Порядок начисления в регионе: ${typeStr}.
-Документы, подтверждающие временное отсутствие (билеты, командировочное удостоверение, справка с места пребывания), прилагаются.
-
-В соответствии с п. 86 и п. 86(1) Правил предоставления коммунальных услуг (утв. Постановлением Правительства РФ № 354 в редакции от 01.03.2023), при временном отсутствии потребителя в жилом помещении более 5 полных календарных дней подряд осуществляется перерасчет платы за коммунальные услуги / ТКО.
-Сумма к снижению составляет: ${data.reductionAmount} руб.
-
-НА ОСНОВАНИИ ИЗЛОЖЕННОГО, ТРЕБУЮ:
-Произвести перерасчет платы и уменьшить начисления на сумму ${data.reductionAmount} руб.
-
-Приложения: копии документов, подтверждающих отсутствие.
 Подпись: _________________ / ${sender} /`;
             }
 
             if (type === 'product') {
                 return header + 
 `ДОСУДЕБНАЯ ПРЕТЕНЗИЯ
-о возврате денежных средств за товар и выплате законной неустойки
+о возврате денежных средств за товар и выплате законной неустойки (ст. 22, 23 ЗоЗПП)
 
-Мною был приобретен товар стоимостью ${data.productPrice} руб.
-В связи с отказом от исполнения договора / обнаружением недостатков мною было заявлено требование о возврате денежных средств.
-В соответствии со ст. 22 Закона РФ «О защите прав потребителей» требование подлежало удовлетворению в 10-дневный срок. Просрочка исполнения составила ${data.delayDays} дн.
-
-В соответствии со ст. 23 Закона РФ «О защите прав потребителей» за каждый день просрочки продавец уплачивает потребителю неустойку в размере 1% от цены товара (${data.penaltyAmount} руб.).
-В соответствии со ст. 15 ЗоЗПП компенсация морального вреда составляет ${data.moralDamage} руб.
-В соответствии с п. 6 ст. 13 ЗоЗПП при удовлетворении требований судом взыскивается штраф 50% (${data.fineAmount || data.consumerFine50} руб.).
-
-ТРЕБУЮ:
-Выплатить в добровольном порядке сумму ${data.totalToRecover} руб. в течение 10 дней.
+Стоимость товара: ${data.productPrice} руб.
+Просрочка возврата денег: ${data.delayDays} дн.
+Законная неустойка 1% в день: ${data.penaltyAmount} руб.
+Штраф 50% по п. 6 ст. 13 ЗоЗПП: ${data.fineAmount || data.consumerFine50} руб.
+Моральный вред ст. 15 ЗоЗПП: ${data.moralDamage} руб.
+ИТОГО К ВЗЫСКАНИЮ: ${data.totalToRecover} руб.
 
 Подпись: _________________ / ${sender} /`;
             }
@@ -395,12 +588,11 @@
 `ДОСУДЕБНАЯ ПРЕТЕНЗИЯ
 об уплате неустойки 3% в день за нарушение сроков выполнения работ (ст. 28 ЗоЗПП)
 
-По договору стоимость работ составила ${data.servicePrice} руб.
-Нарушение срока сдачи работ составило ${data.delayDays} дней.
-В соответствии с п. 5 ст. 28 ЗоЗПП исполнитель уплачивает потребителю неустойку в размере 3% цены выполнения работы за каждый день просрочки в сумме ${data.penaltyAmount} руб.
-
-ТРЕБУЮ:
-Выплатить сумму ${data.totalToRecover} руб. (включая моральный вред ${data.moralDamage} руб. и законную неустойку).
+Стоимость работ: ${data.servicePrice} руб.
+Просрочка сдачи работ: ${data.delayDays} дней.
+Неустойка 3% в день: ${data.penaltyAmount} руб.
+Штраф 50%: ${data.consumerFine50} руб.
+ИТОГО К ВЗЫСКАНИЮ: ${data.totalToRecover} руб.
 
 Подпись: _________________ / ${sender} /`;
             }
@@ -411,24 +603,9 @@
 об уплате процентов за пользование чужими денежными средствами (ст. 395 ГК РФ)
 
 Сумма основного долга: ${data.debtAmount} руб.
-Период неправомерного удержания: ${data.days} дн.
-Ключевая ставка Банка России: ${data.keyRate}%.
-Сумма начисленных процентов по ст. 395 ГК РФ: ${data.interestAmount} руб.
-Итого к оплате: ${data.totalDebtWithInterest} руб.
-
-Подпись: _________________ / ${sender} /`;
-            }
-
-            if (type === 'insurance') {
-                return header + 
-`ЗАЯВЛЕНИЕ
-об отказе от договора добровольного страхования (период охлаждения 353-ФЗ)
-
-При оформлении кредитного договора мною был заключен договор страхования / допуслуг стоимостью ${data.insuranceCost} руб.
-С момента заключения прошло ${data.daysPassed} дней, что не превышает 30-дневный «период охлаждения», установленный ч. 2.4 ст. 7 Федерального закона № 353-ФЗ.
-
-ТРЕБУЮ:
-Вернуть уплаченную сумму ${data.refundableAmount || data.insuranceCost} руб. в полном объеме (100%) в установленный законом срок.
+Период просрочки: ${data.days} дн. по ставке ЦБ ${data.keyRate}%.
+Сумма процентов ст. 395 ГК РФ: ${data.interestAmount} руб.
+ИТОГО К ОПЛАТЕ: ${data.totalDebtWithInterest} руб.
 
 Подпись: _________________ / ${sender} /`;
             }
