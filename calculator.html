@@ -862,13 +862,24 @@
                     </div>
 
                     <!-- Action Buttons -->
-                    <div class="space-y-3">
-                        <button onclick="downloadClaim()" class="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 bg-[#0F2439] text-white text-xs uppercase font-semibold tracking-wider hover:bg-[#1e3a5f] transition-all button-glow rounded shadow-sm">
-                            <span class="material-symbols-outlined text-base text-[#C5A059]">download</span>
-                            Скачать готовую претензию (.txt)
+                    <div class="space-y-2.5">
+                        <button onclick="previewClaimModal()" class="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 bg-[#0F2439] text-white text-xs uppercase font-bold tracking-wider hover:bg-[#1e3a5f] transition-all button-glow rounded-xl shadow-md cursor-pointer">
+                            <span class="material-symbols-outlined text-base text-[#C5A059]">visibility</span>
+                            Просмотреть готовую претензию
                         </button>
                         
-                        <button onclick="openModal('modal-consultation')" class="w-full inline-flex items-center justify-center gap-2 px-5 py-3 bg-white border border-[#0F2439]/30 text-[#0F2439] text-xs uppercase font-semibold tracking-wider hover:bg-[#0F2439]/5 transition-all rounded shadow-xs">
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="downloadClaimTxt()" class="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 bg-[#F8F7F4] border border-[#E0E0E0] text-[#0F2439] text-[11px] font-bold uppercase tracking-wider hover:bg-[#EBEAE5] transition-all rounded-lg cursor-pointer">
+                                <span class="material-symbols-outlined text-sm text-[#8C6826]">description</span>
+                                Скачать .TXT
+                            </button>
+                            <button onclick="downloadClaimDoc()" class="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 bg-[#F8F7F4] border border-[#E0E0E0] text-[#0F2439] text-[11px] font-bold uppercase tracking-wider hover:bg-[#EBEAE5] transition-all rounded-lg cursor-pointer">
+                                <span class="material-symbols-outlined text-sm text-[#1E5631]">article</span>
+                                Скачать .DOC (Word)
+                            </button>
+                        </div>
+
+                        <button onclick="openModal('modal-consultation')" class="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-white border border-[#0F2439]/30 text-[#0F2439] text-xs uppercase font-semibold tracking-wider hover:bg-[#0F2439]/5 transition-all rounded-xl shadow-xs cursor-pointer">
                             <span class="material-symbols-outlined text-base text-[#8C6826]">support_agent</span>
                             Передать расчет юристам АНО
                         </button>
@@ -1018,6 +1029,59 @@
         </div>
     </div>
 
+    <!-- ── CLAIM PREVIEW MODAL ── -->
+    <div class="modal-overlay" id="modal-claim-preview">
+        <div class="modal-container p-0 max-w-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <!-- Header -->
+            <div class="p-5 bg-gradient-to-r from-[#0F2439] to-[#1e3a5f] text-white flex justify-between items-center">
+                <div class="flex items-center gap-2.5">
+                    <span class="material-symbols-outlined text-[#C5A059] text-2xl">description</span>
+                    <div>
+                        <h3 class="font-['Source_Serif_4'] text-lg font-bold">Предпросмотр готовой претензии</h3>
+                        <p class="text-[11px] text-[#C5A059] font-mono">Юридически выверенный документ по нормам законодательства РФ (2026)</p>
+                    </div>
+                </div>
+                <button class="text-stone-300 hover:text-white transition-colors p-1" onclick="closeModal('modal-claim-preview')">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+
+            <!-- Notice bar -->
+            <div class="px-5 py-2.5 bg-[#FAF4E6] border-b border-[#E8DCC0] flex items-center justify-between text-xs text-[#8C6826]">
+                <span class="flex items-center gap-1.5 font-medium">
+                    <span class="material-symbols-outlined text-sm">info</span>
+                    Суммы и правовые основания подставлены автоматически из вашего расчета.
+                </span>
+                <span class="font-mono text-[10px] uppercase font-bold text-[#1E5631] bg-[#EBF5EE] px-2 py-0.5 rounded border border-[#C8E6C9]">Готово к печати</span>
+            </div>
+
+            <!-- Document Text Body -->
+            <div class="p-6 overflow-y-auto flex-1 bg-[#FBFBFA]">
+                <div class="bg-white p-6 rounded-xl border border-[#E0E0E0] shadow-xs font-mono text-xs text-[#0F2439] leading-relaxed whitespace-pre-wrap select-all" id="claim-preview-content">
+                    <!-- Live Claim text injected here -->
+                </div>
+            </div>
+
+            <!-- Footer Actions -->
+            <div class="p-4 bg-[#F8F7F4] border-t border-[#E0E0E0] flex flex-wrap items-center justify-between gap-3">
+                <button onclick="copyClaimToClipboard()" id="copy-claim-btn" class="px-4 py-2.5 bg-white border border-[#0F2439]/30 text-[#0F2439] rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-[#0F2439]/5 transition-all inline-flex items-center gap-1.5 cursor-pointer">
+                    <span class="material-symbols-outlined text-sm">content_copy</span>
+                    <span id="copy-claim-text">Скопировать текст</span>
+                </button>
+                <div class="flex items-center gap-2">
+                    <button onclick="downloadClaimTxt()" class="px-4 py-2.5 bg-[#0F2439] text-white rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-[#1e3a5f] transition-all inline-flex items-center gap-1.5 shadow-sm cursor-pointer">
+                        <span class="material-symbols-outlined text-sm text-[#C5A059]">description</span>
+                        Скачать .TXT
+                    </button>
+                    <button onclick="downloadClaimDoc()" class="px-4 py-2.5 bg-[#1E5631] text-white rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-[#2d7a47] transition-all inline-flex items-center gap-1.5 shadow-sm cursor-pointer">
+                        <span class="material-symbols-outlined text-sm text-emerald-300">article</span>
+                        Скачать в Word (.doc)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- CALCULATION LOGIC JAVASCRIPT -->
     <script src="js/legal-calculator.js"></script>
     <script>
@@ -1032,19 +1096,12 @@
             allTabs.forEach(t => {
                 const btn = document.getElementById('tab-' + t);
                 const content = document.getElementById('content-' + t);
-                if (btn) {
-                    if (t === tabId) {
-                        btn.classList.add('active');
-                    } else {
-                        btn.classList.remove('active');
-                    }
-                }
-                if (content) {
-                    if (t === tabId) {
-                        content.classList.remove('hidden');
-                    } else {
-                        content.classList.add('hidden');
-                    }
+                if (t === tabId) {
+                    btn?.classList.add('active');
+                    content?.classList.remove('hidden');
+                } else {
+                    btn?.classList.remove('active');
+                    content?.classList.add('hidden');
                 }
             });
             recalculate();
@@ -1052,19 +1109,18 @@
 
         function switchJkhSub(subId) {
             currentJkhSub = subId;
-            ['heating', 'water', 'meter', 'absence'].forEach(s => {
+            const subs = ['heating', 'water', 'meter', 'absence'];
+            subs.forEach(s => {
                 const btn = document.getElementById('sub-' + s);
                 const pane = document.getElementById('jkh-pane-' + s);
-                if (btn) {
-                    if (s === subId) {
-                        btn.className = "py-2.5 px-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all text-[#0F2439] bg-white shadow-xs text-center";
-                    } else {
-                        btn.className = "py-2.5 px-2 text-xs font-semibold uppercase tracking-wider rounded-lg transition-all text-[#5f5e5e] hover:text-[#0F2439] text-center";
-                    }
-                }
-                if (pane) {
-                    if (s === subId) pane.classList.remove('hidden');
-                    else pane.classList.add('hidden');
+                if (s === subId) {
+                    btn?.classList.remove('text-[#5f5e5e]', 'hover:text-[#0F2439]');
+                    btn?.classList.add('text-[#0F2439]', 'bg-white', 'shadow-xs', 'font-bold');
+                    pane?.classList.remove('hidden');
+                } else {
+                    btn?.classList.remove('text-[#0F2439]', 'bg-white', 'shadow-xs', 'font-bold');
+                    btn?.classList.add('text-[#5f5e5e]', 'hover:text-[#0F2439]', 'font-semibold');
+                    pane?.classList.add('hidden');
                 }
             });
             recalculate();
@@ -1077,22 +1133,26 @@
                 if (currentJkhSub === 'heating') {
                     const fee = parseFloat(document.getElementById('heat-fee').value) || 0;
                     const temp = parseFloat(document.getElementById('heat-temp').value) || 18;
-                    const corner = document.querySelector('input[name="heat-corner"]:checked')?.value === '1';
+                    const isCorner = document.querySelector('input[name="heat-corner"]:checked')?.value === '1';
                     const hours = parseFloat(document.getElementById('heat-hours').value) || 0;
-                    const isCold = document.getElementById('heat-climate').value === 'cold';
+                    const climate = document.getElementById('heat-climate')?.value || 'standard';
+                    const isCold = climate === 'cold';
 
                     const badge = document.getElementById('heat-norm-badge');
-                    if (badge) badge.innerText = isCold ? '20°C / 22°C (Норма)' : '18°C / 20°C (Норма)';
+                    if (badge) {
+                        badge.innerText = isCold ? '20°C / 22°C (Норма севера)' : '18°C / 20°C (Норма)';
+                    }
 
-                    const res = LegalCalculator.calculateHeating(fee, temp, corner, hours, isCold);
+                    const res = LegalCalculator.calculateHeating(fee, temp, isCorner, hours, isCold);
+                    res.actualTemp = temp;
                     latestCalculation = { type: 'heating', data: res };
 
-                    document.getElementById('res-main-label').innerText = 'Сумма компенсации за отопление:';
+                    document.getElementById('res-main-label').innerText = 'Сумма перерасчета за отопление:';
                     document.getElementById('res-total').innerText = res.totalCompensation.toLocaleString('ru-RU') + ' ₽';
 
                     document.getElementById('res-line1-label').innerText = 'Снижение платы (' + res.reductionPercent + '%):';
                     document.getElementById('res-line1-val').innerText = '-' + res.reductionAmount.toLocaleString('ru-RU') + ' ₽';
-
+                    
                     document.getElementById('res-line2-label').innerText = 'Штраф 50% по ч. 4 ст. 157 ЖК РФ:';
                     document.getElementById('res-line2-val').innerText = '+' + res.penaltyFine.toLocaleString('ru-RU') + ' ₽';
 
@@ -1106,7 +1166,7 @@
                     const hours = parseFloat(document.getElementById('water-hours').value) || 0;
 
                     const res = LegalCalculator.calculateWaterOutage(fee, hours);
-                    latestCalculation = { type: 'water_outage', data: res };
+                    latestCalculation = { type: 'water', data: res };
 
                     document.getElementById('res-main-label').innerText = 'Сумма перерасчета за воду:';
                     document.getElementById('res-total').innerText = res.totalCompensation.toLocaleString('ru-RU') + ' ₽';
@@ -1114,7 +1174,7 @@
                     document.getElementById('res-line1-label').innerText = 'Снижение платы (' + res.reductionPercent + '%):';
                     document.getElementById('res-line1-val').innerText = '-' + res.reductionAmount.toLocaleString('ru-RU') + ' ₽';
 
-                    document.getElementById('res-line2-label').innerText = 'Штраф 50% по ст. 157 ЖК:';
+                    document.getElementById('res-line2-label').innerText = 'Штраф 50% по ч. 4 ст. 157 ЖК:';
                     document.getElementById('res-line2-val').innerText = '+' + res.penaltyFine.toLocaleString('ru-RU') + ' ₽';
 
                     document.getElementById('res-line3-label').innerText = 'Новая плата за месяц:';
@@ -1129,65 +1189,65 @@
                     const has15 = document.getElementById('meter-mult15').checked;
 
                     const res = LegalCalculator.calculateMeterReconciliation(billed, units, rate, has15);
-                    latestCalculation = { type: 'meter_reconciliation', data: res };
+                    latestCalculation = { type: 'ipu', data: res };
 
-                    document.getElementById('res-main-label').innerText = 'Сумма переплаты к зачету:';
+                    document.getElementById('res-main-label').innerText = 'Сумма переплаты к возврату / зачету:';
                     document.getElementById('res-total').innerText = res.overpayment.toLocaleString('ru-RU') + ' ₽';
 
-                    document.getElementById('res-line1-label').innerText = 'Начислено по среднему/нормативу:';
+                    document.getElementById('res-line1-label').innerText = 'Начислено по нормативу / среднему:';
                     document.getElementById('res-line1-val').innerText = billed.toLocaleString('ru-RU') + ' ₽';
 
                     document.getElementById('res-line2-label').innerText = 'Реальный расход по счетчику:';
                     document.getElementById('res-line2-val').innerText = res.realCost.toLocaleString('ru-RU') + ' ₽';
 
-                    document.getElementById('res-line3-label').innerText = 'Излишне уплачено (переплата):';
-                    document.getElementById('res-line3-val').innerText = res.overpayment.toLocaleString('ru-RU') + ' ₽';
+                    document.getElementById('res-line3-label').innerText = has15 ? 'В т.ч. коэфф. 1.5:' : 'К зачету в квитанции:';
+                    document.getElementById('res-line3-val').innerText = has15 ? '-' + res.multiplierAmount.toLocaleString('ru-RU') + ' ₽' : '100% переплаты';
 
                     document.getElementById('res-law-basis').innerText = res.lawBasis;
                 }
                 else if (currentJkhSub === 'absence') {
                     const fee = parseFloat(document.getElementById('abs-fee').value) || 0;
                     const days = parseFloat(document.getElementById('abs-days').value) || 0;
-                    const totalRes = parseFloat(document.getElementById('abs-total').value) || 1;
-                    const absentRes = parseFloat(document.getElementById('abs-absent').value) || 1;
-                    const billingType = document.getElementById('abs-billing-type').value;
+                    const total = parseFloat(document.getElementById('abs-total').value) || 1;
+                    const absent = parseFloat(document.getElementById('abs-absent').value) || 1;
+                    const billingType = document.getElementById('abs-billing-type')?.value || 'people';
 
-                    const res = LegalCalculator.calculateAbsenceRefund(fee, days, totalRes, absentRes, billingType);
+                    const res = LegalCalculator.calculateAbsenceRefund(fee, days, total, absent, billingType);
                     latestCalculation = { type: 'absence', data: res };
 
-                    document.getElementById('res-main-label').innerText = 'Сумма снятия платы (перерасчет):';
-                    document.getElementById('res-total').innerText = res.reductionAmount.toLocaleString('ru-RU') + ' ₽';
+                    document.getElementById('res-main-label').innerText = 'Сумма перерасчета за ТКО/услуги:';
+                    document.getElementById('res-total').innerText = res.refundAmount.toLocaleString('ru-RU') + ' ₽';
 
-                    document.getElementById('res-line1-label').innerText = 'Исходное начисление:';
-                    document.getElementById('res-line1-val').innerText = fee.toLocaleString('ru-RU') + ' ₽';
+                    document.getElementById('res-line1-label').innerText = 'Дней отсутствия (без выезда/въезда):';
+                    document.getElementById('res-line1-val').innerText = res.calculatedDays + ' дн.';
 
-                    document.getElementById('res-line2-label').innerText = 'Снято за дни отсутствия:';
-                    document.getElementById('res-line2-val').innerText = '-' + res.reductionAmount.toLocaleString('ru-RU') + ' ₽';
+                    document.getElementById('res-line2-label').innerText = 'Порядок расчета:';
+                    document.getElementById('res-line2-val').innerText = billingType === 'people' ? 'С человека' : 'С площади (м²)';
 
-                    document.getElementById('res-line3-label').innerText = 'Плата за период:';
+                    document.getElementById('res-line3-label').innerText = 'Новая плата за месяц:';
                     document.getElementById('res-line3-val').innerText = res.newMonthlyFee.toLocaleString('ru-RU') + ' ₽';
 
                     document.getElementById('res-law-basis').innerText = res.lawBasis;
                 }
-            } 
+            }
             else if (currentTab === 'product') {
                 const price = parseFloat(document.getElementById('prod-price').value) || 0;
                 const days = parseFloat(document.getElementById('prod-days').value) || 0;
                 const moral = parseFloat(document.getElementById('prod-moral').value) || 0;
 
-                const res = LegalCalculator.calculateProductPenalty(price, days, moral);
-                latestCalculation = { type: 'product', data: { productPrice: price, delayDays: days, penaltyAmount: res.penaltyAmount, moralDamage: moral, fineAmount: res.consumerFine50, totalToRecover: res.totalToRecover } };
+                const res = LegalCalculator.calculateProductReturn(price, days, moral);
+                latestCalculation = { type: 'product', data: res };
 
                 document.getElementById('res-main-label').innerText = 'Итого к взысканию с продавца:';
                 document.getElementById('res-total').innerText = res.totalToRecover.toLocaleString('ru-RU') + ' ₽';
 
-                document.getElementById('res-line1-label').innerText = 'Стоимость товара:';
+                document.getElementById('res-line1-label').innerText = 'Стоимость товара (возврат):';
                 document.getElementById('res-line1-val').innerText = price.toLocaleString('ru-RU') + ' ₽';
 
-                document.getElementById('res-line2-label').innerText = 'Неустойка 1% в день (' + days + ' дн.):';
+                document.getElementById('res-line2-label').innerText = 'Неустойка 1% в день (ст. 23):';
                 document.getElementById('res-line2-val').innerText = '+' + res.penaltyAmount.toLocaleString('ru-RU') + ' ₽';
 
-                document.getElementById('res-line3-label').innerText = 'Штраф 50% + моральный вред:';
+                document.getElementById('res-line3-label').innerText = 'Штраф 50% (ст. 13) + Моральный вред:';
                 document.getElementById('res-line3-val').innerText = '+' + (res.consumerFine50 + moral).toLocaleString('ru-RU') + ' ₽';
 
                 document.getElementById('res-law-basis').innerText = res.lawBasis;
@@ -1197,20 +1257,20 @@
                 const days = parseFloat(document.getElementById('serv-days').value) || 0;
                 const moral = parseFloat(document.getElementById('serv-moral').value) || 0;
 
-                const res = LegalCalculator.calculateServicePenalty(price, days, moral);
-                latestCalculation = { type: 'service', data: { servicePrice: price, delayDays: days, penaltyAmount: res.penaltyAmount, moralDamage: moral, fineAmount: res.consumerFine50, totalToRecover: res.totalToRecover } };
+                const res = LegalCalculator.calculateServiceDelay(price, days, moral);
+                latestCalculation = { type: 'service', data: res };
 
                 document.getElementById('res-main-label').innerText = 'Итого к взысканию с подрядчика:';
                 document.getElementById('res-total').innerText = res.totalToRecover.toLocaleString('ru-RU') + ' ₽';
 
-                document.getElementById('res-line1-label').innerText = 'Стоимость работ по договору:';
-                document.getElementById('res-line1-val').innerText = price.toLocaleString('ru-RU') + ' ₽';
+                document.getElementById('res-line1-label').innerText = 'Неустойка 3% в день (ст. 28):';
+                document.getElementById('res-line1-val').innerText = '+' + res.penaltyAmount.toLocaleString('ru-RU') + ' ₽';
 
-                document.getElementById('res-line2-label').innerText = 'Неустойка 3% в день (' + days + ' дн.):';
-                document.getElementById('res-line2-val').innerText = '+' + res.penaltyAmount.toLocaleString('ru-RU') + ' ₽';
+                document.getElementById('res-line2-label').innerText = 'Штраф 50% по п. 6 ст. 13 ЗоЗПП:';
+                document.getElementById('res-line2-val').innerText = '+' + res.consumerFine50.toLocaleString('ru-RU') + ' ₽';
 
-                document.getElementById('res-line3-label').innerText = 'Штраф 50% в пользу заказчика:';
-                document.getElementById('res-line3-val').innerText = '+' + res.consumerFine50.toLocaleString('ru-RU') + ' ₽';
+                document.getElementById('res-line3-label').innerText = 'Компенсация морального вреда:';
+                document.getElementById('res-line3-val').innerText = '+' + moral.toLocaleString('ru-RU') + ' ₽';
 
                 document.getElementById('res-law-basis').innerText = res.lawBasis;
             }
@@ -1220,16 +1280,14 @@
                 const rate = parseFloat(document.getElementById('debt-rate').value) || 18;
 
                 const res = LegalCalculator.calculateInterest395(debt, days, rate);
-                latestCalculation = { type: 'interest', data: { debtAmount: debt, days: days, keyRate: rate, interestAmount: res.interestAmount, totalDebtWithInterest: res.totalDebtWithInterest } };
+                latestCalculation = { type: 'interest', data: res };
 
-                document.getElementById('res-main-label').innerText = 'Сумма долга с процентами ст. 395:';
-                document.getElementById('res-total').innerText = res.totalDebtWithInterest.toLocaleString('ru-RU') + ' ₽';
+                document.getElementById('res-main-label').innerText = 'Сумма процентов ст. 395 ГК РФ:';
+                document.getElementById('res-total').innerText = res.interestAmount.toLocaleString('ru-RU') + ' ₽';
 
                 document.getElementById('res-line1-label').innerText = 'Сумма основного долга:';
                 document.getElementById('res-line1-val').innerText = debt.toLocaleString('ru-RU') + ' ₽';
 
-                document.getElementById('res-line2-label').innerText = 'Проценты по ставке ' + rate + '%:';
-                document.getElementById('res-line2-val').innerText = '+' + res.interestAmount.toLocaleString('ru-RU') + ' ₽';
 
                 document.getElementById('res-line3-label').innerText = 'Период просрочки:';
                 document.getElementById('res-line3-val').innerText = days + ' дн.';
@@ -1359,17 +1417,46 @@
             }
         }
 
-        function downloadClaim() {
-            if (!latestCalculation || !window.LegalCalculator) return;
-            const text = LegalCalculator.generateClaimText(latestCalculation.type, latestCalculation.data, {
+        function getClaimContent() {
+            if (!latestCalculation || !window.LegalCalculator) return '';
+            return LegalCalculator.generateClaimText(latestCalculation.type, latestCalculation.data, {
                 userName: '[ФИО Гражданина]',
                 userAddress: '[Адрес проживания: г. Самара, ул. ..., д. ..., кв. ...]',
-                userPhone: '[Телефон для связи: +7 ...]',
-                recipientName: '[Наименование Организации / Суда / Банка]',
-                recipientAddress: '[Адрес организации]'
+                userPhone: '[Телефон для связи: +7 (___) ___-__-__]',
+                recipientName: '[Наименование Организации / Банка / Управляющей компании]',
+                recipientAddress: '[Адрес организации / суда]'
             });
+        }
 
-            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+        function previewClaimModal() {
+            const text = getClaimContent();
+            if (!text) return;
+            const previewEl = document.getElementById('claim-preview-content');
+            if (previewEl) {
+                previewEl.innerText = text;
+            }
+            openModal('modal-claim-preview');
+        }
+
+        function copyClaimToClipboard() {
+            const text = getClaimContent();
+            if (!text) return;
+            navigator.clipboard.writeText(text).then(() => {
+                const textSpan = document.getElementById('copy-claim-text');
+                if (textSpan) textSpan.innerText = '✓ Скопировано в буфер!';
+                showToast('Текст претензии успешно скопирован в буфер обмена!');
+                setTimeout(() => {
+                    if (textSpan) textSpan.innerText = 'Скопировать текст';
+                }, 2500);
+            });
+        }
+
+        function downloadClaimTxt() {
+            const text = getClaimContent();
+            if (!text || !latestCalculation) return;
+
+            // Prepending UTF-8 Byte Order Mark (\uFEFF) guarantees 100% correct rendering without mojibake/крокозябр in Windows Notepad and all text editors:
+            const blob = new Blob(['\uFEFF' + text], { type: 'text/plain;charset=utf-8' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
@@ -1378,7 +1465,40 @@
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            showToast('Документ успешно сформирован и скачан!');
+            showToast('Претензия успешно скачана в формате .TXT (кодировка UTF-8 без искажений)!');
+        }
+
+        function downloadClaimDoc() {
+            const text = getClaimContent();
+            if (!text || !latestCalculation) return;
+
+            const htmlContent = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head>
+                    <meta charset='utf-8'>
+                    <title>Претензия АНО ЮГ-ПРАВО</title>
+                    <style>
+                        body { font-family: 'Times New Roman', serif; font-size: 12pt; line-height: 1.35; color: #000; margin: 2.5cm 1.5cm 2.5cm 3cm; }
+                        p { margin-bottom: 0.8em; text-align: justify; }
+                        .pre-block { white-space: pre-wrap; font-family: 'Times New Roman', serif; font-size: 12pt; }
+                    </style>
+                </head>
+                <body>
+                    <div class="pre-block">${text}</div>
+                </body>
+                </html>
+            `;
+
+            const blob = new Blob(['\uFEFF' + htmlContent], { type: 'application/msword;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Pretenziya_' + latestCalculation.type + '_YugPravo.doc';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('Претензия успешно сформирована для Microsoft Word (.DOC)!');
         }
 
         function handleConsultationSubmit(e) {
