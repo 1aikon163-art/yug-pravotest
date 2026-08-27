@@ -1,0 +1,38 @@
+{
+  "name": "yug-pravo-legaltech",
+  "version": "1.0.0",
+  "description": "Юг-Право Premium Legal Landing & LegalTech Web Platform",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node scripts/dev-server.js",
+    "start": "node server.js",
+    "qa": "node scripts/qa-audit.js",
+    "seo": "node scripts/seo-validator.js",
+    "validate-legal": "node scripts/legal-validator.js",
+    "qr": "node scripts/qr-generator.js",
+    "tunnel": "node scripts/tunnel.js",
+    "optimize-images": "node scripts/optimize-media.js"
+  },
+  "keywords": [
+    "legaltech",
+    "telegram-mini-app",
+    "pdf-generation",
+    "playwright-qa",
+    "seo-schema-org"
+  ],
+  "author": "Yug-Pravo Dev Team",
+  "license": "MIT",
+  "dependencies": {
+    "@telegram-apps/sdk": "^2.1.0",
+    "docx": "^9.1.1",
+    "lucide": "^0.475.0",
+    "pdf-lib": "^1.17.1",
+    "qrcode": "^1.5.4",
+    "qrcode-terminal": "^0.12.0",
+    "sharp": "^0.33.5"
+  },
+  "devDependencies": {
+    "localtunnel": "^2.0.2",
+    "playwright": "^1.50.1"
+  }
+}

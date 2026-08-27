@@ -1,0 +1,55 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 140" fill="none" class="h-10 sm:h-11 w-auto">
+  <!-- Heraldic Shield (Navy #0F2439) -->
+  <path d="M80 8L36 22V66C36 94 56 117 80 126C104 117 124 94 124 66V22L80 8Z" 
+        fill="none" 
+        stroke="#0F2439" 
+        stroke-width="5.5" 
+        stroke-linejoin="round" 
+        stroke-linecap="round"/>
+
+  <!-- Scales of Justice (Gold #C5A059) -->
+  <!-- Central Axis -->
+  <path d="M80 30V88" 
+        stroke="#C5A059" 
+        stroke-width="3.5" 
+        stroke-linecap="round"/>
+  
+  <!-- Downward Accent -->
+  <path d="M68 85L80 97L92 85" 
+        stroke="#C5A059" 
+        stroke-width="3.5" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+
+  <!-- Top Pivot & Beam -->
+  <circle cx="80" cy="34" r="3.5" fill="#C5A059"/>
+  <path d="M52 42L80 34L108 42" 
+        stroke="#C5A059" 
+        stroke-width="3.5" 
+        stroke-linecap="round"/>
+
+  <!-- Left Scale -->
+  <path d="M52 42L44 60M52 42L60 60" 
+        stroke="#C5A059" 
+        stroke-width="2" 
+        stroke-linecap="round"/>
+  <path d="M42 60C42 66 62 66 62 60Z" 
+        fill="#C5A059"/>
+
+  <!-- Right Scale -->
+  <path d="M108 42L100 60M108 42L116 60" 
+        stroke="#C5A059" 
+        stroke-width="2" 
+        stroke-linecap="round"/>
+  <path d="M98 60C98 66 118 66 118 60Z" 
+        fill="#C5A059"/>
+
+  <!-- Wordmark «ЮГ-ПРАВО» -->
+  <text x="80" y="137" 
+        text-anchor="middle" 
+        font-family="'Source Sans 3', 'Inter', -apple-system, sans-serif" 
+        font-size="19" 
+        font-weight="900" 
+        letter-spacing="0.04em" 
+        fill="#0F2439">ЮГ-ПРАВО</text>
+</svg>

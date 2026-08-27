@@ -1,0 +1,726 @@
+/* ==========================================================================
+   ЮГ-ПРАВО — Lex Renaissance & Material Glassmorphism Design System
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,600&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+    --primary: #0F2439;
+    --primary-dark: #000613;
+    --secondary: #2C3E50;
+    --secondary-light: #5f5e5e;
+    --background: #F8F7F4;
+    --surface: #F8F7F4;
+    --surface-bright: #ffffff;
+    --surface-dim: #EBEAE5;
+    --surface-variant: #F0EFEA;
+    --outline: #2C3E50;
+    --outline-variant: #E0E0E0;
+    --gold: #C5A059;
+    --gold-light: #E5C378;
+    --gold-dark: #8C6826;
+    --gold-glow: rgba(197, 160, 89, 0.25);
+    
+    --text-primary: #0F2439;
+    --text-secondary: #2C3E50;
+    --text-muted: #5F5E5E;
+
+    /* Animation Easing */
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Global Reset & Base */
+html {
+    scroll-behavior: smooth;
+    scrollbar-gutter: stable;
+    background-color: var(--background);
+    color: var(--text-primary);
+}
+
+body {
+    background-color: var(--background);
+    color: var(--text-primary);
+    font-family: 'Source Sans 3', sans-serif;
+    margin: 0;
+    padding-top: 80px;
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ── 2. LIQUID FROSTED GLASS HEADER ── */
+.glass-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(28px) saturate(200%);
+    -webkit-backdrop-filter: blur(28px) saturate(200%);
+    border-bottom: 1px solid rgba(15, 36, 57, 0.08);
+    box-shadow: 0 10px 30px -10px rgba(15, 36, 57, 0.06), inset 0 -1px 0 0 rgba(255, 255, 255, 0.6);
+    transition: background 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.glass-header.scrolled {
+    background: rgba(248, 247, 244, 0.88);
+    backdrop-filter: blur(32px) saturate(210%);
+    -webkit-backdrop-filter: blur(32px) saturate(210%);
+    box-shadow: 0 12px 36px rgba(15, 36, 57, 0.08), inset 0 -1px 0 0 rgba(255, 255, 255, 0.8);
+    border-bottom: 1px solid rgba(15, 36, 57, 0.12);
+}
+
+.header-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 20px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+/* Desktop nav inside header-container */
+.header-container > nav {
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 1.35rem;
+}
+
+.header-container > nav a,
+.header-container > nav button {
+    white-space: nowrap;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+}
+
+/* Ensure mobile nav is strictly hidden by default */
+#mobile-nav.hidden {
+    display: none !important;
+}
+
+#mobile-nav:not(.hidden) {
+    display: flex !important;
+    flex-direction: column;
+}
+
+/* ── 2.1 HERO SEAMLESS VIDEO MASKING & HARDWARE ACCELERATION ── */
+.hero-video-seamless-mask {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+    pointer-events: none;
+    mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.5) 15%, black 60%), linear-gradient(to top, transparent 0%, rgba(0,0,0,0.4) 25%, black 80%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.5) 15%, black 60%), linear-gradient(to top, transparent 0%, rgba(0,0,0,0.4) 25%, black 80%);
+    mask-composite: intersect;
+    -webkit-mask-composite: source-in;
+}
+
+.hero-video-seamless-mask video {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* ── 2.2 HERO MOBILE VIDEO SCALING (Seamless 4-Way Ethereal Vignette on <= 768px) ── */
+@media (max-width: 768px) {
+    .hero-scroll-container video {
+        position: absolute !important;
+        inset: 0 !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 100% !important;
+        object-fit: cover !important;
+        object-position: 72% 32% !important;
+        transform: none !important;
+        opacity: 0.36 !important;
+        mix-blend-mode: multiply !important;
+        pointer-events: none !important;
+        -webkit-mask-image: 
+            linear-gradient(to bottom, transparent 0%, black 18%, black 65%, transparent 95%),
+            linear-gradient(to right, transparent 0%, black 25%, black 85%, transparent 100%) !important;
+        mask-image: 
+            linear-gradient(to bottom, transparent 0%, black 18%, black 65%, transparent 95%),
+            linear-gradient(to right, transparent 0%, black 25%, black 85%, transparent 100%) !important;
+        mask-composite: intersect !important;
+        -webkit-mask-composite: source-in !important;
+    }
+
+    .glass-nav-btn {
+        display: none !important;
+    }
+}
+
+/* ── 3. HORIZONTAL TAPES WITH CSS MASK FADE ── */
+.horizontal-tape-wrapper {
+    position: relative;
+    width: 100%;
+    padding: 0 4px;
+}
+
+.horizontal-scroll-container {
+    display: flex;
+    gap: 1.75rem;
+    overflow-x: auto;
+    scroll-behavior: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 1.5rem 1rem 2rem 1rem;
+    scrollbar-width: none;
+    mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 1.5%, black 4.5%, black 95.5%, rgba(0, 0, 0, 0.4) 98.5%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 1.5%, black 4.5%, black 95.5%, rgba(0, 0, 0, 0.4) 98.5%, transparent 100%);
+    user-select: auto;
+}
+
+.horizontal-scroll-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* Semi-transparent Glass Navigation Buttons */
+.glass-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(15, 36, 57, 0.15);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 25;
+    box-shadow: 0 10px 25px rgba(0, 6, 19, 0.10);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-nav-btn:hover {
+    background: var(--primary);
+    color: #ffffff;
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 12px 32px rgba(15, 36, 57, 0.25);
+}
+
+.glass-nav-btn-prev { left: -10px; }
+.glass-nav-btn-next { right: -10px; }
+
+/* ── 4. UNIFIED PREMIUM CARD SYSTEM (Lex Renaissance Neutral Elevation) ── */
+.material-glass-card,
+.stat-card,
+.feature-card,
+.service-card,
+.initiative-card,
+.event-card,
+.knowledge-card,
+.interactive-calc-card,
+.practice-card,
+.glass-panel {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease;
+    box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.04);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Unified Desktop Hover: Subtle expansion + soft natural shadow (NO BLUE TINT) */
+@media (hover: hover) and (min-width: 769px) {
+    .material-glass-card:hover,
+    .stat-card:hover,
+    .feature-card:hover,
+    .service-card:hover,
+    .initiative-card:hover,
+    .event-card:hover,
+    .knowledge-card:hover,
+    .interactive-calc-card:hover,
+    .practice-card:hover,
+    .glass-panel:hover {
+        transform: translateY(-4px) scale(1.015);
+        box-shadow: 0 16px 32px -6px rgba(0, 0, 0, 0.09), 0 4px 12px -2px rgba(0, 0, 0, 0.03);
+        border-color: rgba(0, 0, 0, 0.16);
+    }
+}
+
+/* Unified Mobile Touch Feedback & Mobile Aesthetics */
+@media (max-width: 768px) {
+    .material-glass-card,
+    .stat-card,
+    .feature-card,
+    .service-card,
+    .initiative-card,
+    .event-card,
+    .knowledge-card,
+    .glass-panel {
+        border-radius: 16px;
+        box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.07);
+    }
+
+    .material-glass-card:active,
+    .stat-card:active,
+    .feature-card:active,
+    .service-card:active,
+    .initiative-card:active,
+    .event-card:active,
+    .knowledge-card:active,
+    .glass-panel:active {
+        transform: scale(0.985);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+}
+
+/* ── 5. LEADER PHOTO FRAME ── */
+.leader-photo-frame {
+    width: 100%;
+    max-width: 220px;
+    height: 280px;
+    object-fit: cover;
+    object-position: center 15%;
+    border-radius: 8px;
+    border: 1px solid var(--outline-variant);
+    box-shadow: 0 10px 30px rgba(0, 6, 19, 0.08);
+}
+
+/* ── 6. SEAMLESS BRAND LOGO (CLEAN & TRANSPARENT) ── */
+.brand-logo-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 2px 4px;
+    text-decoration: none;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+}
+
+.brand-logo-btn img,
+.brand-logo-btn svg {
+    height: 44px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), filter 0.25s ease;
+}
+
+.brand-logo-btn:hover img,
+.brand-logo-btn:hover svg {
+    transform: scale(1.04);
+    filter: drop-shadow(0 2px 8px rgba(197, 160, 89, 0.35));
+}
+
+.brand-logo-btn:active img,
+.brand-logo-btn:active svg {
+    transform: scale(0.97);
+}
+
+/* ── 6.5. APPLE-STYLE LIQUID FROSTED GLASS BUTTONS & TABS ── */
+.button-glow,
+.glass-btn,
+.calc-tab-btn,
+.filter-btn,
+.apple-glass-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(20px) saturate(190%);
+    -webkit-backdrop-filter: blur(20px) saturate(190%);
+    border: 1px solid rgba(15, 36, 57, 0.12);
+    border-radius: 12px;
+    color: var(--secondary);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.65rem 1.15rem;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 2px 8px -2px rgba(15, 36, 57, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    user-select: none;
+}
+
+.button-glow:hover,
+.glass-btn:hover,
+.calc-tab-btn:hover,
+.filter-btn:hover,
+.apple-glass-btn:hover {
+    background: rgba(255, 255, 255, 0.96);
+    border-color: rgba(140, 104, 38, 0.35);
+    color: var(--primary);
+    transform: translateY(-1.5px);
+    box-shadow: 0 6px 18px -3px rgba(15, 36, 57, 0.10), inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+.button-glow:active,
+.glass-btn:active,
+.calc-tab-btn:active,
+.filter-btn:active,
+.apple-glass-btn:active {
+    transform: translateY(0) scale(0.98);
+}
+
+/* Primary Glass Button / Active Tab / Selected Pill (Apple Obsidian Liquid Glass) */
+.calc-tab-btn.active,
+.filter-btn.active,
+.apple-glass-btn.active,
+.btn-primary-glass {
+    background: rgba(15, 36, 57, 0.92) !important;
+    backdrop-filter: blur(24px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(200%) !important;
+    border: 1px solid rgba(15, 36, 57, 0.95) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    box-shadow: 0 4px 16px -2px rgba(15, 36, 57, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.28) !important;
+}
+
+.calc-tab-btn.active:hover,
+.filter-btn.active:hover,
+.apple-glass-btn.active:hover,
+.btn-primary-glass:hover {
+    background: rgba(30, 58, 95, 0.95) !important;
+    box-shadow: 0 8px 24px -2px rgba(15, 36, 57, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+    transform: translateY(-1.5px);
+}
+
+/* ── 7. SCROLL ANIMATIONS ── */
+.scroll-animate {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.75s var(--ease-smooth), transform 0.75s var(--ease-smooth);
+    will-change: opacity, transform;
+}
+
+.scroll-animate.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ── 8. MODALS ── */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(11, 17, 33, 0.72);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay.active,
+.modal-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-container {
+    background: var(--surface-bright);
+    color: var(--text-primary);
+    border: 1px solid var(--outline-variant);
+    border-radius: 12px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+    transform: scale(0.95) translateY(15px);
+    transition: transform 0.3s var(--ease-smooth), background 0.3s ease;
+}
+
+.modal-overlay.active .modal-container,
+.modal-overlay.open .modal-container {
+    transform: scale(1) translateY(0);
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--surface-variant);
+    color: var(--secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.modal-close-btn:hover {
+    background: var(--primary);
+    color: #ffffff;
+}
+
+/* ── 9. TOAST NOTIFICATIONS ── */
+.toast-notification {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #0F2439;
+    color: #ffffff;
+    padding: 0.85rem 1.75rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.3);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    transition: transform 0.35s var(--ease-smooth), opacity 0.35s ease;
+    pointer-events: none;
+}
+
+.toast-notification.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ── 10. KNOWLEDGE HERO VIDEO FLASHLIGHT ── */
+.knowledge-flashlight-overlay {
+    background: radial-gradient(circle 240px at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(15, 36, 57, 0.08) 0%, transparent 80%);
+    backdrop-filter: contrast(1.35) brightness(0.96) saturate(1.18);
+    -webkit-backdrop-filter: contrast(1.35) brightness(0.96) saturate(1.18);
+    mask-image: radial-gradient(circle 240px at var(--mouse-x, -999px) var(--mouse-y, -999px), black 25%, transparent 100%);
+    -webkit-mask-image: radial-gradient(circle 240px at var(--mouse-x, -999px) var(--mouse-y, -999px), black 25%, transparent 100%);
+}
+
+/* ── 11. NEOCLASSICAL FLOATING MESSENGER MEDALLION CAPSULE ── */
+.floating-messenger-capsule {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 990;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px 6px 14px;
+    background: rgba(251, 249, 245, 0.92);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border-radius: 50px;
+    border: 1px solid rgba(197, 168, 128, 0.45);
+    box-shadow: 0 12px 32px rgba(15, 36, 57, 0.08), 
+                0 2px 6px rgba(140, 122, 91, 0.06), 
+                inset 0 1px 1px rgba(255, 255, 255, 0.95);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px) scale(0.96);
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.floating-messenger-capsule.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+}
+
+.floating-messenger-capsule.dock-left {
+    left: 24px;
+    right: auto;
+}
+
+.floating-messenger-capsule:hover {
+    border-color: #C5A880;
+    box-shadow: 0 16px 40px rgba(15, 36, 57, 0.12), 
+                0 0 18px rgba(197, 168, 128, 0.25), 
+                inset 0 1px 1.5px rgba(255, 255, 255, 1);
+}
+
+.floating-messenger-label {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #2C2C2C;
+    padding-right: 4px;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.floating-messenger-label::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #C5A880;
+    box-shadow: 0 0 8px rgba(197, 168, 128, 0.85);
+    animation: brass-pulse 2.2s infinite ease-in-out;
+}
+
+@keyframes brass-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 8px rgba(197, 168, 128, 0.9); }
+    50% { opacity: 0.45; transform: scale(0.85); box-shadow: 0 0 3px rgba(197, 168, 128, 0.3); }
+}
+
+/* Neoclassical Bas-Relief Medallion Buttons */
+.floating-messenger-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #FFFFFF 0%, #F5F3EE 100%);
+    border: 1px solid rgba(197, 168, 128, 0.4);
+    box-shadow: 0 2px 5px rgba(15, 36, 57, 0.05), 
+                inset 0 1px 1px rgba(255, 255, 255, 1), 
+                inset 0 -1px 2px rgba(140, 122, 91, 0.1);
+    color: #2C2C2C;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    outline: none;
+}
+
+.floating-messenger-btn svg {
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.floating-messenger-btn:hover {
+    transform: translateY(-2px);
+    border-color: #C5A880;
+    color: #8C7A5B;
+    background: linear-gradient(145deg, #FFFFFF 0%, #FBF9F5 100%);
+    box-shadow: 0 6px 16px rgba(197, 168, 128, 0.35), 
+                0 2px 4px rgba(15, 36, 57, 0.06), 
+                inset 0 1px 1.5px rgba(255, 255, 255, 1);
+}
+
+.floating-messenger-btn:active {
+    transform: translateY(0) scale(0.96);
+    box-shadow: 0 1px 3px rgba(15, 36, 57, 0.08), 
+                inset 0 1px 2px rgba(140, 122, 91, 0.18);
+}
+
+/* Tooltip on top */
+.floating-messenger-btn .messenger-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    margin-bottom: 8px;
+    padding: 5px 10px;
+    background: #0F2439;
+    color: #FBF9F5;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+    border-radius: 6px;
+    box-shadow: 0 8px 20px rgba(15, 36, 57, 0.25);
+    border: 1px solid rgba(197, 168, 128, 0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.floating-messenger-btn .messenger-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 4px;
+    border-style: solid;
+    border-color: #0F2439 transparent transparent transparent;
+}
+
+.floating-messenger-btn:hover .messenger-tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+@media (max-width: 640px) {
+    .floating-messenger-capsule {
+        bottom: 16px;
+        right: 16px;
+        padding: 5px 8px;
+        gap: 6px;
+    }
+    .floating-messenger-label {
+        display: none;
+    }
+    .floating-messenger-btn {
+        width: 34px;
+        height: 34px;
+    }
+    .floating-messenger-btn .messenger-tooltip {
+        display: none;
+    }
+}
+
+/* ── 15. HERO VIDEO ANTI-WATERMARK & CINEMATIC OVERSCAN ── */
+#hands-video,
+#knowledge-hero-video,
+#events-hero-video,
+#calc-hero-video,
+#about-hero-video,
+#disclosure-hero-video {
+    transform: scale(1.18) !important;
+    transform-origin: center center !important;
+    object-fit: cover !important;
+    pointer-events: none;
+}
+
+/* На планшетах и смартфонах: увеличенный оверскан 1.32x только для видео с водяными знаками */
+@media (max-width: 1024px) {
+    #hands-video,
+    #knowledge-hero-video,
+    #events-hero-video,
+    #calc-hero-video,
+    #about-hero-video,
+    #disclosure-hero-video {
+        transform: scale(1.32) !important;
+        transform-origin: center center !important;
+        object-position: center center !important;
+        -webkit-mask-image: radial-gradient(ellipse at 50% 50%, black 15%, transparent 72%) !important;
+        mask-image: radial-gradient(ellipse at 50% 50%, black 15%, transparent 72%) !important;
+    }
+}
+
+

@@ -1,0 +1,35 @@
+{
+  "mcpServers": {
+    "puppeteer": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-puppeteer"],
+      "description": "Автоматическое управление браузером, создание скриншотов мобильных экранов (375px/390px) и выявление переполнений/ошибок верстки"
+    },
+    "fetch": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-fetch"],
+      "description": "Извлечение актуальных правовых документов, статей законов и веб-страниц"
+    },
+    "brave-search": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
+      "env": {
+        "BRAVE_API_KEY": "YOUR_BRAVE_API_KEY_HERE"
+      },
+      "description": "Поиск актуальных правовых норм РФ, свежих поправок и ставок госпошлин"
+    },
+    "git": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-git"],
+      "description": "Управление ветками Git, коммитами и историей изменений"
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "YOUR_GITHUB_TOKEN_HERE"
+      },
+      "description": "Автоматическое создание Pull Request, синхронизация с репозиторием и триггеры деплоя"
+    }
+  }
+}

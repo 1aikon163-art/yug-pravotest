@@ -1,0 +1,41 @@
+{
+  "name": "projects/1688063313188038416",
+  "projectId": "1688063313188038416",
+  "title": "ЮГ-ПРАВО: Портал СО НКО (Премиум Правовой Центр)",
+  "visibility": "PRIVATE",
+  "projectType": "PROJECT_DESIGN",
+  "origin": "STITCH",
+  "deviceType": "DESKTOP",
+  "stitchUrl": "https://stitch.withgoogle.com/projects/1688063313188038416",
+  "designTheme": {
+    "colorMode": "LIGHT",
+    "font": "PLAYFAIR_DISPLAY",
+    "roundness": "ROUND_FOUR",
+    "customColor": "#001f3f",
+    "namedColors": {
+      "primary": "#000613",
+      "primary_container": "#001f3f",
+      "secondary": "#565f6a",
+      "gold": "#c5a059",
+      "background": "#faf9fc",
+      "surface": "#ffffff"
+    }
+  },
+  "screens": {
+    "index": {
+      "id": "3148d63b419e46eeb929b528df59186c",
+      "sourceScreen": "projects/1688063313188038416/screens/3148d63b419e46eeb929b528df59186c",
+      "title": "ЮГ-ПРАВО Главная страница",
+      "width": 2560,
+      "height": 5062
+    },
+    "logo": {
+      "id": "779bd677fe824ae4abad40c241890ffe",
+      "title": "ЮГ-ПРАВО Logo"
+    },
+    "shield_3d": {
+      "id": "cf09b4cab5704bc98f88f0d565f80d03",
+      "title": "3D Geometric Justice Shield"
+    }
+  }
+}

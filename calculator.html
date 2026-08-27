@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="ru">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    
+    <!-- SEO Meta Tags -->
+    <title>Правовой калькулятор неустоек, перерасчета ЖКХ и компенсаций • АНО «ЮГ-ПРАВО»</title>
+    <meta name="description" content="Интерактивный юридический калькулятор АНО «ЦПЗ ЮГ-ПРАВО»: расчет перерасчета ЖКХ с учетом климатических зон РФ (отопление, вода, сверка счетчиков ИПУ, ТКО по людям и метражу по ПП РФ № 354), неустойки 1% по ЗоЗПП, 3% за срыв ремонта, процентов по ст. 395 ГК РФ и штрафа 50%."/>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Правовой калькулятор неустоек и перерасчетов • ЮГ-ПРАВО"/>
+    <meta property="og:description" content="Точный расчет неустоек по ЖКХ, ЗоЗПП и ГК РФ. Сгенерируйте готовую претензию в 1 клик."/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="https://yug-pravo.ru/calculator.html"/>
+    <meta property="og:image" content="https://yug-pravo.ru/images/og-image.jpg"/>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    <link rel="alternate icon" href="images/favicon.ico">
+    
+    <!-- Tailwind CSS with Forms & Container Queries -->
+    <script>
+    tailwind = {
+        config: {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-dark': '#0F2439',
+                        'brand-gold': '#8C6826',
+                        'brand-paper': '#F8F7F4',
+                        'brand-charcoal': '#2C3E50'
+                    }
+                }
+            }
+        }
+    }
+    </script>
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="css/styles.css"/>
+    <style>
+        .calc-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #E2DDD5;
+            outline: none;
+        }
+        .calc-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #8C6826;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            transition: transform 0.1s;
+        }
+        .calc-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+    </style>
+</head>
+<body class="bg-[#F8F7F4] text-[#0F2439] antialiased">
+
+    <!-- ── 1. LIQUID FROSTED GLASS HEADER ── -->
+    <header class="glass-header" id="main-header">
+        <div class="header-container">
+            <a class="brand-logo-btn group" href="index.html" title="АНО «ЮГ-ПРАВО» — Главная">
+                <img alt="АНО «ЮГ-ПРАВО»" class="h-10 sm:h-11 w-auto" src="images/logo.png"/>
+            </a>
+
+            <!-- Desktop Nav Menu -->
+            <nav class="hidden lg:flex items-center gap-6">
+                <a class="text-xs uppercase font-semibold tracking-wider text-[#2C3E50] hover:text-[#0F2439] transition-colors py-1" href="events.html">События</a>
+                <a class="text-xs uppercase font-semibold tracking-wider text-[#2C3E50] hover:text-[#0F2439] transition-colors py-1" href="knowledge.html">База знаний</a>
+                <a class="text-xs uppercase font-semibold tracking-wider text-[#2C3E50] hover:text-[#0F2439] transition-colors py-1" href="initiatives.html">Инициативы</a>
+                <a class="text-xs uppercase font-bold tracking-wider text-[#0F2439] border-b-2 border-[#0F2439] py-1" href="calculator.html">Калькулятор</a>
+                <a class="text-xs uppercase font-semibold tracking-wider text-[#2C3E50] hover:text-[#0F2439] transition-colors py-1" href="about.html">Об организации</a>
+                <a class="text-xs uppercase font-semibold tracking-wider text-[#2C3E50] hover:text-[#0F2439] transition-colors py-1" href="disclosure.html">Раскрытие</a>
+            </nav>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-4">
+                <button class="hidden sm:inline-flex items-center justify-center px-5 py-2.5 bg-[#0F2439] text-white text-xs uppercase font-semibold tracking-wider hover:bg-[#1e3a5f] transition-all button-glow rounded shadow-sm" onclick="openModal('modal-donate')">
+                    Поддержать проект
+                </button>
+                <button aria-label="Меню" class="lg:hidden text-[#0F2439] p-2" id="mobile-menu-btn">
+                    <span class="material-symbols-outlined text-2xl">menu</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <nav class="hidden lg:hidden bg-[#F8F7F4]/95 backdrop-blur-xl border-t border-[#E0E0E0] px-6 py-4 flex flex-col gap-3 shadow-xl absolute w-full left-0" id="mobile-nav">
+            <a class="text-xs uppercase font-semibold text-[#2C3E50] hover:text-[#0F2439] py-2" href="events.html">События</a>
+            <a class="text-xs uppercase font-semibold text-[#2C3E50] hover:text-[#0F2439] py-2" href="knowledge.html">База знаний</a>
+            <a class="text-xs uppercase font-semibold text-[#2C3E50] hover:text-[#0F2439] py-2" href="initiatives.html">Региональные инициативы</a>
+            <a class="text-xs uppercase font-bold text-[#0F2439] py-2 border-b border-[#0F2439]/20" href="calculator.html">Правовой калькулятор</a>
+            <a class="text-xs uppercase font-semibold text-[#2C3E50] hover:text-[#0F2439] py-2" href="about.html">Об организации</a>
+            <a class="text-xs uppercase font-semibold text-[#2C3E50] hover:text-[#0F2439] py-2" href="disclosure.html">Раскрытие информации</a>
+            <button class="w-full mt-2 inline-flex items-center justify-center px-5 py-3 bg-[#0F2439] text-white text-xs uppercase font-semibold tracking-wider rounded" onclick="openModal('modal-donate'); document.getElementById('mobile-nav').classList.add('hidden');">
+                Поддержать проект
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- ── 2. HERO SECTION WITH PING-PONG VIDEO ── -->
+        <section id="hero-section" class="relative w-full min-h-[85vh] md:min-h-[75vh] bg-[#F8F7F4] overflow-hidden flex items-center">
+            <div class="relative min-h-[85vh] md:min-h-[75vh] w-full flex items-center justify-between overflow-hidden px-4 sm:px-6 md:px-16 py-12 md:py-16">
+                
+                <!-- Background Video with Mask & Blend Mode -->
+                <video 
+                    id="calc-hero-video" 
+                    src="ves.mp4" 
+                    data-video-mode="pingpong"
+                    muted 
+                    playsinline 
+                    preload="auto" 
+                    class="absolute inset-0 md:right-0 md:top-0 h-full w-full object-cover object-right opacity-35 md:opacity-45 mix-blend-multiply pointer-events-none [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_85%)] md:[mask-image:radial-gradient(ellipse_at_70%_50%,black_30%,transparent_80%)] md:[-webkit-mask-image:radial-gradient(ellipse_at_70%_50%,black_30%,transparent_80%)]"
+                ></video>
+
+                <!-- Left Gradient Dissolve Overlay under Text (z-[1]) -->
+                <div class="absolute inset-0 bg-gradient-to-r from-[#F8F7F4] via-[#F8F7F4]/80 to-transparent z-[1] pointer-events-none"></div>
+
+                <!-- Foreground Text Content & CTAs (z-10) -->
+                <div class="max-w-[1240px] mx-auto w-full relative z-10">
+                    <div class="max-w-2xl scroll-animate is-visible">
+                        <!-- Breadcrumbs -->
+                        <div class="flex items-center gap-2 text-xs uppercase tracking-wider text-[#5f5e5e] mb-6">
+                            <a href="index.html" class="hover:text-[#0F2439] transition-colors">Главная</a>
+                            <span>/</span>
+                            <span class="text-[#0F2439] font-semibold">Правовой калькулятор</span>
+                        </div>
+
+                        <span class="inline-flex items-center gap-2 px-3.5 py-1.5 border border-[#0F2439]/20 text-[#0F2439] text-xs uppercase tracking-widest mb-6 bg-[#ffffff]/85 backdrop-blur-md rounded shadow-sm">
+                            <span class="w-2 h-2 rounded-full bg-[#8C6826] animate-pulse"></span>
+                            LEGALTECH-СЕРВИС 2026 • УЧЕТ КЛИМАТИЧЕСКИХ ЗОН И НПА РЕГИОНОВ РФ
+                        </span>
+                        
+                        <h1 class="font-['Source_Serif_4'] text-4xl sm:text-5xl lg:text-6xl text-[#0F2439] font-bold mb-6 leading-[1.12] tracking-tight">
+                            Правовой калькулятор неустоек и перерасчетов
+                        </h1>
+                        
+                        <p class="text-base sm:text-lg text-[#2C3E50] mb-8 leading-relaxed font-normal max-w-xl">
+                            Интерактивный расчет перерасчетов ЖКХ (отопление по климатическим нормам РФ, вода, счетчики ИПУ, ТКО по людям и метражу по ПП РФ № 354), неустоек 1% и 3% по ЗоЗПП, штрафа 50% и выгрузка готовой претензии в 1 клик.
+                        </p>
+                        
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <a class="inline-flex items-center justify-center px-8 py-4 bg-[#0F2439] text-white text-xs uppercase tracking-wider font-semibold rounded hover:bg-[#1e3a5f] transition-all button-glow shadow-md" href="#calculator-suite">
+                                Перейти к расчетам ↓
+                            </a>
+                            <a class="inline-flex items-center justify-center px-8 py-4 bg-[#ffffff]/85 backdrop-blur-md border border-[#0F2439]/30 text-[#0F2439] text-xs uppercase tracking-wider font-semibold rounded hover:bg-[#ffffff] transition-all shadow-sm" href="knowledge.html">
+                                База знаний
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Gradient Fader (z-10) -->
+                <div class="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-[#F8F7F4] to-transparent z-10 pointer-events-none"></div>
+            </div>
+        </section>
+
+        <!-- ── CALCULATOR MAIN SUITE (Content Wrapper) ── -->
+        <div id="calculator-suite" class="max-w-[1240px] mx-auto px-4 sm:px-6 py-12 md:py-16">
+
+        <!-- Module Switcher Tabs (Liquid Glassmorphism) -->
+        <div class="flex flex-wrap gap-2 pb-2 mb-8">
+                <button onclick="switchTab('jkh')" id="tab-jkh" class="calc-tab-btn active flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base">home_work</span>
+                    ЖКХ и Услуги (354-ПП)
+                </button>
+                <button onclick="switchTab('product')" id="tab-product" class="calc-tab-btn flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base">shopping_bag</span>
+                    Возврат товара (1% в день)
+                </button>
+                <button onclick="switchTab('service')" id="tab-service" class="calc-tab-btn flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base">construction</span>
+                    Услуги и Ремонт (3% в день)
+                </button>
+                <button onclick="switchTab('interest')" id="tab-interest" class="calc-tab-btn flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base">percent</span>
+                    Проценты 395 ГК РФ
+                </button>
+                <button onclick="switchTab('insurance')" id="tab-insurance" class="calc-tab-btn flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base">verified_user</span>
+                    Страховка по кредиту (353-ФЗ)
+                </button>
+            </div>
+
+            <!-- Two-Column Grid: Form Inputs vs Real-time Recovery Card -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                
+                <!-- Left Column: Dynamic Inputs Form (7 cols) -->
+                <div class="lg:col-span-7 material-glass-card p-6 sm:p-8 rounded-2xl border border-[#E0E0E0] shadow-sm">
+                    
+                    <!-- TAB 1: ЖКХ MULTI-SUBMODULE (Отопление, Вода, Сверка счетчиков, Отсутствие) -->
+                    <div id="content-jkh" class="calc-module space-y-6">
+                        
+                        <!-- Sub-module pills (Apple segmented glass) -->
+                        <div class="p-1.5 rounded-xl bg-[#F0EFEA]/80 border border-[#E0E0E0] flex flex-wrap gap-1">
+                            <button onclick="switchJkhSub('heating')" id="sub-heating" class="flex-1 py-2 px-3 text-xs font-bold uppercase tracking-wider rounded-lg transition-all text-[#0F2439] bg-white shadow-xs">
+                                🌡️ Батареи
+                            </button>
+                            <button onclick="switchJkhSub('water')" id="sub-water" class="flex-1 py-2 px-3 text-xs font-semibold uppercase tracking-wider rounded-lg transition-all text-[#5f5e5e] hover:text-[#0F2439]">
+                                💧 Отключение воды
+                            </button>
+                            <button onclick="switchJkhSub('meter')" id="sub-meter" class="flex-1 py-2 px-3 text-xs font-semibold uppercase tracking-wider rounded-lg transition-all text-[#5f5e5e] hover:text-[#0F2439]">
+                                📊 Сверка счетчиков
+                            </button>
+                            <button onclick="switchJkhSub('absence')" id="sub-absence" class="flex-1 py-2 px-3 text-xs font-semibold uppercase tracking-wider rounded-lg transition-all text-[#5f5e5e] hover:text-[#0F2439]">
+                                ✈️ Отсутствие (ТКО)
+                            </button>
+                        </div>
+
+                        <!-- 1.1 ЖКХ: Отопление -->
+                        <div id="jkh-pane-heating" class="jkh-pane space-y-5">
+                            <div class="border-b border-[#E0E0E0] pb-3">
+                                <h2 class="font-['Source_Serif_4'] text-xl font-bold text-[#0F2439] flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[#8C6826]">heat_pump</span>
+                                    Перерасчет за некачественное отопление
+                                </h2>
+                                <p class="text-xs text-[#5f5e5e] mt-1">Норматив: не менее +18°C (+20°C в угловых). В холодных регионах (пятидневка ≤ -31°C) — не менее +20°C (+22°C в угловых) по СанПиН 1.2.3685-21.</p>
+                            </div>
+
+                            <!-- Climate Region Selector -->
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-1.5">
+                                    Климатическая зона региона РФ:
+                                </label>
+                                <select id="heat-climate" onchange="recalculate()" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-xs font-semibold text-[#0F2439] py-2.5 px-3 focus:border-[#0F2439] focus:ring-0">
+                                    <option value="standard" selected>Базовая зона РФ (Самарская обл., Москва, СПб, Юг, Центр: норма +18°C / +20°C)</option>
+                                    <option value="cold">Холодный регион / Крайний Север (Сибирь, Якутия, ХМАО, ЯНАО: норма +20°C / +22°C)</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-2">
+                                    Месячная плата за отопление по квитанции (руб.)
+                                </label>
+                                <input type="number" id="heat-fee" value="4500" min="500" max="100000" step="100" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-lg font-bold text-[#0F2439] focus:border-[#0F2439] focus:ring-0 py-3 px-4" oninput="recalculate()">
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <label class="text-xs font-bold uppercase tracking-wider text-[#0F2439]">
+                                        Фактическая температура в комнате: <span id="heat-temp-val" class="text-base text-[#8C6826] font-bold">14°C</span>
+                                    </label>
+                                </div>
+                                <input type="range" id="heat-temp" min="8" max="26" value="14" step="1" class="calc-slider" oninput="document.getElementById('heat-temp-val').innerText = this.value + '°C'; recalculate()">
+                                <div class="flex justify-between text-[11px] text-[#5f5e5e] mt-1">
+                                    <span>8°C (Авария)</span>
+                                    <span class="font-bold text-[#8C6826]" id="heat-norm-badge">18°C / 20°C (Норма)</span>
+                                    <span>26°C (Тепло)</span>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-4">
+                                <label class="flex-1 p-3.5 rounded-lg border border-[#E0E0E0] cursor-pointer flex items-center gap-3 bg-[#F8F7F4] hover:border-[#8C6826] transition-colors">
+                                    <input type="radio" name="heat-corner" value="0" checked onchange="recalculate()" class="text-[#0F2439] focus:ring-[#0F2439]">
+                                    <span class="text-xs font-semibold text-[#0F2439]" id="lbl-corner-0">Обычная комната</span>
+                                </label>
+                                <label class="flex-1 p-3.5 rounded-lg border border-[#E0E0E0] cursor-pointer flex items-center gap-3 bg-[#F8F7F4] hover:border-[#8C6826] transition-colors">
+                                    <input type="radio" name="heat-corner" value="1" onchange="recalculate()" class="text-[#0F2439] focus:ring-[#0F2439]">
+                                    <span class="text-xs font-semibold text-[#0F2439]" id="lbl-corner-1">Угловая комната</span>
+                                </label>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <label class="text-xs font-bold uppercase tracking-wider text-[#0F2439]">
+                                        Продолжительность нарушения (часов): <span id="heat-hours-val" class="text-base text-[#8C6826] font-bold">120 ч (5 суток)</span>
+                                    </label>
+                                </div>
+                                <input type="range" id="heat-hours" min="1" max="720" value="120" step="1" class="calc-slider" oninput="document.getElementById('heat-hours-val').innerText = this.value + ' ч (' + Math.round(this.value/24*10)/10 + ' сут)'; recalculate()">
+                            </div>
+                        </div>
+
+                        <!-- 1.2 ЖКХ: Отключение воды -->
+                        <div id="jkh-pane-water" class="jkh-pane space-y-5 hidden">
+                            <div class="border-b border-[#E0E0E0] pb-3">
+                                <h2 class="font-['Source_Serif_4'] text-xl font-bold text-[#0F2439] flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[#8C6826]">water_drop</span>
+                                    Перерасчет за отключение горячей / холодной воды
+                                </h2>
+                                <p class="text-xs text-[#5f5e5e] mt-1">Допустимо: не более 8 ч суммарно в месяц, не более 4 ч единовременно. За каждый час превышения — снижение на 0.15% (ПП РФ № 354).</p>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-2">
+                                    Месячная плата за водоснабжение по квитанции (руб.)
+                                </label>
+                                <input type="number" id="water-fee" value="2200" min="200" max="50000" step="50" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-lg font-bold text-[#0F2439] focus:border-[#0F2439] focus:ring-0 py-3 px-4" oninput="recalculate()">
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <label class="text-xs font-bold uppercase tracking-wider text-[#0F2439]">
+                                        Суммарное время отсутствия воды за месяц: <span id="water-hours-val" class="text-base text-[#8C6826] font-bold">48 часов (2 суток)</span>
+                                    </label>
+                                </div>
+                                <input type="range" id="water-hours" min="1" max="300" value="48" step="1" class="calc-slider" oninput="document.getElementById('water-hours-val').innerText = this.value + ' ч (' + Math.round(this.value/24*10)/10 + ' сут)'; recalculate()">
+                                <div class="flex justify-between text-[11px] text-[#5f5e5e] mt-1">
+                                    <span class="text-[#1E5631] font-bold">до 8 ч (Норматив)</span>
+                                    <span>24 ч (1 сутки)</span>
+                                    <span>72 ч (3 суток)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 1.3 ЖКХ: Сверка счетчиков ИПУ -->
+                        <div id="jkh-pane-meter" class="jkh-pane space-y-5 hidden">
+                            <div class="border-b border-[#E0E0E0] pb-3">
+                                <h2 class="font-['Source_Serif_4'] text-xl font-bold text-[#0F2439] flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[#8C6826]">pin</span>
+                                    Сверка счетчиков ИПУ (перерасчет с норматива на факт)
+                                </h2>
+                                <p class="text-xs text-[#5f5e5e] mt-1">п. 61, 84 ПП РФ № 354: если начисляли по среднему/нормативу, при передаче реальных показаний УК обязана сделать перерасчет и зачесть переплату.</p>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-2">
+                                    Всего начислено/оплачено по нормативу / среднему (руб.)
+                                </label>
+                                <input type="number" id="meter-billed" value="18500" min="500" max="500000" step="500" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-lg font-bold text-[#0F2439] focus:border-[#0F2439] focus:ring-0 py-3 px-4" oninput="recalculate()">
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-1">
+                                        Фактический расход по счетчику (м³ или кВт⋅ч)
+                                    </label>
+                                    <input type="number" id="meter-units" value="85" min="0" max="10000" step="1" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-base font-bold text-[#0F2439] focus:border-[#0F2439] focus:ring-0 py-2.5 px-3.5" oninput="recalculate()">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-1">
+                                        Утвержденный тариф (руб. за 1 м³ / кВт)
+                                    </label>
+                                    <input type="number" id="meter-rate" value="48.50" min="1" max="1000" step="0.5" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-base font-bold text-[#0F2439] focus:border-[#0F2439] focus:ring-0 py-2.5 px-3.5" oninput="recalculate()">
+                                </div>
+                            </div>
+
+                            <label class="flex items-center gap-3 p-3.5 rounded-lg border border-[#E0E0E0] bg-[#F8F7F4] cursor-pointer hover:border-[#8C6826] transition-colors">
+                                <input type="checkbox" id="meter-mult15" onchange="recalculate()" class="rounded border-[#E0E0E0] text-[#0F2439] focus:ring-[#0F2439]">
+                                <span class="text-xs font-semibold text-[#0F2439]">УК применяла повышающий коэффициент 1.5 (требуется отмена и снятие начислений)</span>
+                            </label>
+                        </div>
+
+                        <!-- 1.4 ЖКХ: Временное отсутствие (ТКО) -->
+                        <div id="jkh-pane-absence" class="jkh-pane space-y-5 hidden">
+                            <div class="border-b border-[#E0E0E0] pb-3">
+                                <h2 class="font-['Source_Serif_4'] text-xl font-bold text-[#0F2439] flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[#8C6826]">flight_takeoff</span>
+                                    Перерасчет за ТКО и услуги при временном отсутствии
+                                </h2>
+                                <p class="text-xs text-[#5f5e5e] mt-1">п. 86, 86(1) ПП РФ № 354: отсутствие более 5 полных дней дает право на 100% снятие платы как при начислении с человека, так и с метража.</p>
+                            </div>
+
+                            <!-- Regional TKO Billing Selector -->
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-1.5">
+                                    Порядок начисления ТКО в вашем регионе:
+                                </label>
+                                <select id="abs-billing-type" onchange="recalculate()" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-xs font-semibold text-[#0F2439] py-2.5 px-3 focus:border-[#0F2439] focus:ring-0">
+                                    <option value="people" selected>По числу проживающих граждан (с человека — Самарская обл. и большинство регионов РФ)</option>
+                                    <option value="area">По общей площади жилья (с 1 м² — Москва, Московская обл., Санкт-Петербург)</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-2">
+                                    Месячная плата за вывоз ТКО / нормативную услугу (руб.)
+                                </label>
+                                <input type="number" id="abs-fee" value="850" min="100" max="10000" step="50" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-lg font-bold text-[#0F2439] focus:border-[#0F2439] focus:ring-0 py-3 px-4" oninput="recalculate()">
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <label class="text-xs font-bold uppercase tracking-wider text-[#0F2439]">
+                                        Количество полных дней отсутствия: <span id="abs-days-val" class="text-base text-[#8C6826] font-bold">21 день</span>
+                                    </label>
+                                </div>
+                                <input type="range" id="abs-days" min="1" max="180" value="21" step="1" class="calc-slider" oninput="document.getElementById('abs-days-val').innerText = this.value + ' дней'; recalculate()">
+                                <div class="flex justify-between text-[11px] text-[#5f5e5e] mt-1">
+                                    <span class="text-red-600">до 5 дней (без перерасчета)</span>
+                                    <span class="text-[#1E5631] font-bold">от 5 дней (Законный перерасчет)</span>
+                                    <span>60 дней</span>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-1">Всего проживающих</label>
+                                    <input type="number" id="abs-total" value="3" min="1" max="15" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-base font-bold text-[#0F2439] py-2.5 px-3.5" oninput="recalculate()">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-1">Отсутствовало человек</label>
+                                    <input type="number" id="abs-absent" value="2" min="1" max="15" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-base font-bold text-[#0F2439] py-2.5 px-3.5" oninput="recalculate()">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- TAB 2: PRODUCT RETURN -->
+                    <div id="content-product" class="calc-module space-y-6 hidden">
+                        <div class="border-b border-[#E0E0E0] pb-4">
+                            <h2 class="font-['Source_Serif_4'] text-xl font-bold text-[#0F2439] flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[#8C6826]">smartphone</span>
+                                Неустойка за задержку возврата денег за товар (ЗоЗПП)
+                            </h2>
+                            <p class="text-xs text-[#5f5e5e] mt-1">10 дней на добровольный возврат (ст. 22). Далее — законная неустойка 1% в день без ограничения верхнего предела + штраф 50% (ст. 23, ст. 13 ЗоЗПП).</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-2">
+                                Стоимость товара по чеку / заказу (руб.)
+                            </label>
+                            <input type="number" id="prod-price" value="45000" min="100" max="10000000" step="500" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-lg font-bold text-[#0F2439] focus:border-[#0F2439] focus:ring-0 py-3 px-4" oninput="recalculate()">
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-xs font-bold uppercase tracking-wider text-[#0F2439]">
+                                    Количество дней просрочки (после 10 дней на возврат): <span id="prod-days-val" class="text-base text-[#8C6826] font-bold">25 дней</span>
+                                </label>
+                            </div>
+                            <input type="range" id="prod-days" min="1" max="180" value="25" step="1" class="calc-slider" oninput="document.getElementById('prod-days-val').innerText = this.value + ' дней'; recalculate()">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-2">
+                                Компенсация морального вреда (руб., ст. 15 ЗоЗПП)
+                            </label>
+                            <input type="number" id="prod-moral" value="5000" min="0" max="500000" step="1000" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-sm font-semibold text-[#0F2439] focus:border-[#0F2439] focus:ring-0 py-2.5 px-4" oninput="recalculate()">
+                        </div>
+
+                        <!-- Legal Action Route Banner -->
+                        <div class="p-4 rounded-xl bg-[#FAF4E6]/90 border border-[#C5A059]/40 text-xs text-[#2C3E50] space-y-2">
+                            <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider">
+                                <span class="material-symbols-outlined text-base">gavel</span>
+                                Пошаговый порядок защиты прав (ЗоЗПП действует по всей РФ):
+                            </div>
+                            <div class="space-y-1 text-[11.5px] leading-relaxed">
+                                <p><strong>1. Досудебная претензия:</strong> Письменное требование продавцу (срок ответа — 10 дней по ст. 22 ЗоЗПП). Далее начисляется неустойка 1% в день.</p>
+                                <p><strong>2. Обращение в суд:</strong> Компенсация морального вреда (ст. 15 ЗоЗПП) и штраф 50% (п. 6 ст. 13 ЗоЗПП) взыскиваются <strong>исключительно судом</strong> за отказ удовлетворить претензию добровольно. Госпошлина не взимается во всех регионах РФ.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: SERVICE PENALTY -->
+                    <div id="content-service" class="calc-module space-y-6 hidden">
+                        <div class="border-b border-[#E0E0E0] pb-4">
+                            <h2 class="font-['Source_Serif_4'] text-xl font-bold text-[#0F2439] flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[#8C6826]">construction</span>
+                                Неустойка 3% в день за срыв сроков работ / ремонта (ЗоЗПП)
+                            </h2>
+                            <p class="text-xs text-[#5f5e5e] mt-1">ст. 28 ЗоЗПП: 3% за каждый день просрочки (не более общей цены договора) + штраф 50% в пользу заказчика.</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-2">
+                                Цена работ / ремонта по договору (руб.)
+                            </label>
+                            <input type="number" id="serv-price" value="120000" min="500" max="50000000" step="1000" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-lg font-bold text-[#0F2439] focus:border-[#0F2439] focus:ring-0 py-3 px-4" oninput="recalculate()">
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-xs font-bold uppercase tracking-wider text-[#0F2439]">
+                                    Количество дней задержки сдачи работ: <span id="serv-days-val" class="text-base text-[#8C6826] font-bold">20 дней</span>
+                                </label>
+                            </div>
+                            <input type="range" id="serv-days" min="1" max="100" value="20" step="1" class="calc-slider" oninput="document.getElementById('serv-days-val').innerText = this.value + ' дней'; recalculate()">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-2">
+                                Компенсация морального вреда (руб.)
+                            </label>
+                            <input type="number" id="serv-moral" value="10000" min="0" max="500000" step="1000" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-sm font-semibold text-[#0F2439] focus:border-[#0F2439] focus:ring-0 py-2.5 px-4" oninput="recalculate()">
+                        </div>
+
+                        <!-- Legal Action Route Banner -->
+                        <div class="p-4 rounded-xl bg-[#FAF4E6]/90 border border-[#C5A059]/40 text-xs text-[#2C3E50] space-y-2">
+                            <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider">
+                                <span class="material-symbols-outlined text-base">gavel</span>
+                                Порядок действий при срыве ремонта / услуг:
+                            </div>
+                            <div class="space-y-1 text-[11.5px] leading-relaxed">
+                                <p><strong>1. Письменная претензия:</strong> Направьте требование о выплате 3% неустойки в день и назначьте новый разумный срок либо потребуйте расторжения договора и возврата денег (ст. 28 ЗоЗПП).</p>
+                                <p><strong>2. Судебное взыскание:</strong> При отказе подрядчика суд присуждает сумму договора, неустойку, моральный вред и штраф 50% от всей присужденной суммы.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 4: INTEREST 395 -->
+                    <div id="content-interest" class="calc-module space-y-6 hidden">
+                        <div class="border-b border-[#E0E0E0] pb-4">
+                            <h2 class="font-['Source_Serif_4'] text-xl font-bold text-[#0F2439] flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[#8C6826]">percent</span>
+                                Проценты за пользование чужими денежными средствами (ст. 395 ГК РФ)
+                            </h2>
+                            <p class="text-xs text-[#5f5e5e] mt-1">Официальный расчет по ключевой ставке Банка России за каждый день неправомерного удержания денег.</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-2">
+                                Сумма задолженности / невыплаченного долга (руб.)
+                            </label>
+                            <input type="number" id="debt-amount" value="250000" min="1000" max="100000000" step="5000" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-lg font-bold text-[#0F2439] focus:border-[#0F2439] focus:ring-0 py-3 px-4" oninput="recalculate()">
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-xs font-bold uppercase tracking-wider text-[#0F2439]">
+                                    Период просрочки (дней): <span id="debt-days-val" class="text-base text-[#8C6826] font-bold">90 дней</span>
+                                </label>
+                            </div>
+                            <input type="range" id="debt-days" min="1" max="730" value="90" step="1" class="calc-slider" oninput="document.getElementById('debt-days-val').innerText = this.value + ' дней'; recalculate()">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-2">
+                                Ключевая ставка ЦБ РФ (% годовых)
+                            </label>
+                            <input type="number" id="debt-rate" value="18.0" min="1.0" max="40.0" step="0.5" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-sm font-semibold text-[#0F2439] focus:border-[#0F2439] focus:ring-0 py-2.5 px-4" oninput="recalculate()">
+                        </div>
+                    </div>
+
+                    <!-- TAB 5: INSURANCE 353-FZ -->
+                    <div id="content-insurance" class="calc-module space-y-6 hidden">
+                        <div class="border-b border-[#E0E0E0] pb-4">
+                            <h2 class="font-['Source_Serif_4'] text-xl font-bold text-[#0F2439] flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[#8C6826]">verified_user</span>
+                                Возврат навязанной страховки и допуслуг по кредиту (353-ФЗ)
+                            </h2>
+                            <p class="text-xs text-[#5f5e5e] mt-1">«Период охлаждения» увеличен до 30 календарных дней (Федеральный закон № 353-ФЗ). Полный возврат 100% стоимости.</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-2">
+                                Стоимость страхового полиса / доппакета по кредиту (руб.)
+                            </label>
+                            <input type="number" id="ins-cost" value="85000" min="1000" max="2000000" step="1000" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-lg font-bold text-[#0F2439] focus:border-[#0F2439] focus:ring-0 py-3 px-4" oninput="recalculate()">
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-xs font-bold uppercase tracking-wider text-[#0F2439]">
+                                    Сколько дней прошло с момента оформления кредита: <span id="ins-days-val" class="text-base text-[#8C6826] font-bold">14 дней</span>
+                                </label>
+                            </div>
+                            <input type="range" id="ins-days" min="1" max="60" value="14" step="1" class="calc-slider" oninput="document.getElementById('ins-days-val').innerText = this.value + ' дней'; recalculate()">
+                            <div class="flex justify-between text-[11px] text-[#5f5e5e] mt-1">
+                                <span>1 день</span>
+                                <span class="font-bold text-[#8C6826]">30 дней (Лимит 353-ФЗ)</span>
+                                <span>60 дней</span>
+                            </div>
+                        </div>
+
+                        <!-- Legal Finombudsman / Court Route Banner -->
+                        <div class="p-4 rounded-xl bg-[#FAF4E6]/90 border border-[#C5A059]/40 text-xs text-[#2C3E50] space-y-2">
+                            <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider">
+                                <span class="material-symbols-outlined text-base">account_balance</span>
+                                Маршрут взыскания с банков и страховых (123-ФЗ):
+                            </div>
+                            <div class="space-y-1 text-[11.5px] leading-relaxed">
+                                <p><strong>1. Претензия в банк / страховую:</strong> Подайте заявление об отказе в 30-дневный срок.</p>
+                                <p><strong>2. Финансовый уполномоченный (123-ФЗ):</strong> При отказе или молчании до 500 тыс. ₽ обращение к Финомбудсмену обязательно. Он взыскивает сумму страховки и проценты, но <strong>не начисляет моральный вред и 50% штраф</strong>.</p>
+                                <p><strong>3. Суд:</strong> После решения Финомбудсмена вы вправе взыскать через суд моральный вред (ст. 15 ЗоЗПП) и штраф 50% (п. 6 ст. 13 ЗоЗПП).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Right Column: Real-time Recovery & Claim Generation Card (5 cols) -->
+                <div class="lg:col-span-5 material-glass-card p-6 sm:p-8 rounded-2xl border border-[#C5A880]/50 shadow-sm bg-white/95 relative overflow-hidden">
+                    
+                    <div class="flex justify-between items-center border-b border-[#E0E0E0] pb-4 mb-6">
+                        <span class="text-xs font-mono font-bold tracking-widest text-[#8C6826] uppercase">ИТОГОВЫЙ РАСЧЕТ К ВЗЫСКАНИЮ</span>
+                        <span class="text-[10px] px-2.5 py-0.5 rounded-full bg-[#EBF5EE] text-[#1E5631] border border-[#C8E6C9] font-mono font-bold uppercase">АКТУАЛЕН (2026)</span>
+                    </div>
+
+                    <!-- Big Total Number -->
+                    <div class="mb-6 bg-[#F8F7F4] p-5 rounded-xl border border-[#E0E0E0]">
+                        <span class="text-xs text-[#5f5e5e] block uppercase tracking-wider mb-1 font-semibold" id="res-main-label">Сумма компенсации / перерасчета</span>
+                        <div class="text-3xl sm:text-4xl font-['Source_Serif_4'] font-bold text-[#0F2439] tracking-tight flex items-baseline gap-1" id="res-total">
+                            0 ₽
+                        </div>
+                    </div>
+
+                    <!-- Detailed Breakdown -->
+                    <div class="space-y-3 bg-[#FAF8F5] rounded-xl p-4 border border-[#E0E0E0] text-xs mb-6">
+                        <div class="flex justify-between text-[#2C3E50]">
+                            <span id="res-line1-label">Основное требование:</span>
+                            <span class="font-mono font-bold text-[#0F2439]" id="res-line1-val">0 ₽</span>
+                        </div>
+                        <div class="flex justify-between text-[#2C3E50]">
+                            <span id="res-line2-label">Штраф / Неустойка:</span>
+                            <span class="font-mono font-bold text-[#8C6826]" id="res-line2-val">0 ₽</span>
+                        </div>
+                        <div class="flex justify-between text-[#2C3E50]">
+                            <span id="res-line3-label">Итоговая сумма:</span>
+                            <span class="font-mono font-bold text-[#1E5631]" id="res-line3-val">0 ₽</span>
+                        </div>
+                    </div>
+
+                    <!-- Law Basis Notice -->
+                    <div class="bg-[#FAF4E6] border border-[#C5A059]/40 rounded-xl p-3.5 mb-6 text-xs text-[#2C3E50] leading-relaxed">
+                        <div class="font-bold text-[#8C6826] flex items-center gap-1.5 mb-1 font-mono text-[11px] uppercase tracking-wider">
+                            <span class="material-symbols-outlined text-sm">gavel</span>
+                            Правовое основание:
+                        </div>
+                        <p id="res-law-basis" class="text-xs text-[#2C3E50] font-medium">п. 15 Приложения № 1 к ПП РФ № 354, ч. 4 ст. 157 ЖК РФ</p>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="space-y-3">
+                        <button onclick="downloadClaim()" class="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 bg-[#0F2439] text-white text-xs uppercase font-semibold tracking-wider hover:bg-[#1e3a5f] transition-all button-glow rounded shadow-sm">
+                            <span class="material-symbols-outlined text-base text-[#C5A059]">download</span>
+                            Скачать готовую претензию (.txt)
+                        </button>
+                        
+                        <button onclick="openModal('modal-consultation')" class="w-full inline-flex items-center justify-center gap-2 px-5 py-3 bg-white border border-[#0F2439]/30 text-[#0F2439] text-xs uppercase font-semibold tracking-wider hover:bg-[#0F2439]/5 transition-all rounded shadow-xs">
+                            <span class="material-symbols-outlined text-base text-[#8C6826]">support_agent</span>
+                            Передать расчет юристам АНО
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- LEGAL EXPLANATIONS ACCORDION -->
+        <section class="mt-16">
+            <div class="mb-8">
+                <h2 class="font-['Source_Serif_4'] text-2xl sm:text-3xl text-[#0F2439] font-bold mb-2 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[#8C6826]">help</span>
+                    Нормативно-правовая база и региональные особенности РФ
+                </h2>
+                <div class="w-20 h-1 bg-[#0F2439]"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <details class="material-glass-card rounded-xl p-6 border border-[#E0E0E0] open:border-[#C5A880]/60 open:shadow-sm" open>
+                    <summary class="flex items-center justify-between font-['Source_Serif_4'] text-base font-bold text-[#0F2439] list-none cursor-pointer select-none">
+                        <span class="flex items-center gap-2.5">
+                            <span class="material-symbols-outlined text-[#8C6826]">ac_unit</span>
+                            Региональные климатические нормы отопления (+18°C vs +20°C)
+                        </span>
+                        <span class="material-symbols-outlined text-stone-400 group-open:rotate-180 transition-transform">expand_more</span>
+                    </summary>
+                    <div class="mt-3 pt-3 border-t border-[#E0E0E0] text-xs text-[#2C3E50] leading-relaxed space-y-2">
+                        <p>1. <strong>Базовые регионы (Самарская область, Москва, Санкт-Петербург, Поволжье, Юг, Центр):</strong> норматив температуры воздуха в жилых комнатах составляет не менее <strong>+18°C</strong> (в угловых — не менее <strong>+20°C</strong>).</p>
+                        <p>2. <strong>Холодные регионы и Крайний Север (где температура наиболее холодной пятидневки ≤ -31°C):</strong> по ГОСТ Р 51617-2014 и СанПиН 1.2.3685-21 норматив повышен: не менее <strong>+20°C</strong> (в угловых — не менее <strong>+22°C</strong>). К таким регионам относятся Сибирь, Якутия, ХМАО, ЯНАО, Коми, Архангельская обл., Красноярский край и др.</p>
+                    </div>
+                </details>
+
+                <details class="material-glass-card rounded-xl p-6 border border-[#E0E0E0] open:border-[#C5A880]/60 open:shadow-sm" open>
+                    <summary class="flex items-center justify-between font-['Source_Serif_4'] text-base font-bold text-[#0F2439] list-none cursor-pointer select-none">
+                        <span class="flex items-center gap-2.5">
+                            <span class="material-symbols-outlined text-[#8C6826]">account_balance</span>
+                            Почему моральный вред и штраф 50% взыскиваются только через суд?
+                        </span>
+                        <span class="material-symbols-outlined text-stone-400 group-open:rotate-180 transition-transform">expand_more</span>
+                    </summary>
+                    <div class="mt-3 pt-3 border-t border-[#E0E0E0] text-xs text-[#2C3E50] leading-relaxed space-y-2">
+                        <p><strong>Финансовый уполномоченный (123-ФЗ)</strong> рассматривает исключительно имущественные претензии (сумму невыплаченной страховки, переплаты по кредиту или займам). Взыскивать <strong>моральный вред</strong> и <strong>штраф 50%</strong> он не уполномочен законом.</p>
+                        <p>Согласно <strong>ст. 15 и п. 6 ст. 13 ЗоЗПП</strong>, только <strong>суд</strong> правомочен оценить нравственные страдания гражданина и взыскать 50% штраф от всей присужденной суммы за отказ компании добровольно удовлетворить законные требования потребителя в досудебном порядке.</p>
+                        <p>Потребители при подаче таких исков <strong>полностью освобождены от уплаты госпошлины</strong> (ст. 333.36 НК РФ).</p>
+                    </div>
+                </details>
+
+                <details class="material-glass-card rounded-xl p-6 border border-[#E0E0E0] open:border-[#C5A880]/60 open:shadow-sm">
+                    <summary class="flex items-center justify-between font-['Source_Serif_4'] text-base font-bold text-[#0F2439] list-none cursor-pointer select-none">
+                        <span class="flex items-center gap-2.5">
+                            <span class="material-symbols-outlined text-[#8C6826]">delete_outline</span>
+                            Как начисляется плата за мусор (ТКО) в разных регионах (с человека vs с 1 м²)?
+                        </span>
+                        <span class="material-symbols-outlined text-stone-400 group-open:rotate-180 transition-transform">expand_more</span>
+                    </summary>
+                    <div class="mt-3 pt-3 border-t border-[#E0E0E0] text-xs text-[#2C3E50] leading-relaxed space-y-2">
+                        <p>Субъекты РФ самостоятельно выбирают порядок начисления за ТКО:</p>
+                        <ul class="list-disc pl-4 space-y-1">
+                            <li><strong>С числа проживающих (с человека):</strong> действует в Самарской области и большинстве регионов России.</li>
+                            <li><strong>С общей площади помещения (с 1 м²):</strong> применяется в Москве, Московской области и Санкт-Петербурге.</li>
+                        </ul>
+                        <p><em>Важно:</em> с 1 марта 2023 года по ПП РФ № 354 перерасчет за временное отсутствие (от 5 дней) гарантирован <strong>при обоих способах начисления</strong>!</p>
+                    </div>
+                </details>
+
+                <details class="material-glass-card rounded-xl p-6 border border-[#E0E0E0] open:border-[#C5A880]/60 open:shadow-sm">
+                    <summary class="flex items-center justify-between font-['Source_Serif_4'] text-base font-bold text-[#0F2439] list-none cursor-pointer select-none">
+                        <span class="flex items-center gap-2.5">
+                            <span class="material-symbols-outlined text-[#8C6826]">volume_off</span>
+                            Региональные различия в «Законе о тишине»
+                        </span>
+                        <span class="material-symbols-outlined text-stone-400 group-open:rotate-180 transition-transform">expand_more</span>
+                    </summary>
+                    <div class="mt-3 pt-3 border-t border-[#E0E0E0] text-xs text-[#2C3E50] leading-relaxed space-y-2">
+                        <p>В России нет единого федерального закона о тишине — в каждом регионе действуют свои временные рамки:</p>
+                        <ul class="list-disc pl-4 space-y-1">
+                            <li><strong>Самарская область (Закон № 115-ГД):</strong> тихий час 13:00–15:00; ночной режим: будни 22:00–08:00, выходные 22:00–10:00.</li>
+                            <li><strong>Москва (Закон № 42):</strong> ночной режим 23:00–07:00, тихий час для ремонта 13:00–15:00, в воскресенье шумный ремонт запрещен.</li>
+                            <li><strong>Санкт-Петербург (Закон № 273-70):</strong> тишина с 22:00 до 08:00 (в выходные до 12:00).</li>
+                        </ul>
+                    </div>
+                </details>
+
+            </div>
+        </section>
+
+        </div>
+    </main>
+
+    <!-- ── FOOTER (Strict Legal Text Navigation) ── -->
+    <footer class="w-full py-12 px-6 bg-[#EBEAE5] border-t border-[#E0E0E0] text-center mt-20">
+        <div class="max-w-[1240px] mx-auto">
+            <div class="text-xs text-[#5f5e5e] max-w-2xl mx-auto mb-4 leading-relaxed">
+                АВТОНОМНАЯ НЕКОММЕРЧЕСКАЯ ОРГАНИЗАЦИЯ «ЦЕНТР ПРАВОВОЙ ЗАЩИТЫ И РАЗВИТИЯ ГРАЖДАНСКИХ ИНИЦИАТИВ ЮГ-ПРАВО» (АНО «ЦПЗ ЮГ-ПРАВО»)<br/>
+                ОГРН: 1266300015080 | ИНН: 6317174776 | КПП: 631701001<br/>
+                Юридический адрес: 446186, Самарская обл., Большеглушицкий р-н, п. Южный, ул. Центральная, д. 7, кв. 1
+            </div>
+
+            <!-- Clean Text-Only Legal Links -->
+            <div class="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-xs pt-4 border-t border-[#D5D4CF] max-w-3xl mx-auto mb-4">
+                <a href="disclosure.html" class="text-[#0F2439] hover:underline transition-colors font-medium">Раскрытие информации и отчетность</a>
+                <span class="text-[#A0A0A0] hidden sm:inline">•</span>
+                <a href="ustav.html" class="text-[#0F2439] hover:underline transition-colors font-medium">Устав АНО</a>
+                <span class="text-[#A0A0A0] hidden sm:inline">•</span>
+                <a href="privacy.html" class="text-[#0F2439] hover:underline transition-colors font-medium">Политика обработки персональных данных</a>
+                <span class="text-[#A0A0A0] hidden sm:inline">•</span>
+                <a href="calculator.html" class="text-[#0F2439] hover:underline transition-colors font-medium">Правовой калькулятор</a>
+            </div>
+
+            <div class="text-xs text-[#5f5e5e] tracking-wider">
+                © 2026 АНО «ЦПЗ ЮГ-ПРАВО». Все права защищены.
+            </div>
+        </div>
+    </footer>
+
+    <!-- ── MODALS ── -->
+    <div class="modal-overlay" id="modal-donate">
+        <div class="modal-container p-8">
+            <button class="modal-close-btn" onclick="closeModal('modal-donate')"><span class="material-symbols-outlined">close</span></button>
+            <h3 class="font-['Source_Serif_4'] text-2xl font-bold text-[#0F2439] mb-3">Поддержать Юг-право</h3>
+            <p class="text-sm text-[#2C3E50] mb-6">Благотворительное пожертвование на уставную деятельность организации.</p>
+            <form class="space-y-4" onsubmit="event.preventDefault(); showToast('Переход к платежному шлюзу СБП...'); closeModal('modal-donate');">
+                <input class="w-full bg-[#F8F7F4] border border-[#E0E0E0] rounded px-4 py-3 text-sm text-[#0F2439]" type="number" value="500" min="50"/>
+                <button class="w-full py-3.5 bg-[#0F2439] text-white text-xs uppercase font-bold rounded hover:bg-[#1e3a5f]" type="submit">Пожертвовать через СБП</button>
+                <label class="flex items-start gap-2 text-xs text-[#5f5e5e] mt-2 cursor-pointer select-none">
+                    <input type="checkbox" required checked class="mt-0.5 rounded border-[#E0E0E0] text-[#0F2439] focus:ring-[#0F2439]">
+                    <span>Я согласен на <a href="doc-viewer.html?doc=politika" target="_blank" class="underline text-[#0F2439] hover:text-[#C5A059]">обработку персональных данных</a> и принимаю условия <a href="doc-viewer.html?doc=terms" target="_blank" class="underline text-[#0F2439] hover:text-[#C5A059]">пользовательского соглашения</a></span>
+                </label>
+            </form>
+        </div>
+    </div>
+
+    <!-- CONSULTATION MODAL -->
+    <div class="modal-overlay" id="modal-consultation">
+        <div class="modal-container p-6 sm:p-8 max-w-lg">
+            <button class="modal-close-btn" onclick="closeModal('modal-consultation')"><span class="material-symbols-outlined">close</span></button>
+            <h3 class="font-['Source_Serif_4'] text-2xl font-bold text-[#0F2439] mb-2">Правовое обращение</h3>
+            <p class="text-xs text-[#5f5e5e] mb-6">Передайте ваш расчет юристам центра для подготовки досудебной претензии или иска.</p>
+            <form onsubmit="handleConsultationSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-1">Ваше имя</label>
+                    <input type="text" required placeholder="Иван Иванович" class="w-full rounded border border-[#E0E0E0] bg-[#F8F7F4] text-sm py-2.5 px-3.5 focus:border-[#0F2439] focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-1">Телефон для связи</label>
+                    <input type="tel" required placeholder="+7 (999) 000-00-00" class="w-full rounded border border-[#E0E0E0] bg-[#F8F7F4] text-sm py-2.5 px-3.5 focus:border-[#0F2439] focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-1">Комментарий к расчету</label>
+                    <textarea id="modal-calc-comment" rows="3" placeholder="Укажите номер дома/квартиры или название магазина..." class="w-full rounded border border-[#E0E0E0] bg-[#F8F7F4] text-sm py-2.5 px-3.5 focus:border-[#0F2439] focus:outline-none"></textarea>
+                </div>
+                <div class="text-[11px] text-[#5f5e5e] flex items-start gap-2">
+                    <input type="checkbox" required checked class="rounded text-[#0F2439] mt-0.5 border-[#E0E0E0]">
+                    <span>Согласен на обработку персональных данных в соответствии с <a href="privacy.html" class="underline text-[#0F2439] hover:text-[#8C6826]">152-ФЗ</a>.</span>
+                </div>
+                <button type="submit" class="w-full bg-[#0F2439] hover:bg-[#1e3a5f] text-white py-3 rounded text-xs font-bold uppercase tracking-wider transition-colors shadow-sm">
+                    Отправить на бесплатный правовой анализ
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="js/effects.js"></script>
+    <script src="js/legal-calculator.js"></script>
+    <script>
+        let currentTab = 'jkh';
+        let currentJkhSub = 'heating';
+        let latestCalculation = null;
+
+        function switchTab(tabId) {
+            currentTab = tabId;
+            document.querySelectorAll('.calc-tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.calc-module').forEach(mod => mod.classList.add('hidden'));
+
+            const activeBtn = document.getElementById('tab-' + tabId);
+            const activeMod = document.getElementById('content-' + tabId);
+            if (activeBtn) activeBtn.classList.add('active');
+            if (activeMod) activeMod.classList.remove('hidden');
+
+            recalculate();
+        }
+
+        function switchJkhSub(subId) {
+            currentJkhSub = subId;
+            const subBtns = ['heating', 'water', 'meter', 'absence'];
+            subBtns.forEach(id => {
+                const btn = document.getElementById('sub-' + id);
+                const pane = document.getElementById('jkh-pane-' + id);
+                if (btn && pane) {
+                    if (id === subId) {
+                        btn.classList.add('bg-white', 'text-[#0F2439]', 'shadow-xs', 'font-bold');
+                        btn.classList.remove('text-[#5f5e5e]');
+                        pane.classList.remove('hidden');
+                    } else {
+                        btn.classList.remove('bg-white', 'text-[#0F2439]', 'shadow-xs', 'font-bold');
+                        btn.classList.add('text-[#5f5e5e]');
+                        pane.classList.add('hidden');
+                    }
+                }
+            });
+            recalculate();
+        }
+
+        function recalculate() {
+            if (!window.LegalCalculator) return;
+
+            if (currentTab === 'jkh') {
+                if (currentJkhSub === 'heating') {
+                    const fee = parseFloat(document.getElementById('heat-fee').value) || 0;
+                    const temp = parseFloat(document.getElementById('heat-temp').value) || 18;
+                    const corner = document.querySelector('input[name="heat-corner"]:checked').value === '1';
+                    const hours = parseFloat(document.getElementById('heat-hours').value) || 0;
+                    const isCold = document.getElementById('heat-climate').value === 'cold';
+
+                    // Update UI labels dynamically
+                    const normBadge = document.getElementById('heat-norm-badge');
+                    const lbl0 = document.getElementById('lbl-corner-0');
+                    const lbl1 = document.getElementById('lbl-corner-1');
+                    if (isCold) {
+                        if (normBadge) normBadge.innerText = '20°C / 22°C (Норма Севера)';
+                        if (lbl0) lbl0.innerText = 'Обычная комната (+20°C)';
+                        if (lbl1) lbl1.innerText = 'Угловая комната (+22°C)';
+                    } else {
+                        if (normBadge) normBadge.innerText = '18°C / 20°C (Норма РФ)';
+                        if (lbl0) lbl0.innerText = 'Обычная комната (+18°C)';
+                        if (lbl1) lbl1.innerText = 'Угловая комната (+20°C)';
+                    }
+
+                    const res = LegalCalculator.calculateHeating(fee, temp, corner, hours, isCold);
+                    latestCalculation = { type: 'heating', data: { actualTemp: temp, normTemp: res.normTemp, deltaTemp: res.deltaTemp, violationHours: hours, isColdRegion: isCold, reductionAmount: res.reductionAmount, reductionPercent: res.reductionPercent, penaltyFine: res.penaltyFine, totalCompensation: res.totalCompensation } };
+
+                    document.getElementById('res-main-label').innerText = 'Сумма компенсации и снижения платы:';
+                    document.getElementById('res-total').innerText = res.totalCompensation.toLocaleString('ru-RU') + ' ₽';
+                    
+                    document.getElementById('res-line1-label').innerText = 'Снижение платы за отопление:';
+                    document.getElementById('res-line1-val').innerText = '-' + res.reductionAmount.toLocaleString('ru-RU') + ' ₽ (' + res.reductionPercent + '%)';
+                    
+                    document.getElementById('res-line2-label').innerText = 'Штраф УК (ч. 4 ст. 157 ЖК РФ):';
+                    document.getElementById('res-line2-val').innerText = '+' + res.penaltyFine.toLocaleString('ru-RU') + ' ₽';
+
+                    document.getElementById('res-line3-label').innerText = 'Итого к зачету/выплате:';
+                    document.getElementById('res-line3-val').innerText = res.totalCompensation.toLocaleString('ru-RU') + ' ₽';
+
+                    document.getElementById('res-law-basis').innerText = res.lawBasis;
+                }
+                else if (currentJkhSub === 'water') {
+                    const fee = parseFloat(document.getElementById('water-fee').value) || 0;
+                    const hours = parseFloat(document.getElementById('water-hours').value) || 0;
+
+                    const res = LegalCalculator.calculateWaterOutage(fee, hours);
+                    latestCalculation = { type: 'water_outage', data: { outageHours: hours, excessHours: res.excessHours, reductionAmount: res.reductionAmount, reductionPercent: res.reductionPercent, penaltyFine: res.penaltyFine, totalCompensation: res.totalCompensation } };
+
+                    document.getElementById('res-main-label').innerText = 'Сумма компенсации за воду:';
+                    document.getElementById('res-total').innerText = res.totalCompensation.toLocaleString('ru-RU') + ' ₽';
+
+                    document.getElementById('res-line1-label').innerText = 'Снижение платы за воду:';
+                    document.getElementById('res-line1-val').innerText = '-' + res.reductionAmount.toLocaleString('ru-RU') + ' ₽ (' + res.reductionPercent + '%)';
+
+                    document.getElementById('res-line2-label').innerText = 'Штраф УК 50% (ст. 157 ЖК):';
+                    document.getElementById('res-line2-val').innerText = '+' + res.penaltyFine.toLocaleString('ru-RU') + ' ₽';
+
+                    document.getElementById('res-line3-label').innerText = 'Итого к компенсации:';
+                    document.getElementById('res-line3-val').innerText = res.totalCompensation.toLocaleString('ru-RU') + ' ₽';
+
+                    document.getElementById('res-law-basis').innerText = res.lawBasis;
+                }
+                else if (currentJkhSub === 'meter') {
+                    const billed = parseFloat(document.getElementById('meter-billed').value) || 0;
+                    const units = parseFloat(document.getElementById('meter-units').value) || 0;
+                    const rate = parseFloat(document.getElementById('meter-rate').value) || 0;
+                    const has15 = document.getElementById('meter-mult15').checked;
+
+                    const res = LegalCalculator.calculateMeterReconciliation(billed, units, rate, has15);
+                    latestCalculation = { type: 'meter_reconciliation', data: { billedAmount: billed, actualUnits: units, tariffRate: rate, realCost: res.realCost, overpayment: res.overpayment, multiplierAmount: res.multiplierAmount } };
+
+                    document.getElementById('res-main-label').innerText = 'Сумма переплаты к зачету:';
+                    document.getElementById('res-total').innerText = res.overpayment.toLocaleString('ru-RU') + ' ₽';
+
+                    document.getElementById('res-line1-label').innerText = 'Начислено по среднему/нормативу:';
+                    document.getElementById('res-line1-val').innerText = billed.toLocaleString('ru-RU') + ' ₽';
+
+                    document.getElementById('res-line2-label').innerText = 'Реальный расход по счетчику:';
+                    document.getElementById('res-line2-val').innerText = res.realCost.toLocaleString('ru-RU') + ' ₽';
+
+                    document.getElementById('res-line3-label').innerText = 'Излишне уплачено (переплата):';
+                    document.getElementById('res-line3-val').innerText = res.overpayment.toLocaleString('ru-RU') + ' ₽';
+
+                    document.getElementById('res-law-basis').innerText = res.lawBasis;
+                }
+                else if (currentJkhSub === 'absence') {
+                    const fee = parseFloat(document.getElementById('abs-fee').value) || 0;
+                    const days = parseFloat(document.getElementById('abs-days').value) || 0;
+                    const totalRes = parseFloat(document.getElementById('abs-total').value) || 1;
+                    const absentRes = parseFloat(document.getElementById('abs-absent').value) || 1;
+                    const billingType = document.getElementById('abs-billing-type').value;
+
+                    const res = LegalCalculator.calculateAbsenceRefund(fee, days, totalRes, absentRes, billingType);
+                    latestCalculation = { type: 'absence', data: { monthlyFee: fee, absenceDays: days, totalResidents: totalRes, absentResidents: absentRes, billingType: billingType, reductionAmount: res.reductionAmount, newMonthlyFee: res.newMonthlyFee } };
+
+                    document.getElementById('res-main-label').innerText = 'Сумма снятия платы (перерасчет):';
+                    document.getElementById('res-total').innerText = res.reductionAmount.toLocaleString('ru-RU') + ' ₽';
+
+                    document.getElementById('res-line1-label').innerText = 'Исходное начисление:';
+                    document.getElementById('res-line1-val').innerText = fee.toLocaleString('ru-RU') + ' ₽';
+
+                    document.getElementById('res-line2-label').innerText = 'Снято за дни отсутствия:';
+                    document.getElementById('res-line2-val').innerText = '-' + res.reductionAmount.toLocaleString('ru-RU') + ' ₽';
+
+                    document.getElementById('res-line3-label').innerText = 'Плата за период:';
+                    document.getElementById('res-line3-val').innerText = res.newMonthlyFee.toLocaleString('ru-RU') + ' ₽';
+
+                    document.getElementById('res-law-basis').innerText = res.lawBasis;
+                }
+            } 
+            else if (currentTab === 'product') {
+                const price = parseFloat(document.getElementById('prod-price').value) || 0;
+                const days = parseFloat(document.getElementById('prod-days').value) || 0;
+                const moral = parseFloat(document.getElementById('prod-moral').value) || 0;
+
+                const res = LegalCalculator.calculateProductPenalty(price, days, moral);
+                latestCalculation = { type: 'product', data: { productPrice: price, delayDays: days, penaltyAmount: res.penaltyAmount, moralDamage: moral, fineAmount: res.consumerFine50, totalToRecover: res.totalToRecover } };
+
+                document.getElementById('res-main-label').innerText = 'Итого к взысканию с продавца:';
+                document.getElementById('res-total').innerText = res.totalToRecover.toLocaleString('ru-RU') + ' ₽';
+
+                document.getElementById('res-line1-label').innerText = 'Стоимость товара:';
+                document.getElementById('res-line1-val').innerText = price.toLocaleString('ru-RU') + ' ₽';
+
+                document.getElementById('res-line2-label').innerText = 'Неустойка 1% в день (' + days + ' дн.):';
+                document.getElementById('res-line2-val').innerText = '+' + res.penaltyAmount.toLocaleString('ru-RU') + ' ₽';
+
+                document.getElementById('res-line3-label').innerText = 'Штраф 50% + моральный вред:';
+                document.getElementById('res-line3-val').innerText = '+' + (res.consumerFine50 + moral).toLocaleString('ru-RU') + ' ₽';
+
+                document.getElementById('res-law-basis').innerText = res.lawBasis;
+            }
+            else if (currentTab === 'service') {
+                const price = parseFloat(document.getElementById('serv-price').value) || 0;
+                const days = parseFloat(document.getElementById('serv-days').value) || 0;
+                const moral = parseFloat(document.getElementById('serv-moral').value) || 0;
+
+                const res = LegalCalculator.calculateServicePenalty(price, days, moral);
+                latestCalculation = { type: 'service', data: { servicePrice: price, delayDays: days, penaltyAmount: res.penaltyAmount, moralDamage: moral, fineAmount: res.consumerFine50, totalToRecover: res.totalToRecover } };
+
+                document.getElementById('res-main-label').innerText = 'Итого к взысканию с подрядчика:';
+                document.getElementById('res-total').innerText = res.totalToRecover.toLocaleString('ru-RU') + ' ₽';
+
+                document.getElementById('res-line1-label').innerText = 'Стоимость работ по договору:';
+                document.getElementById('res-line1-val').innerText = price.toLocaleString('ru-RU') + ' ₽';
+
+                document.getElementById('res-line2-label').innerText = 'Неустойка 3% в день (' + days + ' дн.):';
+                document.getElementById('res-line2-val').innerText = '+' + res.penaltyAmount.toLocaleString('ru-RU') + ' ₽';
+
+                document.getElementById('res-line3-label').innerText = 'Штраф 50% в пользу заказчика:';
+                document.getElementById('res-line3-val').innerText = '+' + res.consumerFine50.toLocaleString('ru-RU') + ' ₽';
+
+                document.getElementById('res-law-basis').innerText = res.lawBasis;
+            }
+            else if (currentTab === 'interest') {
+                const debt = parseFloat(document.getElementById('debt-amount').value) || 0;
+                const days = parseFloat(document.getElementById('debt-days').value) || 0;
+                const rate = parseFloat(document.getElementById('debt-rate').value) || 18;
+
+                const res = LegalCalculator.calculateInterest395(debt, days, rate);
+                latestCalculation = { type: 'interest', data: { debtAmount: debt, days: days, keyRate: rate, interestAmount: res.interestAmount, totalDebtWithInterest: res.totalDebtWithInterest } };
+
+                document.getElementById('res-main-label').innerText = 'Сумма долга с процентами ст. 395:';
+                document.getElementById('res-total').innerText = res.totalDebtWithInterest.toLocaleString('ru-RU') + ' ₽';
+
+                document.getElementById('res-line1-label').innerText = 'Сумма основного долга:';
+                document.getElementById('res-line1-val').innerText = debt.toLocaleString('ru-RU') + ' ₽';
+
+                document.getElementById('res-line2-label').innerText = 'Проценты по ставке ' + rate + '%:';
+                document.getElementById('res-line2-val').innerText = '+' + res.interestAmount.toLocaleString('ru-RU') + ' ₽';
+
+                document.getElementById('res-line3-label').innerText = 'Период просрочки:';
+                document.getElementById('res-line3-val').innerText = days + ' дн.';
+
+                document.getElementById('res-law-basis').innerText = res.lawBasis;
+            }
+            else if (currentTab === 'insurance') {
+                const cost = parseFloat(document.getElementById('ins-cost').value) || 0;
+                const days = parseFloat(document.getElementById('ins-days').value) || 0;
+
+                const res = LegalCalculator.calculateInsuranceRefund(cost, days);
+                latestCalculation = { type: 'insurance', data: { insuranceCost: cost, daysPassed: days, isEligible: res.isEligible, refundableAmount: res.refundableAmount } };
+
+                document.getElementById('res-main-label').innerText = 'Сумма к возврату со страховой:';
+                document.getElementById('res-total').innerText = res.refundableAmount.toLocaleString('ru-RU') + ' ₽';
+
+                document.getElementById('res-line1-label').innerText = 'Стоимость полиса / услуг:';
+                document.getElementById('res-line1-val').innerText = cost.toLocaleString('ru-RU') + ' ₽';
+
+                document.getElementById('res-line2-label').innerText = 'Срок подачи заявления:';
+                document.getElementById('res-line2-val').innerText = days + ' дн. (' + (res.isEligible ? 'В срок' : 'Превышен') + ')';
+
+                document.getElementById('res-line3-label').innerText = 'Статус по 353-ФЗ:';
+                document.getElementById('res-line3-val').innerText = res.isEligible ? '100% возврат' : 'Отказ по сроку';
+
+                document.getElementById('res-law-basis').innerText = res.lawBasis;
+            }
+        }
+
+        function downloadClaim() {
+            if (!latestCalculation || !window.LegalCalculator) return;
+            const text = LegalCalculator.generateClaimText(latestCalculation.type, latestCalculation.data, {
+                userName: '[ФИО Гражданина]',
+                userAddress: '[Адрес проживания]',
+                userPhone: '[Телефон для связи]',
+                recipientName: '[Наименование УК / Магазина / Банка]',
+                recipientAddress: '[Адрес организации]'
+            });
+
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Pretenziya_' + latestCalculation.type + '_YugPravo.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('Претензия успешно сгенерирована и скачана!');
+        }
+
+        function handleConsultationSubmit(e) {
+            e.preventDefault();
+            closeModal('modal-consultation');
+            showToast('Расчет и заявка переданы дежурным юристам АНО «ЦПЗ ЮГ-ПРАВО»!');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            recalculate();
+        });
+    </script>
+    <script src="js/main.js"></script>
+    <script src="js/legal-security.js"></script>
+</body>
+</html>

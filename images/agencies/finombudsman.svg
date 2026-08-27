@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" fill="none">
+    <!-- Outer Emblem Circle -->
+    <circle cx="50" cy="50" r="46" fill="#F8F7F4" stroke="#002B49" stroke-width="2.5"/>
+    <circle cx="50" cy="50" r="41" fill="#002B49"/>
+    
+    <!-- Gold Ring -->
+    <circle cx="50" cy="50" r="38" fill="none" stroke="#D0A144" stroke-width="1.2"/>
+    
+    <!-- Central Shield of Financial Justice -->
+    <path d="M50 20 L72 28 V50 C72 64 62 76 50 80 C38 76 28 64 28 50 V28 L50 20 Z" fill="#001D33" stroke="#D0A144" stroke-width="2"/>
+    
+    <!-- Central Pillar & Scales of Financial Balance -->
+    <path d="M50 28 V70" stroke="#D0A144" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M38 38 H62" stroke="#D0A144" stroke-width="2.2" stroke-linecap="round"/>
+    
+    <!-- Scale Pans (Left & Right) -->
+    <!-- Left Pan -->
+    <path d="M38 38 L33 48 H43 L38 38 Z" fill="#D0A144"/>
+    <path d="M33 50 C33 53 35.2 55 38 55 C40.8 55 43 53 43 50 Z" fill="#D0A144"/>
+    
+    <!-- Right Pan -->
+    <path d="M62 38 L57 48 H67 L62 38 Z" fill="#D0A144"/>
+    <path d="M57 50 C57 53 59.2 55 62 55 C64.8 55 67 53 67 50 Z" fill="#D0A144"/>
+    
+    <!-- Base Pedestal -->
+    <path d="M42 70 H58 M40 73 H60" stroke="#D0A144" stroke-width="2" stroke-linecap="round"/>
+    
+    <!-- Ruble / Financial Sparkle at top -->
+    <circle cx="50" cy="27" r="2.5" fill="#FFFFFF"/>
+</svg>

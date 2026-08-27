@@ -1,0 +1,51 @@
+User-agent: *
+Allow: /
+Allow: /css/
+Allow: /js/
+Allow: /images/
+Allow: /docs/
+Allow: /*.css$
+Allow: /*.js$
+Allow: /*.png$
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.svg$
+Allow: /*.mp4$
+Allow: /*.pdf$
+Disallow: /plugins/
+Disallow: /.agents/
+Disallow: /.stitch/
+Disallow: /scratch/
+Disallow: /node_modules/
+
+User-agent: Yandex
+Allow: /
+Allow: /css/
+Allow: /js/
+Allow: /images/
+Allow: /docs/
+Disallow: /plugins/
+Disallow: /.agents/
+Disallow: /.stitch/
+Disallow: /scratch/
+Clean-param: utm_source&utm_medium&utm_campaign&utm_term&utm_content&yclid&gclid&fbclid /
+
+User-agent: Googlebot
+Allow: /
+Allow: /css/
+Allow: /js/
+Allow: /images/
+Allow: /docs/
+Disallow: /plugins/
+Disallow: /.agents/
+Disallow: /.stitch/
+Disallow: /scratch/
+
+User-agent: Mail.ru
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+Sitemap: https://yug-pravo.ru/sitemap.xml
+Host: https://yug-pravo.ru

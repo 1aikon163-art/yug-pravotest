@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta name="description" content="Исходный код и техническая спецификация платформы АНО «ЮГ-ПРАВО»." />
+    <meta property="og:title" content="Юг-Право — Технический кодекс и спецификация платформы" />
+    <meta property="og:description" content="Исходный код, регламенты и открытые технические стандарты АНО «ЮГ-ПРАВО»." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://yug-pravo.ru/code.html" />
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Юг-право - Некоммерческая организация</title>
+
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "var(--surface-bright)",
+                        "surface-tint": "var(--surface-tint)",
+                        "surface-dim": "var(--surface-dim)",
+                        "surface-variant": "var(--surface-variant)",
+                        "outline": "var(--outline)",
+                        "on-tertiary-fixed": "var(--on-tertiary-fixed)",
+                        "tertiary-fixed": "var(--tertiary-fixed)",
+                        "tertiary-container": "var(--tertiary-container)",
+                        "inverse-surface": "var(--inverse-surface)",
+                        "error": "var(--error)",
+                        "surface-container-highest": "var(--surface-container-highest)",
+                        "outline-variant": "var(--outline-variant)",
+                        "secondary-container": "var(--secondary-container)",
+                        "on-tertiary": "var(--on-tertiary)",
+                        "on-primary": "var(--on-primary)",
+                        "inverse-primary": "var(--inverse-primary)",
+                        "surface-container": "var(--surface-container)",
+                        "primary-container": "var(--primary-container)",
+                        "on-primary-fixed": "var(--on-primary-fixed)",
+                        "inverse-on-surface": "var(--inverse-on-surface)",
+                        "secondary-fixed": "var(--secondary-fixed)",
+                        "surface": "var(--surface)",
+                        "tertiary": "var(--tertiary)",
+                        "on-error-container": "var(--on-error-container)",
+                        "on-secondary-fixed": "var(--on-secondary-fixed)",
+                        "on-secondary": "var(--on-secondary)",
+                        "on-tertiary-container": "var(--on-tertiary-container)",
+                        "on-secondary-fixed-variant": "var(--on-secondary-fixed-variant)",
+                        "on-primary-container": "var(--on-primary-container)",
+                        "secondary-fixed-dim": "var(--secondary-fixed-dim)",
+                        "primary": "var(--primary)",
+                        "surface-container-lowest": "var(--surface-container-lowest)",
+                        "tertiary-fixed-dim": "var(--tertiary-fixed-dim)",
+                        "on-primary-fixed-variant": "var(--on-primary-fixed-variant)",
+                        "on-surface": "var(--on-surface)",
+                        "background": "var(--background)",
+                        "surface-container-high": "var(--surface-container-high)",
+                        "on-secondary-container": "var(--on-secondary-container)",
+                        "on-background": "var(--on-background)",
+                        "on-error": "var(--on-error)",
+                        "surface-container-low": "var(--surface-container-low)",
+                        "on-tertiary-fixed-variant": "var(--on-tertiary-fixed-variant)",
+                        "primary-fixed-dim": "var(--primary-fixed-dim)",
+                        "primary-fixed": "var(--primary-fixed)",
+                        "secondary": "var(--secondary)",
+                        "error-container": "var(--error-container)",
+                        "on-surface-variant": "var(--on-surface-variant)"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "gutter": "24px",
+                        "margin-desktop": "64px",
+                        "container-max": "1200px",
+                        "margin-mobile": "16px",
+                        "section-gap": "120px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["\"Source Sans 3\""],
+                        "display-lg": ["\"Source Serif 4\""],
+                        "headline-md": ["\"Source Serif 4\""],
+                        "headline-lg-mobile": ["\"Source Serif 4\""],
+                        "body-lg": ["\"Source Sans 3\""],
+                        "body-md": ["\"Source Sans 3\""],
+                        "headline-lg": ["\"Source Serif 4\""]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        :root {
+            --surface-bright: #faf9fc;
+            --surface-tint: #476083;
+            --surface-dim: #dbd9dd;
+            --surface-variant: #e3e2e5;
+            --outline: #74777f;
+            --on-tertiary-fixed: #1a1c1c;
+            --tertiary-fixed: #e2e2e2;
+            --tertiary-container: #1d1f1f;
+            --inverse-surface: #2f3033;
+            --error: #ba1a1a;
+            --surface-container-highest: #e3e2e5;
+            --outline-variant: #c4c6cf;
+            --secondary-container: #e4e2e1;
+            --on-tertiary: #ffffff;
+            --on-primary: #ffffff;
+            --inverse-primary: #afc8f0;
+            --surface-container: #efedf0;
+            --primary-container: #001f3f;
+            --on-primary-fixed: #001c3a;
+            --inverse-on-surface: #f2f0f3;
+            --secondary-fixed: #e4e2e1;
+            --surface: #faf9fc;
+            --tertiary: #040606;
+            --on-error-container: #93000a;
+            --on-secondary-fixed: #1b1c1c;
+            --on-secondary: #ffffff;
+            --on-tertiary-container: #858687;
+            --on-secondary-fixed-variant: #474747;
+            --on-primary-container: #6f88ad;
+            --secondary-fixed-dim: #c8c6c6;
+            --primary: #000613;
+            --surface-container-lowest: #ffffff;
+            --tertiary-fixed-dim: #c6c6c7;
+            --on-primary-fixed-variant: #2f486a;
+            --on-surface: #1a1c1e;
+            --background: #faf9fc;
+            --surface-container-high: #e9e7eb;
+            --on-secondary-container: #656464;
+            --on-background: #1a1c1e;
+            --on-error: #ffffff;
+            --surface-container-low: #f4f3f6;
+            --on-tertiary-fixed-variant: #454747;
+            --primary-fixed-dim: #afc8f0;
+            --primary-fixed: #d4e3ff;
+            --secondary: #5f5e5e;
+            --error-container: #ffdad6;
+            --on-surface-variant: #43474e;
+        }
+
+        .dark {
+            --surface-bright: #393a3c;
+            --surface-tint: #afc8f0;
+            --surface-dim: #121316;
+            --surface-variant: #43474e;
+            --outline: #8e9199;
+            --on-tertiary-fixed: #1a1c1c;
+            --tertiary-fixed: #e2e2e2;
+            --tertiary-container: #1d1f1f;
+            --inverse-surface: #e4e2e5;
+            --error: #ffb4ab;
+            --surface-container-highest: #343538;
+            --outline-variant: #43474e;
+            --secondary-container: #484747;
+            --on-tertiary: #ffffff;
+            --on-primary: #001f3f;
+            --inverse-primary: #476083;
+            --surface-container: #1f2022;
+            --primary-container: #2f486a;
+            --on-primary-fixed: #001c3a;
+            --inverse-on-surface: #2f3033;
+            --secondary-fixed: #e4e2e1;
+            --surface: #121316;
+            --tertiary: #c6c6c7;
+            --on-error-container: #ffdad6;
+            --on-secondary-fixed: #1b1c1c;
+            --on-secondary: #303030;
+            --on-tertiary-container: #c6c6c7;
+            --on-secondary-fixed-variant: #474747;
+            --on-primary-container: #d4e3ff;
+            --secondary-fixed-dim: #c8c6c6;
+            --primary: #afc8f0;
+            --surface-container-lowest: #0d0e11;
+            --tertiary-fixed-dim: #c6c6c7;
+            --on-primary-fixed-variant: #2f486a;
+            --on-surface: #e4e2e5;
+            --background: #121316;
+            --surface-container-high: #292a2d;
+            --on-secondary-container: #e4e2e1;
+            --on-background: #e4e2e5;
+            --on-error: #690005;
+            --surface-container-low: #1b1c1e;
+            --on-tertiary-fixed-variant: #454747;
+            --primary-fixed-dim: #afc8f0;
+            --primary-fixed: #d4e3ff;
+            --secondary: #c8c6c6;
+            --error-container: #93000a;
+            --on-surface-variant: #c4c6cf;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .material-symbols-outlined.filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        /* Smooth scrolling for anchor links */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Scroll Animation Observer classes */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: opacity, transform;
+        }
+        
+        .scroll-animate.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
+        /* Card Hover Micro-interactions */
+        .interactive-card {
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+        }
+        .interactive-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .dark .interactive-card:hover {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Logo Shimmer Animation */
+        .logo-shimmer {
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+        
+        .logo-shimmer::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.3) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(30deg) translateX(-100%);
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+        
+        .dark .logo-shimmer::after {
+            background: linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.15) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+        }
+        
+        .logo-shimmer:hover::after {
+            transform: rotate(30deg) translateX(100%);
+        }
+
+        /* Hero Shader Canvas */
+        #hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Glow Effects */
+        .hover-glow:hover {
+            box-shadow: 0 0 15px rgba(0, 31, 63, 0.3);
+        }
+        
+        .dark .hover-glow:hover {
+            box-shadow: 0 0 15px rgba(175, 200, 240, 0.3);
+        }
+        
+        .button-glow:hover {
+            box-shadow: 0 0 20px rgba(0, 6, 19, 0.4);
+        }
+        
+        .dark .button-glow:hover {
+            box-shadow: 0 0 20px rgba(175, 200, 240, 0.4);
+        }
+        
+        /* Radial Wipe Transition for Theme */
+        ::view-transition-old(root),
+        ::view-transition-new(root) {
+            animation: none;
+            mix-blend-mode: normal;
+        }
+        
+        ::view-transition-old(root) {
+            z-index: 1;
+        }
+        
+        ::view-transition-new(root) {
+            z-index: 2;
+        }
+        
+        .dark::view-transition-old(root) {
+            z-index: 2;
+        }
+        
+        .dark::view-transition-new(root) {
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased pt-20 transition-colors duration-300">
+<!-- TopNavBar -->
+        <!-- ── 1. LIQUID FROSTED GLASS HEADER ── -->
+    <header class="glass-header" id="main-header">
+        <div class="header-container">
+            <a class="brand-logo-btn group" href="index.html" title="АНО «ЮГ-ПРАВО» — Главная">
+                <img alt="АНО «ЮГ-ПРАВО»" class="h-10 sm:h-11 w-auto" src="images/logo.png"/>
+            </a>
+
+            <!-- Desktop Nav Menu -->
+            <nav class="hidden lg:flex items-center gap-6">
+                <a class="text-xs uppercase font-semibold tracking-wider text-[#2C3E50] hover:text-[#0F2439] transition-colors py-1" href="events.html">События</a>
+                <a class="text-xs uppercase font-semibold tracking-wider text-[#2C3E50] hover:text-[#0F2439] transition-colors py-1" href="knowledge.html">База знаний</a>
+                <a class="text-xs uppercase font-bold tracking-wider text-[#0F2439] border-b-2 border-[#0F2439] py-1" href="initiatives.html">Инициативы</a>
+                <a class="text-xs uppercase font-semibold tracking-wider text-[#2C3E50] hover:text-[#0F2439] transition-colors py-1" href="calculator.html">Калькулятор</a>
+                <a class="text-xs uppercase font-semibold tracking-wider text-[#2C3E50] hover:text-[#0F2439] transition-colors py-1" href="about.html">Об организации</a>
+                <a class="text-xs uppercase font-semibold tracking-wider text-[#2C3E50] hover:text-[#0F2439] transition-colors py-1" href="disclosure.html">Раскрытие</a>
+            </nav>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-4">
+                <button class="hidden sm:inline-flex items-center justify-center px-5 py-2.5 bg-[#0F2439] text-white text-xs uppercase font-semibold tracking-wider hover:bg-[#1e3a5f] transition-all button-glow rounded shadow-sm" onclick="openModal('modal-donate')">
+                    Поддержать проект
+                </button>
+                <button aria-label="Меню" class="lg:hidden text-[#0F2439] p-2" id="mobile-menu-btn">
+                    <span class="material-symbols-outlined text-2xl">menu</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <nav class="hidden lg:hidden bg-[#F8F7F4]/95 backdrop-blur-xl border-t border-[#E0E0E0] px-6 py-4 flex flex-col gap-3 shadow-xl absolute w-full left-0" id="mobile-nav">
+            <a class="text-xs uppercase font-semibold text-[#2C3E50] hover:text-[#0F2439] py-2" href="events.html">События</a>
+            <a class="text-xs uppercase font-semibold text-[#2C3E50] hover:text-[#0F2439] py-2" href="knowledge.html">База знаний</a>
+            <a class="text-xs uppercase font-bold text-[#0F2439] py-2 border-b border-[#0F2439]/20" href="initiatives.html">Региональные инициативы</a>
+            <a class="text-xs uppercase font-semibold text-[#2C3E50] hover:text-[#0F2439] py-2" href="calculator.html">Правовой калькулятор</a>
+            <a class="text-xs uppercase font-semibold text-[#2C3E50] hover:text-[#0F2439] py-2" href="about.html">Об организации</a>
+            <a class="text-xs uppercase font-semibold text-[#2C3E50] hover:text-[#0F2439] py-2" href="disclosure.html">Раскрытие информации</a>
+            <button class="w-full mt-2 inline-flex items-center justify-center px-5 py-3 bg-[#0F2439] text-white text-xs uppercase font-semibold tracking-wider rounded" onclick="openModal('modal-donate'); document.getElementById('mobile-nav').classList.add('hidden');">
+                Поддержать проект
+            </button>
+        </nav>
+    </header>
+<!-- Floating Contact Button -->
+<a aria-label="Связаться с нами" class="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg hover:bg-primary-container transition-all duration-300 button-glow" href="#contact">
+<span class="material-symbols-outlined text-2xl">chat</span>
+</a>
+<main>
+<!-- Hero Section -->
+<section class="relative min-h-[85vh] flex items-center pt-10 pb-section-gap px-margin-mobile md:px-margin-desktop overflow-hidden">
+<canvas id="hero-canvas"></canvas>
+<div class="absolute inset-0 bg-primary/20 backdrop-blur-[2px]"></div>
+<div class="max-w-container-max mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center relative z-10 scroll-animate">
+<div class="col-span-1 lg:col-span-8 lg:col-start-1">
+<span class="inline-block px-3 py-1 border border-white/30 text-white font-label-sm text-label-sm uppercase tracking-widest mb-6 backdrop-blur-sm bg-black/20 rounded-sm">Некоммерческая организация</span>
+<h1 class="font-display-lg text-headline-lg-mobile md:text-display-lg text-white mb-8 max-w-4xl leading-tight drop-shadow-lg">
+                        Защита прав и общественных интересов.
+                    </h1>
+<p class="font-body-lg text-body-lg text-gray-200 mb-10 max-w-2xl drop-shadow-md">
+                        Мы — независимая некоммерческая организация, предоставляющая правовую поддержку, развивающая гражданское общество и обеспечивающая доступ к правосудию для каждого.
+                    </p>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="inline-flex items-center justify-center px-8 py-4 bg-white text-primary-container font-label-sm text-label-sm uppercase tracking-wide hover:bg-gray-100 transition-all duration-300 group button-glow rounded-sm" href="#contact">
+                            Обратиться за помощью
+                            <span class="material-symbols-outlined ml-2 text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+<a class="inline-flex items-center justify-center px-8 py-4 bg-transparent border border-white/50 text-white font-label-sm text-label-sm uppercase tracking-wide hover:bg-white/10 backdrop-blur-sm transition-all duration-300 group rounded-sm" href="#knowledge-base">
+                            Изучить материалы
+                        </a>
+</div>
+</div>
+</div>
+</section>
+<!-- Latest Events Section -->
+<section class="py-section-gap px-margin-mobile md:px-margin-desktop bg-surface transition-colors duration-300 scroll-animate" id="events">
+<div class="max-w-container-max mx-auto">
+<div class="mb-16 md:mb-24">
+<h2 class="font-display-lg text-headline-lg-mobile md:text-display-lg text-on-surface mb-4 transition-colors duration-300">События</h2>
+<div class="w-24 h-1 bg-primary"></div>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-6 max-w-3xl transition-colors duration-300">Наши отчеты, лекции и семинары по актуальным правовым вопросам.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Event 1 -->
+<div class="group border border-outline-variant hover:border-primary transition-all duration-300 bg-surface-container-lowest flex flex-col h-full rounded-sm overflow-hidden interactive-card">
+<div class="h-48 bg-surface-variant relative overflow-hidden">
+<div class="absolute inset-0 flex items-center justify-center text-outline group-hover:scale-110 transition-transform duration-700 bg-surface-variant">
+<span class="material-symbols-outlined text-4xl">photo_camera</span>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-grow bg-surface-container-lowest">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-wider mb-2">Семинар • 15 Октября 2023</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3 group-hover:text-primary transition-colors">Защита трудовых прав в условиях кризиса</h3>
+<p class="font-body-md text-body-md text-on-surface-variant flex-grow mb-6 transition-colors duration-300">Обсуждение новых изменений в трудовом законодательстве и практические советы по защите прав работников.</p>
+<a class="inline-flex items-center text-primary font-label-sm text-label-sm uppercase tracking-wide group-hover:underline w-max mt-auto" href="#">
+                                Читать отчет
+                                <span class="material-symbols-outlined ml-1 text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Event 2 -->
+<div class="group border border-outline-variant hover:border-primary transition-all duration-300 bg-surface-container-lowest flex flex-col h-full rounded-sm overflow-hidden delay-100 interactive-card">
+<div class="h-48 bg-surface-variant relative overflow-hidden">
+<div class="absolute inset-0 flex items-center justify-center text-outline group-hover:scale-110 transition-transform duration-700 bg-surface-variant">
+<span class="material-symbols-outlined text-4xl">photo_camera</span>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-grow bg-surface-container-lowest">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-wider mb-2">Лекция • 2 Октября 2023</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3 group-hover:text-primary transition-colors">Основы экологического права для активистов</h3>
+<p class="font-body-md text-body-md text-on-surface-variant flex-grow mb-6 transition-colors duration-300">Как использовать правовые механизмы для защиты окружающей среды в вашем регионе.</p>
+<a class="inline-flex items-center text-primary font-label-sm text-label-sm uppercase tracking-wide group-hover:underline w-max mt-auto" href="#">
+                                Смотреть запись
+                                <span class="material-symbols-outlined ml-1 text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Event 3 -->
+<div class="group border border-outline-variant hover:border-primary transition-all duration-300 bg-surface-container-lowest flex flex-col h-full rounded-sm overflow-hidden delay-200 interactive-card">
+<div class="h-48 bg-surface-variant relative overflow-hidden">
+<div class="absolute inset-0 flex items-center justify-center text-outline group-hover:scale-110 transition-transform duration-700 bg-surface-variant">
+<span class="material-symbols-outlined text-4xl">photo_camera</span>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-grow bg-surface-container-lowest">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-wider mb-2">Отчет • Сентябрь 2023</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3 group-hover:text-primary transition-colors">Мониторинг доступа к правосудию в ЮФО</h3>
+<p class="font-body-md text-body-md text-on-surface-variant flex-grow mb-6 transition-colors duration-300">Аналитический доклад по результатам исследования доступности юридической помощи для социально уязвимых групп.</p>
+<a class="inline-flex items-center text-primary font-label-sm text-label-sm uppercase tracking-wide group-hover:underline w-max mt-auto" href="#">
+                                Скачать PDF
+                                <span class="material-symbols-outlined ml-1 text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tools Section -->
+<section class="py-section-gap px-margin-mobile md:px-margin-desktop relative overflow-hidden scroll-animate" id="tools">
+<div class="absolute inset-0 bg-surface-container-low/90 dark:bg-surface-container-low/80 backdrop-blur-sm"></div>
+<div class="max-w-container-max mx-auto relative z-10">
+<div class="mb-16 md:mb-24">
+<h2 class="font-display-lg text-headline-lg-mobile md:text-display-lg text-on-surface mb-4 transition-colors duration-300">Инструменты</h2>
+<div class="w-24 h-1 bg-primary"></div>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-6 max-w-3xl transition-colors duration-300">Бесплатные сервисы для самостоятельной защиты ваших прав.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Tool 1: Constructor -->
+<div class="group p-8 bg-surface-container-lowest border border-outline-variant hover:border-primary transition-all duration-300 rounded-sm flex flex-col md:flex-row items-start gap-6 interactive-card">
+<div class="w-16 h-16 flex-shrink-0 flex items-center justify-center bg-primary-container text-on-primary rounded-sm shadow-inner group-hover:bg-primary transition-colors">
+<span class="material-symbols-outlined text-3xl">description</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3 transition-colors duration-300 group-hover:text-primary">Конструктор жалоб и заявлений</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 transition-colors duration-300">Автоматизированный сервис для создания юридически грамотных документов по шаблонам, разработанным нашими экспертами.</p>
+<a class="inline-flex items-center justify-center px-6 py-2 bg-surface-variant/80 border border-outline-variant/50 text-on-surface font-label-sm text-label-sm uppercase tracking-wide hover:bg-surface-dim transition-colors rounded-sm" href="#">
+                                Перейти к конструктору
+                            </a>
+</div>
+</div>
+<!-- Tool 2: Calculator -->
+<div class="group p-8 bg-surface-container-lowest border border-outline-variant hover:border-primary transition-all duration-300 rounded-sm flex flex-col md:flex-row items-start gap-6 delay-100 interactive-card">
+<div class="w-16 h-16 flex-shrink-0 flex items-center justify-center bg-primary-container text-on-primary rounded-sm shadow-inner group-hover:bg-primary transition-colors">
+<span class="material-symbols-outlined text-3xl">calculate</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3 transition-colors duration-300 group-hover:text-primary">Калькулятор госпошлин и неустоек</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 transition-colors duration-300">Удобный инструмент для точного расчета государственных пошлин, пеней и других судебных расходов онлайн.</p>
+<a class="inline-flex items-center justify-center px-6 py-2 bg-surface-variant/80 border border-outline-variant/50 text-on-surface font-label-sm text-label-sm uppercase tracking-wide hover:bg-surface-dim transition-colors rounded-sm" href="#">
+                                Открыть калькулятор
+                            </a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Knowledge Base Section -->
+<section class="scroll-animate" id="knowledge-base">
+<div class="relative py-20 px-margin-mobile md:px-margin-desktop overflow-hidden">
+<div class="absolute inset-0 bg-primary-container/80 dark:bg-primary-container/90 backdrop-blur-sm mix-blend-multiply"></div>
+<div class="max-w-container-max mx-auto relative z-10">
+<div class="flex justify-between items-end flex-wrap gap-6">
+<div>
+<h2 class="font-display-lg text-headline-lg-mobile md:text-display-lg text-white mb-4 drop-shadow-md">База знаний</h2>
+<div class="w-24 h-1 bg-primary-fixed"></div>
+<p class="font-body-lg text-body-lg text-gray-200 mt-6 max-w-2xl drop-shadow-sm">Полезные статьи, памятки и инструкции по защите своих прав в различных жизненных ситуациях.</p>
+</div>
+<a class="inline-flex items-center text-primary-fixed font-label-sm text-label-sm uppercase tracking-wide group hover:text-white transition-colors" href="#">
+                            Смотреть все материалы
+                            <span class="material-symbols-outlined ml-1 text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+<div class="py-16 px-margin-mobile md:px-margin-desktop bg-surface transition-colors duration-300">
+<div class="max-w-container-max mx-auto -mt-24 relative z-20">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Article 1 -->
+<a class="group p-6 bg-surface-container-lowest hover:border-primary transition-all duration-300 block rounded-sm border border-outline-variant/50 interactive-card" href="#">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center mb-4 group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-outline group-hover:text-on-primary transition-colors">article</span>
+</div>
+<h4 class="font-headline-md text-body-lg font-bold text-on-surface mb-2 group-hover:text-primary transition-colors">Памятка при задержании</h4>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-3 transition-colors duration-300">Краткая инструкция о том, как вести себя и какие права вы имеете при общении с сотрудниками правоохранительных органов.</p>
+</a>
+<!-- Article 2 -->
+<a class="group p-6 bg-surface-container-lowest hover:border-primary transition-all duration-300 block rounded-sm border border-outline-variant/50 delay-100 interactive-card" href="#">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center mb-4 group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-outline group-hover:text-on-primary transition-colors">gavel</span>
+</div>
+<h4 class="font-headline-md text-body-lg font-bold text-on-surface mb-2 group-hover:text-primary transition-colors">Как подать иск в суд</h4>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-3 transition-colors duration-300">Пошаговое руководство по составлению и подаче искового заявления в суды общей юрисдикции.</p>
+</a>
+<!-- Article 3 -->
+<a class="group p-6 bg-surface-container-lowest hover:border-primary transition-all duration-300 block rounded-sm border border-outline-variant/50 delay-200 interactive-card" href="#">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center mb-4 group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-outline group-hover:text-on-primary transition-colors">home</span>
+</div>
+<h4 class="font-headline-md text-body-lg font-bold text-on-surface mb-2 group-hover:text-primary transition-colors">Споры с ЖКХ</h4>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-3 transition-colors duration-300">Разбираем типичные проблемы с управляющими компаниями и способы их правового решения.</p>
+</a>
+<!-- Article 4 -->
+<a class="group p-6 bg-surface-container-lowest hover:border-primary transition-all duration-300 block rounded-sm border border-outline-variant/50 delay-300 interactive-card" href="#">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center mb-4 group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-outline group-hover:text-on-primary transition-colors">account_balance</span>
+</div>
+<h4 class="font-headline-md text-body-lg font-bold text-on-surface mb-2 group-hover:text-primary transition-colors">Права потребителей</h4>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-3 transition-colors duration-300">Что делать, если вы купили некачественный товар или вам оказали услугу ненадлежащего качества.</p>
+</a>
+</div>
+</div>
+</div>
+</section>
+<!-- About Section (NGO Compliance Info) -->
+<section class="py-section-gap px-margin-mobile md:px-margin-desktop bg-surface-container-low transition-colors duration-300 scroll-animate" id="about">
+<div class="max-w-container-max mx-auto">
+<div class="mb-12">
+<h2 class="font-display-lg text-headline-lg-mobile md:text-display-lg text-on-surface mb-4 transition-colors duration-300">Об организации</h2>
+<div class="w-24 h-1 bg-primary"></div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+<div class="lg:col-span-2"><div class="mb-8 flex flex-col md:flex-row items-center gap-8"><img alt="Руководитель организации" class="w-48 h-64 object-cover rounded-sm border border-outline-variant/30" src="https://lh3.googleusercontent.com/aida/AEtjO1ULxeRtmolG08mYxqWQ7-ypyuxLjK_ZSnuQERzHfLZasrP0dk0KLCofZDV8B_vSlBNEcFnJuNsFraVcOImCAwYtUJbrPZLqC-teL_rgc4oexK0T0Gpam0NFb4furmge4X6oEvQ82DNUr5EKbNBoshFv2GlMiyBfLlhSUz7WTDKBy6Elk2QYtGkjgRvzyqKsTN6AsDbZsUbdo9RLKcGNWSjGAyEjkf7x95SeinZgRjBma2fvEY8f0dPF4Ng"/><div class="flex-grow"><p class="font-headline-md text-primary mb-2">Наши ценности</p><p class="font-body-md text-on-surface-variant italic">"Мы верим, что развитие гражданских инициатив и доступ к правосудию — это не привилегия, а фундаментальное право каждого человека. Наша миссия — обеспечить социальную защиту и сделать закон понятным инструментом развития общества."</p></div></div>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-6 transition-colors duration-300">
+                            АНО «Юг-право» создана в целях предоставления услуг в сфере защиты прав и свобод человека и гражданина, правового просвещения населения и содействия развитию институтов гражданского общества.
+                        </p>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 transition-colors duration-300">
+                            Наша деятельность направлена на оказание бесплатной юридической помощи социально незащищенным категориям граждан, проведение независимых правовых экспертиз и мониторинга правоприменительной практики.
+                        </p>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-4 mt-8 transition-colors duration-300">Реквизиты организации</h3>
+<div class="bg-surface-container-lowest p-6 rounded-sm shadow-sm">
+<dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-4">
+<div>
+<dt class="font-label-sm text-outline uppercase tracking-wider mb-1">Полное наименование</dt>
+<dd class="font-body-md text-on-surface">АВТОНОМНАЯ НЕКОММЕРЧЕСКАЯ ОРГАНИЗАЦИЯ "ЦЕНТР ПРАВОВОЙ ЗАЩИТЫ И РАЗВИТИЯ ГРАЖДАНСКИХ ИНИЦИАТИВ ЮГ-ПРАВО"</dd>
+</div>
+<div>
+<dt class="font-label-sm text-outline uppercase tracking-wider mb-1">ИНН / КПП</dt>
+<dd class="font-body-md text-on-surface">6317174776 / 631701001</dd>
+</div>
+<div>
+<dt class="font-label-sm text-outline uppercase tracking-wider mb-1">ОГРН</dt>
+<dd class="font-body-md text-on-surface">1266300015080</dd>
+</div>
+<div>
+<dt class="font-label-sm text-outline uppercase tracking-wider mb-1">Юридический адрес</dt>
+<dd class="font-body-md text-on-surface">446186, РОССИЯ, САМАРСКАЯ ОБЛ, БОЛЬШЕГЛУШИЦКИЙ М.Р-Н, ЮЖНОЕ С.П., П ЮЖНЫЙ, УЛ ЦЕНТРАЛЬНАЯ, Д. 7, КВ. 1</dd>
+</div>
+</dl>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-sm shadow-md" id="reports">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-6 border-b border-outline-variant/30 pb-4 transition-colors duration-300">Раскрытие информации</h3>
+<ul class="space-y-5">
+<li class="">
+<a class="flex items-center gap-4 text-on-surface-variant hover:text-primary hover:translate-x-2 transition-all duration-300 group" href="#">
+<div class="p-2 rounded-full bg-surface-variant/50 group-hover:bg-primary-container/20 transition-colors">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">description</span>
+</div>
+<span class="font-body-md text-body-md font-medium">Устав организации</span>
+</a>
+</li>
+<li class="">
+<a class="flex items-center gap-4 text-on-surface-variant hover:text-primary hover:translate-x-2 transition-all duration-300 group" href="#">
+<div class="p-2 rounded-full bg-surface-variant/50 group-hover:bg-primary-container/20 transition-colors">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">policy</span>
+</div>
+<span class="font-body-md text-body-md font-medium">Политика обработки персональных данных</span>
+</a>
+</li>
+<li class="">
+<a class="flex items-center gap-4 text-on-surface-variant hover:text-primary hover:translate-x-2 transition-all duration-300 group" href="#">
+<div class="p-2 rounded-full bg-surface-variant/50 group-hover:bg-primary-container/20 transition-colors">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">info</span>
+</div>
+<span class="font-body-md text-body-md font-medium">Отчетность для Минюста РФ</span>
+</a>
+</li>
+<li class="">
+<a class="flex items-center gap-4 text-on-surface-variant hover:text-primary hover:translate-x-2 transition-all duration-300 group" href="#">
+<div class="p-2 rounded-full bg-surface-variant/50 group-hover:bg-primary-container/20 transition-colors">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">fact_check</span>
+</div>
+<span class="font-body-md text-body-md font-medium">Сведения для Роскомнадзора</span>
+</a>
+</li>
+<li class="">
+<a class="flex items-center gap-4 text-on-surface-variant hover:text-primary hover:translate-x-2 transition-all duration-300 group" href="#">
+<div class="p-2 rounded-full bg-surface-variant/50 group-hover:bg-primary-container/20 transition-colors">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">analytics</span>
+</div>
+<span class="font-body-md text-body-md font-medium">Годовые публичные отчеты</span>
+</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<!-- Contact Section -->
+<section class="py-section-gap px-margin-mobile md:px-margin-desktop bg-surface transition-colors duration-300 scroll-animate" id="contact">
+<div class="max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<div class="lg:col-span-5 lg:pr-12">
+<h2 class="font-display-lg text-headline-lg-mobile md:text-display-lg text-on-surface mb-6 transition-colors duration-300">Свяжитесь с нами</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-10 transition-colors duration-300">
+                        Оставьте заявку, и наши специалисты свяжутся с вами в ближайшее время для обсуждения деталей вашего вопроса.
+                    </p>
+<div class="space-y-6">
+<div class="flex items-start gap-4 p-4 rounded-sm hover:bg-surface-variant/30 transition-colors">
+<div class="p-3 rounded-full bg-primary-container/10 text-primary">
+<span class="material-symbols-outlined mt-1">location_on</span>
+</div>
+<div>
+<h4 class="font-label-sm text-label-sm uppercase text-on-surface tracking-wide mb-1 transition-colors duration-300">Офис</h4>
+<p class="font-body-md text-body-md text-on-surface-variant transition-colors duration-300">ул. Правовая, д. 1, БЦ "Статус"<br/>Москва, 123456</p>
+</div>
+</div>
+<div class="flex items-start gap-4 p-4 rounded-sm hover:bg-surface-variant/30 transition-colors">
+<div class="p-3 rounded-full bg-primary-container/10 text-primary">
+<span class="material-symbols-outlined mt-1">call</span>
+</div>
+<div>
+<h4 class="font-label-sm text-label-sm uppercase text-on-surface tracking-wide mb-1 transition-colors duration-300">Телефон</h4>
+<p class="font-body-md text-body-md text-on-surface-variant transition-colors duration-300"><a class="hover:text-primary transition-colors font-semibold" href="tel:+74950000000">+7 (495) 000-00-00</a></p>
+</div>
+</div>
+<div class="flex items-start gap-4 p-4 rounded-sm hover:bg-surface-variant/30 transition-colors">
+<div class="p-3 rounded-full bg-primary-container/10 text-primary">
+<span class="material-symbols-outlined mt-1">mail</span>
+</div>
+<div>
+<h4 class="font-label-sm text-label-sm uppercase text-on-surface tracking-wide mb-1 transition-colors duration-300">Email</h4>
+<p class="font-body-md text-body-md text-on-surface-variant transition-colors duration-300"><a class="hover:text-primary transition-colors font-semibold" href="mailto:info@yug-pravo.ru">info@yug-pravo.ru</a></p>
+</div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-7 mt-12 lg:mt-0 p-8 md:p-12 bg-surface-container-lowest rounded-sm shadow-md transition-colors duration-300">
+<form class="space-y-8">
+<div class="relative">
+<label class="block font-label-sm text-label-sm text-on-surface uppercase tracking-wide mb-2 transition-colors duration-300" for="name">Имя</label>
+<input class="w-full bg-transparent border-0 border-b-2 border-outline-variant focus:border-primary focus:ring-0 px-0 py-3 font-body-md text-on-surface transition-colors placeholder-on-surface-variant/50" id="name" name="name" placeholder="Ваше имя" type="text"/>
+</div>
+<div class="relative">
+<label class="block font-label-sm text-label-sm text-on-surface uppercase tracking-wide mb-2 transition-colors duration-300" for="phone">Телефон</label>
+<input class="w-full bg-transparent border-0 border-b-2 border-outline-variant focus:border-primary focus:ring-0 px-0 py-3 font-body-md text-on-surface transition-colors placeholder-on-surface-variant/50" id="phone" name="phone" placeholder="+7 (___) ___-__-__" type="tel"/>
+</div>
+<div class="relative">
+<label class="block font-label-sm text-label-sm text-on-surface uppercase tracking-wide mb-2 transition-colors duration-300" for="message">Сообщение (необязательно)</label>
+<textarea class="w-full bg-transparent border-0 border-b-2 border-outline-variant focus:border-primary focus:ring-0 px-0 py-3 font-body-md text-on-surface transition-colors placeholder-on-surface-variant/50 resize-none" id="message" name="message" placeholder="Кратко опишите вашу ситуацию" rows="3"></textarea>
+</div>
+<div class="pt-6">
+<button class="w-full md:w-auto inline-flex items-center justify-center px-10 py-4 bg-primary text-on-primary font-label-sm text-label-sm uppercase tracking-wide rounded-sm hover:bg-primary-container transition-all duration-300 button-glow" type="submit">
+                                Отправить заявку
+                            </button>
+<p class="font-label-sm text-label-sm text-outline mt-4 text-xs tracking-normal text-center md:text-left">Нажимая кнопку, вы соглашаетесь с <a class="underline hover:text-primary transition-colors" href="#">политикой обработки персональных данных</a>.</p>
+</div>
+</form>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 px-margin-mobile md:px-margin-desktop flex flex-col items-center gap-8 bg-surface-container-highest border-t border-outline-variant text-center transition-colors duration-300">
+<div>
+<img alt="Юг-право" class="h-20 w-auto mb-6 mx-auto opacity-70 hover:opacity-100 transition-opacity" src="https://lh3.googleusercontent.com/aida/AEtjO1VhMfLFCR8YK1IJh1Co2EcFAAGNuCRhNBF2FQi0b8N4si-d4Ft_0_IFLlHQZjLlI0ZH-Dg3e9ETwyBqCHiBYJ7uWnM2nLZKskx5i6Gfu-S43vcE7AfXbJA1wMzBPM7mjq4gFhc6kNTetpONyqbD6JvfvRkXKXF7g4z12B4R5GePUkoHxV1RyrhgQqcyrPFBWWR6kT8Gbtr550-7laUprFxJCEVqJ44_mla1XPt8IfZi3OeHPteOrmHJ0nE"/>
+<div class="font-body-md text-body-md text-on-surface-variant max-w-2xl mx-auto transition-colors duration-300 mb-4">АВТОНОМНАЯ НЕКОММЕРЧЕСКАЯ ОРГАНИЗАЦИЯ "ЦЕНТР ПРАВОВОЙ ЗАЩИТЫ И РАЗВИТИЯ ГРАЖДАНСКИХ ИНИЦИАТИВ ЮГ-ПРАВО".<br/>ИНН 6317174776 | ОГРН 1266300015080<br/>Юридический адрес: 446186, РОССИЯ, САМАРСКАЯ ОБЛ, БОЛЬШЕГЛУШИЦКИЙ М.Р-Н, ЮЖНОЕ С.П., П ЮЖНЫЙ, УЛ ЦЕНТРАЛЬНАЯ, Д. 7, КВ. 1</div>
+<div class="flex justify-center gap-6 mt-8">
+<a aria-label="Telegram" class="p-3 rounded-full bg-surface-variant/50 text-on-surface-variant hover:bg-primary-container hover:text-on-primary transition-all duration-300 hover:scale-110 shadow-sm" href="#">
+<svg class="w-6 h-6 fill-current" viewbox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"></path></svg>
+</a>
+<a aria-label="WhatsApp" class="p-3 rounded-full bg-surface-variant/50 text-on-surface-variant hover:bg-primary-container hover:text-on-primary transition-all duration-300 hover:scale-110 shadow-sm" href="#">
+<svg class="w-6 h-6 fill-current" viewbox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
+</a>
+</div>
+</div>
+<div class="flex flex-wrap justify-center gap-4 md:gap-8 border-t border-outline-variant/30 pt-8 w-full max-w-4xl">
+<a class="font-label-sm text-label-sm text-secondary hover:text-primary transition-colors" href="#">Политика обработки персональных данных</a>
+<a class="font-label-sm text-label-sm text-secondary hover:text-primary transition-colors" href="#">Устав</a>
+<a class="font-label-sm text-label-sm text-secondary hover:text-primary transition-colors" href="#">Отчетность организации</a>
+<a class="font-label-sm text-label-sm text-secondary hover:text-primary transition-colors" href="#">Карта сайта</a>
+</div>
+<div class="font-label-sm text-label-sm text-secondary">
+            © 2024 АНО «Юг-право». Все права защищены.
+        </div>
+</footer>
+<script>
+        // Simple header background toggle on scroll for visual depth
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-md');
+                header.classList.remove('border-b');
+            } else {
+                header.classList.remove('shadow-md');
+                header.classList.add('border-b');
+            }
+        });
+
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-animate').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Theme Toggle Logic with View Transitions
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+
+        // Check for saved user preference, if any, on load of the website
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            htmlElement.classList.add('dark');
+        } else {
+            htmlElement.classList.remove('dark');
+        }
+
+        if (themeToggleBtn) {
+            themeToggleBtn.addEventListener('click', function(e) {
+            // Function to actually toggle theme
+            const toggleTheme = () => {
+                if (htmlElement.classList.contains('dark')) {
+                    htmlElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                } else {
+                    htmlElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                }
+            };
+
+            // Check if View Transitions API is supported
+            if (!document.startViewTransition) {
+                toggleTheme();
+                return;
+            }
+
+            // Get click coordinates for radial wipe origin
+            const x = e.clientX;
+            const y = e.clientY;
+            const endRadius = Math.hypot(
+                Math.max(x, innerWidth - x),
+                Math.max(y, innerHeight - y)
+            );
+
+            // Start view transition
+            const transition = document.startViewTransition(() => {
+                toggleTheme();
+            });
+
+            // Add custom animation for radial wipe
+            transition.ready.then(() => {
+                const clipPath = [
+                    `circle(0px at ${x}px ${y}px)`,
+                    `circle(${endRadius}px at ${x}px ${y}px)`
+                ];
+                
+                document.documentElement.animate(
+                    {
+                        clipPath: htmlElement.classList.contains('dark') ? clipPath : [...clipPath].reverse(),
+                    },
+                    {
+                        duration: 500,
+                        easing: 'ease-in-out',
+                        pseudoElement: htmlElement.classList.contains('dark') ? '::view-transition-new(root)' : '::view-transition-old(root)',
+                    }
+                );
+            });
+        });
+        }
+
+        // Three.js Shader Setup
+        const canvas = document.getElementById('hero-canvas');
+        if (canvas) {
+            const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+            const fragmentShader = `
+                precision highp float;
+                uniform float u_time;
+                uniform vec2 u_resolution;
+                uniform vec2 u_mouse;
+
+                varying vec2 v_texCoord;
+
+                void main() {
+                    vec2 uv = v_texCoord;
+                    
+                    // Create a subtle, flowing deep navy gradient
+                    vec3 color1 = vec3(0.0, 0.12, 0.25); // Deep Navy #001f3f approximation
+                    vec3 color2 = vec3(0.03, 0.05, 0.09); // Darker base
+                    
+                    float noise = sin(uv.x * 3.0 + u_time * 0.2) * cos(uv.y * 2.0 - u_time * 0.3) * 0.5 + 0.5;
+                    vec3 finalColor = mix(color1, color2, noise * 0.4 + 0.2);
+                    
+                    // Add a very subtle 'shimmer' or light beam
+                    float beam = smoothstep(0.45, 0.5, sin(uv.x * 2.0 + uv.y - u_time * 0.1) * 0.5 + 0.5);
+                    finalColor += beam * 0.02;
+
+                    gl_FragColor = vec4(finalColor, 1.0);
+                }
+            `;
+
+            const vertexShader = `
+                varying vec2 v_texCoord;
+                void main() {
+                    v_texCoord = uv;
+                    gl_Position = vec4(position, 1.0);
+                }
+            `;
+
+            const geometry = new THREE.PlaneGeometry(2, 2);
+            const material = new THREE.ShaderMaterial({
+                fragmentShader,
+                vertexShader,
+                uniforms: {
+                    u_time: { value: 0.0 },
+                    u_resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+                    u_mouse: { value: new THREE.Vector2() }
+                }
+            });
+
+            const mesh = new THREE.Mesh(geometry, material);
+            scene.add(mesh);
+
+            function animate(time) {
+                requestAnimationFrame(animate);
+                material.uniforms.u_time.value = time * 0.001;
+                renderer.render(scene, camera);
+            }
+            requestAnimationFrame(animate);
+
+            window.addEventListener('resize', () => {
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                material.uniforms.u_resolution.value.set(window.innerWidth, window.innerHeight);
+            });
+            
+            window.addEventListener('mousemove', (e) => {
+                material.uniforms.u_mouse.value.set(e.clientX, e.clientY);
+            });
+        }
+    </script>
+</body></html>
