@@ -198,13 +198,21 @@ function initMobileMenu() {
   const menuBtn = document.getElementById('mobile-menu-btn');
   const mobileNav = document.getElementById('mobile-nav');
   if (!menuBtn || !mobileNav) return;
+  if (menuBtn.dataset.menuBound === 'true') return;
+  menuBtn.dataset.menuBound = 'true';
 
   menuBtn.addEventListener('click', (e) => {
+    e.preventDefault();
     e.stopPropagation();
-    const isHidden = mobileNav.classList.toggle('hidden');
+    const willOpen = mobileNav.classList.contains('hidden');
+    if (willOpen) {
+      mobileNav.classList.remove('hidden');
+    } else {
+      mobileNav.classList.add('hidden');
+    }
     const icon = menuBtn.querySelector('.material-symbols-outlined');
     if (icon) {
-      icon.textContent = isHidden ? 'menu' : 'close';
+      icon.textContent = willOpen ? 'close' : 'menu';
     }
   });
 
