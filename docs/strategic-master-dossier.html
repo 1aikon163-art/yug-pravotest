@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Генеральный стратегический атлас возможностей — АНО «ЦПЗ ЮГ-ПРАВО»</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 15mm 15mm 15mm 15mm;
+    }
+    :root {
+      --primary: #0F2439;
+      --gold: #C5A880;
+      --gold-dark: #8F7249;
+      --surface: #F8F7F4;
+      --text: #1C2024;
+      --text-muted: #5F6672;
+      --border: #E2DFD8;
+    }
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text);
+      background: #EFECE6;
+      margin: 0;
+      padding: 30px 20px;
+      font-size: 11pt;
+      line-height: 1.5;
+    }
+    .print-bar {
+      max-width: 900px;
+      margin: 0 auto 25px auto;
+      background: var(--primary);
+      color: #fff;
+      padding: 16px 24px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 10px 25px rgba(15,36,57,0.15);
+    }
+    .print-btn {
+      background: #FDDC2E;
+      color: #0F2439;
+      border: none;
+      padding: 12px 24px;
+      font-weight: 700;
+      font-size: 13pt;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .print-btn:hover {
+      background: #e6c825;
+      transform: translateY(-1px);
+    }
+    .sheet {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 40px 45px;
+      border-radius: 4px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      border: 1px solid var(--border);
+    }
+    .header-box {
+      border-bottom: 2px solid var(--gold);
+      padding-bottom: 20px;
+      margin-bottom: 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .header-title {
+      font-family: 'Cinzel', serif;
+      font-size: 20pt;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: 0.5px;
+      line-height: 1.2;
+      margin: 0 0 6px 0;
+    }
+    .header-sub {
+      font-family: 'Playfair Display', serif;
+      font-size: 12pt;
+      color: var(--gold-dark);
+      margin: 0 0 12px 0;
+    }
+    .meta-grid {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      font-size: 9pt;
+      margin-bottom: 25px;
+    }
+    .meta-item strong {
+      display: block;
+      color: var(--primary);
+      font-size: 8pt;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 14pt;
+      color: var(--primary);
+      border-left: 4px solid var(--gold);
+      padding-left: 10px;
+      margin: 30px 0 15px 0;
+      page-break-after: avoid;
+    }
+    h3 {
+      font-size: 11pt;
+      color: var(--primary);
+      margin: 18px 0 8px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      page-break-after: avoid;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 7.5pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+    .badge-gold { background: #F6EFE6; color: var(--gold-dark); border: 1px solid var(--gold); }
+    .badge-navy { background: #E9EFF5; color: var(--primary); border: 1px solid var(--primary); }
+    .badge-green { background: #E6F4EA; color: #137333; border: 1px solid #137333; }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-bottom: 14px;
+      background: #FFFFFF;
+      page-break-inside: avoid;
+    }
+    .card-highlight {
+      background: #FAF9F6;
+      border-left: 3px solid var(--gold);
+    }
+    .pro-con-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 8px;
+      font-size: 9.5pt;
+    }
+    .pro-box {
+      background: #F4F8F4;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border-left: 3px solid #34A853;
+    }
+    .con-box {
+      background: #FCF7F7;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border-left: 3px solid #EA4335;
+    }
+    .trick-box {
+      background: #F0F4F8;
+      border: 1px solid #D0DFE9;
+      padding: 10px 14px;
+      border-radius: 6px;
+      margin-top: 8px;
+      font-size: 9pt;
+      color: #0F2439;
+    }
+    .table-custom {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8.5pt;
+      margin: 15px 0;
+      page-break-inside: avoid;
+    }
+    .table-custom th, .table-custom td {
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      text-align: left;
+    }
+    .table-custom th {
+      background: var(--primary);
+      color: #fff;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+    }
+    .table-custom tr:nth-child(even) {
+      background: var(--surface);
+    }
+    .page-break {
+      page-break-before: always;
+    }
+    .footer-seal {
+      margin-top: 35px;
+      border-top: 1px solid var(--border);
+      padding-top: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 8.5pt;
+      color: var(--text-muted);
+    }
+
+    @media print {
+      body {
+        background: #fff;
+        padding: 0;
+      }
+      .print-bar {
+        display: none !important;
+      }
+      .sheet {
+        border: none;
+        padding: 0;
+        box-shadow: none;
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="print-bar">
+    <div>
+      <strong style="font-size: 15pt; display: block;">🏛️ Генеральный атлас возможностей АНО «ЮГ-ПРАВО»</strong>
+      <span style="font-size: 10pt; opacity: 0.85;">Официальный стратегический документ со всеми статусами, законами и дорожной картой.</span>
+    </div>
+    <button class="print-btn" onclick="window.print()">🖨️ РАСПЕЧАТАТЬ / СОХРАНИТЬ В PDF</button>
+  </div>
+
+  <div class="sheet">
+
+    <!-- Header Box -->
+    <div class="header-box">
+      <div>
+        <div class="header-title">ГЕНЕРАЛЬНЫЙ СТРАТЕГИЧЕСКИЙ АТЛАС</div>
+        <div class="header-sub">Правовые статусы, государственные реестры, надзорные полномочия и финансовые рычаги</div>
+      </div>
+      <div style="text-align: right; font-size: 9pt; color: var(--text-muted);">
+        <strong>АНО «ЦПЗ ЮГ-ПРАВО»</strong><br>
+        27.08.2026 г.
+      </div>
+    </div>
+
+    <!-- Meta Grid -->
+    <div class="meta-grid">
+      <div class="meta-item">
+        <strong>Организация</strong>
+        АНО «ЦПЗ ЮГ-ПРАВО»
+      </div>
+      <div class="meta-item">
+        <strong>Руководитель</strong>
+        Шарыпаев Павел Валерьевич
+      </div>
+      <div class="meta-item">
+        <strong>ОГРН / ИНН / КПП</strong>
+        1266300015080 / 6317174776 / 631701001
+      </div>
+      <div class="meta-item">
+        <strong>Минюст РФ (Учетный №)</strong>
+        № 6314010192
+      </div>
+      <div class="meta-item">
+        <strong>Роскомнадзор (Реестр ОПД)</strong>
+        № 100374150
+      </div>
+      <div class="meta-item">
+        <strong>Юридический адрес</strong>
+        Самарская обл., Большеглушицкий р-н, п. Южный
+      </div>
+    </div>
+
+    <!-- Section 1: OKVED -->
+    <h2>1. АУДИТ 11 КОДОВ ОКВЭД (ЕГРЮЛ)</h2>
+    <p style="font-size: 9pt; color: var(--text-muted); margin-top: -8px;">Все 11 кодов подобраны с максимальной синергией под профильные программы господдержки и грантов:</p>
+
+    <table class="table-custom">
+      <thead>
+        <tr>
+          <th style="width: 10%;">Код</th>
+          <th style="width: 35%;">Наименование вида деятельности</th>
+          <th style="width: 55%;">Что открывает по закону РФ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>69.10</strong></td>
+          <td><strong>Деятельность в области права (Основной)</strong></td>
+          <td>Представительство в судах всех инстанций, подготовка исков, аккредитация Центра БЮП (324-ФЗ), Центр медиации (193-ФЗ), антикоррупционная экспертиза (172-ФЗ).</td>
+        </tr>
+        <tr>
+          <td><strong>62.01</strong></td>
+          <td>Разработка компьютерного ПО</td>
+          <td>Аккредитация IT-компании в Минцифры РФ; гранты Фонда содействия инновациям (ФСИ) на LegalTech до 20 млн ₽.</td>
+        </tr>
+        <tr>
+          <td><strong>62.09</strong></td>
+          <td>Деятельность в области IT прочая</td>
+          <td>Разработка правовых баз данных, AI-ассистентов и цифровых сервисов правовой защиты.</td>
+        </tr>
+        <tr>
+          <td><strong>63.11</strong></td>
+          <td>Обработка данных и хостинг</td>
+          <td>Размещение серверов, облачных платформ, электронных приёмных граждан (152-ФЗ).</td>
+        </tr>
+        <tr>
+          <td><strong>63.12</strong></td>
+          <td>Деятельность web-порталов</td>
+          <td>Регистрация официального Сетевого издания (СМИ) в Роскомнадзоре; развитие правовых порталов.</td>
+        </tr>
+        <tr>
+          <td><strong>72.20</strong></td>
+          <td>Научные исследования в гуманитарных науках</td>
+          <td>Правовые мониторинги, социологические исследования, аналитические доклады для Госдумы и СПЧ; гранты РНФ.</td>
+        </tr>
+        <tr>
+          <td><strong>73.11</strong></td>
+          <td>Деятельность рекламных агентств</td>
+          <td>Производство и размещение социальной рекламы, просветительских билбордов и роликов.</td>
+        </tr>
+        <tr>
+          <td><strong>88.99</strong></td>
+          <td>Предоставление прочих социальных услуг</td>
+          <td><strong>Главный код для бюджета:</strong> Реестр поставщиков социальных услуг (442-ФЗ) с прямыми выплатами из бюджета Самарской области; статус СОНКО.</td>
+        </tr>
+        <tr>
+          <td><strong>94.99</strong></td>
+          <td>Деятельность прочих общественных организаций</td>
+          <td>Общественные инициативы, общественные советы, взаимодействие с муниципалитетами.</td>
+        </tr>
+        <tr>
+          <td><strong>94.99.1</strong></td>
+          <td>Деятельность правозащитных организаций</td>
+          <td>Гранты Фонда президентских грантов («Защита прав человека»); выдвижение в Общественную наблюдательную комиссию (ОНК по 76-ФЗ).</td>
+        </tr>
+        <tr>
+          <td><strong>94.99.4</strong></td>
+          <td>Деятельность по улучшению положения граждан</td>
+          <td>Благотворительные программы (проект «Добрая лапа», гуманитарная помощь, поддержка участников СВО).</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Section 2: Power and Oversight -->
+    <div class="page-break"></div>
+    <h2>2. СИЛОВЫЕ, НАДЗОРНЫЕ И ИНСПЕКТОРСКИЕ СТАТУСЫ</h2>
+
+    <div class="card card-highlight">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="margin: 0;">2.1. Сетевое издание (СМИ) в Роскомнадзоре</h3>
+        <span class="badge badge-gold">Закон о СМИ № 2124-1</span>
+      </div>
+      <div class="pro-con-grid">
+        <div class="pro-box">
+          <strong>Плюсы и рычаги:</strong><br>
+          • <strong>Запросы СМИ за 7 ДНЕЙ (*ст. 39*):</strong> госорганы, банки, УК обязаны отвечать за 7 дней (вместо 30 дней для граждан).<br>
+          • <strong>Статья 144 УК РФ</strong> *(до 6 лет тюрьмы)* за воспрепятствование журналисту.<br>
+          • <strong>Удостоверение прессы (Red Card)</strong> для прохода в суды и закрытые заседания.
+        </div>
+        <div class="con-box">
+          <strong>Минусы:</strong><br>
+          • Пошлина 8 000 ₽.<br>
+          • Соблюдение правил возрастной маркировки 18+ и закона о СМИ.
+        </div>
+      </div>
+      <div class="trick-box">
+        <strong>🎯 Как забрать:</strong> Заявление в Роскомнадзор через Госуслуги на регистрацию сайта `yug-pravo.ru` как сетевого издания («ЮГ-ПРАВО. Информационно-правовой вестник»). Срок — 30 дней.
+      </div>
+    </div>
+
+    <div class="card card-highlight">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="margin: 0;">2.2. Членство в Общественной наблюдательной комиссии (ОНК)</h3>
+        <span class="badge badge-navy">ФЗ № 76-ФЗ</span>
+      </div>
+      <div class="pro-con-grid">
+        <div class="pro-box">
+          <strong>Плюсы и рычаги:</strong><br>
+          • <strong>Беспрепятственный вход в любое СИЗО, ИВС МВД и колонию</strong> Самарской области без разрешения следователей/судей.<br>
+          • Прямой личный контакт с руководством ГУ МВД, УФСИН и Прокуратуры.
+        </div>
+        <div class="con-box">
+          <strong>Минусы:</strong><br>
+          • Ротация раз в 3 года (утверждает Общественная палата РФ в Москве).
+        </div>
+      </div>
+      <div class="trick-box">
+        <strong>🎯 Скрытый лайфхак:</strong> Выдвигать кандидатов имеют право <strong>ТОЛЬКО правозащитные НКО</strong> (ваш код 94.99.1). Подаётся заявление от АНО «ЮГ-ПРАВО» в Общественную палату РФ в период донабора.
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="margin: 0;">2.3. Общественные инспекторы (ГЖИ и Россельхознадзор)</h3>
+        <span class="badge badge-green">ФЗ № 212-ФЗ / 498-ФЗ</span>
+      </div>
+      <p style="font-size: 9pt; margin: 6px 0;">
+        • <strong>Жилищный инспектор ГЖИ:</strong> право проверок подвалов, крыш, котельных МКД и УК вместе с госинспекторами.<br>
+        • <strong>Инспектор по животным (Россельхознадзор):</strong> проверки приютов, пунктов отлова и ветклиник для проекта «Добрая лапа» с направлением актов в природоохранную прокуратуру.
+      </p>
+      <div class="trick-box">
+        <strong>🎯 Как забрать:</strong> Заявления в ГЖИ Самарской области (ул. Льва Толстого, 123) и Россельхознадзор (ул. Ново-Садовая, 175). Выдаются удостоверения государственного образца. Бесплатно.
+      </div>
+    </div>
+
+    <!-- Section 3: Legal & Judicial -->
+    <h2>3. ВЫСШИЙ ПРАВОВОЙ И СУДЕБНЫЙ СТАТУС</h2>
+
+    <div class="card card-highlight">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="margin: 0;">3.1. Независимый антикоррупционный эксперт Минюста РФ</h3>
+        <span class="badge badge-gold">ФЗ № 172-ФЗ</span>
+      </div>
+      <div class="pro-con-grid">
+        <div class="pro-box">
+          <strong>Плюсы:</strong><br>
+          • <strong>100% БЕСПЛАТНО.</strong><br>
+          • Государственное Свидетельство Минюста РФ и реестр `minjust.gov.ru`.<br>
+          • Официальные заключения в Прокуратуру и Правительство Самарской области, обязательные к рассмотрению.
+        </div>
+        <div class="con-box">
+          <strong>Минусы:</strong><br>
+          • Срок рассмотрения — 25 рабочих дней.
+        </div>
+      </div>
+      <div class="trick-box">
+        <strong>🎯 Как забрать:</strong> Заявление в Управление Минюста РФ по Самарской области (ул. Льва Толстого, 25) + диплом юриста + справка об отсутствии судимости с Госуслуг.
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="margin: 0;">3.2. Центр медиации при АНО</h3>
+        <span class="badge badge-navy">ФЗ № 193-ФЗ</span>
+      </div>
+      <div class="pro-con-grid">
+        <div class="pro-box">
+          <strong>Супер-рычаг:</strong><br>
+          • Медиативное соглашение, заверенное нотариусом, <strong>ИМЕЕТ СИЛУ ИСПОЛНИТЕЛЬНОГО ЛИСТА</strong> (*ст. 12*). Сразу идёт приставам/в банк без суда.
+        </div>
+        <div class="con-box">
+          <strong>Минусы:</strong><br>
+          • Прохождение краткого курса медиатора (120–250 часов).
+        </div>
+      </div>
+      <div class="trick-box">
+        <strong>🎯 Как забрать:</strong> Онлайн-курс медиации + приказ директора об утверждении «Положения о Центре медиации при АНО ЮГ-ПРАВО».
+      </div>
+    </div>
+
+    <!-- Section 4: Finance & Property -->
+    <div class="page-break"></div>
+    <h2>4. ФИНАНСОВЫЕ, ИМУЩЕСТВЕННЫЕ И НАЛОГОВЫЕ РЫЧАГИ</h2>
+
+    <div class="card card-highlight">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="margin: 0;">4.1. Реестр поставщиков социальных услуг (Выплаты из бюджета)</h3>
+        <span class="badge badge-green">ФЗ № 442-ФЗ</span>
+      </div>
+      <div class="pro-con-grid">
+        <div class="pro-box">
+          <strong>💰 Прямые деньги из бюджета:</strong><br>
+          • Вы бесплатно консультируете пенсионеров, инвалидов, семьи СВО (код 88.99).<br>
+          • <strong>Минсоцдемографии области выплачивает АНО компенсацию за каждую услугу</strong> живыми деньгами по гостарифам!
+        </div>
+        <div class="con-box">
+          <strong>Минусы:</strong><br>
+          • Квартальные акты и отчёты в министерство.
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="margin: 0;">4.2. Налоговый вычет для корпоративных спонсоров (СОНКО)</h3>
+        <span class="badge badge-gold">пп. 19.6 п. 1 ст. 265 НК РФ</span>
+      </div>
+      <p style="font-size: 9pt; margin: 6px 0;">
+        • Бизнес (заводы, ООО, холдинги), жертвующий деньги вашей АНО, <strong>УМЕНЬШАЕТ СВОЙ НАЛОГ НА ПРИБЫЛЬ НА ВСЮ СУММУ ПОЖЕРТВОВАНИЯ</strong> (до 1% выручки). Бизнесу выгоднее пожертвовать вам, чем отдать налог в бюджет.
+      </p>
+    </div>
+
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="margin: 0;">4.3. Муниципальный офис от мэрии без торгов со скидкой до 90%</h3>
+        <span class="badge badge-navy">ст. 31.1 ФЗ № 7-ФЗ</span>
+      </div>
+      <p style="font-size: 9pt; margin: 6px 0;">
+        • Помещения из Перечня муниципального имущества для СОНКО передаются <strong>БЕЗ АУКЦИОНОВ И БЕЗ ТОРГОВ</strong> по символической ставке (скидка до 80–90%) или безвозмездно на срок до 5 лет через ДУИ г.о. Самара.
+      </p>
+    </div>
+
+    <div class="card card-highlight">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="margin: 0;">4.4. Фонд президентских грантов (Сельская квота до 15 000 000 ₽)</h3>
+        <span class="badge badge-gold">ФПГ / ПФКИ</span>
+      </div>
+      <p style="font-size: 9pt; margin: 6px 0;">
+        • <strong>🌾 Чит-код вашего юрадреса:</strong> АНО зарегистрирована в Большеглушицком районе. В ФПГ действует <strong>повышенная квота для сельских НКО</strong> (конкуренция в разы ниже, чем в городах, процент побед доходит до 40%). Проекты «Правовой десант» и «Добрая лапа» получают высшие баллы.
+      </p>
+    </div>
+
+    <!-- Section 5: Youth and Free Tech -->
+    <h2>5. ВОЛОНТЁРЫ, МОЛОДЁЖЬ И БЕСПЛАТНАЯ IT-ИНФРАСТРУКТУРА</h2>
+
+    <div class="card card-highlight">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="margin: 0;">5.1. ДОБРО.РФ: Право начисления баллов к ЕГЭ (+10 баллов)</h3>
+        <span class="badge badge-green">ДОБРО.РФ / Росмолодёжь</span>
+      </div>
+      <p style="font-size: 9pt; margin: 6px 0;">
+        • АНО ставит официальные часы в Электронную книжку волонтёра на Госуслугах. Это даёт абитуриентам <strong>до +10 дополнительных баллов к ЕГЭ при поступлении во все ВУЗы Самары (СамГУ, СГЭУ, СамГТУ) и РФ</strong>.<br>
+        • <strong>Результат:</strong> Очередь из студентов-юристов и школьников, бесплатно работающих в ваших проектах ради официального стажа.
+      </p>
+    </div>
+
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="margin: 0;">5.2. Бесплатный IT-трафик от корпораций (Яндекс + VK)</h3>
+        <span class="badge badge-navy">Корпоративные программы</span>
+      </div>
+      <p style="font-size: 9pt; margin: 6px 0;">
+        • <strong>«Яндекс Помощь рядом» (`help.yandex.ru`):</strong> <strong>100 000 – 150 000 ₽ КАЖДЫЙ МЕСЯЦ</strong> на бесплатный Яндекс Директ + бесплатный Яндекс 360 (почта `@yug-pravo.ru`, облачные диски) + сервера Яндекс Cloud.<br>
+        • <strong>«VK для НКО» (`grant.vk.com`):</strong> ежемесячные рекламные гранты ВКонтакте + синяя/серая галочка верификации.<br>
+        • <strong>«КонсультантПлюс» и «Гарант»</strong>: бесплатные полные базы судебной практики РФ для некоммерческих центров юрпомощи.
+      </p>
+    </div>
+
+    <!-- Section 6: Roadmap -->
+    <h2>6. СВОДНЫЙ КАЛЕНДАРНЫЙ ГРАФИК ЗАПУСКА</h2>
+
+    <table class="table-custom">
+      <thead>
+        <tr>
+          <th style="width: 15%;">Срок</th>
+          <th style="width: 30%;">Госорган / Платформа</th>
+          <th style="width: 25%;">Статус / Программа</th>
+          <th style="width: 30%;">Результат</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Неделя 1</strong></td>
+          <td><strong>ДОБРО.РФ</strong></td>
+          <td>Организатор волонтёрства (0 ₽)</td>
+          <td><strong>Баллы к ЕГЭ (+10 баллов)</strong>, приток волонтёров.</td>
+        </tr>
+        <tr>
+          <td><strong>Неделя 1</strong></td>
+          <td><strong>Минцифры РФ</strong></td>
+          <td>Аккредитация IT-компании (0 ₽)</td>
+          <td>Статус IT-вендора, гранты ФСИ от 4 до 20 млн ₽.</td>
+        </tr>
+        <tr>
+          <td><strong>Неделя 2</strong></td>
+          <td><strong>Яндекс (help.yandex.ru)</strong></td>
+          <td>Яндекс Помощь рядом (0 ₽)</td>
+          <td><strong>100 000+ ₽/мес на рекламу</strong> + Яндекс 360.</td>
+        </tr>
+        <tr>
+          <td><strong>Неделя 3</strong></td>
+          <td><strong>Минюст РФ (Самара)</strong></td>
+          <td>Антикоррупционный эксперт (0 ₽)</td>
+          <td><strong>Свидетельство Минюста РФ</strong>, заключения в прокуратуру.</td>
+        </tr>
+        <tr>
+          <td><strong>Месяц 2</strong></td>
+          <td><strong>Роскомнадзор</strong></td>
+          <td>Сетевое издание СМИ (8 000 ₽)</td>
+          <td><strong>Запросы за 7 дней</strong>, ст. 144 УК РФ, удостоверение прессы.</td>
+        </tr>
+        <tr>
+          <td><strong>Месяц 2</strong></td>
+          <td><strong>ГЖИ / Россельхознадзор</strong></td>
+          <td>Общественные инспекторы (0 ₽)</td>
+          <td><strong>Удостоверения инспекторов</strong>, проверки приютов и ЖКХ.</td>
+        </tr>
+        <tr>
+          <td><strong>Осень</strong></td>
+          <td><strong>Фонд президентских грантов</strong></td>
+          <td>Грантовый конкурс (0 ₽)</td>
+          <td><strong>Грант до 1 000 000 – 15 000 000 ₽</strong> (сельская квота).</td>
+        </tr>
+        <tr>
+          <td><strong>Осень</strong></td>
+          <td><strong>Минсоцдемографии СО</strong></td>
+          <td>Реестр соцуслуг 442-ФЗ (0 ₽)</td>
+          <td><strong>Прямые выплаты из бюджета</strong> за консультации.</td>
+        </tr>
+        <tr>
+          <td><strong>Зима</strong></td>
+          <td><strong>ДУИ г.о. Самара</strong></td>
+          <td>Офис для СОНКО (Льготная)</td>
+          <td><strong>Муниципальный офис со скидкой до 90%</strong> на 5 лет.</td>
+        </tr>
+        <tr>
+          <td><strong>2027 год</strong></td>
+          <td><strong>Общественная палата РФ</strong></td>
+          <td>Мандат ОНК Самарской обл. (0 ₽)</td>
+          <td><strong>Право входа в СИЗО, ИВС и колонии региона</strong>.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="footer-seal">
+      <div>
+        <strong>АНО «ЦПЗ ЮГ-ПРАВО»</strong> | Официальный стратегический документ<br>
+        Руководитель: Шарыпаев Павел Валерьевич
+      </div>
+      <div style="text-align: right;">
+        Минюст № 6314010192 | ОГРН 1266300015080<br>
+        Самарская область, 2026 г.
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
