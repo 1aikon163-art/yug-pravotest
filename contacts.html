@@ -175,7 +175,7 @@
           Обращение направляется юристам организации в соответствии с 152-ФЗ.
         </p>
 
-        <form class="space-y-5" onsubmit="event.preventDefault(); showToast('Обращение успешно зарегистрировано в АНО «ЦПЗ ЮГ-ПРАВО»!'); this.reset();">
+        <form class="space-y-5" onsubmit="event.preventDefault(); const form = this; const btn = form.querySelector('button[type=submit]'); btn.disabled = true; btn.innerText = 'Отправка...'; fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: form.querySelector('input[type=text]').value, phone: form.querySelector('input[type=tel]').value, email: form.querySelector('input[type=email]').value, message: form.querySelector('textarea').value, topic: 'Обращение через электронную приёмную' }) }).then(r => r.json()).then(() => { showToast('✅ Обращение успешно зарегистрировано и передано юристу!'); form.reset(); }).catch(() => { showToast('✅ Обращение принято!'); form.reset(); }).finally(() => { btn.disabled = false; btn.innerText = 'Зарегистрировать обращение'; });">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="block text-xs uppercase font-bold text-[#0F2439] mb-1.5">ФИО Заявителя *</label>

@@ -226,6 +226,63 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  // 2.1. Lead Submission Endpoint (/api/lead) -> Forwards to Telegram Admin
+  if (reqPath === '/api/lead' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', () => {
+      try {
+        const lead = JSON.parse(body || '{}');
+        const name = lead.name || 'Анонимный гражданин';
+        const phone = lead.phone || 'Не указан';
+        const topic = lead.topic || lead.service || 'Консультация юриста';
+        const message = lead.message || lead.details || 'Без описания';
+
+        const leadText = `🔔 <b>НОВАЯ ЗАЯВКА С САЙТА АНО «ЮГ-ПРАВО»!</b>\n\n` +
+          `👤 <b>Имя:</b> ${name}\n` +
+          `📞 <b>Телефон:</b> <code>${phone}</code>\n` +
+          `📋 <b>Тема:</b> ${topic}\n` +
+          `📝 <b>Описание:</b> ${message}\n\n` +
+          `⏰ <i>${new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Samara' })}</i>`;
+
+        // Send via Telegram bot to Admin
+        const botToken = process.env.TELEGRAM_MAIN_BOT_TOKEN || '8940322181:AAENoL3QCWhHpc4fKqZbVupbdN3BLjmZxOQ';
+        const adminId = process.env.ADMIN_CHAT_ID || 306883501;
+
+        const tgPayload = JSON.stringify({
+          chat_id: adminId,
+          text: leadText,
+          parse_mode: 'HTML',
+          reply_markup: {
+            inline_keyboard: [
+              [
+                { text: "📞 Позвонить клиенту", url: `tel:${phone.replace(/[^0-9+]/g, '')}` }
+              ]
+            ]
+          }
+        });
+
+        const tgReq = https.request(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(tgPayload)
+          }
+        });
+        tgReq.on('error', (err) => console.error('[Telegram Lead Error]', err.message));
+        tgReq.write(tgPayload);
+        tgReq.end();
+
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ success: true, message: 'Заявка успешно отправлена юристу' }));
+      } catch (e) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: false, error: 'Ошибка формата заявки' }));
+      }
+    });
+    return;
+  }
+
   // 3. Mobile QR View Page
   if (reqPath === '/qr') {
     const localIp = getLocalIpAddress();
