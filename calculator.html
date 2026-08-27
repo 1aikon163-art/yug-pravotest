@@ -315,6 +315,33 @@
                                 </div>
                                 <input type="range" id="heat-hours" min="1" max="720" value="120" step="1" class="calc-slider" oninput="document.getElementById('heat-hours-val').innerText = this.value + ' ч (' + Math.round(this.value/24*10)/10 + ' сут)'; recalculate()">
                             </div>
+
+                            <!-- Step-by-Step & Legal Memo Heating -->
+                            <div class="p-4 sm:p-5 rounded-xl bg-white border border-[#C5A880]/60 text-xs text-[#2C3E50] space-y-4 shadow-xs">
+                                <div>
+                                    <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider border-b border-[#E0E0E0] pb-2 mb-2.5">
+                                        <span class="material-symbols-outlined text-base">format_list_numbered</span>
+                                        Пошаговый порядок фиксации и перерасчета за отопление:
+                                    </div>
+                                    <div class="space-y-1.5 text-[11.5px] leading-relaxed">
+                                        <p><strong>Шаг 1. Заявка в АДС:</strong> Позвоните в аварийно-диспетчерскую службу УК, зафиксируйте входящий номер, время заявки и ФИО диспетчера (п. 106 ПП РФ № 354).</p>
+                                        <p><strong>Шаг 2. Составление Акта замера температуры:</strong> Представитель УК обязан прибыть для замера не позднее 2 часов с момента обращения и составить двусторонний Акт.</p>
+                                        <p><strong>Шаг 3. Претензия на перерасчет:</strong> Направьте досудебное заявление с требованием снизить плату на 0,15% за каждый час нарушения (п. 15 Приложения № 1 к ПП РФ № 354).</p>
+                                        <p><strong>Шаг 4. Жалоба в ГЖИ:</strong> При уклонении УК направьте жалобу в Государственную жилищную инспекцию для привлечения к ответственности по ст. 7.23 КоАП РФ.</p>
+                                    </div>
+                                </div>
+                                <div class="pt-2 border-t border-[#E8E7E2]">
+                                    <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider mb-2">
+                                        <span class="material-symbols-outlined text-base">gavel</span>
+                                        Памятка юриста (Температурные нормы РФ):
+                                    </div>
+                                    <div class="space-y-1 text-[11.5px] leading-relaxed">
+                                        <p>• <strong>Базовые регионы:</strong> жилые комнаты — не ниже <strong>+18°C</strong> (угловые — не ниже <strong>+20°C</strong>) по СанПиН 1.2.3685-21.</p>
+                                        <p>• <strong>Холодные регионы (пятидневка ≤ -31°C):</strong> не ниже <strong>+20°C</strong> (угловые — не ниже <strong>+22°C</strong>).</p>
+                                        <p>• <strong>Штраф 50% по ч. 4 ст. 157 ЖК РФ:</strong> Выплачивается потребителю за некачественные ЖКУ путем снижения платы в платежном документе.</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- 1.2 ЖКХ: Отключение воды -->
@@ -345,6 +372,30 @@
                                     <span class="text-[#1E5631] font-bold">до 8 ч (Норматив)</span>
                                     <span>24 ч (1 сутки)</span>
                                     <span>72 ч (3 суток)</span>
+                                </div>
+                            </div>
+
+                            <!-- Step-by-Step & Legal Memo Water -->
+                            <div class="p-4 sm:p-5 rounded-xl bg-white border border-[#C5A880]/60 text-xs text-[#2C3E50] space-y-4 shadow-xs">
+                                <div>
+                                    <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider border-b border-[#E0E0E0] pb-2 mb-2.5">
+                                        <span class="material-symbols-outlined text-base">format_list_numbered</span>
+                                        Пошаговый порядок действий при отключении воды:
+                                    </div>
+                                    <div class="space-y-1.5 text-[11.5px] leading-relaxed">
+                                        <p><strong>Шаг 1. Фиксация отключения:</strong> Сообщите в аварийную службу УК/Водоканала и сохраните номер обращения.</p>
+                                        <p><strong>Шаг 2. Контроль нормативов:</strong> Суммарно не более 8 ч в месяц и не более 4 ч единовременно.</p>
+                                        <p><strong>Шаг 3. Досудебная претензия:</strong> Потребуйте снижения платы на 0,15% за каждый час превышения (раздел IX ПП РФ № 354).</p>
+                                    </div>
+                                </div>
+                                <div class="pt-2 border-t border-[#E8E7E2]">
+                                    <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider mb-2">
+                                        <span class="material-symbols-outlined text-base">gavel</span>
+                                        Памятка юриста (Нормы водоснабжения):
+                                    </div>
+                                    <div class="space-y-1 text-[11.5px] leading-relaxed">
+                                        <p>• <strong>Горячая вода:</strong> температура должна быть строго <strong>от +60°C до +75°C</strong> (СанПиН 2.1.3684-21). При температуре ниже +40°C плата начисляется по тарифу холодной воды!</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -385,6 +436,30 @@
                                 <input type="checkbox" id="meter-mult15" onchange="recalculate()" class="rounded border-[#E0E0E0] text-[#0F2439] focus:ring-[#0F2439]">
                                 <span class="text-xs font-semibold text-[#0F2439]">УК применяла повышающий коэффициент 1.5 (требуется отмена и снятие начислений)</span>
                             </label>
+
+                            <!-- Step-by-Step & Legal Memo Meter -->
+                            <div class="p-4 sm:p-5 rounded-xl bg-white border border-[#C5A880]/60 text-xs text-[#2C3E50] space-y-4 shadow-xs">
+                                <div>
+                                    <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider border-b border-[#E0E0E0] pb-2 mb-2.5">
+                                        <span class="material-symbols-outlined text-base">format_list_numbered</span>
+                                        Пошаговый порядок сверки счетчиков ИПУ:
+                                    </div>
+                                    <div class="space-y-1.5 text-[11.5px] leading-relaxed">
+                                        <p><strong>Шаг 1. Проведение поверки:</strong> Поверьте счетчик в аккредитованной организации с записью во ФГИС «АРШИН».</p>
+                                        <p><strong>Шаг 2. Передача документов в УК/ЕРЦ:</strong> Предоставьте свидетельство поверки и актуальные показания прибора.</p>
+                                        <p><strong>Шаг 3. Заявление на сверку:</strong> Потребуйте аннулирования начислений по нормативу и зачета переплаты (п. 61 ПП РФ № 354).</p>
+                                    </div>
+                                </div>
+                                <div class="pt-2 border-t border-[#E8E7E2]">
+                                    <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider mb-2">
+                                        <span class="material-symbols-outlined text-base">gavel</span>
+                                        Памятка юриста (Судебная практика ВС РФ):
+                                    </div>
+                                    <div class="space-y-1 text-[11.5px] leading-relaxed">
+                                        <p>• <strong>Решение ВС РФ № АКПИ20-72:</strong> Поверка подтверждает исправность прибора на весь прошлый период. Повышающий коэффициент 1.5 подлежит обязательной отмене с возвратом излишне начисленных сумм.</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- 1.4 ЖКХ: Временное отсутствие (ТКО) -->
@@ -439,6 +514,30 @@
                                     <input type="number" id="abs-absent" value="2" min="1" max="15" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-base font-bold text-[#0F2439] py-2.5 px-3.5" oninput="recalculate()">
                                 </div>
                             </div>
+
+                            <!-- Step-by-Step & Legal Memo Absence -->
+                            <div class="p-4 sm:p-5 rounded-xl bg-white border border-[#C5A880]/60 text-xs text-[#2C3E50] space-y-4 shadow-xs">
+                                <div>
+                                    <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider border-b border-[#E0E0E0] pb-2 mb-2.5">
+                                        <span class="material-symbols-outlined text-base">format_list_numbered</span>
+                                        Пошаговый порядок перерасчета за ТКО при отъезде:
+                                    </div>
+                                    <div class="space-y-1.5 text-[11.5px] leading-relaxed">
+                                        <p><strong>Шаг 1. Срок отсутствия:</strong> Более 5 полных календарных дней подряд (день выезда и въезда не считаются).</p>
+                                        <p><strong>Шаг 2. Подтверждающие документы:</strong> Проездные билеты, командировочное, справка из стационара/санатория или справка из СНТ.</p>
+                                        <p><strong>Шаг 3. Подача заявления:</strong> Направьте заявление регоператору ТКО или в УК не позднее 30 дней после возвращения.</p>
+                                    </div>
+                                </div>
+                                <div class="pt-2 border-t border-[#E8E7E2]">
+                                    <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider mb-2">
+                                        <span class="material-symbols-outlined text-base">gavel</span>
+                                        Памятка юриста (ПП РФ № 2076):
+                                    </div>
+                                    <div class="space-y-1 text-[11.5px] leading-relaxed">
+                                        <p>• <strong>Действует с 01.03.2023:</strong> Перерасчет гарантирован по всей России независимо от способа начисления (с человека или с 1 м²).</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
@@ -476,15 +575,29 @@
                             <input type="number" id="prod-moral" value="5000" min="0" max="500000" step="1000" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-sm font-semibold text-[#0F2439] focus:border-[#0F2439] focus:ring-0 py-2.5 px-4" oninput="recalculate()">
                         </div>
 
-                        <!-- Legal Action Route Banner -->
-                        <div class="p-4 rounded-xl bg-[#FAF4E6]/90 border border-[#C5A059]/40 text-xs text-[#2C3E50] space-y-2">
-                            <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider">
-                                <span class="material-symbols-outlined text-base">gavel</span>
-                                Пошаговый порядок защиты прав (ЗоЗПП действует по всей РФ):
+                        <!-- Step-by-Step & Legal Memo Product -->
+                        <div class="p-4 sm:p-5 rounded-xl bg-white border border-[#C5A880]/60 text-xs text-[#2C3E50] space-y-4 shadow-xs">
+                            <div>
+                                <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider border-b border-[#E0E0E0] pb-2 mb-2.5">
+                                    <span class="material-symbols-outlined text-base">format_list_numbered</span>
+                                    Пошаговый порядок возврата денег за некачественный товар:
+                                </div>
+                                <div class="space-y-1.5 text-[11.5px] leading-relaxed">
+                                    <p><strong>Шаг 1. Вручение претензии продавцу:</strong> Вручите претензию под подпись на втором экземпляре либо направьте Почтой России заказным письмом с описью вложения.</p>
+                                    <p><strong>Шаг 2. Срок удовлетворения (10 дней):</strong> По ст. 22 ЗоЗПП продавец обязан вернуть деньги в течение 10 календарных дней со дня предъявления требования.</p>
+                                    <p><strong>Шаг 3. Проверка качества и экспертиза:</strong> При споре о причинах дефекта продавец проводит экспертизу за свой счет. Потребитель вправе лично присутствовать при проверке.</p>
+                                    <p><strong>Шаг 4. Начисление неустойки и суд:</strong> Начиная с 11-го дня начисляется законная неустойка 1% в день (ст. 23 ЗоЗПП). Иск в суд подается без уплаты госпошлины по месту жительства истца (ст. 17 ЗоЗПП).</p>
+                                </div>
                             </div>
-                            <div class="space-y-1 text-[11.5px] leading-relaxed">
-                                <p><strong>1. Досудебная претензия:</strong> Письменное требование продавцу (срок ответа — 10 дней по ст. 22 ЗоЗПП). Далее начисляется неустойка 1% в день.</p>
-                                <p><strong>2. Обращение в суд:</strong> Компенсация морального вреда (ст. 15 ЗоЗПП) и штраф 50% (п. 6 ст. 13 ЗоЗПП) взыскиваются <strong>исключительно судом</strong> за отказ удовлетворить претензию добровольно. Госпошлина не взимается при цене иска до 1 млн руб.</p>
+                            <div class="pt-2 border-t border-[#E8E7E2]">
+                                <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider mb-2">
+                                    <span class="material-symbols-outlined text-base">gavel</span>
+                                    Памятка юриста (Судебные санкции ЗоЗПП):
+                                </div>
+                                <div class="space-y-1 text-[11.5px] leading-relaxed">
+                                    <p>• <strong>Потребительский штраф 50% (п. 6 ст. 13 ЗоЗПП):</strong> Суд взыскивает с продавца в пользу потребителя штраф в размере 50% от всей присужденной суммы за отказ добровольно исполнить претензию.</p>
+                                    <p>• <strong>Моральный вред (ст. 15 ЗоЗПП):</strong> Подлежит компенсации при любом нарушении прав потребителя независимо от возмещения имущественного вреда.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -522,15 +635,28 @@
                             <input type="number" id="serv-moral" value="10000" min="0" max="500000" step="1000" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-sm font-semibold text-[#0F2439] focus:border-[#0F2439] focus:ring-0 py-2.5 px-4" oninput="recalculate()">
                         </div>
 
-                        <!-- Legal Action Route Banner -->
-                        <div class="p-4 rounded-xl bg-[#FAF4E6]/90 border border-[#C5A059]/40 text-xs text-[#2C3E50] space-y-2">
-                            <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider">
-                                <span class="material-symbols-outlined text-base">gavel</span>
-                                Порядок действий при срыве ремонта / услуг:
+                        <!-- Step-by-Step & Legal Memo Service -->
+                        <div class="p-4 sm:p-5 rounded-xl bg-white border border-[#C5A880]/60 text-xs text-[#2C3E50] space-y-4 shadow-xs">
+                            <div>
+                                <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider border-b border-[#E0E0E0] pb-2 mb-2.5">
+                                    <span class="material-symbols-outlined text-base">format_list_numbered</span>
+                                    Пошаговый порядок действий при срыве сроков услуг / ремонта:
+                                </div>
+                                <div class="space-y-1.5 text-[11.5px] leading-relaxed">
+                                    <p><strong>Шаг 1. Фиксация просрочки:</strong> Зафиксируйте дату окончания работ по договору и отсутствие подписанного акта приема-передачи.</p>
+                                    <p><strong>Шаг 2. Направление претензии:</strong> Потребуйте выплаты законной неустойки 3% за каждый день просрочки (ст. 28 ЗоЗПП) либо расторгните договор с полным возвратом аванса.</p>
+                                    <p><strong>Шаг 3. Срок исполнения (10 дней):</strong> Срок удовлетворения отдельных требований потребителя составляет 10 дней со дня предъявления (ст. 31 ЗоЗПП).</p>
+                                    <p><strong>Шаг 4. Обращение в суд:</strong> Взыскание аванса, неустойки, расходов на исправление недостатков третьими лицами и штрафа 50%.</p>
+                                </div>
                             </div>
-                            <div class="space-y-1 text-[11.5px] leading-relaxed">
-                                <p><strong>1. Письменная претензия:</strong> Направьте требование о выплате 3% неустойки в день и назначьте новый разумный срок либо потребуйте расторжения договора и возврата денег (ст. 28 ЗоЗПП).</p>
-                                <p><strong>2. Судебное взыскание:</strong> При отказе подрядчика суд присуждает сумму договора, неустойку, моральный вред и штраф 50% от всей присужденной суммы.</p>
+                            <div class="pt-2 border-t border-[#E8E7E2]">
+                                <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider mb-2">
+                                    <span class="material-symbols-outlined text-base">gavel</span>
+                                    Памятка юриста (Лимит неустойки 3%):
+                                </div>
+                                <div class="space-y-1 text-[11.5px] leading-relaxed">
+                                    <p>• <strong>Ограничение ст. 28 ЗоЗПП:</strong> Сумма неустойки за просрочку не может превышать цену отдельного вида работы или общую цену заказа.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -566,6 +692,31 @@
                                 Ключевая ставка ЦБ РФ (% годовых)
                             </label>
                             <input type="number" id="debt-rate" value="18.0" min="1.0" max="40.0" step="0.5" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-sm font-semibold text-[#0F2439] focus:border-[#0F2439] focus:ring-0 py-2.5 px-4" oninput="recalculate()">
+                        </div>
+
+                        <!-- Step-by-Step & Legal Memo Interest 395 -->
+                        <div class="p-4 sm:p-5 rounded-xl bg-white border border-[#C5A880]/60 text-xs text-[#2C3E50] space-y-4 shadow-xs">
+                            <div>
+                                <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider border-b border-[#E0E0E0] pb-2 mb-2.5">
+                                    <span class="material-symbols-outlined text-base">format_list_numbered</span>
+                                    Пошаговый порядок взыскания процентов по ст. 395 ГК РФ:
+                                </div>
+                                <div class="space-y-1.5 text-[11.5px] leading-relaxed">
+                                    <p><strong>Шаг 1. Определение даты просрочки:</strong> Проценты начисляются со следующего дня после даты, когда обязательство должно было быть исполнено.</p>
+                                    <p><strong>Шаг 2. Направление досудебного требования:</strong> Вручите должнику требование о возврате суммы долга и начисленных процентов с 10-дневным сроком погашения.</p>
+                                    <p><strong>Шаг 3. Судебный приказ (до 500 000 ₽):</strong> При бесспорном характере задолженности подайте заявление мировому судье (рассмотрение за 5 дней без вызова сторон).</p>
+                                    <p><strong>Шаг 4. Исковое производство:</strong> Подайте иск в районный суд с требованием взыскания процентов по день фактической уплаты долга.</p>
+                                </div>
+                            </div>
+                            <div class="pt-2 border-t border-[#E8E7E2]">
+                                <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider mb-2">
+                                    <span class="material-symbols-outlined text-base">gavel</span>
+                                    Памятка юриста (Пленум ВС РФ № 7):
+                                </div>
+                                <div class="space-y-1 text-[11.5px] leading-relaxed">
+                                    <p>• <strong>п. 48 Постановления Пленума ВС РФ № 7:</strong> В резолютивной части решения суд указывает на взыскание процентов по ст. 395 ГК РФ по день фактического исполнения обязательства.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -625,26 +776,30 @@
                                 <input type="number" id="ins-elapsed-months" value="6" min="1" max="120" class="w-full rounded-lg border-[#E0E0E0] bg-[#F8F7F4] text-base font-bold text-[#0F2439] py-2 px-3" oninput="recalculate()">
                             </div>
                         </div>
-
-                        <!-- Checkbox for Court + Finombudsman Recovery (+50% Fine, Moral, 395 GK) -->
-                        <label class="flex items-start gap-3 p-3.5 rounded-lg border border-[#C5A059]/50 bg-[#FAF4E6]/70 cursor-pointer hover:border-[#8C6826] transition-colors">
-                            <input type="checkbox" id="ins-court-route" checked onchange="recalculate()" class="mt-0.5 rounded border-[#E0E0E0] text-[#0F2439] focus:ring-[#0F2439]">
-                            <span class="text-xs text-[#2C3E50]">
-                                <strong class="text-[#0F2439]">Взыскание через Финомбудсмена и суд</strong> (+50% потребительский штраф по п. 6 ст. 13 ЗоЗПП, моральный вред и проценты ст. 395 ГК РФ — итоговая сумма к получению увеличивается в 1.5–2 раза).
-                            </span>
-                        </label>
-
-                        <!-- Expert Legal Memo for Post-30-Day Recovery -->
-                        <div class="p-4 rounded-xl bg-white border border-[#C5A880]/60 text-xs text-[#2C3E50] space-y-3 shadow-xs">
-                            <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider border-b border-[#E0E0E0] pb-2">
-                                <span class="material-symbols-outlined text-base">psychology</span>
-                                Памятка юриста: как вернуть деньги, если прошло больше 30 дней
+                        <!-- Expert Legal Memo & Step-by-Step Procedure for Insurance & Add-on Services -->
+                        <div class="p-4 sm:p-5 rounded-xl bg-white border border-[#C5A880]/60 text-xs text-[#2C3E50] space-y-4 shadow-xs">
+                            <div>
+                                <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider border-b border-[#E0E0E0] pb-2 mb-2.5">
+                                    <span class="material-symbols-outlined text-base">format_list_numbered</span>
+                                    Пошаговый порядок возврата страховок и навязанных услуг:
+                                </div>
+                                <div class="space-y-1.5 text-[11.5px] leading-relaxed">
+                                    <p><strong>Шаг 1. Подача заявления в 30-дневный срок:</strong> Подайте письменное заявление об отказе от страховки/допуслуг в страховую компанию или банк в течение гарантированного 30-дневного «периода охлаждения» (ч. 2.4 ст. 7 Федерального закона № 353-ФЗ). Деньги подлежат возврату в 100% объеме.</p>
+                                    <p><strong>Шаг 2. Срок выплаты 7 рабочих дней:</strong> Закон прямо обязывает финансовую организацию вернуть средства в течение 7 рабочих дней со дня получения заявления.</p>
+                                    <p><strong>Шаг 3. Досрочное погашение кредита (ч. 12 ст. 11 353-ФЗ):</strong> Если прошло больше 30 дней, но кредит погашен досрочно, страховая обязана вернуть премию пропорционально неистекшему сроку кредитования.</p>
+                                    <p><strong>Шаг 4. Обращение к Финансовому уполномоченному (123-ФЗ):</strong> При отказе или задержке выплаты спор до 500 000 ₽ бесплатно рассматривается Службой финомбудсмена за 15 рабочих дней (подача через Госуслуги). Решение имеет силу исполнительного листа.</p>
+                                </div>
                             </div>
-                            <div class="space-y-2 text-[11.5px] leading-relaxed">
-                                <p><strong>1. Досрочное закрытие кредита (ч. 12 ст. 11 353-ФЗ):</strong> Закон прямо обязывает страховую компанию вернуть часть страховой премии пропорционально неистекшему сроку кредита при отсутствии страховых случаев.</p>
-                                <p><strong>2. Навязанные опционные договоры и автокарты («Автодруг», «VIP-помощь», телемедицина):</strong> Банки и автосалоны часто маскируют допуслуги под опционные договоры (ст. 429.3 ГК РФ). По позиции Верховного Суда РФ и ст. 32 ЗоЗПП потребитель вправе отказаться от них в любой момент и вернуть всю сумму за вычетом документально подтвержденных фактических расходов исполнителя.</p>
-                                <p><strong>3. Досудебный Финансовый уполномоченный (123-ФЗ):</strong> Споры до 500 000 ₽ со страховыми и банками рассматриваются Финомбудсменом бесплатно. Срок — всего 15 рабочих дней, а его решение имеет силу исполнительного листа.</p>
-                                <p><strong>4. Судебный штраф 50%:</strong> Если банк или страховая не вернули деньги в добровольный срок по претензии, суд присуждает в вашу пользу дополнительные 50% от всей взысканной суммы.</p>
+
+                            <div class="pt-2 border-t border-[#E8E7E2]">
+                                <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider mb-2">
+                                    <span class="material-symbols-outlined text-base">psychology</span>
+                                    Памятка юриста по опционным договорам и автокартам:
+                                </div>
+                                <div class="space-y-1 text-[11.5px] leading-relaxed">
+                                    <p>• <strong>Автокарты и сертификаты («Автодруг», «VIP-помощь», телемедицина):</strong> Маскируются под опционные договоры (ст. 429.3 ГК РФ). По позиции Верховного Суда РФ и ст. 32 ЗоЗПП потребитель вправе в любой момент отказаться от них и вернуть деньги за вычетом фактически понесенных исполнителем расходов.</p>
+                                    <p>• <strong>Запрет навязывания (ст. 16 ЗоЗПП):</strong> Обуславливать выдачу кредита обязательной покупкой небанковских услуг прямо запрещено законом.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -688,16 +843,30 @@
                             </label>
                         </div>
 
-                        <!-- Accounting / Legal Note on State Duty -->
-                        <div class="p-4 rounded-xl bg-[#FAF4E6]/90 border border-[#C5A059]/40 text-xs text-[#2C3E50] space-y-2">
-                            <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider">
-                                <span class="material-symbols-outlined text-base">info</span>
-                                Справка юриста и бухгалтера по госпошлине 2026:
+                        <!-- Step-by-Step & Legal Memo State Duty -->
+                        <div class="p-4 sm:p-5 rounded-xl bg-white border border-[#C5A880]/60 text-xs text-[#2C3E50] space-y-4 shadow-xs">
+                            <div>
+                                <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider border-b border-[#E0E0E0] pb-2 mb-2.5">
+                                    <span class="material-symbols-outlined text-base">format_list_numbered</span>
+                                    Пошаговый порядок расчета и уплаты госпошлины:
+                                </div>
+                                <div class="space-y-1.5 text-[11.5px] leading-relaxed">
+                                    <p><strong>Шаг 1. Определение цены иска:</strong> Сложите все имущественные требования (основной долг, убытки, законную неустойку на день подачи иска).</p>
+                                    <p><strong>Шаг 2. Проверка права на льготу:</strong> Потребители освобождены от уплаты пошлины при цене иска до 1 000 000 ₽ (ст. 333.36 НК РФ). По трудовым спорам работники также освобождены от любых пошлин.</p>
+                                    <p><strong>Шаг 3. Оплата по Единому налоговому счету (ЕНС):</strong> Сформируйте платежный документ на сайте суда или ФНС и оплатите пошлину.</p>
+                                    <p><strong>Шаг 4. Взыскание с ответчика (ст. 98 ГПК РФ):</strong> При удовлетворении иска 100% уплаченной госпошлины присуждается ко взысканию с ответчика в вашу пользу.</p>
+                                </div>
                             </div>
-                            <div class="space-y-1 text-[11.5px] leading-relaxed">
-                                <p>• <strong>Минимальный размер госпошлины:</strong> по имущественным искам составляет <strong>4 000 ₽</strong> (до 100 тыс. ₽).</p>
-                                <p>• <strong>Шкала 259-ФЗ:</strong> от 100 001 до 300 000 ₽ — 4 000 ₽ + 3%; от 300 001 до 500 000 ₽ — 10 000 ₽ + 2.5%; от 500 001 до 1 000 000 ₽ — 15 000 ₽ + 2%; от 1 000 001 до 3 000 000 ₽ — 25 000 ₽ + 1%.</p>
-                                <p>• <strong>Возврат госпошлины с ответчика:</strong> в соответствии со ст. 98 ГПК РФ при удовлетворении иска все расходы по уплате госпошлины взыскиваются с ответчика в пользу истца в полном объеме.</p>
+                            <div class="pt-2 border-t border-[#E8E7E2]">
+                                <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider mb-2">
+                                    <span class="material-symbols-outlined text-base">gavel</span>
+                                    Памятка юриста (Тарифы 259-ФЗ на 2025–2026 гг.):
+                                </div>
+                                <div class="space-y-1 text-[11.5px] leading-relaxed">
+                                    <p>• <strong>Минимальная пошлина:</strong> 4 000 ₽ (при цене иска до 100 000 ₽).</p>
+                                    <p>• <strong>Судебный приказ:</strong> ставка уменьшается ровно на <strong>50%</strong> (п. 2 ст. 333.19 НК РФ).</p>
+                                    <p>• <strong>Неимущественные иски граждан:</strong> 3 000 ₽ (расторжение брака — 5 000 ₽).</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -752,15 +921,29 @@
                             </div>
                         </div>
 
-                        <!-- Accountant Note on Tax Exemption -->
-                        <div class="p-4 rounded-xl bg-[#FAF4E6]/90 border border-[#C5A059]/40 text-xs text-[#2C3E50] space-y-2">
-                            <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider">
-                                <span class="material-symbols-outlined text-base">account_balance_wallet</span>
-                                Налоговые и бухгалтерские особенности (ст. 217 НК РФ):
+                        <!-- Step-by-Step & Legal Memo Salary -->
+                        <div class="p-4 sm:p-5 rounded-xl bg-white border border-[#C5A880]/60 text-xs text-[#2C3E50] space-y-4 shadow-xs">
+                            <div>
+                                <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider border-b border-[#E0E0E0] pb-2 mb-2.5">
+                                    <span class="material-symbols-outlined text-base">format_list_numbered</span>
+                                    Пошаговый порядок защиты трудовых прав:
+                                </div>
+                                <div class="space-y-1.5 text-[11.5px] leading-relaxed">
+                                    <p><strong>Шаг 1. Письменное требование работодателю:</strong> Подайте заявление с требованием выплатить долг и проценты по ст. 236 ТК РФ (срок добровольного исполнения — 3 дня).</p>
+                                    <p><strong>Шаг 2. Приостановление работы (>15 дней):</strong> Если задержка превысила 15 дней, работник вправе письменно уведомить руководство и приостановить работу с сохранением среднего заработка (ст. 142 ТК РФ).</p>
+                                    <p><strong>Шаг 3. Жалоба в ГИТ и Прокуратуру:</strong> Направьте обращения через портал «Онлайнинспекция.рф» и сайт Прокуратуры.</p>
+                                    <p><strong>Шаг 4. Иск в суд:</strong> Подайте иск в районный суд. Работники полностью освобождены от судебных расходов и госпошлины (ст. 393 ТК РФ).</p>
+                                </div>
                             </div>
-                            <div class="space-y-1 text-[11.5px] leading-relaxed">
-                                <p>• <strong>НДФЛ 0%:</strong> Проценты (денежная компенсация) по ст. 236 ТК РФ относятся к компенсационным выплатам и <strong>не облагаются налогом на доходы физических лиц (НДФЛ)</strong> в силу п. 1 ст. 217 НК РФ.</p>
-                                <p>• <strong>Срок обращения в суд (ст. 392 ТК РФ):</strong> По спорам о невыплате заработной платы работник вправе обратиться в суд в течение <strong>1 года</strong> со дня установленного срока выплаты, а по спорам об увольнении — в течение <strong>1 месяца</strong> со дня вручения трудовой книжки.</p>
+                            <div class="pt-2 border-t border-[#E8E7E2]">
+                                <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider mb-2">
+                                    <span class="material-symbols-outlined text-base">gavel</span>
+                                    Памятка юриста (Сроки и гарантии ТК РФ):
+                                </div>
+                                <div class="space-y-1 text-[11.5px] leading-relaxed">
+                                    <p>• <strong>Срок на обращение в суд (ст. 392 ТК РФ):</strong> По спорам о невыплате зарплаты — <strong>1 год</strong>; по спорам об увольнении — <strong>1 месяц</strong> со дня выдачи трудовой книжки.</p>
+                                    <p>• <strong>НДФЛ 0%:</strong> Компенсация за задержку зарплаты по ст. 236 ТК РФ <strong>не облагается НДФЛ</strong> (п. 1 ст. 217 НК РФ).</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -804,18 +987,32 @@
                             </div>
                         </div>
 
-                        <!-- Legal Guide for Water Flood Disputes -->
-                        <div class="p-4 rounded-xl bg-[#FAF4E6]/90 border border-[#C5A059]/40 text-xs text-[#2C3E50] space-y-2">
-                            <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider">
-                                <span class="material-symbols-outlined text-base">warning</span>
-                                Чек-лист действий при заливе (Кто отвечает — УК или соседи?):
+                        <!-- Step-by-Step & Legal Memo Damage -->
+                        <div class="p-4 sm:p-5 rounded-xl bg-white border border-[#C5A880]/60 text-xs text-[#2C3E50] space-y-4 shadow-xs">
+                            <div>
+                                <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider border-b border-[#E0E0E0] pb-2 mb-2.5">
+                                    <span class="material-symbols-outlined text-base">format_list_numbered</span>
+                                    Пошаговый порядок действий при заливе квартиры:
+                                </div>
+                                <div class="space-y-1.5 text-[11.5px] leading-relaxed">
+                                    <p><strong>Шаг 1. Акт осмотра УК за 12 часов:</strong> Вызовите АДС управляющей компании. Акт о заливе с указанием причин и повреждений составляется не позднее 12 часов (п. 152 ПП РФ № 354).</p>
+                                    <p><strong>Шаг 2. Независимая экспертиза:</strong> Заключите договор с аккредитованным оценщиком. За 3 рабочих дня уведомите виновника телеграммой о дате и времени осмотра.</p>
+                                    <p><strong>Шаг 3. Досудебная претензия:</strong> Направьте виновнику (соседям или УК) претензию с отчетом об оценке и 10-дневным сроком добровольной выплаты.</p>
+                                    <p><strong>Шаг 4. Судебное взыскание:</strong> При отказе подайте иск в суд. 100% расходов на оценку, юриста и госпошлину взыскиваются с виновника (ст. 98, 100 ГПК РФ).</p>
+                                </div>
                             </div>
-                            <div class="space-y-1 text-[11.5px] leading-relaxed">
-                                <p><strong>1. Фиксация (Акт УК за 12 часов):</strong> Управляющая компания обязана составить Акт осмотра не позднее 12 часов с момента обращения (п. 152 ПП РФ № 354).</p>
-                                <p><strong>2. Разграничение ответственности:</strong> За стояки до первого запирающего крана отвечает <strong>Управляющая компания</strong>. За гибкую подводку, стиральные машины и смесители после крана отвечают <strong>соседи сверху</strong>.</p>
-                                <p><strong>3. Независимая оценка:</strong> При отказе виновника возместить ущерб добровольно эксперт-оценщик определяет рыночную стоимость ремонта. Расходы на оценку взыскиваются в суде со 100% компенсацией (ст. 98 ГПК РФ).</p>
+                            <div class="pt-2 border-t border-[#E8E7E2]">
+                                <div class="font-bold text-[#8C6826] flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider mb-2">
+                                    <span class="material-symbols-outlined text-base">gavel</span>
+                                    Памятка юриста (Разграничение ответственности):
+                                </div>
+                                <div class="space-y-1 text-[11.5px] leading-relaxed">
+                                    <p>• <strong>Управляющая компания отвечает:</strong> за стояки ГВС/ХВС/отопления до первого запорного вентиля, общедомовые коммуникации и протечки кровли (ст. 161 ЖК РФ).</p>
+                                    <p>• <strong>Собственник квартиры сверху отвечает:</strong> за сантехприборы, гибкую подводку, стиральные машины и оборудование после первого крана (ст. 210, 1064 ГК РФ).</p>
+                                </div>
                             </div>
                         </div>
+                    </div>
                     </div>
 
                 </div>
@@ -1325,7 +1522,6 @@
                 const days = parseFloat(document.getElementById('ins-days')?.value) || 14;
                 const totalMonths = parseFloat(document.getElementById('ins-total-months')?.value) || 36;
                 const elapsedMonths = parseFloat(document.getElementById('ins-elapsed-months')?.value) || 6;
-                const isCourt = document.getElementById('ins-court-route')?.checked ?? true;
 
                 // Show/hide subpanels
                 const coolingPane = document.getElementById('ins-cooling-pane');
@@ -1341,7 +1537,7 @@
                     earlyPane?.classList.add('hidden');
                 }
 
-                const res = LegalCalculator.calculateInsuranceRefund(cost, days, totalMonths, elapsedMonths, contractType, isCourt);
+                const res = LegalCalculator.calculateInsuranceRefund(cost, days, totalMonths, elapsedMonths, contractType, true);
                 latestCalculation = { type: 'insurance', data: res };
 
                 document.getElementById('res-main-label').innerText = 'Сумма к возврату со страховой/банка:';
@@ -1353,8 +1549,8 @@
                 document.getElementById('res-line2-label').innerText = 'Срок возврата по 353-ФЗ:';
                 document.getElementById('res-line2-val').innerText = '7 рабочих дней';
 
-                document.getElementById('res-line3-label').innerText = isCourt ? 'По суду (+50% штраф + 395 ГК):' : 'Статус возврата:';
-                document.getElementById('res-line3-val').innerText = isCourt ? '+' + (res.fine50 + res.penalty395 + res.moralDamage).toLocaleString('ru-RU') + ' ₽' : '100% по закону';
+                document.getElementById('res-line3-label').innerText = 'Штраф 50% по суду (при отказе):';
+                document.getElementById('res-line3-val').innerText = '+' + Math.round(res.baseRefund * 0.5).toLocaleString('ru-RU') + ' ₽';
 
                 document.getElementById('res-law-basis').innerText = res.lawBasis;
             }
