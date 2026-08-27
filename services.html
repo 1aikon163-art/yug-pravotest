@@ -328,20 +328,124 @@
         </div>
     </div>
 
+        <!-- ── T-BANK (TINKOFF) ACQUIRING & DONATION MODAL ── -->
     <div class="modal-overlay" id="modal-donate">
-        <div class="modal-container p-8">
-            <button class="modal-close-btn" onclick="closeModal('modal-donate')"><span class="material-symbols-outlined">close</span></button>
-            <h3 class="font-['Source_Serif_4'] text-2xl font-bold text-[#0F2439] mb-3">Поддержать Юг-право</h3>
-            <p class="text-sm text-[#2C3E50] mb-6">Благотворительное пожертвование на уставную деятельность организации.</p>
-            <form class="space-y-4" onsubmit="event.preventDefault(); showToast('Переход к платежному шлюзу СБП...'); closeModal('modal-donate');">
-                <input class="w-full bg-[#F8F7F4] border border-[#E0E0E0] rounded px-4 py-3 text-sm text-[#0F2439]" type="number" value="500" min="50"/>
-                <button class="w-full py-3.5 bg-[#0F2439] text-white text-xs uppercase font-bold rounded hover:bg-[#1e3a5f]" type="submit">Пожертвовать через СБП</button>
+        <div class="modal-container p-6 sm:p-8 max-w-xl">
+            <button class="modal-close-btn" onclick="closeModal('modal-donate')">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            
+            <!-- Modal Header -->
+            <div class="flex items-center gap-2 mb-2">
+                <span class="px-2.5 py-0.5 rounded-full bg-[#FAF4E6] text-[#8C6826] border border-[#E8DCC0] text-[10px] font-bold uppercase font-mono">
+                    Т-Банк • Эквайринг & СБП
+                </span>
+                <span class="text-[10px] font-mono text-[#5f5e5e]">0% комиссия для донора</span>
+            </div>
+
+            <h3 class="font-['Source_Serif_4'] text-2xl sm:text-3xl font-bold text-[#0F2439] mb-2 leading-tight">
+                Поддержать АНО «ЮГ-ПРАВО»
+            </h3>
+            
+            <p class="text-xs text-[#5f5e5e] mb-6 leading-relaxed">
+                Официальное благотворительное пожертвование на уставные некоммерческие программы правовой защиты граждан Самарской области.
+            </p>
+
+            <form class="space-y-5" onsubmit="window.TBankPayment.initiatePayment(event)">
+                
+                <!-- 1. Purpose Selector -->
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-2.5">
+                        1. Выберите цель пожертвования:
+                    </label>
+                    <div class="space-y-2">
+                        <div class="purpose-radio-btn border-2 border-[#0F2439] bg-[#F0EFEA] p-3 rounded-xl cursor-pointer transition-all flex items-start gap-3" data-purpose="statutory" onclick="window.TBankPayment.selectPurpose('statutory')">
+                            <input type="radio" name="donate_purpose" value="statutory" checked class="mt-1 text-[#0F2439] focus:ring-[#0F2439]">
+                            <div>
+                                <div class="text-xs font-bold text-[#0F2439]">Уставная деятельность и бесплатная помощь</div>
+                                <div class="text-[11px] text-[#5f5e5e] mt-0.5">Правовые консультации, LegalTech сервисы, доклады в ведомства</div>
+                            </div>
+                        </div>
+
+                        <div class="purpose-radio-btn border border-[#E0E0E0] bg-white p-3 rounded-xl cursor-pointer transition-all flex items-start gap-3 hover:border-[#0F2439]/40" data-purpose="shelter" onclick="window.TBankPayment.selectPurpose('shelter')">
+                            <input type="radio" name="donate_purpose" value="shelter" class="mt-1 text-[#0F2439] focus:ring-[#0F2439]">
+                            <div>
+                                <div class="text-xs font-bold text-[#0F2439]">Программа «Добрая лапа» (Шефство над приютами)</div>
+                                <div class="text-[11px] text-[#5f5e5e] mt-0.5">Целевой сбор на корма, медикаменты и помощь животным (135-ФЗ)</div>
+                            </div>
+                        </div>
+
+                        <div class="purpose-radio-btn border border-[#E0E0E0] bg-white p-3 rounded-xl cursor-pointer transition-all flex items-start gap-3 hover:border-[#0F2439]/40" data-purpose="jkh" onclick="window.TBankPayment.selectPurpose('jkh')">
+                            <input type="radio" name="donate_purpose" value="jkh" class="mt-1 text-[#0F2439] focus:ring-[#0F2439]">
+                            <div>
+                                <div class="text-xs font-bold text-[#0F2439]">Народный аудит ЖКХ и экспертизы МКД</div>
+                                <div class="text-[11px] text-[#5f5e5e] mt-0.5">Общественный контроль (212-ФЗ), независимая строительная экспертиза</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="text-[11px] text-[#8C6826] font-mono mt-2" id="payment-purpose-hint">
+                        Добровольное пожертвование на ведение уставной деятельности и бесплатную правовую помощь гражданам (ст. 582 ГК РФ, пп. 1 п. 2 ст. 251 НК РФ)
+                    </p>
+                </div>
+
+                <!-- 2. Amount Selector -->
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-2.5">
+                        2. Выберите или укажите сумму:
+                    </label>
+                    <div class="grid grid-cols-4 gap-2 mb-3">
+                        <button type="button" class="amount-chip-btn py-2 px-3 border border-[#E0E0E0] bg-[#F8F7F4] rounded-lg text-xs font-bold text-[#0F2439] hover:border-[#0F2439] transition-all" data-amount="300" onclick="window.TBankPayment.selectAmount(300)">300 ₽</button>
+                        <button type="button" class="amount-chip-btn py-2 px-3 border border-[#0F2439] bg-[#0F2439] text-white rounded-lg text-xs font-bold hover:border-[#0F2439] transition-all" data-amount="500" onclick="window.TBankPayment.selectAmount(500)">500 ₽</button>
+                        <button type="button" class="amount-chip-btn py-2 px-3 border border-[#E0E0E0] bg-[#F8F7F4] rounded-lg text-xs font-bold text-[#0F2439] hover:border-[#0F2439] transition-all" data-amount="1000" onclick="window.TBankPayment.selectAmount(1000)">1 000 ₽</button>
+                        <button type="button" class="amount-chip-btn py-2 px-3 border border-[#E0E0E0] bg-[#F8F7F4] rounded-lg text-xs font-bold text-[#0F2439] hover:border-[#0F2439] transition-all" data-amount="3000" onclick="window.TBankPayment.selectAmount(3000)">3 000 ₽</button>
+                    </div>
+                    
+                    <div class="relative">
+                        <input id="donate-custom-amount" type="number" min="10" value="500" class="w-full bg-[#F8F7F4] border border-[#E0E0E0] rounded-xl px-4 py-3 text-sm font-bold text-[#0F2439] focus:border-[#0F2439] focus:ring-0 pl-4 pr-12" placeholder="Своя сумма"/>
+                        <span class="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-[#5f5e5e]">РУБ</span>
+                    </div>
+                </div>
+
+                <!-- 3. Email (Optional for receipt / thank you) -->
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-1.5">
+                        3. Электронная почта (для квитанции):
+                    </label>
+                    <input id="donate-email" type="email" placeholder="example@mail.ru" class="w-full bg-[#F8F7F4] border border-[#E0E0E0] rounded-xl px-4 py-2.5 text-xs text-[#0F2439] focus:border-[#0F2439] focus:ring-0"/>
+                </div>
+
+                <!-- Legal Terms Checkbox -->
+                <div>
+                    <label class="flex items-start gap-2.5 text-xs text-[#5f5e5e] cursor-pointer select-none">
+                        <input id="donate-agree-terms" type="checkbox" required checked class="mt-0.5 rounded border-[#E0E0E0] text-[#0F2439] focus:ring-[#0F2439]"/>
+                        <span>Я принимаю условия <a href="doc-viewer.html?doc=terms" target="_blank" class="underline text-[#0F2439] hover:text-[#8C6826]">публичной оферты о добровольном пожертвовании</a> и даю согласие на <a href="doc-viewer.html?doc=politika" target="_blank" class="underline text-[#0F2439] hover:text-[#8C6826]">обработку персональных данных</a>.</span>
+                    </label>
+                </div>
+
+                <!-- Submit Button -->
+                <button id="donate-submit-btn" type="submit" class="w-full py-4 bg-[#0F2439] text-white text-xs uppercase font-bold tracking-wider rounded-xl hover:bg-[#1e3a5f] transition-all shadow-md flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-base">payments</span>
+                    Перейти к оплате через Т-Банк / СБП →
+                </button>
+
+                <!-- Payment Methods Badges -->
+                <div class="pt-3 border-t border-[#E8E7E2] flex items-center justify-center gap-4 text-[10px] text-[#5f5e5e] font-mono">
+                    <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-[#1E5631]"></span> СБП (QR в 1 клик)</span>
+                    <span>•</span>
+                    <span>T-Pay</span>
+                    <span>•</span>
+                    <span>SberPay</span>
+                    <span>•</span>
+                    <span>МИР / Visa / MC</span>
+                </div>
             </form>
         </div>
     </div>
 
     <script src="js/effects.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/payment.js"></script>
     <script>
         const menuBtn = document.getElementById('mobile-menu-btn');
         const mobileNav = document.getElementById('mobile-nav');

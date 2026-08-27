@@ -4,12 +4,38 @@
  * 2. Real-time Live Reload via Server-Sent Events (SSE)
  * 3. Range Requests for Media Streaming (MP4/WebM)
  * 4. Dedicated Mobile Testing Endpoint (/qr)
+ * 5. Official T-Bank Internet Acquiring & Donation API (/api/payment/init)
  */
 
 const http = require('http');
+const https = require('https');
+const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const { getLocalIpAddress, generateQr } = require('./scripts/qr-generator');
+
+// T-Bank (Tinkoff) Acquiring Credentials
+const TBANK_CONFIG = {
+  terminalKey: process.env.TBANK_TERMINAL_KEY || '1787835813860DEMO',
+  password: process.env.TBANK_PASSWORD || 'L$ajc#1u6X#nn7nr',
+  apiUrl: 'https://securepay.tinkoff.ru/v2/Init'
+};
+
+function generateTBankToken(params, password) {
+  const tokenParams = { ...params, Password: password };
+  delete tokenParams.Token;
+  delete tokenParams.DATA;
+  delete tokenParams.Receipt;
+  delete tokenParams.Shops;
+  delete tokenParams.Descriptor;
+
+  const sortedKeys = Object.keys(tokenParams).sort();
+  let concatenated = '';
+  for (const key of sortedKeys) {
+    concatenated += tokenParams[key];
+  }
+  return crypto.createHash('sha256').update(concatenated).digest('hex');
+}
 
 const mime = {
   '.html': 'text/html; charset=utf-8',
@@ -95,7 +121,98 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // 2. Mobile QR View Page
+  // 2. T-Bank Payment Initialization Endpoint (/api/payment/init)
+  if (reqPath === '/api/payment/init' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', () => {
+      try {
+        const data = JSON.parse(body || '{}');
+        const amountRub = parseInt(data.amount, 10) || 500;
+        const amountKopecks = amountRub * 100;
+        const purposeKey = data.purpose || 'statutory';
+        const userEmail = data.email || 'donor@yug-pravo.ru';
+
+        let description = 'Добровольное пожертвование на уставную деятельность АНО «ЦПЗ ЮГ-ПРАВО»';
+        if (purposeKey === 'shelter') {
+          description = 'Целевое благотворительное пожертвование на программу «Добрая лапа» (ФЗ № 135-ФЗ)';
+        } else if (purposeKey === 'jkh') {
+          description = 'Целевое пожертвование на общественный аудит ЖКХ и экспертизы МКД (ФЗ № 212-ФЗ)';
+        }
+
+        const orderId = `YP-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+
+        const payload = {
+          TerminalKey: TBANK_CONFIG.terminalKey,
+          Amount: amountKopecks,
+          OrderId: orderId,
+          Description: description,
+          SuccessURL: `http://${req.headers.host || 'localhost:8080'}/payment-success.html?orderId=${orderId}`,
+          FailURL: `http://${req.headers.host || 'localhost:8080'}/index.html?error=payment_failed`,
+          DATA: {
+            Email: userEmail,
+            Company: 'АНО ЦПЗ ЮГ-ПРАВО',
+            TaxId: '6317174776'
+          }
+        };
+
+        payload.Token = generateTBankToken(payload, TBANK_CONFIG.password);
+
+        const postData = JSON.stringify(payload);
+
+        const tReq = https.request(TBANK_CONFIG.apiUrl, {
+          method: 'POST',
+          rejectUnauthorized: false,
+          headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postData)
+          }
+        }, (tRes) => {
+          let tData = '';
+          tRes.on('data', chunk => tData += chunk);
+          tRes.on('end', () => {
+            try {
+              const resp = JSON.parse(tData);
+              if (resp.Success && resp.PaymentURL) {
+                res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+                res.end(JSON.stringify({
+                  success: true,
+                  paymentUrl: resp.PaymentURL,
+                  paymentId: resp.PaymentId,
+                  orderId: resp.OrderId
+                }));
+              } else {
+                res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
+                res.end(JSON.stringify({
+                  success: false,
+                  error: resp.Message || resp.Details || 'Ошибка банка при создании платежа'
+                }));
+              }
+            } catch (pErr) {
+              res.writeHead(500, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify({ success: false, error: 'Некорректный ответ банка' }));
+            }
+          });
+        });
+
+        tReq.on('error', (e) => {
+          console.error('[T-Bank API Error]', e);
+          res.writeHead(502, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, error: 'Сетевая ошибка обращения к Т-Банку' }));
+        });
+
+        tReq.write(postData);
+        tReq.end();
+
+      } catch (err) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: false, error: 'Неверные параметры запроса' }));
+      }
+    });
+    return;
+  }
+
+  // 3. Mobile QR View Page
   if (reqPath === '/qr') {
     const localIp = getLocalIpAddress();
     const qrUrl = `http://${localIp}:8080/`;
