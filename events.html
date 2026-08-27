@@ -176,22 +176,34 @@
         <!-- Events Grid (8 Official Events of IV Quarter 2026) -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-16" id="events-container">
             
-            <!-- Событие 00: Внедрение LegalTech сервиса «Правовой калькулятор» (Уставная деятельность и инициативы) -->
-            <div class="event-item relative overflow-hidden bg-white/95 border-2 border-[#C5A059]/40 rounded-2xl p-7 sm:p-8 flex flex-col justify-between hover:border-[#8C6826] transition-all duration-300 hover:scale-[1.01] hover:-translate-y-1 shadow-md hover:shadow-xl group cursor-pointer lg:col-span-2 bg-gradient-to-br from-white via-white to-[#FAF4E6]/40" data-category="sep" onclick="openPredefinedEvent('calculator_launch')">
-                <img src="images/events/event0_calculator_launch.jpg" alt="Запуск Правового калькулятора" class="absolute right-0 top-0 h-full w-full object-cover opacity-20 mix-blend-multiply pointer-events-none [mask-image:radial-gradient(ellipse_at_85%_40%,black_35%,transparent_75%)] [-webkit-mask-image:radial-gradient(ellipse_at_85%_40%,black_35%,transparent_75%)] group-hover:scale-105 group-hover:opacity-30 transition-all duration-700 ease-out z-0" />
-                
+            <!-- Событие 00: Внедрение LegalTech сервиса «Правовой калькулятор» (РЕАЛИЗОВАНО • Уставная деятельность) -->
+            <div class="event-item relative overflow-hidden bg-gradient-to-br from-white via-white to-[#FAF4E6]/60 border-2 border-[#C5A059]/50 rounded-2xl p-6 sm:p-8 flex flex-col justify-between hover:border-[#8C6826] transition-all duration-300 hover:scale-[1.005] hover:-translate-y-1 shadow-md hover:shadow-xl group cursor-pointer lg:col-span-2" data-category="sep" onclick="openPredefinedEvent('calculator_launch')">
                 <div class="relative z-10">
-                    <div class="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-[#E8E7E2] mb-5">
+                    
+                    <!-- 1. High-Clarity Featured Photo Preview with Verified Emerald Tag (Без затемнения) -->
+                    <div class="relative w-full aspect-[21/9] sm:aspect-[24/9] rounded-xl overflow-hidden mb-6 border border-[#C5A059]/30 shadow-xs bg-[#0F2439] group/img">
+                        <img src="images/events/event0_calculator_launch.jpg" alt="Запуск Правового калькулятора АНО ЮГ-ПРАВО" class="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-700 opacity-100" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none"></div>
+                        <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#1E5631] text-white text-[10px] font-mono font-bold uppercase tracking-wider shadow-md flex items-center gap-1.5 border border-white/20">
+                            <span class="material-symbols-outlined text-xs text-emerald-300">verified</span>
+                            ✓ Проект реализован • Действующий сервис
+                        </span>
+                        <span class="absolute bottom-3 right-3 text-[11px] font-mono text-white/95 bg-black/75 backdrop-blur-md px-2.5 py-1 rounded border border-white/20">
+                            8 калькуляторов • 0 ₽ плата
+                        </span>
+                    </div>
+
+                    <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-[#E8E7E2] mb-4">
                         <span class="text-xs font-mono font-bold text-[#8C6826] uppercase tracking-wider flex items-center gap-1.5">
                             <span class="w-2 h-2 rounded-full bg-[#1E5631] animate-ping"></span>
-                            Реализовано • Август–Сентябрь 2026 • Уставная деятельность
+                            Реализовано • 2026 • Уставная деятельность АНО
                         </span>
                         <span class="px-2.5 py-0.5 rounded-full bg-[#EBF5EE] text-[#1E5631] border border-[#C8E6C9] text-[10px] font-bold uppercase font-mono">
                             Digital LegalTech • Запуск сервиса
                         </span>
                     </div>
 
-                    <h3 class="font-['Source_Serif_4'] text-2xl font-bold text-[#0F2439] mb-3 leading-snug group-hover:text-[#8C6826] transition-colors">
+                    <h3 class="font-['Source_Serif_4'] text-2xl sm:text-3xl font-bold text-[#0F2439] mb-3 leading-snug group-hover:text-[#8C6826] transition-colors">
                         «Реализация уставного проекта: запуск интерактивного сервиса "Правовой калькулятор" для защиты прав граждан»
                     </h3>
                     
