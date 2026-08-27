@@ -6,3 +6,12 @@ Thumbs.db
 *.log
 .system_generated/
 .agents/scratch/
+
+# 🔒 Железная безопасность (Zero-Leak Policy)
+.env
+.env.*
+bots/
+*.key
+*.pem
+credentials.json
+config.json
