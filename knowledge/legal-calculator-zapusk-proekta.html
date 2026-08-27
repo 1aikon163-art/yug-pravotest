@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="ru">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Запуск сервиса «Правовой калькулятор»: реализация уставной деятельности АНО «ЮГ-ПРАВО» по защите граждан | База знаний</title>
+    <meta name="description" content="Официальный отчет и руководство: запуск многофункционального LegalTech сервиса «Правовой калькулятор» АНО «ЦПЗ ЮГ-ПРАВО». 8 правовых модулей, расчет неустоек, госпошлины 2026 (259-ФЗ), перерасчетов ЖКХ и генерация процессуальных документов."/>
+    <meta name="keywords" content="правовой калькулятор юг-право, расчет госпошлины 2026 259-фз, калькулятор неустойки по защите прав потребителей, калькулятор перерасчета жкх 354 пп, калькулятор процентов 395 гк рф, возврат страховки по кредиту 353 фз, компенсация задержки зарплаты 236 тк рф, возмещение ущерба при заливе 1064 гк рф, уставная деятельность ано юг право, цифровая правовая помощь самарская область"/>
+    <meta name="author" content="АНО «ЦПЗ ЮГ-ПРАВО»"/>
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"/>
+    <link rel="canonical" href="https://yug-pravo.ru/knowledge/legal-calculator-zapusk-proekta.html"/>
+
+    <!-- Open Graph / Facebook / VK -->
+    <meta property="og:type" content="article"/>
+    <meta property="og:site_name" content="АНО «ЦПЗ ЮГ-ПРАВО»"/>
+    <meta property="og:title" content="Запуск сервиса «Правовой калькулятор»: реализация уставной деятельности АНО «ЮГ-ПРАВО»"/>
+    <meta property="og:description" content="8 модулей точного процессуального расчета: перерасчеты ЖКХ (354-ПП), неустойка 1% и 3% по ЗоЗПП, госпошлина 2026 (259-ФЗ), зарплатные задержки (236 ТК РФ), возврат страховок (353-ФЗ) и скачивание готовых претензий."/>
+    <meta property="og:url" content="https://yug-pravo.ru/knowledge/legal-calculator-zapusk-proekta.html"/>
+    <meta property="og:image" content="https://yug-pravo.ru/images/kb/calculator_launch.jpg"/>
+    <meta property="article:published_time" content="2026-08-27T10:00:00+03:00"/>
+    <meta property="article:modified_time" content="2026-08-27T10:00:00+03:00"/>
+    <meta property="article:author" content="АНО «ЦПЗ ЮГ-ПРАВО»"/>
+    <meta property="article:section" content="LegalTech и уставные инициативы"/>
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:title" content="Запуск сервиса «Правовой калькулятор» — АНО «ЮГ-ПРАВО»"/>
+    <meta name="twitter:description" content="Автоматизация правовой защиты граждан: 8 профильных калькуляторов и генератор досудебных претензий."/>
+    <meta name="twitter:image" content="https://yug-pravo.ru/images/kb/calculator_launch.jpg"/>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <link rel="stylesheet" href="../css/styles.css"/>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Article",
+          "@id": "https://yug-pravo.ru/knowledge/legal-calculator-zapusk-proekta.html#article",
+          "isPartOf": {
+            "@type": "WebSite",
+            "@id": "https://yug-pravo.ru/#website",
+            "name": "АНО «ЦПЗ ЮГ-ПРАВО»",
+            "url": "https://yug-pravo.ru"
+          },
+          "headline": "Реализация уставного проекта: запуск интерактивного сервиса «Правовой калькулятор» для защиты прав граждан",
+          "description": "Официальный отчет и руководство: запуск многофункционального LegalTech сервиса «Правовой калькулятор» АНО «ЦПЗ ЮГ-ПРАВО». 8 правовых модулей, расчет неустоек, госпошлины 2026 (259-ФЗ), перерасчетов ЖКХ и генерация процессуальных документов.",
+          "inLanguage": "ru-RU",
+          "mainEntityOfPage": "https://yug-pravo.ru/knowledge/legal-calculator-zapusk-proekta.html",
+          "datePublished": "2026-08-27T10:00:00+03:00",
+          "dateModified": "2026-08-27T10:00:00+03:00",
+          "publisher": {
+            "@type": "NGO",
+            "name": "АНО «ЦПЗ ЮГ-ПРАВО»",
+            "url": "https://yug-pravo.ru",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://yug-pravo.ru/images/logo.png"
+            }
+          },
+          "author": {
+            "@type": "Organization",
+            "name": "АНО «ЦПЗ ЮГ-ПРАВО»"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Главная",
+              "item": "https://yug-pravo.ru/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "База знаний",
+              "item": "https://yug-pravo.ru/knowledge.html"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Запуск Правового калькулятора",
+              "item": "https://yug-pravo.ru/knowledge/legal-calculator-zapusk-proekta.html"
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+</head>
+<body class="bg-[#F8F7F4] text-[#0F2439] antialiased selection:bg-[#C5A880]/30">
+
+    <!-- ── 1. LIQUID FROSTED GLASS HEADER ── -->
+    <header class="glass-header" id="main-header">
+        <div class="header-container">
+            <a class="brand-logo-btn group" href="../index.html" title="АНО «ЮГ-ПРАВО» — Главная">
+                <img alt="АНО «ЮГ-ПРАВО»" class="h-10 sm:h-11 w-auto" src="../images/logo.png"/>
+            </a>
+
+            <!-- Desktop Nav Menu -->
+            <nav class="hidden lg:flex items-center gap-6">
+                <a class="text-xs uppercase font-semibold tracking-wider text-[#2C3E50] hover:text-[#0F2439] transition-colors py-1" href="../events.html">События</a>
+                <a class="text-xs uppercase font-bold tracking-wider text-[#0F2439] border-b-2 border-[#0F2439] py-1" href="../knowledge.html">База знаний</a>
+                <a class="text-xs uppercase font-semibold tracking-wider text-[#2C3E50] hover:text-[#0F2439] transition-colors py-1" href="../initiatives.html">Инициативы</a>
+                <a class="text-xs uppercase font-semibold tracking-wider text-[#2C3E50] hover:text-[#0F2439] transition-colors py-1" href="../calculator.html">Калькулятор</a>
+                <a class="text-xs uppercase font-semibold tracking-wider text-[#2C3E50] hover:text-[#0F2439] transition-colors py-1" href="../about.html">Об организации</a>
+                <a class="text-xs uppercase font-semibold tracking-wider text-[#2C3E50] hover:text-[#0F2439] transition-colors py-1" href="../disclosure.html">Раскрытие</a>
+            </nav>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-4">
+                <a href="../calculator.html" class="hidden sm:inline-flex items-center justify-center px-5 py-2.5 bg-[#0F2439] text-white text-xs uppercase font-semibold tracking-wider hover:bg-[#1e3a5f] transition-all button-glow rounded shadow-sm">
+                    Открыть Калькулятор
+                </a>
+                <button aria-label="Меню" class="lg:hidden text-[#0F2439] p-2" id="mobile-menu-btn">
+                    <span class="material-symbols-outlined text-2xl">menu</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <nav class="hidden lg:hidden bg-[#F8F7F4]/95 backdrop-blur-xl border-t border-[#E0E0E0] px-6 py-4 flex flex-col gap-3 shadow-xl absolute w-full left-0" id="mobile-nav">
+            <a class="text-xs uppercase font-semibold text-[#2C3E50] hover:text-[#0F2439] py-2" href="../events.html">События</a>
+            <a class="text-xs uppercase font-bold text-[#0F2439] py-2 border-b border-[#0F2439]/20" href="../knowledge.html">База знаний</a>
+            <a class="text-xs uppercase font-semibold text-[#2C3E50] hover:text-[#0F2439] py-2" href="../initiatives.html">Региональные инициативы</a>
+            <a class="text-xs uppercase font-semibold text-[#2C3E50] hover:text-[#0F2439] py-2" href="../calculator.html">Правовой калькулятор</a>
+            <a class="text-xs uppercase font-semibold text-[#2C3E50] hover:text-[#0F2439] py-2" href="../about.html">Об организации</a>
+            <a class="text-xs uppercase font-semibold text-[#2C3E50] hover:text-[#0F2439] py-2" href="../disclosure.html">Раскрытие информации</a>
+            <a class="w-full mt-2 inline-flex items-center justify-center px-5 py-3 bg-[#0F2439] text-white text-xs uppercase font-semibold tracking-wider rounded" href="../calculator.html">
+                Открыть Калькулятор
+            </a>
+        </nav>
+    </header>
+
+    <main class="max-w-[1040px] mx-auto px-4 sm:px-6 py-10 md:py-16">
+        
+        <!-- Breadcrumbs -->
+        <nav class="flex items-center gap-2 text-xs uppercase tracking-wider text-[#5f5e5e] mb-8 font-mono">
+            <a href="../index.html" class="hover:text-[#0F2439] transition-colors">Главная</a>
+            <span>/</span>
+            <a href="../events.html" class="hover:text-[#0F2439] transition-colors">События</a>
+            <span>/</span>
+            <span class="text-[#0F2439] font-semibold">Запуск Правового калькулятора</span>
+        </nav>
+
+        <!-- Article Header -->
+        <div class="mb-10">
+            <div class="flex flex-wrap items-center gap-3 mb-4">
+                <span class="px-3 py-1 rounded-full bg-[#EBF5EE] text-[#1E5631] border border-[#C8E6C9] text-xs font-mono font-bold uppercase tracking-wider flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-[#1E5631] animate-ping"></span>
+                    Уставная деятельность • LegalTech
+                </span>
+                <span class="text-xs text-[#5f5e5e] font-mono">Август–Сентябрь 2026</span>
+                <span class="text-xs text-[#5f5e5e] font-mono">• 8 минут чтения</span>
+            </div>
+
+            <h1 class="font-['Source_Serif_4'] text-3xl sm:text-4xl lg:text-5xl font-bold text-[#0F2439] mb-6 leading-tight">
+                Реализация уставного проекта: запуск интерактивного сервиса «Правовой калькулятор» для защиты прав граждан
+            </h1>
+
+            <p class="text-base sm:text-lg text-[#2C3E50] leading-relaxed font-normal mb-8">
+                В соответствии с целями Устава АНО «ЦПЗ ЮГ-ПРАВО» по развитию цифровых инструментов социально-правовой защиты и правовому просвещению граждан, на портале организации запущен передовой комплекс автоматизированных правовых расчетов.
+            </p>
+
+            <!-- Lead Image -->
+            <div class="relative w-full aspect-[16/9] rounded-2xl overflow-hidden mb-10 border border-[#E0E0E0] shadow-sm">
+                <img src="../images/kb/calculator_launch.jpg" alt="Интерфейс Правового калькулятора АНО ЮГ-ПРАВО" class="w-full h-full object-cover"/>
+            </div>
+        </div>
+
+        <!-- Article Body -->
+        <article class="prose max-w-none text-sm sm:text-base text-[#2C3E50] leading-relaxed space-y-8">
+            
+            <!-- Section 1 -->
+            <div class="material-glass-card p-6 sm:p-8 rounded-2xl border border-[#E0E0E0] space-y-4">
+                <h2 class="font-['Source_Serif_4'] text-2xl font-bold text-[#0F2439] flex items-center gap-2.5">
+                    <span class="material-symbols-outlined text-[#8C6826]">account_balance</span>
+                    1. Уставные основания и цели создания сервиса
+                </h2>
+                <p>
+                    Согласно <strong>пунктам 2.1 и 2.2 Устава АНО «ЦПЗ ЮГ-ПРАВО»</strong>, ключевыми предметами деятельности организации являются:
+                </p>
+                <ul class="list-disc pl-5 space-y-2 text-xs sm:text-sm">
+                    <li>Предоставление консультационной, правовой и информационной помощи гражданам в сфере защиты их законных прав и интересов;</li>
+                    <li>Разработка, апробация и внедрение современных цифровых медиатехнологий, программных комплексов и аналитических систем в области юриспруденции;</li>
+                    <li>Повышение уровня правовой грамотности населения, формирование культуры досудебного урегулирования споров и противодействие злоупотреблениям со стороны монополистов и финансовых организаций.</li>
+                </ul>
+                <p>
+                    Создание интерактивного <strong>«Правового калькулятора»</strong> стало практической реализацией данных уставных задач, предоставив каждому жителю Самарской области и всей РФ бесплатный инструмент независимого процессуального аудита своих требований.
+                </p>
+            </div>
+
+            <!-- Section 2 -->
+            <div class="material-glass-card p-6 sm:p-8 rounded-2xl border border-[#E0E0E0] space-y-6">
+                <h2 class="font-['Source_Serif_4'] text-2xl font-bold text-[#0F2439] flex items-center gap-2.5">
+                    <span class="material-symbols-outlined text-[#8C6826]">calculate</span>
+                    2. Архитектура и функциональные возможности 8 модулей
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+                    
+                    <div class="p-4 rounded-xl bg-white border border-[#E8E7E2] space-y-2 shadow-2xs">
+                        <div class="font-bold text-[#0F2439] flex items-center gap-2">
+                            <span>🌡️</span>
+                            <span>1. ЖКХ и Услуги (354-ПП, 157 ЖК РФ)</span>
+                        </div>
+                        <p class="text-xs text-[#5f5e5e]">
+                            4 подмодуля: перерасчет за отопление с учетом региональных климатических норм СанПиН (+18°C vs +20°C/22°C в Сибири и на Севере), водоснабжение, сверка ИПУ (снятие коэффициента 1.5) и отсутствие (ТКО) + штраф УК 50%.
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-white border border-[#E8E7E2] space-y-2 shadow-2xs">
+                        <div class="font-bold text-[#0F2439] flex items-center gap-2">
+                            <span>📱</span>
+                            <span>2. Возврат товара (ЗоЗПП)</span>
+                        </div>
+                        <p class="text-xs text-[#5f5e5e]">
+                            Расчет законной неустойки <strong>1% в день</strong> по ст. 23 ЗоЗПП без ограничения верхнего предела, компенсации морального вреда (ст. 15) и 50% судебного штрафа (п. 6 ст. 13).
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-white border border-[#E8E7E2] space-y-2 shadow-2xs">
+                        <div class="font-bold text-[#0F2439] flex items-center gap-2">
+                            <span>🔨</span>
+                            <span>3. Услуги и Ремонт (ЗоЗПП)</span>
+                        </div>
+                        <p class="text-xs text-[#5f5e5e]">
+                            Неустойка <strong>3% в день</strong> за срыв сроков работ (ст. 28 ЗоЗПП) с ограничением общей ценой договора + 50% потребительский штраф.
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-white border border-[#E8E7E2] space-y-2 shadow-2xs">
+                        <div class="font-bold text-[#0F2439] flex items-center gap-2">
+                            <span>📈</span>
+                            <span>4. Проценты ст. 395 ГК РФ</span>
+                        </div>
+                        <p class="text-xs text-[#5f5e5e]">
+                            Расчет процентов за пользование чужими денежными средствами по официальной ключевой ставке Банка России за каждый день неправомерного удержания.
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-white border border-[#E8E7E2] space-y-2 shadow-2xs">
+                        <div class="font-bold text-[#0F2439] flex items-center gap-2">
+                            <span>🛡️</span>
+                            <span>5. Страховки и Допуслуги (353-ФЗ, 123-ФЗ)</span>
+                        </div>
+                        <p class="text-xs text-[#5f5e5e]">
+                            Возврат в 30-дневный период охлаждения (100%), возврат при досрочном погашении кредита (ч. 12 ст. 11 353-ФЗ) и отказ от навязанных автокарт / опционов (ст. 32 ЗоЗПП, 429.3 ГК РФ).
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-white border border-[#E8E7E2] space-y-2 shadow-2xs">
+                        <div class="font-bold text-[#0F2439] flex items-center gap-2">
+                            <span>⚖️</span>
+                            <span>6. Госпошлина в суд 2026 (ст. 333.19 НК РФ)</span>
+                        </div>
+                        <p class="text-xs text-[#5f5e5e]">
+                            Новые увеличенные ставки по реформе Федерального закона № 259-ФЗ (от 4 000 ₽), скидка 50% на судебный приказ и 100% освобождение потребителей по искам до 1 млн ₽ (ст. 333.36 НК РФ).
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-white border border-[#E8E7E2] space-y-2 shadow-2xs">
+                        <div class="font-bold text-[#0F2439] flex items-center gap-2">
+                            <span>💼</span>
+                            <span>7. Задержка зарплаты (ст. 236 ТК РФ)</span>
+                        </div>
+                        <p class="text-xs text-[#5f5e5e]">
+                            Компенсация 1/150 ключевой ставки ЦБ РФ в день (<strong>освобождена от НДФЛ по ст. 217 НК РФ</strong>) + оплата вынужденного прогула по ст. 394 ТК РФ при незаконном увольнении.
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-white border border-[#E8E7E2] space-y-2 shadow-2xs">
+                        <div class="font-bold text-[#0F2439] flex items-center gap-2">
+                            <span>🌊</span>
+                            <span>8. Залив квартиры / Ущерб (ст. 1064 ГК РФ)</span>
+                        </div>
+                        <p class="text-xs text-[#5f5e5e]">
+                            Восстановительный ремонт, компенсация поврежденного имущества, 100% возмещение затрат на независимую экспертизу (ст. 98 ГПК РФ) и проценты ст. 395 ГК РФ.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Section 3 -->
+            <div class="material-glass-card p-6 sm:p-8 rounded-2xl border border-[#E0E0E0] space-y-4">
+                <h2 class="font-['Source_Serif_4'] text-2xl font-bold text-[#0F2439] flex items-center gap-2.5">
+                    <span class="material-symbols-outlined text-[#8C6826]">description</span>
+                    3. Мгновенная генерация досудебных документов
+                </h2>
+                <p>
+                    Помимо числового расчета, сервис автоматически формирует готовый процессуальный документ — претензию в адрес управляющей компании, продавца, работодателя или банка. Документ содержит:
+                </p>
+                <ul class="list-disc pl-5 space-y-1 text-xs sm:text-sm">
+                    <li>Ссылки на профильные нормы законодательства РФ (ГК, ЖК, ТК, ЗоЗПП, НК РФ);</li>
+                    <li>Детализированный математический расчет требований, неустоек и штрафов;</li>
+                    <li>Указание на обязательность досудебного урегулирования и последствия обращения в суд;</li>
+                    <li>Возможность моментального скачивания в текстовом формате для печати или отправки заказным письмом.</li>
+                </ul>
+            </div>
+
+            <!-- Section 4: CTA Box -->
+            <div class="p-6 sm:p-8 rounded-2xl bg-[#0F2439] text-white space-y-4 text-center shadow-lg">
+                <span class="material-symbols-outlined text-4xl text-[#C5A059]">rocket_launch</span>
+                <h3 class="font-['Source_Serif_4'] text-2xl sm:text-3xl font-bold">
+                    Опробуйте Правовой калькулятор в действии
+                </h3>
+                <p class="text-xs sm:text-sm text-stone-300 max-w-xl mx-auto">
+                    Сервис абсолютно бесплатен, не требует регистрации и доступен круглосуточно на любых мобильных устройствах и компьютерах.
+                </p>
+                <div class="pt-2">
+                    <a href="../calculator.html" class="inline-flex items-center gap-2 px-8 py-4 bg-[#C5A059] text-[#0F2439] font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-[#d8b46d] transition-all shadow-md">
+                        <span>Перейти к расчетам в Калькуляторе</span>
+                        <span class="material-symbols-outlined text-base">arrow_forward</span>
+                    </a>
+                </div>
+            </div>
+
+        </article>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full py-12 px-6 bg-[#EBEAE5] border-t border-[#E0E0E0] text-center mt-20">
+        <div class="max-w-[1240px] mx-auto">
+            <div class="text-xs text-[#5f5e5e] max-w-2xl mx-auto mb-4 leading-relaxed">
+                АВТОНОМНАЯ НЕКОММЕРЧЕСКАЯ ОРГАНИЗАЦИЯ «ЦЕНТР ПРАВОВОЙ ЗАЩИТЫ И РАЗВИТИЯ ГРАЖДАНСКИХ ИНИЦИАТИВ ЮГ-ПРАВО» (АНО «ЦПЗ ЮГ-ПРАВО»)<br/>
+                ОГРН: 1266300015080 | ИНН: 6317174776 | КПП: 631701001
+            </div>
+
+            <div class="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-xs pt-4 border-t border-[#D5D4CF] max-w-3xl mx-auto mb-4">
+                <a href="../disclosure.html" class="text-[#0F2439] hover:underline transition-colors font-medium">Раскрытие информации</a>
+                <span class="text-[#A0A0A0] hidden sm:inline">•</span>
+                <a href="../doc-viewer.html?doc=ustav" class="text-[#0F2439] hover:underline transition-colors font-medium">Устав организации</a>
+                <span class="text-[#A0A0A0] hidden sm:inline">•</span>
+                <a href="../contacts.html" class="text-[#0F2439] hover:underline transition-colors font-medium">Контакты</a>
+            </div>
+
+            <div class="text-xs text-[#5f5e5e]">© 2026 АНО «ЦПЗ ЮГ-ПРАВО». Все права защищены.</div>
+        </div>
+    </footer>
+
+    <script src="../js/effects.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>

@@ -165,7 +165,7 @@
                 </div>
 
                 <div class="flex flex-wrap gap-2 w-full md:w-auto" id="event-filters">
-                    <button class="px-3.5 py-1.5 text-xs uppercase font-semibold rounded-lg bg-[#0F2439] text-white filter-btn active" data-category="all">Все события (7)</button>
+                    <button class="px-3.5 py-1.5 text-xs uppercase font-semibold rounded-lg bg-[#0F2439] text-white filter-btn active" data-category="all">Все события (8)</button>
                     <button class="px-3.5 py-1.5 text-xs uppercase font-semibold rounded-lg bg-[#F8F7F4] border border-[#E0E0E0] text-[#2C3E50] hover:bg-[#EBEAE5] filter-btn" data-category="sep">Сентябрь 2026</button>
                     <button class="px-3.5 py-1.5 text-xs uppercase font-semibold rounded-lg bg-[#F8F7F4] border border-[#E0E0E0] text-[#2C3E50] hover:bg-[#EBEAE5] filter-btn" data-category="oct">Октябрь 2026</button>
                     <button class="px-3.5 py-1.5 text-xs uppercase font-semibold rounded-lg bg-[#F8F7F4] border border-[#E0E0E0] text-[#2C3E50] hover:bg-[#EBEAE5] filter-btn" data-category="nov">Ноябрь 2026</button>
@@ -173,9 +173,66 @@
             </div>
         </div>
 
-                                                                <!-- Events Grid (7 Official Events of IV Quarter 2026) -->
+        <!-- Events Grid (8 Official Events of IV Quarter 2026) -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-16" id="events-container">
             
+            <!-- Событие 00: Внедрение LegalTech сервиса «Правовой калькулятор» (Уставная деятельность и инициативы) -->
+            <div class="event-item relative overflow-hidden bg-white/95 border-2 border-[#C5A059]/40 rounded-2xl p-7 sm:p-8 flex flex-col justify-between hover:border-[#8C6826] transition-all duration-300 hover:scale-[1.01] hover:-translate-y-1 shadow-md hover:shadow-xl group cursor-pointer lg:col-span-2 bg-gradient-to-br from-white via-white to-[#FAF4E6]/40" data-category="sep" onclick="openPredefinedEvent('calculator_launch')">
+                <img src="images/events/event0_calculator_launch.jpg" alt="Запуск Правового калькулятора" class="absolute right-0 top-0 h-full w-full object-cover opacity-20 mix-blend-multiply pointer-events-none [mask-image:radial-gradient(ellipse_at_85%_40%,black_35%,transparent_75%)] [-webkit-mask-image:radial-gradient(ellipse_at_85%_40%,black_35%,transparent_75%)] group-hover:scale-105 group-hover:opacity-30 transition-all duration-700 ease-out z-0" />
+                
+                <div class="relative z-10">
+                    <div class="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-[#E8E7E2] mb-5">
+                        <span class="text-xs font-mono font-bold text-[#8C6826] uppercase tracking-wider flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-[#1E5631] animate-ping"></span>
+                            Реализовано • Август–Сентябрь 2026 • Уставная деятельность
+                        </span>
+                        <span class="px-2.5 py-0.5 rounded-full bg-[#EBF5EE] text-[#1E5631] border border-[#C8E6C9] text-[10px] font-bold uppercase font-mono">
+                            Digital LegalTech • Запуск сервиса
+                        </span>
+                    </div>
+
+                    <h3 class="font-['Source_Serif_4'] text-2xl font-bold text-[#0F2439] mb-3 leading-snug group-hover:text-[#8C6826] transition-colors">
+                        «Реализация уставного проекта: запуск интерактивного сервиса "Правовой калькулятор" для защиты прав граждан»
+                    </h3>
+                    
+                    <p class="text-xs sm:text-sm text-[#2C3E50] leading-relaxed mb-5 font-normal">
+                        В рамках уставных целей АНО «ЦПЗ ЮГ-ПРАВО» по правовому просвещению, социально-правовой поддержке населения и внедрению цифровых медиатехнологий успешно завершена разработка и запущен многофункциональный веб-сервис <strong>«Правовой калькулятор»</strong>. Комплекс включает 8 автоматизированных модулей расчета неустоек, судебных пошлин по реформе 2026 года (259-ФЗ), перерасчетов ЖКХ, трудовых компенсаций и мгновенную генерацию процессуальных претензий.
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6 text-xs text-[#2C3E50] bg-[#F8F7F4]/95 backdrop-blur-xs p-4 rounded-xl border border-[#E8DCC0]">
+                        <div class="flex items-start gap-2">
+                            <span class="text-[#8C6826] font-bold">⚖️</span>
+                            <span><strong>Цель проекта:</strong> Доступность точного правового и процессуального расчета без финансовых затрат для граждан</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <span class="text-[#8C6826] font-bold">📜</span>
+                            <span><strong>Правовые модули:</strong> ЖКХ (354-ПП), ЗоЗПП (1% и 3%), ст. 395 ГК РФ, 353-ФЗ, ст. 333.19 НК РФ, ст. 236 ТК РФ, ст. 1064 ГК РФ</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <span class="text-[#8C6826] font-bold">💻</span>
+                            <span><strong>Функционал:</strong> Автоматический расчет штрафа 50%, морального вреда и скачивание готовой претензии</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <span class="text-[#8C6826] font-bold">🏛️</span>
+                            <span><strong>Уставные основания:</strong> п. 2.1, 2.2 Устава АНО (цифровизация правовой помощи и защита прав)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative z-10 pt-4 border-t border-[#E8E7E2] flex flex-wrap items-center justify-between gap-3 text-xs">
+                    <span class="font-mono text-[#5f5e5e] text-[11px]">8 модулей • Расчет по законам РФ</span>
+                    <div class="flex items-center gap-3">
+                        <a href="calculator.html" class="px-4 py-2 bg-[#0F2439] text-white font-bold uppercase tracking-wider rounded-lg hover:bg-[#1e3a5f] transition-all shadow-xs inline-flex items-center gap-1.5" onclick="event.stopPropagation();">
+                            <span>Открыть калькулятор</span>
+                            <span class="material-symbols-outlined text-sm text-[#C5A059]">arrow_forward</span>
+                        </a>
+                        <button class="font-bold uppercase text-[#8C6826] hover:text-[#0F2439] transition-colors inline-flex items-center gap-1">
+                            Подробнее о проекте →
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <!-- Событие 01: Сентябрь 2026 / Практикум и аналитический обзор (ст. 187 УК РФ & 115-ФЗ) -->
             <div class="event-item relative overflow-hidden bg-white/95 border border-[#E0E0E0] rounded-2xl p-7 sm:p-8 flex flex-col justify-between hover:border-black/15 transition-all duration-300 hover:scale-[1.01] hover:-translate-y-1 shadow-xs hover:shadow-lg group cursor-pointer" data-category="sep" onclick="openPredefinedEvent('cyber')">
                 <img src="images/events/event1_cyber.jpg" alt="" class="absolute right-0 top-0 h-full w-full object-cover opacity-15 mix-blend-multiply pointer-events-none [mask-image:radial-gradient(ellipse_at_85%_40%,black_30%,transparent_75%)] [-webkit-mask-image:radial-gradient(ellipse_at_85%_40%,black_30%,transparent_75%)] group-hover:scale-105 group-hover:opacity-25 transition-all duration-700 ease-out z-0" />
@@ -1351,6 +1408,34 @@
 
     <script>
                 const EVENT_REGISTRY = {
+  "calculator_launch": {
+    "title": "«Реализация уставного проекта: запуск интерактивного сервиса "Правовой калькулятор" для защиты прав граждан»",
+    "date": "Август–Сентябрь 2026 • Уставная деятельность АНО • LegalTech",
+    "category": "Уставной проект • Запуск цифрового сервиса",
+    "desc": "В соответствии с уставными целями АНО «ЦПЗ ЮГ-ПРАВО» по развитию цифровых сервисов, правовому просвещению и безвозмездной поддержке граждан (п. 2.1, 2.2 Устава), на официальном сайте организации развернут и введен в эксплуатацию интерактивный правовой калькулятор. Сервис производит мгновенный расчет неустоек, перерасчетов ЖКХ, задолженностей по зарплате, ущерба при заливах и обновленной судебной пошлины 2026 года (259-ФЗ), а также формирует юридически выверенные претензии для досудебного урегулирования.",
+    "npa": [
+      {
+        "title": "1. Устав АНО «ЦПЗ ЮГ-ПРАВО» (п. 2.1, 2.2)",
+        "text": "Разработка и внедрение цифровых технологий, информационных сервисов и аналитических инструментов для защиты прав и законных интересов граждан."
+      },
+      {
+        "title": "2. Федеральный закон № 259-ФЗ и ст. 333.19 НК РФ",
+        "text": "Актуальная прогрессивная шкала судебных государственных пошлин в суды общей юрисдикции и льготы для потребителей (ст. 333.36 НК РФ)."
+      },
+      {
+        "title": "3. Постановление Правительства РФ № 354 и ст. 157 ЖК РФ",
+        "text": "Формулы снижения платы за коммунальные услуги ненадлежащего качества (отопление, вода, ТКО, поверка ИПУ) и взыскание 50% штрафа с исполнителя."
+      },
+      {
+        "title": "4. Закон РФ «О защите прав потребителей» и ст. 395 ГК РФ",
+        "text": "Расчет законной неустойки 1% (товар) и 3% (услуги/ремонт), компенсации морального вреда (ст. 15) и 50% штрафа за отказ от добровольного удовлетворения требований (ст. 13)."
+      },
+      {
+        "title": "5. Трудовой кодекс РФ (ст. 236, 394 ТК РФ)",
+        "text": "Материальная ответственность работодателя: 1/150 ключевой ставки Банка России за каждый день задержки выплат (освобождено от НДФЛ по ст. 217 НК РФ)."
+      }
+    ]
+  },
   "cyber": {
     "title": "«Уголовно-правовые риски и превенция вовлечения молодежи в схемы \"дропперства\" (ст. 187 УК РФ)»",
     "date": "Сентябрь 2026 • ст. 187 УК РФ • 115-ФЗ",
