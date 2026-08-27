@@ -1310,20 +1310,32 @@ h1, h2, h3 {
 * { transition-property: background-color, border-color, color; transition-duration: 0.3s; }
 img, canvas, video, .transition-none * { transition: none; }
 
-/* ── Hero Video Anti-Watermark & Cinematic Overscan ── */
+/* ── Hero Video GPU Hardware Acceleration & Overscan ── */
 #hands-video,
+#initiatives-hero-video,
+#dog-hero-video,
 #knowledge-hero-video,
 #events-hero-video,
 #calc-hero-video,
 #about-hero-video,
 #disclosure-hero-video {
-    transform: scale(1.18) !important;
+    -webkit-transform: translate3d(0, 0, 0) scale(1.18);
+    transform: translate3d(0, 0, 0) scale(1.18);
     transform-origin: center center !important;
     object-fit: cover !important;
+    will-change: transform, opacity;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
     pointer-events: none;
 }
 
-/* На планшетах и смартфонах: оверскан 1.32x только для видео с водяными знаками */
+#initiatives-hero-video,
+#dog-hero-video {
+    -webkit-transform: translate3d(0, 0, 0) scale(1.0);
+    transform: translate3d(0, 0, 0) scale(1.0);
+}
+
+/* На планшетах и смартфонах: аппаратный оверскан без тяжелых масок */
 @media (max-width: 1024px) {
     #hands-video,
     #knowledge-hero-video,
@@ -1331,10 +1343,19 @@ img, canvas, video, .transition-none * { transition: none; }
     #calc-hero-video,
     #about-hero-video,
     #disclosure-hero-video {
-        transform: scale(1.32) !important;
+        -webkit-transform: translate3d(0, 0, 0) scale(1.30) !important;
+        transform: translate3d(0, 0, 0) scale(1.30) !important;
         transform-origin: center center !important;
         object-position: center center !important;
-        -webkit-mask-image: radial-gradient(ellipse at 50% 50%, black 15%, transparent 72%) !important;
-        mask-image: radial-gradient(ellipse at 50% 50%, black 15%, transparent 72%) !important;
+        -webkit-mask-image: none !important;
+        mask-image: none !important;
+    }
+
+    #initiatives-hero-video,
+    #dog-hero-video {
+        -webkit-transform: translate3d(0, 0, 0) scale(1.0) !important;
+        transform: translate3d(0, 0, 0) scale(1.0) !important;
+        -webkit-mask-image: none !important;
+        mask-image: none !important;
     }
 }

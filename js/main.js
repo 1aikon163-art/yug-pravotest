@@ -12,7 +12,11 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  const isDesktop = window.matchMedia('(min-width: 769px)');
+  const checkIsDesktop = () => {
+    const isWideScreen = window.innerWidth > 1024;
+    const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || window.matchMedia('(pointer: coarse)').matches;
+    return isWideScreen && !isTouch;
+  };
 
   // 1. Поиск видео элементов
   const pingPongVideo = document.getElementById('calc-hero-video') || 
@@ -81,9 +85,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!isHeroVisible || document.hidden) return;
 
-    if (!isDesktop.matches) {
+    const isDesktop = checkIsDesktop();
+
+    if (!isDesktop) {
       // ══════════════════════════════════════════════════════════════
-      // МОБИЛЬНЫЕ (<= 768px): НАСТОЯЩИЙ АППАРАТНЫЙ 60/120 FPS GPU LOOP
+      // МОБИЛЬНЫЕ И ПЛАНШЕТЫ: 100% АППАРАТНЫЙ 60/120 FPS GPU LOOP
       // ══════════════════════════════════════════════════════════════
       activeVideo.loop = true;
       activeVideo.setAttribute('loop', '');
@@ -91,7 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const playPromise = activeVideo.play();
       if (playPromise !== undefined) {
         playPromise.catch(() => {
-          // Автовоспроизведение после первого тача, если заблокировано ОС
           const onFirstTouch = () => {
             activeVideo.play().catch(() => {});
             document.removeEventListener('touchstart', onFirstTouch);
@@ -101,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } else {
       // ══════════════════════════════════════════════════════════════
-      // ДЕСКТОП (> 768px)
+      // ДЕСКТОП С МЫШЬЮ (> 1024px)
       // ══════════════════════════════════════════════════════════════
       activeVideo.pause();
       activeVideo.loop = false;
@@ -112,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let startTimestamp = performance.now();
 
         const runDesktopPingPong = (now) => {
-          if (!isDesktop.matches || !isHeroVisible || document.hidden) return;
+          if (!checkIsDesktop() || !isHeroVisible || document.hidden) return;
 
           const duration = (activeVideo.duration && !isNaN(activeVideo.duration) && activeVideo.duration > 0.5) ? activeVideo.duration : 4.6;
           const periodSeconds = duration * 2;
@@ -153,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         const smoothRender = (now) => {
-          if (!isDesktop.matches || !isHeroVisible || document.hidden) return;
+          if (!checkIsDesktop() || !isHeroVisible || document.hidden) return;
 
           const delta = Math.min((now - lastTimestamp) / 1000, 0.1);
           lastTimestamp = now;
@@ -183,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   initMode();
-  isDesktop.addEventListener('change', initMode);
+  window.addEventListener('resize', initMode, { passive: true });
 });
 
 // ─── ДИНАМИЧЕСКИЙ СЧЕТЧИК СТАТЕЙ И ИНСТРУКЦИЙ ───
