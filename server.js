@@ -14,10 +14,10 @@ const fs = require('fs');
 const path = require('path');
 const { getLocalIpAddress, generateQr } = require('./scripts/qr-generator');
 
-// T-Bank (Tinkoff) Acquiring Credentials
+// T-Bank (Tinkoff) Production Acquiring Credentials
 const TBANK_CONFIG = {
-  terminalKey: process.env.TBANK_TERMINAL_KEY || '1787835813860DEMO',
-  password: process.env.TBANK_PASSWORD || 'L$ajc#1u6X#nn7nr',
+  terminalKey: process.env.TBANK_TERMINAL_KEY || '1787835813888',
+  password: process.env.TBANK_PASSWORD || 'e6Qyo#F71Q#jH3fy',
   apiUrl: 'https://securepay.tinkoff.ru/v2/Init'
 };
 

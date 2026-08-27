@@ -5,6 +5,8 @@
  */
 
 window.TBankPayment = {
+  terminalKey: '1787835813888',
+  password: 'e6Qyo#F71Q#jH3fy',
   selectedPurpose: 'statutory',
   selectedAmount: 500,
 
