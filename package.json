@@ -10,7 +10,10 @@
     "validate-legal": "node scripts/legal-validator.js",
     "qr": "node scripts/qr-generator.js",
     "tunnel": "node scripts/tunnel.js",
-    "optimize-images": "node scripts/optimize-media.js"
+    "optimize-images": "node scripts/optimize-media.js",
+    "start:bots": "node bots/run-all-bots.js",
+    "bot:main": "node bots/main-bot.js",
+    "bot:info": "node bots/infobot.js"
   },
   "keywords": [
     "legaltech",
