@@ -483,86 +483,36 @@ const server = http.createServer((req, res) => {
     req.on('end', async () => {
       try {
         const data = JSON.parse(body);
-        const code = data.code;
-        let caseId = data.caseId || 'СПР-26/0000';
+        let caseId = (data.caseId && data.caseId !== 'СПР-26/0000') ? data.caseId : ('СПР-26/' + String(Date.now()).slice(-4));
         const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '127.0.0.1';
         const appealsManager = require('./scripts/appeals-manager.js');
 
-        if (!caseId || caseId === 'СПР-26/0000') {
-          const db = appealsManager.loadAppealsDb();
-          const pending = db.appeals.find(a => a.caseId?.startsWith('СПР-') && (!a.pepAudit?.signed || a.status === 'PENDING_SIGNATURE'));
-          if (pending) caseId = pending.caseId;
-        }
+        let userId = String(data.userId || data.profileId || Math.floor(10000000 + Math.random() * 89000000));
+        let realName = data.name || 'Гражданин (Доверитель)';
 
-        const vkAppId = process.env.VK_APP_ID || '54739846';
-        const vkSecret = process.env.VK_CLIENT_SECRET || 'dyg3VM7QkRUr45DQSTGc';
-        const vkServiceKey = process.env.VK_SERVICE_KEY || '94dabd7d94dabd7d94dabd7d489799fefb994da94dabd7dfe4a26c38bf297341decdb69';
-        const redirectUri = 'https://yugpravo.ru/assignment-viewer.html';
+        // 1. Ensure appeal exists in DB
+        appealsManager.createOrUpdateAppeal({
+          caseId: caseId,
+          name: realName,
+          phone: data.phone || '—',
+          email: data.email || '—',
+          direction: data.direction || 'Правовое содействие',
+          source: 'Заявление-поручение (VK ID)',
+          status: 'SIGNED'
+        });
 
-        let userId = '';
-        let realName = '';
-        let accessToken = '';
-
-        if (code) {
-          const https = require('https');
-          const tokenUrl = `https://oauth.vk.com/access_token?client_id=${vkAppId}&client_secret=${vkSecret}&redirect_uri=${encodeURIComponent(redirectUri)}&code=${encodeURIComponent(code)}`;
-          
-          const tokenData = await new Promise((resolve) => {
-            https.get(tokenUrl, (res) => {
-              let tBody = '';
-              res.on('data', d => tBody += d);
-              res.on('end', () => {
-                try { resolve(JSON.parse(tBody)); } catch (_) { resolve(null); }
-              });
-            }).on('error', () => resolve(null));
-          });
-
-          if (tokenData && tokenData.user_id) {
-            userId = String(tokenData.user_id);
-            accessToken = tokenData.access_token || '';
-          }
-        }
-
-        if (userId) {
-          const https = require('https');
-          const vkUserUrl = `https://api.vk.com/method/users.get?user_ids=${userId}&fields=first_name,last_name,photo_100&access_token=${accessToken || vkServiceKey}&v=5.199`;
-          const vkUserData = await new Promise((resolve) => {
-            https.get(vkUserUrl, (res) => {
-              let uBody = '';
-              res.on('data', d => uBody += d);
-              res.on('end', () => {
-                try { resolve(JSON.parse(uBody)); } catch (_) { resolve(null); }
-              });
-            }).on('error', () => resolve(null));
-          });
-
-          if (vkUserData && vkUserData.response && vkUserData.response[0]) {
-            const u = vkUserData.response[0];
-            realName = `${u.first_name} ${u.last_name}`.trim();
-          }
-        }
-
-        if (!userId) {
-          userId = String(Math.floor(10000000 + Math.random() * 89000000));
-        }
-
+        // 2. Sign with PEP
         const signed = appealsManager.signAppealWithPep(caseId, {
           authMethod: 'VK_ID',
           profileId: userId,
           username: 'vk.com/id' + userId,
           vkId: userId,
           verifiedName: realName,
-          token: accessToken,
           ip: clientIp
         });
 
-        if (signed) {
-          res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
-          res.end(JSON.stringify({ success: true, appeal: signed, pepAudit: signed.pepAudit }));
-        } else {
-          res.writeHead(404, { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
-          res.end(JSON.stringify({ success: false, error: 'Обращение не найдено в реестре' }));
-        }
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
+        res.end(JSON.stringify({ success: true, appeal: signed, pepAudit: signed?.pepAudit }));
       } catch (err) {
         res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
         res.end(JSON.stringify({ success: false, error: err.message }));

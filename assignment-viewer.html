@@ -1014,6 +1014,10 @@
                 const res = await resp.json();
                 if (res.success && res.caseId) {
                     data.caseId = res.caseId;
+                    if (window._currentAssignmentData && window._currentAssignmentData.pepAudit) {
+                        data.pepAudit = window._currentAssignmentData.pepAudit;
+                        data.status = window._currentAssignmentData.status;
+                    }
                     renderAssignment(data);
                     localStorage.setItem('yugpravo_assignment_data', JSON.stringify(data));
                     sessionStorage.setItem(sessionKey, 'true');
@@ -1092,18 +1096,31 @@
             if (vkCode) {
                 showViewerToast('🔐 Верификация VK ID и подписание документа...');
                 try {
+                    const savedDraft = JSON.parse(localStorage.getItem('yugpravo_assignment_data') || '{}');
                     const resp = await fetch('/api/vk-oauth-callback', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json; charset=utf-8' },
-                        body: JSON.stringify({ code: vkCode, caseId: targetCaseId })
+                        body: JSON.stringify({ 
+                            code: vkCode, 
+                            caseId: targetCaseId,
+                            name: savedDraft.name || 'Гражданин (Доверитель)',
+                            phone: savedDraft.phone || '',
+                            email: savedDraft.email || '',
+                            direction: savedDraft.direction || '',
+                            company: savedDraft.company || '',
+                            sum: savedDraft.sum || '',
+                            account: savedDraft.account || '',
+                            comment: savedDraft.comment || ''
+                        })
                     });
                     const res = await resp.json();
                     if (res.success && res.appeal) {
-                        initialData = res.appeal;
                         window._currentAssignmentData = res.appeal;
+                        localStorage.setItem('yugpravo_assignment_data', JSON.stringify(res.appeal));
                         renderAssignment(res.appeal);
                         showViewerToast('🎉 Заявление успешно подписано ПЭП через VK ID!');
                         window.history.replaceState({}, document.title, `/assignment-viewer.html?caseId=${encodeURIComponent(res.appeal.caseId)}`);
+                        return;
                     }
                 } catch (err) {
                     console.error('VK OAuth callback error:', err);
