@@ -84,7 +84,16 @@ function api(method, params = {}) {
   });
 }
 
-// Отправка сообщений
+// Escape HTML for Telegram
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+// Отправка сообщений с автоматическим fallback при ошибках парсинга
 async function sendMsg(chatId, text, replyMarkup = null, disablePreview = true) {
   const payload = {
     chat_id: chatId,
@@ -93,7 +102,16 @@ async function sendMsg(chatId, text, replyMarkup = null, disablePreview = true) 
     disable_web_page_preview: disablePreview
   };
   if (replyMarkup) payload.reply_markup = replyMarkup;
-  return await api('sendMessage', payload);
+  const res = await api('sendMessage', payload);
+  if (!res.ok) {
+    console.error(`⚠️ [Telegram sendMsg Error] to ${chatId}:`, res.description || res.error);
+    if (res.description && res.description.includes("can't parse entities")) {
+      delete payload.parse_mode;
+      payload.text = text.replace(/<[^>]*>/g, '');
+      return await api('sendMessage', payload);
+    }
+  }
+  return res;
 }
 
 // Главная нижняя клавиатура
@@ -126,15 +144,20 @@ function renderAppealCard(appeal) {
   const isWithdrawn = appeal.status === 'WITHDRAWN';
   const prefix = appeal.docPrefix || '📩';
   const label = appeal.docTypeLabel || 'Обращение';
+  const isAssignment = appeal.docType === 'service' || (appeal.caseId && appeal.caseId.startsWith('СПР'));
+
+  const safeMsg = escapeHtml(appeal.message || '');
+  const safeNote = escapeHtml(appeal.statusNote || '');
+  const safeDir = escapeHtml(appeal.direction || '');
 
   let text = `<b>${prefix} ${label.toUpperCase()} № ${appeal.caseId}</b>\n` +
     `━━━━━━━━━━━━━━━━━━━━\n` +
     `• <b>Текущий статус:</b> ${appeal.statusText}\n` +
     `• <b>Ответственный:</b> ${appeal.assignedSpecialist || 'Специалист центра'}\n` +
     `• <b>Дата регистрации:</b> ${appeal.createdAt}\n` +
-    (appeal.direction && appeal.direction !== '—' ? `• <b>Направление:</b> ${appeal.direction}\n` : '') +
-    (appeal.message && appeal.message !== '—' ? `• <b>Суть:</b> <i>${appeal.message.slice(0, 300)}</i>\n` : '') +
-    (appeal.statusNote ? `\n💡 <b>Комментарий специалиста:</b> ${appeal.statusNote}\n` : '') +
+    (safeDir && safeDir !== '—' ? `• <b>Направление:</b> ${safeDir}\n` : '') +
+    (safeMsg && safeMsg !== '—' ? `• <b>Суть:</b> <i>${safeMsg.slice(0, 300)}</i>\n` : '') +
+    (safeNote ? `\n💡 <b>Комментарий специалиста:</b> ${safeNote}\n` : '') +
     `━━━━━━━━━━━━━━━━━━━━`;
 
   const cleanSeq = appeal.caseId.slice(-4);
@@ -144,9 +167,11 @@ function renderAppealCard(appeal) {
     buttons.push([
       { text: "💬 Задать вопрос специалисту", callback_data: `ask_${cleanSeq}` }
     ]);
-    buttons.push([
-      { text: "📱 Открыть материалы в Mini App", web_app: { url: `${WEB_APP_URL}assignment-viewer.html?caseId=${encodeURIComponent(appeal.caseId)}` } }
-    ]);
+    if (isAssignment) {
+      buttons.push([
+        { text: "📱 Открыть материалы в Mini App", web_app: { url: `${WEB_APP_URL}assignment-viewer.html?caseId=${encodeURIComponent(appeal.caseId)}` } }
+      ]);
+    }
     buttons.push([
       { text: "🚫 Отозвать обращение", callback_data: `confirm_withdraw_${cleanSeq}` }
     ]);
@@ -475,12 +500,17 @@ async function handleMessage(msg) {
 
 // Обработка инлайн-кнопок
 async function handleCallback(cb) {
-  const chatId = cb.message.chat.id;
-  const data = cb.data;
+  const chatId = cb.message ? cb.message.chat.id : cb.from.id;
+  const data = cb.data || '';
   const username = cb.from.username ? `@${cb.from.username}` : '';
+  const firstName = cb.from.first_name || 'Гражданин';
   const isAdmin = (chatId === ADMIN_ID);
 
-  await api('answerCallbackQuery', { callback_query_id: cb.id });
+  console.log(`🔘 [Callback] Chat ${chatId} (${firstName} ${username}) clicked: "${data}"`);
+
+  try {
+    await api('answerCallbackQuery', { callback_query_id: cb.id });
+  } catch (_) {}
 
   if (data === 'noop') return;
 
@@ -499,7 +529,7 @@ async function handleCallback(cb) {
       const card = renderAppealCard(appeal);
       await sendMsg(chatId, card.text, card.keyboard);
     } else {
-      await sendMsg(chatId, "⚠️ Документ не найден в реестре.");
+      await sendMsg(chatId, `⚠️ Документ <b>${rawId}</b> не найден в реестре.`, getMainReplyKeyboard());
     }
     return;
   }
