@@ -378,9 +378,6 @@ const server = http.createServer((req, res) => {
         if (srcLow.includes('delegate') || srcLow.includes('assignment') || srcLow.includes('calc') || srcLow.includes('калькулятор') || dirLow.includes('поручен') || dirLow.includes('сопровожден') || dirLow.includes('перерасчет') || dirLow.includes('аудит')) {
           typePrefix = 'СПР';
           docLabel   = 'Сопровождение';
-        } else if (dirLow.includes('договор') || srcLow.includes('contract') || srcLow.includes('partner')) {
-          typePrefix = 'ДОГ';
-          docLabel   = 'Договор';
         } else if (dirLow.includes('инициатив') || srcLow.includes('initiative')) {
           typePrefix = 'ИН';
           docLabel   = 'Инициатива';
