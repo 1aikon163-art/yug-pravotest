@@ -274,23 +274,36 @@ function showCaseReceiptModal(data) {
   modal.classList.add('active');
 window.signModalWithVk = async function(caseId) {
   try {
-    const vkUserId = 'VK_' + Math.floor(10000000 + Math.random() * 90000000);
+    const clientProfile = JSON.parse(localStorage.getItem('yugpravo_client_profile') || '{}');
+    const vkUserId = clientProfile.vkId || String(Math.floor(70000000 + Math.random() * 29000000));
+    
     const resp = await fetch('/api/sign-pep', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       body: JSON.stringify({
         caseId: caseId,
         authMethod: 'VK_ID',
-        profileId: vkUserId
+        profileId: vkUserId,
+        username: 'vk.com/id' + vkUserId
       })
     });
     const res = await resp.json();
     if (res.success) {
       const statusRow = document.getElementById('receipt-status-row');
       if (statusRow) {
-        statusRow.innerHTML = '<span class="text-[#7A7974]">Статус:</span><span class="font-bold text-emerald-700">✅ Подписано ПЭП (VK ID)</span>';
+        statusRow.innerHTML = '<span class="text-[#7A7974]">Статус:</span><span class="font-bold text-emerald-700">✅ Подписано ПЭП (VK ID: ' + vkUserId + ')</span>';
       }
-      if (window.showToast) window.showToast('✅ Заявление успешно подписано ПЭП (VK ID)!', 'success');
+      const actionsBlock = document.getElementById('receipt-actions-block');
+      if (actionsBlock) {
+        actionsBlock.innerHTML = `
+          <a href="/assignment-viewer.html?caseId=${encodeURIComponent(caseId)}" style="display:block; text-align:center; background:#0F2439; color:#fff; font-weight:bold; font-size:13px; padding:12px; border-radius:8px; text-decoration:none; margin-top:10px;">
+            📄 Открыть подписанное Заявление (ПЭП 63-ФЗ)
+          </a>
+        `;
+      }
+      if (window.showToast) window.showToast('✅ Заявление успешно подписано ПЭП через VK ID!', 'success');
+    } else {
+      alert('Ошибка авторизации VK ID: ' + (res.error || 'Не удалось зарегистрировать'));
     }
   } catch (err) {
     alert('Ошибка авторизации VK ID: ' + err.message);

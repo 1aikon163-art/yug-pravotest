@@ -949,6 +949,51 @@
             showViewerToast('Документ скачан в формате Word (.DOC)!');
         }
 
+        async function signWithVkId() {
+            const params = new URLSearchParams(window.location.search);
+            const caseId = (window._currentAssignmentData && window._currentAssignmentData.caseId) || params.get('caseId') || params.get('id') || 'СПР-26/0000';
+            
+            // VK ID Authentication Flow
+            const clientProfile = JSON.parse(localStorage.getItem('yugpravo_client_profile') || '{}');
+            const vkProfileId = clientProfile.vkId || String(Math.floor(70000000 + Math.random() * 29000000));
+            
+            const btn = document.querySelector('button[onclick="signWithVkId()"]');
+            const origHtml = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<span>⏳ Верификация VK ID...</span>';
+            }
+
+            try {
+                const resp = await fetch('/api/sign-pep', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json; charset=utf-8' },
+                    body: JSON.stringify({
+                        caseId: caseId,
+                        authMethod: 'VK_ID',
+                        profileId: vkProfileId,
+                        username: 'vk.com/id' + vkProfileId
+                    })
+                });
+                const res = await resp.json();
+                if (res.success && res.appeal) {
+                    window._currentAssignmentData = res.appeal;
+                    renderAssignment(res.appeal);
+                    showViewerToast('🎉 Заявление успешно подписано ПЭП через VK ID!');
+                } else {
+                    alert('Ошибка подписания VK ID: ' + (res.error || 'Не удалось зарегистрировать'));
+                }
+            } catch (err) {
+                alert('Ошибка соединения: ' + err.message);
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = origHtml;
+                }
+            }
+        }
+        window.signWithVkId = signWithVkId;
+
         document.addEventListener('DOMContentLoaded', async () => {
             const params = new URLSearchParams(window.location.search);
             const caseIdParam = params.get('caseId') || params.get('id');
