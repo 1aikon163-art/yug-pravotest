@@ -68,7 +68,7 @@ htmlFiles.forEach(file => {
 
   // Schema.org check
   const hasSchema = content.includes('application/ld+json');
-  const schemaType = content.includes('"@type": "LegalService"') || content.includes('"@type":"LegalService"') ? 'LegalService' :
+  const schemaType = content.includes('"@type": "NGO"') || content.includes('"@type":"NGO"') ? 'NGO (Non-Profit)' : content.includes('"@type": "LegalService"') ? 'LegalService' :
                      content.includes('"@type": "Organization"') ? 'Organization' :
                      content.includes('"@type": "FAQPage"') ? 'FAQPage' : hasSchema ? 'JSON-LD' : 'None';
 

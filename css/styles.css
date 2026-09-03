@@ -1,3 +1,9 @@
+
+
+/* ==========================================================================
+   0. DESIGN SYSTEM CSS TOKENS (LEX RENAISSANCE - GOLDEN RATIO 2026)
+   ========================================================================== */
+
 /* ==========================================================================
    ЮГ-ПРАВО — Lex Renaissance & Material Glassmorphism Design System
    ========================================================================== */
@@ -745,3 +751,15 @@ body {
 }
 
 
+
+
+/* === HERO VIDEO SUBTLE MOBILE FRAMING & EDGE RETOUCHING (Hands & Knowledge) === */
+@media (max-width: 768px) {
+  #hands-video,
+  #knowledge-hero-video {
+    transform: scale(0.85) !important;
+    transform-origin: center right !important;
+    -webkit-mask-image: radial-gradient(ellipse 95% 68% at 50% 50%, black 30%, transparent 80%) !important;
+    mask-image: radial-gradient(ellipse 95% 68% at 50% 50%, black 30%, transparent 80%) !important;
+  }
+}

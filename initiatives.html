@@ -3,20 +3,20 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Программы и общественные инициативы — АНО «ЮГ-ПРАВО»</title>
+    <title>Региональные инициативы и проекты развития — АНО «ЮГ-ПРАВО»</title>
     <!-- Open Graph Tags -->
     <meta property="og:locale" content="ru_RU"/>
     <meta property="og:type" content="website"/>
     <meta property="og:site_name" content="АНО «ЦПЗ ЮГ-ПРАВО»"/>
     <meta property="og:title" content="🚩 Гражданские и региональные инициативы — АНО «ЮГ-ПРАВО» 【2026】"/>
     <meta property="og:description" content="Региональные правовые и социальные проекты АНО «ЮГ-ПРАВО» в Самарской области: мониторинг ЖКХ, просвещение граждан, бесплатная правовая поддержка семей."/>
-    <meta property="og:url" content="https://yug-pravo.ru/initiatives.html"/>
-    <meta property="og:image" content="https://yug-pravo.ru/images/logo.png"/>
+    <meta property="og:url" content="https://yugpravo.ru/initiatives.html"/>
+    <meta property="og:image" content="https://yugpravo.ru/images/logo.png"/>
     <meta name="twitter:card" content="summary_large_image"/>
     <meta name="twitter:title" content="🚩 Гражданские и региональные инициативы — АНО «ЮГ-ПРАВО» 【2026】"/>
     <meta name="twitter:description" content="Региональные правовые и социальные проекты АНО «ЮГ-ПРАВО» в Самарской области: мониторинг ЖКХ, просвещение граждан, бесплатная правовая поддержка семей."/>
-    <meta name="twitter:image" content="https://yug-pravo.ru/images/logo.png"/>
-    <link rel="canonical" href="https://yug-pravo.ru/initiatives.html"/>
+    <meta name="twitter:image" content="https://yugpravo.ru/images/logo.png"/>
+    <link rel="canonical" href="https://yugpravo.ru/initiatives.html"/>
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
     <meta name="geo.region" content="RU-SAM"/>
     <meta name="geo.placename" content="Самара, Самарская область, Россия"/>
@@ -32,7 +32,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     
     <!-- Lex Renaissance Styles -->
-    <link rel="stylesheet" href="css/styles.css"/>
+    <link rel="stylesheet" href="css/styles.css?v=20260901_live7"/>
 
     <script type="application/ld+json">
     {
@@ -40,22 +40,41 @@
       "@type": "CollectionPage",
       "name": "🚩 Гражданские и региональные инициативы — АНО «ЮГ-ПРАВО» 【2026】",
       "description": "Региональные правовые и социальные проекты АНО «ЮГ-ПРАВО» в Самарской области: мониторинг ЖКХ, просвещение граждан, бесплатная правовая поддержка семей.",
-      "url": "https://yug-pravo.ru/initiatives.html",
+      "url": "https://yugpravo.ru/initiatives.html",
       "publisher": {
         "@type": "NGO",
         "name": "АНО «ЦПЗ ЮГ-ПРАВО»",
-        "url": "https://yug-pravo.ru",
-        "logo": "https://yug-pravo.ru/images/logo.png"
+        "url": "https://yugpravo.ru",
+        "logo": "https://yugpravo.ru/images/logo.png"
       }
     }
     </script>
+    <script src="js/standby-lock.js?v=20260901_live7"></script>
+
+    <!-- Favicon & Icons -->
+    
+    
+    
+
+    <!-- Official Transparent Logo Favicons -->
+    <link rel="icon" type="image/png" href="favicon.png?v=8">
+    <link rel="apple-touch-icon" href="favicon.png?v=8">
+    
+    
+    
+    <script src="js/payment.js?v=20260901_live7"></script>
+    <script src="js/invoice-generator.js?v=20260901_live7"></script>
+
+    <!-- Telegram Mini App SDK 7.0+ -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="js/telegram-bridge.js" defer></script>
 </head>
 <body class="bg-[#F8F7F4] text-[#0F2439] antialiased">
 
         <!-- ── 1. LIQUID FROSTED GLASS HEADER ── -->
     <header class="glass-header" id="main-header">
         <div class="header-container">
-            <a class="brand-logo-btn group" href="index.html" title="АНО «ЮГ-ПРАВО» — Главная">
+            <a class="brand-logo-btn group" href="/" title="АНО «ЮГ-ПРАВО» — Главная">
                 <img alt="АНО «ЮГ-ПРАВО»" class="h-10 sm:h-11 w-auto" src="images/logo.png"/>
             </a>
 
@@ -67,14 +86,15 @@
                 <a class="text-xs uppercase font-semibold tracking-wider text-[#2C3E50] hover:text-[#0F2439] transition-colors py-1" href="calculator.html">Калькулятор</a>
                 <a class="text-xs uppercase font-semibold tracking-wider text-[#2C3E50] hover:text-[#0F2439] transition-colors py-1" href="about.html">Об организации</a>
                 <a class="text-xs uppercase font-semibold tracking-wider text-[#2C3E50] hover:text-[#0F2439] transition-colors py-1" href="disclosure.html">Раскрытие</a>
+                <a class="text-xs uppercase font-semibold tracking-wider text-[#2C3E50] hover:text-[#0F2439] transition-colors py-1" href="contacts.html">Контакты</a>
             </nav>
 
             <!-- Actions -->
             <div class="flex items-center gap-4">
-                <button class="hidden sm:inline-flex items-center justify-center px-5 py-2.5 bg-[#0F2439] text-white text-xs uppercase font-semibold tracking-wider hover:bg-[#1e3a5f] transition-all button-glow rounded shadow-sm" onclick="openModal('modal-donate')">
+                <button onclick="openModal('modal-donate')" class="hidden sm:inline-flex items-center justify-center px-5 py-2.5 bg-[#0F2439] text-white text-xs uppercase font-semibold tracking-wider hover:bg-[#1e3a5f] transition-all button-glow rounded shadow-sm">
                     Поддержать проект
                 </button>
-                <button aria-label="Меню" class="lg:hidden text-[#0F2439] p-2" id="mobile-menu-btn">
+                <button type="button" aria-label="Меню" class="lg:hidden text-[#0F2439] p-2 cursor-pointer" id="mobile-menu-btn" onclick="window.toggleMobileMenu ? window.toggleMobileMenu(event) : null">
                     <span class="material-symbols-outlined text-2xl">menu</span>
                 </button>
             </div>
@@ -88,7 +108,7 @@
             <a class="text-xs uppercase font-semibold text-[#2C3E50] hover:text-[#0F2439] py-2" href="calculator.html">Правовой калькулятор</a>
             <a class="text-xs uppercase font-semibold text-[#2C3E50] hover:text-[#0F2439] py-2" href="about.html">Об организации</a>
             <a class="text-xs uppercase font-semibold text-[#2C3E50] hover:text-[#0F2439] py-2" href="disclosure.html">Раскрытие информации</a>
-            <button class="w-full mt-2 inline-flex items-center justify-center px-5 py-3 bg-[#0F2439] text-white text-xs uppercase font-semibold tracking-wider rounded" onclick="openModal('modal-donate'); document.getElementById('mobile-nav').classList.add('hidden');">
+            <button class="w-full mt-2 inline-flex items-center justify-center px-5 py-3 bg-[#0F2439] text-white text-xs uppercase font-semibold tracking-wider rounded">
                 Поддержать проект
             </button>
         </nav>
@@ -100,14 +120,14 @@
             <div class="relative md:sticky md:top-0 min-h-[85vh] md:h-screen w-full flex items-center justify-between overflow-hidden px-4 sm:px-6 md:px-16 py-10 md:py-0">
                 
                 <!-- Background Video with Mask & Blend Mode -->
-                <video 
-                    id="initiatives-hero-video" 
+                <video id="initiatives-hero-video" 
                     src="kling.mp4" 
                     muted 
                     playsinline 
+                    webkit-playsinline 
                     preload="auto" 
-                    class="absolute inset-0 md:right-0 md:top-0 h-full w-full object-cover object-right opacity-35 md:opacity-45 mix-blend-multiply pointer-events-none [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_85%)] md:[mask-image:radial-gradient(ellipse_at_70%_50%,black_30%,transparent_80%)] md:[-webkit-mask-image:radial-gradient(ellipse_at_70%_50%,black_30%,transparent_80%)]"
-                ></video>
+                    class="absolute inset-0 md:right-0 md:top-0 h-full w-full object-cover object-right opacity-35 md:opacity-45 mix-blend-multiply pointer-events-none [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_85%)] md:[mask-image:radial-gradient(ellipse_at_70%_50%,black_30%,transparent_80%)] md:[-webkit-mask-image:radial-gradient(ellipse_at_70%_50%,black_30%,transparent_80%)]"></video>
+                
 
                 <!-- Left Gradient Dissolve Overlay under Text (z-[1]) -->
                 <div class="absolute inset-0 bg-gradient-to-r from-[#F8F7F4] via-[#F8F7F4]/80 to-transparent z-[1] pointer-events-none"></div>
@@ -117,7 +137,7 @@
                     <div class="max-w-2xl scroll-animate is-visible">
                         <!-- Breadcrumbs -->
                         <div class="flex items-center gap-2 text-xs uppercase tracking-wider text-[#5f5e5e] mb-6">
-                            <a href="index.html" class="hover:text-[#0F2439] transition-colors">Главная</a>
+                            <a href="/" class="hover:text-[#0F2439] transition-colors">Главная</a>
                             <span>/</span>
                             <span class="text-[#0F2439] font-semibold">Программы и инициативы</span>
                         </div>
@@ -242,7 +262,7 @@
 
                     <div class="relative z-10 pt-4 border-t border-[#E8E7E2] flex items-center justify-between text-xs">
                         <span class="font-mono text-[#5f5e5e] text-[11px]">Код: PRG-FIN-2026</span>
-                        <button type="button" class="font-bold uppercase text-[#0F2439] hover:text-[#8C6826] transition-colors inline-flex items-center gap-1">
+                        <button type="button" onclick="openStopCommissionModal(); event.stopPropagation();" class="font-bold uppercase text-[#0F2439] hover:text-[#8C6826] transition-colors inline-flex items-center gap-1">
                             Подробнее о программе →
                         </button>
                     </div>
@@ -291,7 +311,7 @@
 
                     <div class="relative z-10 pt-4 border-t border-[#E8E7E2] flex items-center justify-between text-xs">
                         <span class="font-mono text-[#5f5e5e] text-[11px]">Код: PRG-TECH-2026</span>
-                        <button type="button" class="font-bold uppercase text-[#0F2439] hover:text-[#8C6826] transition-colors inline-flex items-center gap-1">
+                        <button type="button" onclick="openDigitalLawModal(); event.stopPropagation();" class="font-bold uppercase text-[#0F2439] hover:text-[#8C6826] transition-colors inline-flex items-center gap-1">
                             Подробнее о платформе и ИИ →
                         </button>
                     </div>
@@ -340,7 +360,7 @@
 
                     <div class="relative z-10 pt-4 border-t border-[#E8E7E2] flex items-center justify-between text-xs">
                         <span class="font-mono text-[#5f5e5e] text-[11px]">Код: PRG-DOG-2026</span>
-                        <button type="button" class="font-bold uppercase text-[#0F2439] hover:text-[#8C6826] transition-colors inline-flex items-center gap-1">
+                        <button type="button" onclick="openDogParkInitiativeModal(); event.stopPropagation();" class="font-bold uppercase text-[#0F2439] hover:text-[#8C6826] transition-colors inline-flex items-center gap-1">
                             Подробнее об инициативе →
                         </button>
                     </div>
@@ -389,7 +409,7 @@
 
                     <div class="relative z-10 pt-4 border-t border-[#E8E7E2] flex items-center justify-between text-xs">
                         <span class="font-mono text-[#5f5e5e] text-[11px]">Код: PRG-JKH-2026</span>
-                        <button type="button" class="font-bold uppercase text-[#0F2439] hover:text-[#8C6826] transition-colors inline-flex items-center gap-1">
+                        <button type="button" onclick="openJkhProgramModal(); event.stopPropagation();" class="font-bold uppercase text-[#0F2439] hover:text-[#8C6826] transition-colors inline-flex items-center gap-1">
                             Подробнее о программе ЖКХ →
                         </button>
                     </div>
@@ -441,7 +461,7 @@
 
                     <div class="relative z-10 pt-4 border-t border-[#E8E7E2] flex items-center justify-between text-xs">
                         <span class="font-mono text-[#5f5e5e] text-[11px]">Код: PRG-VOL-2026</span>
-                        <button type="button" class="font-bold uppercase text-[#0F2439] hover:text-[#8C6826] transition-colors inline-flex items-center gap-1">
+                        <button type="button" onclick="openYouthLegalModal(); event.stopPropagation();" class="font-bold uppercase text-[#0F2439] hover:text-[#8C6826] transition-colors inline-flex items-center gap-1">
                             Подробнее о молодёжной программе →
                         </button>
                     </div>
@@ -868,38 +888,43 @@
                     </p>
                 </div>
 
-                <form class="space-y-4" onsubmit="event.preventDefault(); alert('Благодарим за инициативу! Ваше обращение принято к рассмотрению экспертами АНО «ЮГ-ПРАВО». Мы свяжемся с вами в течение 1 рабочего дня.'); this.reset();">
+                <form id="form-initiative" class="space-y-4" method="POST" action="/api/lead">
+                    <input type="hidden" name="target_alias" value="idea@yugpravo.ru" />
+                    <input type="hidden" name="source" value="Инициативы / Форма предложений" />
+                    
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs uppercase font-semibold text-[#0F2439] mb-1.5">Ваше имя *</label>
-                            <input type="text" required placeholder="Иван Иванович" class="w-full px-4 py-2.5 bg-white border border-[#E0E0E0] rounded text-xs text-[#0F2439] focus:border-[#0F2439] focus:ring-0 shadow-xs"/>
+                            <input type="text" name="name" required placeholder="Иван Иванович" class="w-full px-4 py-2.5 bg-white border border-[#E0E0E0] rounded text-xs text-[#0F2439] focus:border-[#0F2439] focus:ring-0 shadow-xs"/>
                         </div>
                         <div>
                             <label class="block text-xs uppercase font-semibold text-[#0F2439] mb-1.5">Телефон для связи *</label>
-                            <input type="tel" required placeholder="+7 (___) ___-__-__" class="w-full px-4 py-2.5 bg-white border border-[#E0E0E0] rounded text-xs text-[#0F2439] focus:border-[#0F2439] focus:ring-0 shadow-xs"/>
+                            <input type="tel" name="phone" required placeholder="+7 (___) ___-__-__" class="w-full px-4 py-2.5 bg-white border border-[#E0E0E0] rounded text-xs text-[#0F2439] focus:border-[#0F2439] focus:ring-0 shadow-xs"/>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs uppercase font-semibold text-[#0F2439] mb-1.5">Email для ответа</label>
-                            <input type="email" placeholder="name@domain.ru" class="w-full px-4 py-2.5 bg-white border border-[#E0E0E0] rounded text-xs text-[#0F2439] focus:border-[#0F2439] focus:ring-0 shadow-xs"/>
+                            <label class="block text-xs uppercase font-semibold text-[#0F2439] mb-1.5">Email для ответа (необязательно)</label>
+                            <input type="email" name="email" placeholder="name@domain.ru" class="w-full px-4 py-2.5 bg-white border border-[#E0E0E0] rounded text-xs text-[#0F2439] focus:border-[#0F2439] focus:ring-0 shadow-xs"/>
                         </div>
                         <div>
-                            <label class="block text-xs uppercase font-semibold text-[#0F2439] mb-1.5">Направление инициативы *</label>
-                            <select required class="w-full px-4 py-2.5 bg-white border border-[#E0E0E0] rounded text-xs text-[#0F2439] focus:border-[#0F2439] focus:ring-0 shadow-xs">
-                                <option value="jkh">Общественный контроль ЖКХ / Управляющая компания</option>
-                                <option value="env">Благоустройство и среда Южного города</option>
-                                <option value="pet">Правовая зоозащита и волонтерство</option>
-                                <option value="reg">Жалоба на коллекторов / МФО / Навязанные услуги</option>
-                                <option value="other">Другая общественная инициатива</option>
+                            <label class="block text-xs uppercase font-semibold text-[#0F2439] mb-1.5">Тематика инициативы или проекта *</label>
+                            <select id="initiative-direction-select" name="direction" required class="w-full px-4 py-2.5 bg-white border border-[#E0E0E0] rounded text-xs text-[#0F2439] focus:border-[#0F2439] focus:ring-0 shadow-xs">
+                                <option value="new_initiative" selected>Предложить новую инициативу / проект</option>
+                                <option value="fin">«Стоп-Комиссия»: Защита заемщиков и надзор за МФО / ПКО</option>
+                                <option value="tech">«Цифровое Право»: LegalTech-платформа и внедрение ИИ</option>
+                                <option value="dog_park">«Среда для людей и питомцев»: Площадки для собак в Южном городе</option>
+                                <option value="jkh">«Грамотное ЖКХ»: Общественный контроль и прозрачность УК</option>
+                                <option value="youth">«Школа Права и Волонтёрства»: Уроки в школах и часы Добро.рф</option>
+                                <option value="other">Другой социальный проект или обращение</option>
                             </select>
                         </div>
                     </div>
 
                     <div>
                         <label class="block text-xs uppercase font-semibold text-[#0F2439] mb-1.5">Суть инициативы или описания проблемы *</label>
-                        <textarea required rows="4" placeholder="Опишите ситуацию, адрес объекта или суть предлагаемого проекта..." class="w-full px-4 py-2.5 bg-white border border-[#E0E0E0] rounded text-xs text-[#0F2439] focus:border-[#0F2439] focus:ring-0 shadow-xs"></textarea>
+                        <textarea name="message" required rows="4" placeholder="Опишите ситуацию, адрес объекта или суть предлагаемого проекта..." class="w-full px-4 py-2.5 bg-white border border-[#E0E0E0] rounded text-xs text-[#0F2439] focus:border-[#0F2439] focus:ring-0 shadow-xs"></textarea>
                     </div>
 
                     <!-- 152-FZ Mandatory Consent Checkbox -->
@@ -939,1060 +964,547 @@
                 <a href="contacts.html" class="text-[#0F2439] hover:underline transition-colors font-medium">Реквизиты и контакты</a>
             </div>
 
-            <div class="text-xs text-[#5f5e5e]">© 2026 АНО «ЦПЗ ЮГ-ПРАВО». Все права защищены.</div>
+            
+            
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#5F5E5E] pt-4 border-t border-[#E0E0E0]/60 max-w-4xl mx-auto">
+                <div>© 2026 АНО «ЦПЗ ЮГ-ПРАВО». Все права защищены.</div>
+                <div class="inline-flex items-center gap-1.5 text-xs text-[#5F5E5E]">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#C5A059]"></span>
+                    <span>Архитектура, код и дизайн:</span>
+                    <a href="https://t.me/aikon163" target="_blank" rel="noopener noreferrer" class="font-bold text-[#0F2439] hover:text-[#C5A059] transition-colors underline decoration-[#0F2439]/30 underline-offset-4 hover:decoration-[#C5A059]">
+                        П. В. Шарыпаев
+                    </a>
+                </div>
+            </div>
         </div>
     </footer>
 
     <!-- ── 8. MODALS & SCRIPTS ── -->
-    <!-- Modal: Donate -->
-        <!-- ── T-BANK (TINKOFF) ACQUIRING & DONATION MODAL ── -->
+    
+    <!-- Modal: Donate (T-Bank Acquiring & Legal Donation) -->
+
+    <!-- ── T-BANK ACQUIRING & LEGALTECH DONATION MODAL (ФИЗЛИЦА + ЮРЛИЦА) ── -->
     <div class="modal-overlay" id="modal-donate">
-        <div class="modal-container p-6 sm:p-8 max-w-xl">
+        <div class="modal-container p-6 sm:p-7 max-w-lg max-h-[92vh] overflow-y-auto">
             <button class="modal-close-btn" onclick="closeModal('modal-donate')">
                 <span class="material-symbols-outlined">close</span>
             </button>
             
-            <!-- Modal Header -->
-            <div class="flex items-center gap-2 mb-2">
-                <span class="px-2.5 py-0.5 rounded-full bg-[#FAF4E6] text-[#8C6826] border border-[#E8DCC0] text-[10px] font-bold uppercase font-mono">
-                    Т-Банк • Эквайринг & СБП
-                </span>
-                <span class="text-[10px] font-mono text-[#5f5e5e]">0% комиссия для донора</span>
-            </div>
-
-            <h3 class="font-['Source_Serif_4'] text-2xl sm:text-3xl font-bold text-[#0F2439] mb-2 leading-tight">
+            <h3 class="font-['Source_Serif_4'] text-2xl font-bold text-[#0F2439] mb-1.5 leading-tight">
                 Поддержать АНО «ЮГ-ПРАВО»
             </h3>
             
-            <p class="text-xs text-[#5f5e5e] mb-6 leading-relaxed">
-                Официальное благотворительное пожертвование на уставные некоммерческие программы правовой защиты граждан Самарской области.
+            <p class="text-xs text-[#5f5e5e] mb-4 leading-relaxed">
+                Добровольное пожертвование на развитие уставных правозащитных программ и бесплатной юридической помощи.
             </p>
 
-            <form class="space-y-5" onsubmit="window.TBankPayment.initiatePayment(event)">
-                
-                <!-- 1. Purpose Selector -->
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-2.5">
-                        1. Выберите цель пожертвования:
-                    </label>
-                    <div class="space-y-2">
-                        <div class="purpose-radio-btn border-2 border-[#0F2439] bg-[#F0EFEA] p-3 rounded-xl cursor-pointer transition-all flex items-start gap-3" data-purpose="statutory" onclick="window.TBankPayment.selectPurpose('statutory')">
-                            <input type="radio" name="donate_purpose" value="statutory" checked class="mt-1 text-[#0F2439] focus:ring-[#0F2439]">
-                            <div>
-                                <div class="text-xs font-bold text-[#0F2439]">Уставная деятельность и бесплатная помощь</div>
-                                <div class="text-[11px] text-[#5f5e5e] mt-0.5">Правовые консультации, LegalTech сервисы, доклады в ведомства</div>
-                            </div>
-                        </div>
+            <!-- Mode Switcher Tabs (Физлица / Юрлица) -->
+            <div class="flex p-1 bg-[#F0EFEA] rounded-xl mb-4 border border-[#E0E0E0]">
+                <button type="button" id="tab-btn-person" onclick="window.TBankPayment.switchTab('person')" class="flex-1 py-2 text-xs font-bold rounded-lg transition-all shadow-xs bg-[#0F2439] text-white flex items-center justify-center gap-1.5 cursor-pointer">
+                    <span class="material-symbols-outlined text-sm">person</span>
+                    <span>Гражданам (СБП / Карты)</span>
+                </button>
+                <button type="button" id="tab-btn-corp" onclick="window.TBankPayment.switchTab('corp')" class="flex-1 py-2 text-xs font-bold rounded-lg transition-all text-[#5f5e5e] hover:text-[#0F2439] flex items-center justify-center gap-1.5 cursor-pointer">
+                    <span class="material-symbols-outlined text-sm">business</span>
+                    <span>Организациям и ИП (Счёт)</span>
+                </button>
+            </div>
 
-                        <div class="purpose-radio-btn border border-[#E0E0E0] bg-white p-3 rounded-xl cursor-pointer transition-all flex items-start gap-3 hover:border-[#0F2439]/40" data-purpose="shelter" onclick="window.TBankPayment.selectPurpose('shelter')">
-                            <input type="radio" name="donate_purpose" value="shelter" class="mt-1 text-[#0F2439] focus:ring-[#0F2439]">
-                            <div>
-                                <div class="text-xs font-bold text-[#0F2439]">Программа «Добрая лапа» (Шефство над приютами)</div>
-                                <div class="text-[11px] text-[#5f5e5e] mt-0.5">Целевой сбор на корма, медикаменты и помощь животным (135-ФЗ)</div>
-                            </div>
+            <!-- ── PANEL 1: ФИЗИЧЕСКИМ ЛИЦАМ ── -->
+            <div id="panel-person" class="space-y-4">
+                <form class="space-y-3.5" onsubmit="return false;">
+                    
+                    <!-- Amount Selector -->
+                    <div>
+                        <label class="block text-xs font-bold text-[#0F2439] mb-2">
+                            Сумма пожертвования:
+                        </label>
+                        <div class="grid grid-cols-5 gap-2 mb-2">
+                            <button type="button" class="amount-chip-btn py-2 px-1 border border-[#E0E0E0] bg-[#F8F7F4] rounded-lg text-xs font-bold text-[#0F2439] hover:border-[#0F2439] transition-all cursor-pointer text-center" data-amount="300" onclick="window.TBankPayment.selectAmount(300)">300 ₽</button>
+                            <button type="button" class="amount-chip-btn py-2 px-1 border border-[#0F2439] bg-[#0F2439] text-white rounded-lg text-xs font-bold hover:border-[#0F2439] transition-all cursor-pointer text-center" data-amount="500" onclick="window.TBankPayment.selectAmount(500)">500 ₽</button>
+                            <button type="button" class="amount-chip-btn py-2 px-1 border border-[#E0E0E0] bg-[#F8F7F4] rounded-lg text-xs font-bold text-[#0F2439] hover:border-[#0F2439] transition-all cursor-pointer text-center" data-amount="1000" onclick="window.TBankPayment.selectAmount(1000)">1 000 ₽</button>
+                            <button type="button" class="amount-chip-btn py-2 px-1 border border-[#E0E0E0] bg-[#F8F7F4] rounded-lg text-xs font-bold text-[#0F2439] hover:border-[#0F2439] transition-all cursor-pointer text-center" data-amount="3000" onclick="window.TBankPayment.selectAmount(3000)">3 000 ₽</button>
+                            <button type="button" class="amount-chip-btn py-2 px-1 border border-[#E0E0E0] bg-[#F8F7F4] rounded-lg text-xs font-bold text-[#0F2439] hover:border-[#0F2439] transition-all cursor-pointer text-center" data-amount="5000" onclick="window.TBankPayment.selectAmount(5000)">5 000 ₽</button>
                         </div>
-
-                        <div class="purpose-radio-btn border border-[#E0E0E0] bg-white p-3 rounded-xl cursor-pointer transition-all flex items-start gap-3 hover:border-[#0F2439]/40" data-purpose="jkh" onclick="window.TBankPayment.selectPurpose('jkh')">
-                            <input type="radio" name="donate_purpose" value="jkh" class="mt-1 text-[#0F2439] focus:ring-[#0F2439]">
-                            <div>
-                                <div class="text-xs font-bold text-[#0F2439]">Народный аудит ЖКХ и экспертизы МКД</div>
-                                <div class="text-[11px] text-[#5f5e5e] mt-0.5">Общественный контроль (212-ФЗ), независимая строительная экспертиза</div>
-                            </div>
+                        
+                        <div class="relative">
+                            <input id="donate-custom-amount" type="number" min="10" value="500" class="w-full bg-[#F8F7F4] border border-[#E0E0E0] rounded-xl px-4 py-2.5 text-sm font-bold text-[#0F2439] focus:border-[#0F2439] focus:ring-0 pl-4 pr-12" placeholder="Своя сумма"/>
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-[#5f5e5e]">РУБ</span>
                         </div>
                     </div>
-                    
-                    <p class="text-[11px] text-[#8C6826] font-mono mt-2" id="payment-purpose-hint">
-                        Добровольное пожертвование на ведение уставной деятельности и бесплатную правовую помощь гражданам (ст. 582 ГК РФ, пп. 1 п. 2 ст. 251 НК РФ)
+
+                    <!-- Email for receipt -->
+                    <div>
+                        <label class="block text-xs font-bold text-[#0F2439] mb-1">
+                            Электронная почта для чека:
+                        </label>
+                        <input id="donate-email" type="email" placeholder="name@domain.ru" class="w-full bg-[#F8F7F4] border border-[#E0E0E0] rounded-xl px-4 py-2 text-xs text-[#0F2439] focus:border-[#0F2439] focus:ring-0"/>
+                    </div>
+
+                    <!-- Legal Terms Checkbox -->
+                    <div class="p-2.5 bg-[#F8F7F4] rounded-xl border border-[#E8E7E2]">
+                        <label class="flex items-start gap-2 text-[11px] text-[#5f5e5e] cursor-pointer select-none">
+                            <input id="donate-agree-terms" type="checkbox" required checked class="mt-0.5 rounded border-[#E0E0E0] text-[#0F2439] focus:ring-[#0F2439]"/>
+                            <span>Принимаю условия <a href="doc-viewer.html?doc=donation-offer" target="_blank" class="underline font-medium text-[#0F2439] hover:text-[#8C6826]">Публичной оферты</a> и согласен на <a href="doc-viewer.html?doc=politika" target="_blank" class="underline font-medium text-[#0F2439] hover:text-[#8C6826]">обработку персданных</a>.</span>
+                        </label>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button id="donate-submit-btn" onclick="window.TBankPayment.initiatePayment(event)" type="button" class="w-full py-3.5 bg-[#0F2439] text-white text-xs uppercase font-bold tracking-wider rounded-xl hover:bg-[#1e3a5f] transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer button-glow">
+                        <span class="material-symbols-outlined text-base">payments</span>
+                        <span>Перейти к оплате через Т-Банк</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- ── PANEL 2: ЮРИДИЧЕСКИМ ЛИЦАМ И ИП ── -->
+            <div id="panel-corp" class="hidden space-y-3.5">
+                
+                <!-- Налоговая льгота (ст. 265 НК РФ) -->
+                <div class="p-2.5 bg-[#FAF7F0] border border-[#E8DFC8] rounded-xl text-xs text-[#0F2439] flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[#8C6826] text-base shrink-0">account_balance</span>
+                    <p class="text-[11px] text-[#5f5e5e] leading-snug m-0">
+                        <strong class="text-[#8C6826]">Налоговая льгота (пп. 19.6 п. 1 ст. 265 НК РФ):</strong> пожертвование в пользу СО НКО уменьшает налог на прибыль (до 1% выручки).
                     </p>
                 </div>
 
-                <!-- 2. Amount Selector -->
+                <!-- Выбор суммы -->
                 <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-2.5">
-                        2. Выберите или укажите сумму:
+                    <label class="block text-xs font-bold text-[#0F2439] mb-2">
+                        Сумма пожертвования:
                     </label>
-                    <div class="grid grid-cols-4 gap-2 mb-3">
-                        <button type="button" class="amount-chip-btn py-2 px-3 border border-[#E0E0E0] bg-[#F8F7F4] rounded-lg text-xs font-bold text-[#0F2439] hover:border-[#0F2439] transition-all" data-amount="300" onclick="window.TBankPayment.selectAmount(300)">300 ₽</button>
-                        <button type="button" class="amount-chip-btn py-2 px-3 border border-[#0F2439] bg-[#0F2439] text-white rounded-lg text-xs font-bold hover:border-[#0F2439] transition-all" data-amount="500" onclick="window.TBankPayment.selectAmount(500)">500 ₽</button>
-                        <button type="button" class="amount-chip-btn py-2 px-3 border border-[#E0E0E0] bg-[#F8F7F4] rounded-lg text-xs font-bold text-[#0F2439] hover:border-[#0F2439] transition-all" data-amount="1000" onclick="window.TBankPayment.selectAmount(1000)">1 000 ₽</button>
-                        <button type="button" class="amount-chip-btn py-2 px-3 border border-[#E0E0E0] bg-[#F8F7F4] rounded-lg text-xs font-bold text-[#0F2439] hover:border-[#0F2439] transition-all" data-amount="3000" onclick="window.TBankPayment.selectAmount(3000)">3 000 ₽</button>
+                    <div class="grid grid-cols-5 gap-1.5 mb-2">
+                        <button type="button" class="corp-amount-chip py-1.5 px-1 border border-[#E0E0E0] bg-[#F8F7F4] rounded-lg text-xs font-bold text-[#0F2439] hover:border-[#0F2439] transition-all cursor-pointer text-center" data-amount="1000" onclick="window.CorporateDonation.selectAmount(1000)">1 000 ₽</button>
+                        <button type="button" class="corp-amount-chip py-1.5 px-1 border border-[#E0E0E0] bg-[#F8F7F4] rounded-lg text-xs font-bold text-[#0F2439] hover:border-[#0F2439] transition-all cursor-pointer text-center" data-amount="3000" onclick="window.CorporateDonation.selectAmount(3000)">3 000 ₽</button>
+                        <button type="button" class="corp-amount-chip py-1.5 px-1 border border-[#0F2439] bg-[#0F2439] text-white rounded-lg text-xs font-bold hover:border-[#0F2439] transition-all cursor-pointer text-center" data-amount="5000" onclick="window.CorporateDonation.selectAmount(5000)">5 000 ₽</button>
+                        <button type="button" class="corp-amount-chip py-1.5 px-1 border border-[#E0E0E0] bg-[#F8F7F4] rounded-lg text-xs font-bold text-[#0F2439] hover:border-[#0F2439] transition-all cursor-pointer text-center" data-amount="10000" onclick="window.CorporateDonation.selectAmount(10000)">10 000 ₽</button>
+                        <button type="button" class="corp-amount-chip py-1.5 px-1 border border-[#E0E0E0] bg-[#F8F7F4] rounded-lg text-xs font-bold text-[#0F2439] hover:border-[#0F2439] transition-all cursor-pointer text-center" data-amount="50000" onclick="window.CorporateDonation.selectAmount(50000)">50 000 ₽</button>
                     </div>
                     
                     <div class="relative">
-                        <input id="donate-custom-amount" type="number" min="10" value="500" class="w-full bg-[#F8F7F4] border border-[#E0E0E0] rounded-xl px-4 py-3 text-sm font-bold text-[#0F2439] focus:border-[#0F2439] focus:ring-0 pl-4 pr-12" placeholder="Своя сумма"/>
+                        <input id="corp-amount" type="number" min="100" value="5000" step="500" oninput="window.CorporateDonation.onAmountInput(this.value)" class="w-full bg-[#F8F7F4] border border-[#E0E0E0] rounded-xl px-4 py-2 text-sm font-bold text-[#0F2439] focus:border-[#0F2439] focus:ring-0 pl-4 pr-12 font-mono" placeholder="Своя сумма"/>
                         <span class="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-[#5f5e5e]">РУБ</span>
                     </div>
                 </div>
 
-                <!-- 3. Email (Optional for receipt / thank you) -->
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-1.5">
-                        3. Электронная почта (для квитанции):
-                    </label>
-                    <input id="donate-email" type="email" placeholder="example@mail.ru" class="w-full bg-[#F8F7F4] border border-[#E0E0E0] rounded-xl px-4 py-2.5 text-xs text-[#0F2439] focus:border-[#0F2439] focus:ring-0"/>
+                <!-- СЦЕНАРИЙ А: Сумма <= 3 000 ₽ (ст. 574 ГК РФ — без обязательного письменного договора) -->
+                <div id="corp-flow-card" class="hidden p-3 bg-[#F0F7F4] rounded-xl border border-[#C8E6D9] space-y-2.5">
+                    <div class="flex items-start gap-2">
+                        <span class="material-symbols-outlined text-[#1E5631] text-base shrink-0 mt-0.5">verified_user</span>
+                        <div class="text-[11px] text-[#2C3E50] leading-snug">
+                            <strong>До 3 000 ₽ (п. 2 ст. 574 ГК РФ):</strong> письменный договор не требуется. Доступна моментальная оплата корпоративной картой / T-Pay с получением электронного чека для бухгалтерии.
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-[#0F2439] mb-1">Email бухгалтерии / плательщика (для чека 54-ФЗ):</label>
+                        <input id="corp-card-email" type="email" placeholder="buhgalter@company.ru" class="w-full bg-white border border-[#E0E0E0] rounded-lg px-3 py-1.5 text-xs text-[#0F2439] focus:border-[#0F2439]"/>
+                    </div>
+                                        <!-- Оферта пожертвования для юрлиц (ст. 435, 437, 582 ГК РФ) -->
+                    <div class="p-2 bg-white/90 rounded-lg border border-[#C8E6D9]">
+                        <label class="flex items-start gap-2 text-[10px] text-[#2C3E50] cursor-pointer select-none">
+                            <input id="corp-card-agree-terms" type="checkbox" required checked class="mt-0.5 rounded border-[#C8E6D9] text-[#1E5631] focus:ring-[#1E5631]"/>
+                            <span>Принимаем условия <a href="doc-viewer.html?doc=donation-offer" target="_blank" class="underline font-bold text-[#1E5631] hover:text-[#0F2439]">Публичной оферты о добровольном пожертвовании</a> (ст. 435, 437, 582 ГК РФ). Без НДС (пп. 1 п. 2 ст. 251 НК РФ).</span>
+                        </label>
+                    </div>
+                    <button type="button" onclick="window.CorporateDonation.payByCard()" class="w-full py-2.5 bg-[#1E5631] hover:bg-[#164326] text-white text-xs uppercase font-bold tracking-wider rounded-xl transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer">
+                        <span class="material-symbols-outlined text-base">credit_card</span>
+                        <span>Оплатить через T-Pay / Бизнес-картой →</span>
+                    </button>
+                    <div class="text-center">
+                        <button type="button" onclick="window.CorporateDonation.forceShowInvoice()" class="text-[11px] text-[#8C6826] underline font-medium hover:text-[#0F2439] cursor-pointer">
+                            Или сформировать Счёт-оферту на безналичную оплату
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Legal Terms Checkbox -->
-                <div>
-                    <label class="flex items-start gap-2.5 text-xs text-[#5f5e5e] cursor-pointer select-none">
-                        <input id="donate-agree-terms" type="checkbox" required checked class="mt-0.5 rounded border-[#E0E0E0] text-[#0F2439] focus:ring-[#0F2439]"/>
-                        <span>Я принимаю условия <a href="doc-viewer.html?doc=terms" target="_blank" class="underline text-[#0F2439] hover:text-[#8C6826]">публичной оферты о добровольном пожертвовании</a> и даю согласие на <a href="doc-viewer.html?doc=politika" target="_blank" class="underline text-[#0F2439] hover:text-[#8C6826]">обработку персональных данных</a>.</span>
-                    </label>
+                <!-- СЦЕНАРИЙ Б: Сумма > 3 000 ₽ (ст. 574 ГК РФ — обязательна письменная форма / Счёт / Договор) -->
+                <div id="corp-flow-invoice" class="space-y-3">
+                    <div class="p-2.5 bg-[#F8F7F4] rounded-xl border border-[#E0E0E0] text-[11px] text-[#2C3E50] flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[#0F2439] text-base shrink-0">gavel</span>
+                        <span><strong>Свыше 3 000 ₽ (п. 2 ст. 574 ГК РФ):</strong> обязательна письменная форма. Оплата производится по счёту или договору.</span>
+                    </div>
+
+                    <div class="p-3 bg-[#F8F7F4] rounded-xl border border-[#E0E0E0] space-y-2">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-[11px] font-bold text-[#0F2439] mb-1">ИНН компании / ИП:</label>
+                                <input id="corp-inn" type="text" placeholder="6317000000" class="w-full bg-white border border-[#E0E0E0] rounded-lg px-3 py-1.5 text-xs text-[#0F2439] font-mono focus:border-[#0F2439]"/>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-[#0F2439] mb-1">Наименование компании:</label>
+                                <input id="corp-name" type="text" placeholder="ООО «Компания»" class="w-full bg-white border border-[#E0E0E0] rounded-lg px-3 py-1.5 text-xs text-[#0F2439] focus:border-[#0F2439]"/>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row gap-2 pt-1">
+                            <button type="button" onclick="window.CorporateDonation.generateInvoice()" class="flex-1 py-2 px-3 bg-[#0F2439] text-white text-xs font-bold uppercase rounded-lg hover:bg-[#1e3a5f] transition-all flex items-center justify-center gap-1.5 shadow-sm cursor-pointer">
+                                <span class="material-symbols-outlined text-sm">print</span>
+                                <span>Сформировать Счёт (PDF)</span>
+                            </button>
+                            <button type="button" onclick="window.CorporateDonation.downloadContractDocx()" class="flex-1 py-2 px-3 bg-white border border-[#0F2439] text-[#0F2439] text-xs font-bold uppercase rounded-lg hover:bg-[#F0EFEA] transition-all flex items-center justify-center gap-1.5 shadow-xs cursor-pointer">
+                                <span class="material-symbols-outlined text-sm text-[#8C6826]">description</span>
+                                <span>Скачать Договор (DOCX)</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Банковские реквизиты -->
+                    <div class="text-[10px] font-mono text-[#2C3E50] bg-[#F8F7F4] p-2.5 rounded-lg border border-[#E8E7E2] leading-relaxed">
+                        <div class="flex justify-between items-start mb-1">
+                            <strong class="font-sans text-[#0F2439]">Реквизиты для платёжного поручения:</strong>
+                            <button type="button" onclick="window.CorporateDonation.copyRequisites()" class="text-[10px] text-[#0F2439] font-sans font-bold underline hover:text-[#8C6826] cursor-pointer">
+                                Скопировать
+                            </button>
+                        </div>
+                        Получатель: АНО «ЦПЗ ЮГ-ПРАВО» | ИНН: 6317174776 | КПП: 631701001<br/>
+                        Банк: АО «ТБанк» | БИК: 044525974 | К/с: 30101810145250000974<br/>
+                        Р/с: 40703810600000751961 | Назначение: «Добровольное пожертвование на ведение уставной деятельности. Без НДС»
+                    </div>
                 </div>
 
-                <!-- Submit Button -->
-                <button id="donate-submit-btn" type="submit" class="w-full py-4 bg-[#0F2439] text-white text-xs uppercase font-bold tracking-wider rounded-xl hover:bg-[#1e3a5f] transition-all shadow-md flex items-center justify-center gap-2">
-                    <span class="material-symbols-outlined text-base">payments</span>
-                    Перейти к оплате через Т-Банк / СБП →
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-initiative-dossier">
+        <div class="modal-container p-6 sm:p-8 max-w-2xl max-h-[92vh] overflow-y-auto" style="border:1px solid #C5A059; border-radius:20px; background:#ffffff;">
+            <button class="modal-close-btn absolute top-4 right-4 text-[#5f5e5e] hover:text-[#0F2439]" onclick="closeModal('modal-initiative-dossier')">
+                <span class="material-symbols-outlined text-2xl">close</span>
+            </button>
+
+            <!-- Top Header Badges -->
+            <div class="flex flex-wrap items-center gap-2 mb-3">
+                <span id="init-dossier-status-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider border">
+                    Активная работа
+                </span>
+                <span id="init-dossier-code" class="px-2.5 py-0.5 rounded-full bg-[#FAF4E6] text-[#8C6826] border border-[#E8DCC0] text-[10px] font-mono font-bold uppercase">
+                    PRG-FIN-2026
+                </span>
+                <span id="init-dossier-category" class="text-[11px] font-mono text-[#5f5e5e]">
+                    Уставная программа
+                </span>
+            </div>
+
+            <!-- Title & Subtitle -->
+            <h3 id="init-dossier-title" class="font-['Source_Serif_4'] text-2xl sm:text-3xl font-bold text-[#0F2439] mb-2 leading-tight">
+                Название инициативы
+            </h3>
+            <p id="init-dossier-subtitle" class="text-xs sm:text-sm text-[#8C6826] font-medium mb-5">
+                Краткое описание направления
+            </p>
+
+            <!-- Procedural Description -->
+            <div class="p-4 rounded-xl bg-[#F8F7F4] border border-[#E8E7E2] mb-5 text-xs sm:text-sm text-[#2C3E50] leading-relaxed">
+                <p id="init-dossier-desc" class="m-0"></p>
+            </div>
+
+            <!-- Goals Box -->
+            <div class="mb-5">
+                <h4 class="font-['Source_Serif_4'] font-bold text-sm text-[#0F2439] mb-2.5 flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-base text-[#8C6826]">flag</span>
+                    <span>Ключевые цели и результаты:</span>
+                </h4>
+                <div id="init-dossier-goals" class="space-y-2 text-xs text-[#2C3E50]"></div>
+            </div>
+
+            <!-- Modules / Stages Box -->
+            <div class="mb-5">
+                <h4 class="font-['Source_Serif_4'] font-bold text-sm text-[#0F2439] mb-2.5 flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-base text-[#8C6826]">account_tree</span>
+                    <span>Этапы и ключевые направления реализации:</span>
+                </h4>
+                <div id="init-dossier-modules" class="space-y-2 text-xs text-[#2C3E50]"></div>
+            </div>
+
+            <!-- Legislative Norms (НПА РФ) -->
+            <div class="mb-6">
+                <h4 class="font-['Source_Serif_4'] font-bold text-sm text-[#0F2439] mb-2.5 flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-base text-[#8C6826]">gavel</span>
+                    <span>Нормативно-правовая база РФ:</span>
+                </h4>
+                <div id="init-dossier-npa" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs"></div>
+            </div>
+
+            <!-- Modal Action Buttons -->
+            <div class="pt-4 border-t border-[#E8E7E2] flex flex-col sm:flex-row gap-3">
+                <button type="button" id="init-dossier-action-btn" onclick="handleInitiativeDossierAction()" class="flex-1 py-3.5 px-4 bg-[#0F2439] text-white text-xs uppercase font-bold tracking-wider rounded-xl hover:bg-[#1e3a5f] transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer button-glow">
+                    <span class="material-symbols-outlined text-sm">send</span>
+                    <span id="init-dossier-action-text">Предложить решение / Участвовать</span>
                 </button>
-
-                <!-- Payment Methods Badges -->
-                <div class="pt-3 border-t border-[#E8E7E2] flex items-center justify-center gap-4 text-[10px] text-[#5f5e5e] font-mono">
-                    <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-[#1E5631]"></span> СБП (QR в 1 клик)</span>
-                    <span>•</span>
-                    <span>T-Pay</span>
-                    <span>•</span>
-                    <span>SberPay</span>
-                    <span>•</span>
-                    <span>МИР / Visa / MC</span>
-                </div>
-            </form>
-        </div>
-    </div>
-            <p class="text-xs text-[#2C3E50] mb-6 leading-relaxed">
-                АНО «ЦПЗ ЮГ-ПРАВО» — некоммерческая организация. Ваши пожертвования идут на правовую помощь гражданам, выездные приемы в районах и экспертизу по ЖКХ.
-            </p>
-            <div class="space-y-3 mb-6 bg-white p-4 rounded-lg border border-[#E0E0E0] text-xs">
-                <div class="flex justify-between py-1 border-b border-[#E0E0E0]">
-                    <span class="text-[#5f5e5e]">Получатель:</span>
-                    <span class="font-bold text-[#0F2439]">АНО «ЦПЗ ЮГ-ПРАВО»</span>
-                </div>
-                <div class="flex justify-between py-1 border-b border-[#E0E0E0]">
-                    <span class="text-[#5f5e5e]">ИНН / КПП:</span>
-                    <span class="font-mono text-[#0F2439]">6317174776 / 631701001</span>
-                </div>
-                <div class="flex justify-between py-1">
-                    <span class="text-[#5f5e5e]">Назначение платежа:</span>
-                    <span class="text-[#0F2439]">Добровольное пожертвование на уставную деятельность</span>
-                </div>
-            </div>
-            <button class="w-full py-3 bg-[#0F2439] text-white text-xs uppercase font-bold tracking-wider rounded hover:bg-[#1e3a5f] transition-all" onclick="closeModal('modal-donate')">
-                Понятно
-            </button>
-        </div>
-    </div>
-
-    <!-- Modal: Constructor -->
-    <div class="modal-overlay" id="modal-constructor">
-        <div class="modal-container p-6 sm:p-8">
-            <button class="modal-close-btn" onclick="closeModal('modal-constructor')" aria-label="Закрыть">
-                <span class="material-symbols-outlined">close</span>
-            </button>
-            <div class="flex items-center gap-3 mb-3">
-                <div class="w-10 h-10 rounded-full bg-[#0F2439] text-[#C5A059] flex items-center justify-center">
-                    <span class="material-symbols-outlined">description</span>
-                </div>
-                <div>
-                    <h3 class="font-['Source_Serif_4'] text-xl font-bold text-[#0F2439]">Конструктор заявлений</h3>
-                    <span class="text-xs text-[#8C7A5B] font-semibold uppercase tracking-wider">Правовой модуль</span>
-                </div>
-            </div>
-            <p class="text-xs text-[#2C3E50] mb-4 leading-relaxed">Онлайн-конструктор процессуальных документов находится в финальной стадии тестирования.</p>
-            <form class="space-y-3" onsubmit="event.preventDefault(); showToast('Вы успешно подписаны на уведомление о запуске!'); closeModal('modal-constructor');">
-                <div class="flex gap-2">
-                    <input type="email" placeholder="Ваш e-mail" required class="flex-grow text-xs rounded border border-[#E0E0E0] px-3.5 py-2.5 bg-white text-[#0F2439] focus:border-[#C5A059] outline-none">
-                    <button type="submit" class="px-5 py-2.5 bg-[#0F2439] text-white text-xs uppercase font-bold tracking-wider rounded hover:bg-[#1e3a5f] transition-all">Подписаться</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal: Calculator -->
-    <div class="modal-overlay" id="modal-calculator">
-        <div class="modal-container p-8">
-            <button class="modal-close-btn" onclick="closeModal('modal-calculator')"><span class="material-symbols-outlined">close</span></button>
-            <div class="flex items-center gap-3 mb-4">
-                <span class="material-symbols-outlined text-3xl text-[#0F2439]">calculate</span>
-                <div>
-                    <h3 class="font-['Source_Serif_4'] text-2xl font-bold text-[#0F2439]">Правовой калькулятор</h3>
-                    <span class="text-xs text-[#1E5631] font-bold">Сервис запущен и активен</span>
-                </div>
-            </div>
-            <p class="text-sm text-[#2C3E50] mb-6">
-                Интерактивный расчет неустоек, перерасчета платы за отопление по ПП РФ № 354, 1% и 3% по ЗоЗПП и процентов по ст. 395 ГК РФ.
-            </p>
-            <a href="calculator.html" class="w-full inline-flex items-center justify-center gap-2 py-3.5 bg-[#0F2439] text-white text-xs uppercase font-bold tracking-wider rounded hover:bg-[#1e3a5f] button-glow shadow-sm">
-                <span>Перейти к расчетам</span>
-                <span class="material-symbols-outlined text-sm">arrow_forward</span>
-            </a>
-        </div>
-    </div>
-            <p class="text-xs text-[#2C3E50] mb-4 leading-relaxed">Сервис автоматического расчета пошлин по ст. 333.19 НК РФ готовится к релизу.</p>
-            <form class="space-y-3" onsubmit="event.preventDefault(); showToast('Вы успешно подписаны на уведомление о запуске!'); closeModal('modal-calculator');">
-                <div class="flex gap-2">
-                    <input type="email" placeholder="Ваш e-mail" required class="flex-grow text-xs rounded border border-[#E0E0E0] px-3.5 py-2.5 bg-white text-[#0F2439] focus:border-[#C5A059] outline-none">
-                    <button type="submit" class="px-5 py-2.5 bg-[#0F2439] text-white text-xs uppercase font-bold tracking-wider rounded hover:bg-[#1e3a5f] transition-all">Подписаться</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Global Effects & Video Scroll Scrubbing Script -->
-    <script src="js/effects.js"></script>
-    <script src="js/main.js"></script>
-    <script src="https://securepay.tinkoff.ru/html/payForm/js/tinkoff_v2.js"></script>
-    <script src="js/payment.js"></script>
-    
-
-    <!-- ── MODAL: ПРОГРАММА «СТОП-КОМИССИЯ» (ПОЛНОЕ ОПИСАНИЕ И ОБРАТНАЯ СВЯЗЬ) ── -->
-    <div class="modal-overlay" id="modal-stop-commission">
-        <div class="modal-container p-6 sm:p-9 max-w-4xl max-h-[90vh] overflow-y-auto">
-            <button class="modal-close-btn" onclick="closeModal('modal-stop-commission')" aria-label="Закрыть">
-                <span class="material-symbols-outlined">close</span>
-            </button>
-
-            <!-- Header -->
-            <div class="flex items-center gap-3 mb-4 pb-4 border-b border-[#E8E7E2]">
-                <div class="w-12 h-12 rounded-xl bg-[#0F2439] text-[#C5A059] flex items-center justify-center flex-shrink-0 shadow-md">
-                    <span class="material-symbols-outlined text-2xl">account_balance</span>
-                </div>
-                <div>
-                    <div class="flex flex-wrap items-center gap-2">
-                        <span class="text-xs font-mono font-bold text-[#8C6826] uppercase tracking-wider">Программа 01 • Код: PRG-FIN-2026</span>
-                        <span class="px-2 py-0.5 rounded-full bg-[#EBF5EE] text-[#1E5631] border border-[#C8E6C9] text-[10px] font-bold uppercase font-mono">Активная работа</span>
-                    </div>
-                    <h3 class="font-['Source_Serif_4'] text-2xl sm:text-3xl font-bold text-[#0F2439] mt-1 leading-tight">
-                        «Стоп-Комиссия: Институциональный аудит микрофинансового рынка, законотворческий надзор и защита заемщиков»
-                    </h3>
-                </div>
-            </div>
-
-            <!-- Regulatory & Legal Framework Badge -->
-            <div class="p-4 rounded-xl bg-[#FAF8F5] border border-[#E5DFD5] mb-6">
-                <div class="text-[11px] font-mono font-bold text-[#8C6826] uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-sm">gavel</span>
-                    Нормативно-правовая база деятельности:
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 text-xs text-[#2C3E50]">
-                    <div class="p-2 bg-white rounded border border-[#E8E7E2]">
-                        <span class="font-bold text-[#0F2439]">ФЗ № 230-ФЗ:</span> Защита прав должников при возврате просрочки
-                    </div>
-                    <div class="p-2 bg-white rounded border border-[#E8E7E2]">
-                        <span class="font-bold text-[#0F2439]">ФЗ № 353-ФЗ:</span> О потребительском кредите и периоде охлаждения
-                    </div>
-                    <div class="p-2 bg-white rounded border border-[#E8E7E2]">
-                        <span class="font-bold text-[#0F2439]">ФЗ № 151-ФЗ:</span> О микрофинансовой деятельности и МФО
-                    </div>
-                    <div class="p-2 bg-white rounded border border-[#E8E7E2]">
-                        <span class="font-bold text-[#0F2439]">Ст. 16, 37 ЗоЗПП:</span> Запрет навязывания услуг и скрытых страховок
-                    </div>
-                    <div class="p-2 bg-white rounded border border-[#E8E7E2]">
-                        <span class="font-bold text-[#0F2439]">Ст. 14.57, 14.8 КоАП:</span> Ответственность МФО и коллекторов
-                    </div>
-                    <div class="p-2 bg-white rounded border border-[#E8E7E2]">
-                        <span class="font-bold text-[#0F2439]">ФЗ № 212-ФЗ:</span> Общественный контроль и мониторинг
-                    </div>
-                </div>
-            </div>
-
-            <div class="space-y-6 text-sm text-[#2C3E50] leading-relaxed">
-
-                <!-- 1. Суть и цели проекта -->
-                <div class="space-y-2">
-                    <h4 class="font-['Source_Serif_4'] text-lg font-bold text-[#0F2439] flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-[#8C6826]"></span>
-                        1. Суть, цели и методология проекта
-                    </h4>
-                    <p class="text-xs sm:text-sm text-[#2C3E50]">
-                        Проект направлен на всесторонний мониторинг и правовой аудит микрофинансового и кредитного рынка. Наша цель — не просто разовая юридическая помощь, а системное повышение прозрачности, законности работы и оздоровление финансового сектора.
-                    </p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2">
-                        <div class="p-3 bg-[#F8F7F4] rounded-lg border border-[#E0E0E0]">
-                            <div class="font-bold text-[#0F2439] text-xs mb-1">Систематический аудит</div>
-                            <div class="text-[11px] text-[#5f5e5e]">Анализ кредитных договоров, скрытых комиссий, телемедицины и платных подписок.</div>
-                        </div>
-                        <div class="p-3 bg-[#F8F7F4] rounded-lg border border-[#E0E0E0]">
-                            <div class="font-bold text-[#0F2439] text-xs mb-1">Служебные записки и доклады</div>
-                            <div class="text-[11px] text-[#5f5e5e]">Подготовка детальных аналитических материалов с доказательной базой для инспекторов.</div>
-                        </div>
-                        <div class="p-3 bg-[#F8F7F4] rounded-lg border border-[#E0E0E0]">
-                            <div class="font-bold text-[#0F2439] text-xs mb-1">Оздоровление рынка</div>
-                            <div class="text-[11px] text-[#5f5e5e]">Пресечение серых практик, стимулирование добросовестных стандартов и защита заемщиков.</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 2. Институциональные соглашения и межведомственное сотрудничество -->
-                <div class="space-y-2">
-                    <h4 class="font-['Source_Serif_4'] text-lg font-bold text-[#0F2439] flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-[#8C6826]"></span>
-                        2. Институциональные некоммерческие соглашения и ликвидация «отписок»
-                    </h4>
-                    <p class="text-xs sm:text-sm text-[#2C3E50]">
-                        Одной из главных целей является заключение **официальных институциональных некоммерческих соглашений о взаимодействии** с профильными ведомствами. Это позволяет:
-                    </p>
-                    <ul class="list-disc pl-5 space-y-1.5 text-xs sm:text-sm text-[#2C3E50]">
-                        <li><strong>Устранить межведомственный «пинг-понг»:</strong> когда полиция пересылает жалобу в ФССП, приставы направляют в Банк России, а Банк России — обратно. Мы выстраиваем сквозную передачу материалов в рамках одного дела.</li>
-                        <li><strong>Обеспечить прямой информационный обмен:</strong> оперативная передача ведомствам консолидированных материалов о массовых нарушениях конкретных МФО и кредитных брокеров.</li>
-                        <li><strong>Повысить результативность проверок:</strong> помощь инспекторам в сборе цифровых и документальных доказательств для возбуждения дел по ст. 14.57 КоАП РФ.</li>
-                    </ul>
-                </div>
-
-                <!-- 3. Органы правовой поддержки и общественные советы Самарской области -->
-                <div class="space-y-2">
-                    <h4 class="font-['Source_Serif_4'] text-lg font-bold text-[#0F2439] flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-[#8C6826]"></span>
-                        3. Взаимодействие с Общественными советами и органами правовой поддержки Самарской области
-                    </h4>
-                    <p class="text-xs sm:text-sm text-[#2C3E50] mb-3">
-                        Организация на постоянной основе координирует правозащитную деятельность со всеми ключевыми государственными и общественными институтами региона:
-                    </p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                        <div class="p-3 bg-white rounded-lg border border-[#E0E0E0] shadow-xs">
-                            <div class="font-bold text-[#0F2439] mb-0.5">Общественный совет при УФССП по Самарской области</div>
-                            <div class="text-[#5f5e5e]">Контроль соблюдения правил взаимодействия с должниками (230-ФЗ, ст. 14.57 КоАП РФ).</div>
-                        </div>
-                        <div class="p-3 bg-white rounded-lg border border-[#E0E0E0] shadow-xs">
-                            <div class="font-bold text-[#0F2439] mb-0.5">Общественный совет при ГУ МВД России по Самарской области</div>
-                            <div class="text-[#5f5e5e]">Противодействие мошенническим онлайн-займам, утечкам персональных данных и вымогательству.</div>
-                        </div>
-                        <div class="p-3 bg-white rounded-lg border border-[#E0E0E0] shadow-xs">
-                            <div class="font-bold text-[#0F2439] mb-0.5">Общественный совет при Управлении Роспотребнадзора по Самарской области</div>
-                            <div class="text-[#5f5e5e]">Защита прав потребителей финансовых услуг, пресечение навязывания страховок (ст. 16 ЗоЗПП).</div>
-                        </div>
-                        <div class="p-3 bg-white rounded-lg border border-[#E0E0E0] shadow-xs">
-                            <div class="font-bold text-[#0F2439] mb-0.5">Отделение Самара Волго-Вятского ГУ Банка России</div>
-                            <div class="text-[#5f5e5e]">Служба по защите прав потребителей финансовых услуг — отзыв лицензий и надзорные предписания.</div>
-                        </div>
-                        <div class="p-3 bg-white rounded-lg border border-[#E0E0E0] shadow-xs">
-                            <div class="font-bold text-[#0F2439] mb-0.5">Уполномоченный по правам человека в Самарской области</div>
-                            <div class="text-[#5f5e5e]">Защита социально незащищенных категорий граждан от финансового давления и кабальных условий.</div>
-                        </div>
-                        <div class="p-3 bg-white rounded-lg border border-[#E0E0E0] shadow-xs">
-                            <div class="font-bold text-[#0F2439] mb-0.5">Общественная палата Самарской области</div>
-                            <div class="text-[#5f5e5e]">Комиссия по законности, правам человека и общественному контролю — общественные слушания.</div>
-                        </div>
-                        <div class="p-3 bg-white rounded-lg border border-[#E0E0E0] shadow-xs">
-                            <div class="font-bold text-[#0F2439] mb-0.5">Самарское отделение Ассоциации юристов России (АЮР)</div>
-                            <div class="text-[#5f5e5e]">Научно-правовая экспертиза, совместное правовое консультирование и круглые столы.</div>
-                        </div>
-                        <div class="p-3 bg-white rounded-lg border border-[#E0E0E0] shadow-xs">
-                            <div class="font-bold text-[#0F2439] mb-0.5">Прокуратура Самарской области & Управление Минюста РФ</div>
-                            <div class="text-[#5f5e5e]">Надзор за соблюдением прав граждан в финансовом секторе и правовое просвещение.</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 4. Законотворческие инициативы -->
-                <div class="space-y-2">
-                    <h4 class="font-['Source_Serif_4'] text-lg font-bold text-[#0F2439] flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-[#8C6826]"></span>
-                        4. Совместная разработка правок в законопроекты
-                    </h4>
-                    <p class="text-xs sm:text-sm text-[#2C3E50]">
-                        На основе анализа трудностей инспекторов и судебной практики формируются конкретные законодательные предложения для направления в Государственную Думу РФ, Минюст РФ и Банк России:
-                    </p>
-                    <div class="p-3.5 bg-[#F4F3EE] rounded-xl border border-[#E0DFD8] text-xs space-y-1.5">
-                        <div><strong>• Устранение лазеек в 230-ФЗ:</strong> четкое определение «психологического давления» через мессенджеры и роботов-коллекторов.</div>
-                        <div><strong>• Запрет предварительно проставленных галочек:</strong> автоматический отказ от любых допуслуг при оформлении займа онлайн.</div>
-                        <div><strong>• Увеличение штрафов по ст. 14.57 КоАП РФ</strong> для должностных и юридических лиц при повторных системных нарушениях.</div>
-                    </div>
-                </div>
-
-                <!-- 5. Результаты и форма обратной связи -->
-                <div class="pt-4 border-t border-[#E8E7E2]">
-                    <h4 class="font-['Source_Serif_4'] text-base font-bold text-[#0F2439] mb-2">
-                        Передать материалы нарушений или присоединиться к проекту:
-                    </h4>
-                    <p class="text-xs text-[#5f5e5e] mb-4">
-                        Если вы столкнулись с нарушениями МФО или представляете экспертное сообщество, направьте материалы в рабочую группу программы «Стоп-Комиссия»:
-                    </p>
-
-                    <form class="space-y-3 bg-[#FBF9F5] p-4 sm:p-5 rounded-xl border border-[#E8E0D0]" onsubmit="event.preventDefault(); showToast('Материалы приняты в работу рабочей группы «Стоп-Комиссия»!'); closeModal('modal-stop-commission');">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <input type="text" placeholder="Ваше имя / Организация" required class="text-xs rounded border border-[#E0E0E0] px-3.5 py-2.5 bg-white text-[#0F2439] focus:border-[#C5A059] outline-none">
-                            <input type="tel" placeholder="Телефон для связи" required class="text-xs rounded border border-[#E0E0E0] px-3.5 py-2.5 bg-white text-[#0F2439] focus:border-[#C5A059] outline-none">
-                        </div>
-                        <input type="text" placeholder="Название МФО / Суть нарушения или предложение о сотрудничестве" required class="w-full text-xs rounded border border-[#E0E0E0] px-3.5 py-2.5 bg-white text-[#0F2439] focus:border-[#C5A059] outline-none">
-                        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
-                            <div class="text-[11px] text-[#5f5e5e]">
-                                🔒 Конфиденциально • В рамках ФЗ № 152-ФЗ и ФЗ № 212-ФЗ
-                            </div>
-                            <button type="submit" class="w-full sm:w-auto px-6 py-2.5 bg-[#0F2439] text-white text-xs uppercase font-bold tracking-wider rounded hover:bg-[#1e3a5f] transition-all shadow-sm">
-                                Отправить в рабочую группу →
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
+                <button type="button" onclick="closeModal('modal-initiative-dossier'); openModal('modal-donate')" class="py-3.5 px-4 bg-[#FAF4E6] text-[#8C6826] border border-[#E8DCC0] hover:bg-[#F3EAD3] text-xs uppercase font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-xs">
+                    <span class="material-symbols-outlined text-sm">favorite</span>
+                    <span>Поддержать проект</span>
+                </button>
             </div>
         </div>
     </div>
 
+    <script>
+    const INITIATIVE_DATABASE = {
+        'stop_commission': {
+            code: 'PRG-FIN-2026',
+            statusBadge: 'Активная работа • Доклады в ведомства',
+            statusColor: 'bg-[#EBF5EE] text-[#1E5631] border-[#C8E6C9]',
+            category: 'Программа 01 • ФЗ № 230-ФЗ • ст. 37 ЗоЗПП',
+            title: '«Стоп-Комиссия: Законотворческий надзор и защита заемщиков»',
+            subtitle: 'Комплексный юридический аудит кредитного рынка, скрытых комиссий и спам-роботов взыскателей',
+            desc: 'В рамках программы юристы АНО «ЦПЗ ЮГ-ПРАВО» осуществляют постоянный правовой мониторинг и фиксацию нарушений Федерального закона № 230-ФЗ со стороны микрофинансовых организаций (МФО) и профессиональных коллекторских агентств (ПКО). Подготавливаются и направляются доказательные доклады в Центральный аппарат ФССП России, Банк России и органы Прокуратуры для привлечения нарушителей по ст. 14.57 КоАП РФ, а также формулируются законодательные предложения в Государственную Думу РФ.',
+            goals: [
+                'Пресечение психологического давления и спам-автодозвонов с подменных номеров.',
+                'Возврат гражданам 100% средств за скрытые навязанные страховки и телемедицинские сертификаты в 30-дневный «период охлаждения».',
+                'Заключение некоммерческих соглашений о сотрудничестве с УФССП по Самарской области и Общественными советами.',
+                'Внесение пакета выверенных поправок в Федеральный закон № 230-ФЗ и ст. 14.57 КоАП РФ.'
+            ],
+            modules: [
+                'Блок 1: Анализ обращений заемщиков, фиксация аудиозаписей звонков роботов и детализаций операторов связи.',
+                'Блок 2: Подача официальных заявлений в УФССП с расчетом штрафов (от 500 000 до 2 000 000 ₽ на юрлицо).',
+                'Блок 3: Отзыв согласий на взаимодействие с работодателями и родственниками должника.',
+                'Блок 4: Экспертная аналитика и передача материалов в Службу по защите прав потребителей Банка России.'
+            ],
+            npa: [
+                { title: '230-ФЗ (в ред. 467-ФЗ)', desc: 'Ограничения частоты звонков, смс и запрет ночных контактов' },
+                { title: 'Статья 14.57 КоАП РФ', desc: 'Административные штрафы за нарушения при взыскании долгов' },
+                { title: 'Закон РФ «О защите прав потребителей» (ст. 16, 37)', desc: 'Запрет навязанных платных сервисов' },
+                { title: '353-ФЗ «О потребительском кредите»', desc: '30-дневный период охлаждения для возврата страховок' }
+            ],
+            directionValue: 'fin'
+        },
+        'digital_law': {
+            code: 'PRG-TECH-2026',
+            statusBadge: 'Активная разработка • LegalTech & AI',
+            statusColor: 'bg-[#EBF5EE] text-[#1E5631] border-[#C8E6C9]',
+            category: 'Программа 02 • ФЗ № 149-ФЗ • ФЗ № 152-ФЗ',
+            title: '«Цифровое Право: LegalTech-платформа, единая сеть и внедрение ИИ»',
+            subtitle: 'Развитие омниканальной цифровой экосистемы бесплатной правовой помощи с ИИ-маршрутизацией',
+            desc: 'Цель программы — устранить цифровое неравенство и сделать качественную процессуальную защиту доступной каждому жителю РФ бесплатно. Система объединяет официальный портал yugpravo.ru, сообщества в VK, ботов Telegram и отечественные языковые модели (GigaChat / YandexGPT) для автоматизированного расчета госпошлин, неустоек и моментальной генерации юридически безупречных претензий.',
+            goals: [
+                'Автоматизация процессуальных расчетов (калькуляторы неустоек, ст. 395 ГК РФ, госпошлины по 259-ФЗ).',
+                'Омниканальная интеграция: подача обращений через веб, Telegram Mini Apps и социальные сети.',
+                'Внедрение российских нейросетей для предварительной правовой классификации жалоб граждан.',
+                '100% суверенная локализация персональных данных в РФ с защитой по ГОСТ Р 34.12-2015.'
+            ],
+            modules: [
+                'Модуль 1: Интерактивный комплекс «Правовой калькулятор» (8 процессуальных калькуляторов онлайн).',
+                'Модуль 2: Telegram Mini App шлюз с тактильным откликом и быстрой отправкой обращений.',
+                'Модуль 3: Автоматический генератор судебных документов в форматах Microsoft Word (.DOCX) и PDF.',
+                'Модуль 4: Интеллектуальный помощник правового просвещения на базе отечественных ИИ-моделей.'
+            ],
+            npa: [
+                { title: '149-ФЗ «Об информации и защите информации»', desc: 'Стандарты доступности и надежности цифровых сервисов' },
+                { title: '152-ФЗ «О персональных данных»', desc: 'Локализация баз данных в РФ и защита прав субъектов' },
+                { title: 'Указ Президента РФ № 490', desc: 'Развитие искусственного интеллекта в Российской Федерации' },
+                { title: 'ГОСТ Р 34.12-2015', desc: 'Криптографическая защита информации и протоколы TLS' }
+            ],
+            directionValue: 'tech'
+        },
+        'dog_park': {
+            code: 'PRG-DOG-2026',
+            statusBadge: 'Гражданская инициатива • Южный город',
+            statusColor: 'bg-[#FAF4E6] text-[#8C6826] border-[#E8DCC0]',
+            category: 'Программа 03 • ФЗ № 498-ФЗ, ст. 13 • СП 42.13330',
+            title: '«Среда для людей и питомцев: Площадки для выгула собак в Южном городе»',
+            subtitle: 'Инициативный проект по согласованию участков, установке снарядов и созданию цивилизованной городской среды',
+            desc: 'В густонаселенном микрорайоне Южный город (Юг-1 и Юг-2) проживают тысячи владельцев собак, однако специализированные огороженные площадки для тренировок и выгула отсутствуют. АНО «ЦПЗ ЮГ-ПРАВО» формирует правовой пакет документов для Администрации Волжского района и девелопера «Древо» для выделения земельных участков, строительства площадок с безопасным покрытием и снарядами, установки дог-боксов и реализации волонтерских эко-субботников.',
+            goals: [
+                'Сбор не менее 1 000 верифицированных подписей жителей Южного города в поддержку проекта.',
+                'Согласование размещения 2 огороженных площадок с соблюдением санитарных норм СП 42.13330.',
+                'Установка специализированных урн (дог-боксов) с биоразлагаемыми пакетами в прогулочных зонах.',
+                'Включение проекта в региональную программу поддержки местных инициатив «СОдействие».'
+            ],
+            modules: [
+                'Этап 1: Разработка предпроектных схем локаций с учетом подземных коммуникаций.',
+                'Этап 2: Сбор подписей жителей и проведение публичных слушаний.',
+                'Этап 3: Круглый стол с Администрацией с.п. Лопатино, застройщиком и управляющими компаниями.',
+                'Этап 4: Монтаж ограждений (2 м), освещения, барьеров и организация волонтёрских эко-дней.'
+            ],
+            npa: [
+                { title: '498-ФЗ «Об ответственном обращении с животными»', desc: 'Статья 13: обязанность ОМСУ определять места выгула' },
+                { title: 'Свод правил СП 42.13330.2016', desc: 'Градостроительные нормативы проектирования площадок' },
+                { title: '131-ФЗ «Об общих принципах организации МСУ»', desc: 'Инициативные проекты жителей и общественный контроль' },
+                { title: 'Программа «СОдействие»', desc: 'Губернаторский проект поддержки общественных инициатив' }
+            ],
+            directionValue: 'dog_park'
+        },
+        'jkh_program': {
+            code: 'PRG-JKH-2026',
+            statusBadge: 'Защита прав & Просвещение • Южный город',
+            statusColor: 'bg-[#FAF4E6] text-[#8C6826] border-[#E8DCC0]',
+            category: 'Программа 04 • ФЗ № 212-ФЗ • ПП РФ № 354 • ЖК РФ',
+            title: '«Грамотное ЖКХ: Защита прав жителей, прозрачность УК и контроль услуг»',
+            subtitle: 'Комплексный общественный аудит отчетов в ГИС ЖКХ, перерасчеты за некачественные услуги и поддержка Советов домов',
+            desc: 'Программа направлена на повышение правовой грамотности собственников квартир, проверку прозрачности управляющих организаций и защиту интересов жителей. Юристы и эксперты центра проводят ревизии смет текущего ремонта, помогают составлять акты непредоставления коммунальных услуг и добиваются снижения платы по Постановлению Правительства РФ № 354.',
+            goals: [
+                'Анализ финансовых отчетов УК в ГИС ЖКХ за 3 года по проблемным домам района.',
+                'Проведение независимых осмотров общего имущества домов (кровли, подвалы, лифты) с фотофиксацией.',
+                'Обучение председателей Советов многоквартирных домов правилам приемки работ по формам КС-2/КС-3.',
+                'Составление и подача жалоб в ГЖИ Самарской области, Прокуратуру и судебные иски по защите прав потребителей.'
+            ],
+            modules: [
+                'Направление 1: Юридический разбор квитанций и перерасчеты за тепло, воду и ОДН.',
+                'Направление 2: Документарный аудит выполнения плана текущего ремонта многоквартирного дома.',
+                'Направление 3: Сопровождение очно-заочных Общих собраний собственников (ОСС).',
+                'Направление 4: Пресечение незаконных перепланировок и захвата общего имущества.'
+            ],
+            npa: [
+                { title: 'Постановление Правительства РФ № 354', desc: 'Правила предоставления коммунальных услуг и перерасчетов' },
+                { title: 'Жилищный кодекс РФ (ст. 161, 162)', desc: 'Обязанности управляющей компании по содержанию МКД' },
+                { title: '212-ФЗ «Об общественном контроле в РФ»', desc: 'Право НКО на проверки, рейды и общественные экспертизы' },
+                { title: 'Постановление Правительства РФ № 290', desc: 'Минимальный перечень услуг и работ по содержанию дома' }
+            ],
+            directionValue: 'jkh'
+        },
+        'youth_legal': {
+            code: 'PRG-VOL-2026',
+            statusBadge: 'Правовое просвещение & Добро.рф',
+            statusColor: 'bg-[#FAF4E6] text-[#8C6826] border-[#E8DCC0]',
+            category: 'Программа 05 • ФЗ № 135-ФЗ «О волонтерстве» • ФЗ № 273-ФЗ',
+            title: '«Школа Права и Волонтёрства: Правовые уроки, часы Добро.рф и баллы к ЕГЭ»',
+            subtitle: 'Серия внеклассных правовых практикумов для школьников и молодежи, верификация волонтерских часов и развитие актива',
+            desc: 'Правовое просвещение молодежи Южного города и Самарской области: интерактивные уроки по защите от вовлечения в мошеннические схемы (дропперство по ст. 187 УК РФ), грамотное заключение первого трудового договора (ст. 63 ТК РФ), защита прав покупателя в интернете. Вовлечение ребят в социально полезные проекты с начислением верифицированных часов в ЕИС Добро.рф, дающих до +10 дополнительных баллов к ЕГЭ при поступлении в ведущие вузы России.',
+            goals: [
+                'Проведение серии открытых интерактивных уроков в ГБОУ СО ОЦ «Южный город».',
+                'Обучение старшеклассников финансовой гигиене и превенция преступлений в сфере платежных карт.',
+                'Официальное начисление верифицированных волонтерских часов через Добро.рф.',
+                'Организация экскурсий в судебные органы и юридические факультеты для профориентации.'
+            ],
+            modules: [
+                'Урок 1: Кибербезопасность — почему нельзя передавать свою карту третьим лицам (ст. 187 УК РФ, 369-ФЗ).',
+                'Урок 2: Трудовые права несовершеннолетних — испытательный срок, зарплата и защита от обмана.',
+                'Урок 3: Потребительская грамотность — возврат товаров, покупки на маркетплейсах и отказ от подписок.',
+                'Урок 4: Волонтёрство — регистрация на Добро.рф, участие в проектах «Добрая лапа» и эко-акциях.'
+            ],
+            npa: [
+                { title: '135-ФЗ «О благотворительности и волонтерстве»', desc: 'Правовой статус волонтёров и учет добровольческих часов' },
+                { title: '273-ФЗ «Об образовании в РФ»', desc: 'Учет индивидуальных достижений и волонтерства при поступлении' },
+                { title: 'Уголовный кодекс РФ (ст. 187 УК)', desc: 'Ответственность за неправомерный оборот средств платежей' },
+                { title: 'Трудовой кодекс РФ (гл. 42)', desc: 'Особенности регулирования труда работников до 18 лет' }
+            ],
+            directionValue: 'youth'
+        }
+    };
 
-    <!-- ── MODAL: ПРОГРАММА «ЦИФРОВОЕ ПРАВО И ИИ» (ПОЛНЫЙ ПЛАН И СТЕК) ── -->
-    <div class="modal-overlay" id="modal-digital-law">
-        <div class="modal-container p-6 sm:p-9 max-w-4xl max-h-[90vh] overflow-y-auto">
-            <button class="modal-close-btn" onclick="closeModal('modal-digital-law')" aria-label="Закрыть">
-                <span class="material-symbols-outlined">close</span>
-            </button>
+    let currentInitiativeKey = 'stop_commission';
 
-            <!-- Header -->
-            <div class="flex items-center gap-3 mb-4 pb-4 border-b border-[#E8E7E2]">
-                <div class="w-12 h-12 rounded-xl bg-[#0F2439] text-[#C5A059] flex items-center justify-center flex-shrink-0 shadow-md">
-                    <span class="material-symbols-outlined text-2xl">smart_toy</span>
+    window.openInitiativeDossier = function(key) {
+        const data = INITIATIVE_DATABASE[key];
+        if (!data) return;
+        currentInitiativeKey = key;
+
+        const badgeEl = document.getElementById('init-dossier-status-badge');
+        if (badgeEl) {
+            badgeEl.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider border ' + data.statusColor;
+            badgeEl.textContent = data.statusBadge;
+        }
+
+        const codeEl = document.getElementById('init-dossier-code');
+        if (codeEl) codeEl.textContent = data.code;
+
+        const catEl = document.getElementById('init-dossier-category');
+        if (catEl) catEl.textContent = data.category;
+
+        const titleEl = document.getElementById('init-dossier-title');
+        if (titleEl) titleEl.textContent = data.title;
+
+        const subEl = document.getElementById('init-dossier-subtitle');
+        if (subEl) subEl.textContent = data.subtitle;
+
+        const descEl = document.getElementById('init-dossier-desc');
+        if (descEl) descEl.textContent = data.desc;
+
+        const goalsEl = document.getElementById('init-dossier-goals');
+        if (goalsEl) {
+            goalsEl.innerHTML = data.goals.map((g, i) => `
+                <div class="flex items-start gap-2 p-2.5 bg-white rounded-lg border border-[#E8E7E2]">
+                    <span class="w-5 h-5 rounded-full bg-[#FAF4E6] text-[#8C6826] font-mono font-bold text-xs flex items-center justify-center flex-shrink-0 mt-0.5 border border-[#E8DCC0]">${i+1}</span>
+                    <span class="leading-relaxed">${g}</span>
                 </div>
-                <div>
-                    <div class="flex flex-wrap items-center gap-2">
-                        <span class="text-xs font-mono font-bold text-[#8C6826] uppercase tracking-wider">Программа 02 • Код: PRG-TECH-2026</span>
-                        <span class="px-2 py-0.5 rounded-full bg-[#EBF5EE] text-[#1E5631] border border-[#C8E6C9] text-[10px] font-bold uppercase font-mono">Активная разработка • LegalTech & AI</span>
-                    </div>
-                    <h3 class="font-['Source_Serif_4'] text-2xl sm:text-3xl font-bold text-[#0F2439] mt-1 leading-tight">
-                        «Цифровое Право: LegalTech-платформа, единая сеть сервисов и интеграция отечественного ИИ»
-                    </h3>
+            `).join('');
+        }
+
+        const modEl = document.getElementById('init-dossier-modules');
+        if (modEl) {
+            modEl.innerHTML = data.modules.map(m => `
+                <div class="p-2.5 bg-[#F8F7F4] rounded-lg border border-[#E8E7E2] flex items-start gap-2">
+                    <span class="material-symbols-outlined text-xs text-[#8C6826] mt-0.5 flex-shrink-0">check_circle</span>
+                    <span class="leading-relaxed">${m}</span>
                 </div>
-            </div>
+            `).join('');
+        }
 
-            <!-- Regulatory & Strategic Framework Badge -->
-            <div class="p-4 rounded-xl bg-[#FAF8F5] border border-[#E5DFD5] mb-6">
-                <div class="text-[11px] font-mono font-bold text-[#8C6826] uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-sm">integration_instructions</span>
-                    Нормативная основа и технологические стандарты:
+        const npaEl = document.getElementById('init-dossier-npa');
+        if (npaEl) {
+            npaEl.innerHTML = data.npa.map(n => `
+                <div class="p-2.5 bg-white rounded-lg border border-[#E0E0E0]">
+                    <div class="font-bold text-[#0F2439] mb-0.5">${n.title}</div>
+                    <div class="text-[11px] text-[#5f5e5e] leading-snug">${n.desc}</div>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 text-xs text-[#2C3E50]">
-                    <div class="p-2 bg-white rounded border border-[#E8E7E2]">
-                        <span class="font-bold text-[#0F2439]">ФЗ № 149-ФЗ:</span> Об информации и защите данных
-                    </div>
-                    <div class="p-2 bg-white rounded border border-[#E8E7E2]">
-                        <span class="font-bold text-[#0F2439]">ФЗ № 152-ФЗ:</span> Безопасность персональных данных
-                    </div>
-                    <div class="p-2 bg-white rounded border border-[#E8E7E2]">
-                        <span class="font-bold text-[#0F2439]">Указ Президента РФ № 145:</span> Стратегия развития ИИ до 2030 года
-                    </div>
-                    <div class="p-2 bg-white rounded border border-[#E8E7E2]">
-                        <span class="font-bold text-[#0F2439]">Отечественный стек:</span> GigaChat / YandexGPT / Local LLM
-                    </div>
-                    <div class="p-2 bg-white rounded border border-[#E8E7E2]">
-                        <span class="font-bold text-[#0F2439]">Омниканальность:</span> VK, Telegram, Web-платформа
-                    </div>
-                    <div class="p-2 bg-white rounded border border-[#E8E7E2]">
-                        <span class="font-bold text-[#0F2439]">ФЗ № 212-ФЗ:</span> Цифровые инструменты общественного контроля
-                    </div>
-                </div>
-            </div>
+            `).join('');
+        }
 
-            <div class="space-y-6 text-sm text-[#2C3E50] leading-relaxed">
+        window.openModal('modal-initiative-dossier');
+    };
 
-                <!-- 1. Текущий этап: разработка и объединение в единый инструмент -->
-                <div class="space-y-2">
-                    <h4 class="font-['Source_Serif_4'] text-lg font-bold text-[#0F2439] flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-[#8C6826]"></span>
-                        1. Текущий этап: доводка веб-платформы и объединение в единый большой инструмент
-                    </h4>
-                    <p class="text-xs sm:text-sm text-[#2C3E50]">
-                        В настоящее время ведётся активная доработка и полировка официального веб-портала организации для превращения его в главную цифровую точку входа правовой защиты:
-                    </p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
-                        <div class="p-3 bg-[#F8F7F4] rounded-lg border border-[#E0E0E0]">
-                            <div class="font-bold text-[#0F2439] text-xs mb-1">Доведение портала до совершенства</div>
-                            <div class="text-[11px] text-[#5f5e5e]">Максимальное быстродействие, адаптивность под мобильные устройства, безопасность и соблюдение 152-ФЗ.</div>
-                        </div>
-                        <div class="p-3 bg-[#F8F7F4] rounded-lg border border-[#E0E0E0]">
-                            <div class="font-bold text-[#0F2439] text-xs mb-1">Интеграция с соцсетями</div>
-                            <div class="text-[11px] text-[#5f5e5e]">Бесшовная связка портала с ВКонтакте и Telegram-ботами для приёма обращений в режиме 24/7.</div>
-                        </div>
-                        <div class="p-3 bg-[#F8F7F4] rounded-lg border border-[#E0E0E0]">
-                            <div class="font-bold text-[#0F2439] text-xs mb-1">Единая экосистема</div>
-                            <div class="text-[11px] text-[#5f5e5e]">Объединение Базы знаний, конструкторов жалоб, приёма обращений и реестров в единый рабочий контур.</div>
-                        </div>
-                    </div>
-                </div>
+    window.openModal = function(id) {
+        const el = document.getElementById(id);
+        if (el) {
+            el.style.display = 'flex';
+            el.classList.add('active', 'open');
+            el.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+    };
 
-                <!-- 2. Внедрение отечественных ИИ сервисов -->
-                <div class="space-y-2">
-                    <h4 class="font-['Source_Serif_4'] text-lg font-bold text-[#0F2439] flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-[#8C6826]"></span>
-                        2. Внедрение отечественных ИИ-сервисов (GigaChat / YandexGPT / локальные модели)
-                    </h4>
-                    <p class="text-xs sm:text-sm text-[#2C3E50]">
-                        Искусственный интеллект призван автоматизировать рутину и обеспечить мгновенную помощь каждому жителю Самарской области:
-                    </p>
-                    <ul class="list-disc pl-5 space-y-1.5 text-xs sm:text-sm text-[#2C3E50]">
-                        <li><strong>Интеллектуальная маршрутизация обращений:</strong> ИИ анализирует текст проблемы гражданина и за секунды определяет надлежащий орган (ГЖИ, Роспотребнадзор, УФССП, Прокуратура или Суд), исключая ошибки заявителя.</li>
-                        <li><strong>AI-помощник по Базе знаний:</strong> диалоговый поиск по 14 практическим инструкциям с мгновенной выжимкой алгоритма действий и цитированием актуальных статей законов.</li>
-                        <li><strong>Автоматизированный драфтинг претензий:</strong> генерация досудебных претензий к управляющим компаниям, банкам и автосалонам с проверкой ссылок на СанПиН, ГПК РФ и ЗоЗПП.</li>
-                        <li><strong>Анализ документов и чеков:</strong> проверка квитанций ЖКХ на факт завышения тарифов и договоров займа МФО на наличие скрытых комиссий.</li>
-                    </ul>
-                </div>
+    window.closeModal = function(id) {
+        if (id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.style.display = 'none';
+                el.classList.remove('active', 'open');
+            }
+        } else {
+            document.querySelectorAll('.modal-overlay').forEach(m => {
+                m.style.display = 'none';
+                m.classList.remove('active', 'open');
+            });
+        }
+        document.body.style.overflow = '';
+    };
 
-                <!-- 3. Разработка цифровых продуктов для общественной деятельности и инициатив -->
-                <div class="space-y-2">
-                    <h4 class="font-['Source_Serif_4'] text-lg font-bold text-[#0F2439] flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-[#8C6826]"></span>
-                        3. Цифровые продукты для поддержки гражданских инициатив и общественной деятельности
-                    </h4>
-                    <p class="text-xs sm:text-sm text-[#2C3E50] mb-2">
-                        Создание и тестирование открытых цифровых инструментов для активистов, старших по домам, ТОС и волонтёров:
-                    </p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                        <div class="p-3 bg-white rounded-lg border border-[#E0E0E0] shadow-xs">
-                            <div class="font-bold text-[#0F2439] mb-0.5">Сервис коллективных обращений и петиций</div>
-                            <div class="text-[#5f5e5e]">Сбор и верификация подписей жителей (например, инициатива по площадкам для выгула собак в Южном городе).</div>
-                        </div>
-                        <div class="p-3 bg-white rounded-lg border border-[#E0E0E0] shadow-xs">
-                            <div class="font-bold text-[#0F2439] mb-0.5">Народный аудит ЖКХ (GIS ZKH Helper)</div>
-                            <div class="text-[#5f5e5e]">Инструмент для экспресс-проверки годовых отчетов УК и выявления невыполненных работ.</div>
-                        </div>
-                        <div class="p-3 bg-white rounded-lg border border-[#E0E0E0] shadow-xs">
-                            <div class="font-bold text-[#0F2439] mb-0.5">Карта общественного контроля области</div>
-                            <div class="text-[#5f5e5e]">Фиксация несанкционированных свалок, недоступной среды для инвалидов и нарушений торговли.</div>
-                        </div>
-                        <div class="p-3 bg-white rounded-lg border border-[#E0E0E0] shadow-xs">
-                            <div class="font-bold text-[#0F2439] mb-0.5">Волонтёрский модуль (Добро.рф API)</div>
-                            <div class="text-[#5f5e5e]">Координация выездных рейдов общественного контроля по районам Самарской области.</div>
-                        </div>
-                    </div>
-                </div>
+    window.openStopCommissionModal = function() { window.openInitiativeDossier('stop_commission'); };
+    window.openDigitalLawModal = function() { window.openInitiativeDossier('digital_law'); };
+    window.openDogParkInitiativeModal = function() { window.openInitiativeDossier('dog_park'); };
+    window.openJkhProgramModal = function() { window.openInitiativeDossier('jkh_program'); };
+    window.openYouthLegalModal = function() { window.openInitiativeDossier('youth_legal'); };
 
-                <!-- 4. Повышение правовой грамотности через цифровые форматы -->
-                <div class="space-y-2">
-                    <h4 class="font-['Source_Serif_4'] text-lg font-bold text-[#0F2439] flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-[#8C6826]"></span>
-                        4. Повышение правовой грамотности населения нового поколения
-                    </h4>
-                    <p class="text-xs sm:text-sm text-[#2C3E50]">
-                        Цифровизация позволяет доносить сложные юридические нормы доступным и наглядным языком:
-                    </p>
-                    <div class="p-3.5 bg-[#F4F3EE] rounded-xl border border-[#E0DFD8] text-xs space-y-1.5">
-                        <div><strong>• Интерактивные правовые тренажёры:</strong> симуляции ситуаций («Вам звонят коллекторы», «Остановка полицией», «Залив квартиры»).</div>
-                        <div><strong>• Чек-листы самозащиты в смартфонах:</strong> пошаговые карточки, которые всегда под рукой без интернета.</div>
-                        <div><strong>• Автоматический перевод со сложного языка законов:</strong> понятные объяснения сути решений судов и регламентов надзорных органов.</div>
-                    </div>
-                </div>
+    window.handleInitiativeDossierAction = function() {
+        window.closeModal('modal-initiative-dossier');
+        const data = INITIATIVE_DATABASE[currentInitiativeKey];
+        const select = document.getElementById('initiative-direction-select');
+        if (select && data && data.directionValue) {
+            select.value = data.directionValue;
+        }
+        const formEl = document.getElementById('propose-initiative');
+        if (formEl) {
+            formEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
 
-                <!-- 5. Форма обратной связи и участие в тестировании -->
-                <div class="pt-4 border-t border-[#E8E7E2]">
-                    <h4 class="font-['Source_Serif_4'] text-base font-bold text-[#0F2439] mb-2">
-                        Принять участие в тестировании LegalTech-продуктов или предложить идею:
-                    </h4>
-                    <p class="text-xs text-[#5f5e5e] mb-4">
-                        Мы открыты для IT-специалистов, юристов-исследователей, общественных активистов и студентов:
-                    </p>
+    // Close on overlay backdrop click
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    window.closeModal(overlay.id);
+                }
+            });
+        });
+    });
+    </script>
 
-                    <form class="space-y-3 bg-[#FBF9F5] p-4 sm:p-5 rounded-xl border border-[#E8E0D0]" onsubmit="event.preventDefault(); showToast('Спасибо за интерес! Заявка на участие в тестировании LegalTech-платформы принята!'); closeModal('modal-digital-law');">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <input type="text" placeholder="Ваше имя / Специализация (IT / Юриспруденция / Активист)" required class="text-xs rounded border border-[#E0E0E0] px-3.5 py-2.5 bg-white text-[#0F2439] focus:border-[#C5A059] outline-none">
-                            <input type="email" placeholder="E-mail или Telegram для связи" required class="text-xs rounded border border-[#E0E0E0] px-3.5 py-2.5 bg-white text-[#0F2439] focus:border-[#C5A059] outline-none">
-                        </div>
-                        <input type="text" placeholder="Какую функцию / ИИ-сервис / инициативу хотите протестировать или предложить?" required class="w-full text-xs rounded border border-[#E0E0E0] px-3.5 py-2.5 bg-white text-[#0F2439] focus:border-[#C5A059] outline-none">
-                        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
-                            <div class="text-[11px] text-[#5f5e5e]">
-                                🔒 Разработка ведётся в соответствии с ФЗ № 149-ФЗ и ФЗ № 152-ФЗ
-                            </div>
-                            <button type="submit" class="w-full sm:w-auto px-6 py-2.5 bg-[#0F2439] text-white text-xs uppercase font-bold tracking-wider rounded hover:bg-[#1e3a5f] transition-all shadow-sm">
-                                Записаться на бета-тест →
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-
-    <!-- ── MODAL: ПРОГРАММА «ГРАМОТНОЕ ЖКХ: ЮЖНЫЙ ГОРОД» (ПОЛНЫЙ ПЛАН И ЗАЩИТА ПРАВ) ── -->
-    <div class="modal-overlay" id="modal-jkh-program">
-        <div class="modal-container p-6 sm:p-9 max-w-4xl max-h-[90vh] overflow-y-auto">
-            <button class="modal-close-btn" onclick="closeModal('modal-jkh-program')" aria-label="Закрыть">
-                <span class="material-symbols-outlined">close</span>
-            </button>
-
-            <!-- Header -->
-            <div class="flex items-center gap-3 mb-4 pb-4 border-b border-[#E8E7E2]">
-                <div class="w-12 h-12 rounded-xl bg-[#0F2439] text-[#C5A059] flex items-center justify-center flex-shrink-0 shadow-md">
-                    <span class="material-symbols-outlined text-2xl">apartment</span>
-                </div>
-                <div>
-                    <div class="flex flex-wrap items-center gap-2">
-                        <span class="text-xs font-mono font-bold text-[#8C6826] uppercase tracking-wider">Программа 04 • Код: PRG-JKH-2026</span>
-                        <span class="px-2 py-0.5 rounded-full bg-[#FAF4E6] text-[#8C6826] border border-[#E8DCC0] text-[10px] font-bold uppercase font-mono">Стадия запуска • Южный город</span>
-                    </div>
-                    <h3 class="font-['Source_Serif_4'] text-2xl sm:text-3xl font-bold text-[#0F2439] mt-1 leading-tight">
-                        «Грамотное ЖКХ: Защита прав жителей Южного города, прозрачность УК и контроль качества услуг»
-                    </h3>
-                </div>
-            </div>
-
-            <!-- Regulatory & Housing Code Framework Badge -->
-            <div class="p-4 rounded-xl bg-[#FAF8F5] border border-[#E5DFD5] mb-6">
-                <div class="text-[11px] font-mono font-bold text-[#8C6826] uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-sm">gavel</span>
-                    Нормативно-правовая база программы:
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 text-xs text-[#2C3E50]">
-                    <div class="p-2 bg-white rounded border border-[#E8E7E2]">
-                        <span class="font-bold text-[#0F2439]">Жилищный кодекс РФ:</span> Ст. 156, 161, 162 (Управление МКД)
-                    </div>
-                    <div class="p-2 bg-white rounded border border-[#E8E7E2]">
-                        <span class="font-bold text-[#0F2439]">ПП РФ № 354:</span> Правила предоставления комм. услуг и перерасчетов
-                    </div>
-                    <div class="p-2 bg-white rounded border border-[#E8E7E2]">
-                        <span class="font-bold text-[#0F2439]">ПП РФ № 491 & 290:</span> Содержание общего имущества и стандарты
-                    </div>
-                    <div class="p-2 bg-white rounded border border-[#E8E7E2]">
-                        <span class="font-bold text-[#0F2439]">Закон о ЗПП (2300-1):</span> Штраф 50% и возмещение ущерба с УК
-                    </div>
-                    <div class="p-2 bg-white rounded border border-[#E8E7E2]">
-                        <span class="font-bold text-[#0F2439]">ФЗ № 212-ФЗ:</span> Общественный жилищный контроль и экспертиза
-                    </div>
-                    <div class="p-2 bg-white rounded border border-[#E8E7E2]">
-                        <span class="font-bold text-[#0F2439]">Приказ Минстроя № 74/114/пр:</span> Раскрытие информации в ГИС ЖКХ
-                    </div>
-                </div>
-            </div>
-
-            <div class="space-y-6 text-sm text-[#2C3E50] leading-relaxed">
-
-                <!-- 1. Главные цели и миссия программы -->
-                <div class="space-y-2">
-                    <h4 class="font-['Source_Serif_4'] text-lg font-bold text-[#0F2439] flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-[#8C6826]"></span>
-                        1. Главные цели и миссия программы в микрорайоне «Южный город»
-                    </h4>
-                    <p class="text-xs sm:text-sm text-[#2C3E50]">
-                        Программа создана для формирования зрелого правового сообщества собственников жилья, пресечения необоснованных переплат и выстраивания прозрачных, подотчетных отношений с управляющими организациями:
-                    </p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
-                        <div class="p-3 bg-[#F8F7F4] rounded-lg border border-[#E0E0E0]">
-                            <div class="font-bold text-[#0F2439] text-xs mb-1">Повышение правовой грамотности</div>
-                            <div class="text-[11px] text-[#5f5e5e]">Обучение жителей алгоритмам защиты прав, чтению отчетов УК и правильной фиксации нарушений.</div>
-                        </div>
-                        <div class="p-3 bg-[#F8F7F4] rounded-lg border border-[#E0E0E0]">
-                            <div class="font-bold text-[#0F2439] text-xs mb-1">Прозрачность и честность УК</div>
-                            <div class="text-[11px] text-[#5f5e5e]">Публичный аудит смет текущего ремонта, тарифов на содержание жилья и раскрытия данных в ГИС ЖКХ.</div>
-                        </div>
-                        <div class="p-3 bg-[#F8F7F4] rounded-lg border border-[#E0E0E0]">
-                            <div class="font-bold text-[#0F2439] text-xs mb-1">Качество услуг и комфорт</div>
-                            <div class="text-[11px] text-[#5f5e5e]">Контроль отопления, чистоты подъездов, состояния дворов, лифтов и решение спорных вопросов без отписок.</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 2. Практические направления работы -->
-                <div class="space-y-2">
-                    <h4 class="font-['Source_Serif_4'] text-lg font-bold text-[#0F2439] flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-[#8C6826]"></span>
-                        2. Ключевые направления правовой поддержки и общественного контроля
-                    </h4>
-                    <ul class="list-disc pl-5 space-y-2 text-xs sm:text-sm text-[#2C3E50]">
-                        <li><strong>Ревизия отчётности и целевого расходования средств:</strong> сопоставление первичных актов выполненных работ УК с реальным состоянием дома, проверка актов промывки систем отопления, дезинсекции и косметического ремонта подъездов.</li>
-                        <li><strong>Оспаривание завышенных начислений и перерасчёты:</strong> аудит расчетов платы за общедомовые нужды (СОИ/ОДН), перерасчет за холодные батареи, ржавую воду и перебои подачи горячего водоснабжения по нормативам СанПиН и ПП РФ № 354.</li>
-                        <li><strong>Правовое сопровождение Советов МКД:</strong> помощь председателям и активным собственникам в проведении общих собраний (ОСС), согласовании условий договоров управления и смет ремонта.</li>
-                        <li><strong>Конструктивное досудебное решение споров и медиация:</strong> организация комиссионных проверок с участием представителей УК, инспекторов ГЖИ и инициативных групп жителей для оперативного решения проблем.</li>
-                        <li><strong>Судебная защита и взыскание неустоек:</strong> представление интересов жителей в судах по искам о заливах квартир по вине УК, взыскание 50% штрафа по ЗоЗПП и компенсации морального вреда.</li>
-                    </ul>
-                </div>
-
-                <!-- 3. Пилотные кейсы и аудит домов Южного города -->
-                <div class="space-y-2">
-                    <h4 class="font-['Source_Serif_4'] text-lg font-bold text-[#0F2439] flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-[#8C6826]"></span>
-                        3. Пилотные аудиты и работа по конкретным адресам (ул. Алабина, 12 и др.)
-                    </h4>
-                    <p class="text-xs sm:text-sm text-[#2C3E50] mb-2">
-                        В рамках программы отрабатываются типовые проблемы жилого фонда Южного города для тиражирования успешных правовых решений:
-                    </p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                        <div class="p-3 bg-white rounded-lg border border-[#E0E0E0] shadow-xs">
-                            <div class="font-bold text-[#0F2439] mb-0.5">Кейс: Аудит УК по ул. Алабина, 12</div>
-                            <div class="text-[#5f5e5e]">Комплексная сверка отчетов за 3 года, проверка обоснованности начислений и передача доклада в ГЖИ и собственникам.</div>
-                        </div>
-                        <div class="p-3 bg-white rounded-lg border border-[#E0E0E0] shadow-xs">
-                            <div class="font-bold text-[#0F2439] mb-0.5">Кейс: Защита при заливах и промерзании швов</div>
-                            <div class="text-[#5f5e5e]">Составление акта за 12 часов по ПП РФ № 491, независимая строительная экспертиза и досудебная претензия.</div>
-                        </div>
-                        <div class="p-3 bg-white rounded-lg border border-[#E0E0E0] shadow-xs">
-                            <div class="font-bold text-[#0F2439] mb-0.5">Кейс: Контроль уборки и благоустройства дворов</div>
-                            <div class="text-[#5f5e5e]">Фиксация ненадлежащей уборки снега, мусора и принуждение УК к выполнению минимального перечня услуг (ПП РФ № 290).</div>
-                        </div>
-                        <div class="p-3 bg-white rounded-lg border border-[#E0E0E0] shadow-xs">
-                            <div class="font-bold text-[#0F2439] mb-0.5">Кейс: Выделение площадок для выгула собак</div>
-                            <div class="text-[#5f5e5e]">Юридическое обоснование переноса и выделения муниципальной земли под кинологические площадки (ст. 13 498-ФЗ).</div>
-                        </div>
-                    </div>
-                </div>
-
-                                <!-- 4. ПРИЗЫВ К СТАРШИМ ДОМОВ: ЭКОЛОГИЯ И БЛАГОПОЛУЧИЕ ОКРУЖАЮЩЕЙ СРЕДЫ -->
-                <div class="space-y-3 p-5 sm:p-6 rounded-2xl bg-[#F8F7F4] border border-[#E5DFD5] shadow-xs">
-                    <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined text-[#8C6826] text-2xl">handshake</span>
-                        <h4 class="font-['Source_Serif_4'] text-lg font-bold text-[#0F2439]">
-                            Призыв к старшим домов и Советам МКД: Совместная работа за экологию и благополучие Южного города
-                        </h4>
-                    </div>
-                    <p class="text-xs sm:text-sm text-[#2C3E50] leading-relaxed">
-                        Уважаемые председатели Советов домов, старшие по подъездам и активные собственники! АНО «ЦПЗ ЮГ-ПРАВО» приглашает вас объединить усилия для наведения порядка, защиты прав жильцов и сохранения экологически благоприятной среды в нашем микрорайоне.
-                    </p>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1 text-xs">
-                        <div class="p-3.5 bg-white rounded-xl border border-[#E0E0E0] shadow-xs">
-                            <div class="font-bold text-[#0F2439] mb-1 flex items-center gap-1.5">
-                                <span>🌳</span> <span>Экология и дворы</span>
-                            </div>
-                            <div class="text-[#5f5e5e] text-[11px] leading-relaxed">Совместный контроль за сохранностью газонов, своевременным вывозом ТКО/КГО, ликвидацией свалок и установкой дог-боксов.</div>
-                        </div>
-                        <div class="p-3.5 bg-white rounded-xl border border-[#E0E0E0] shadow-xs">
-                            <div class="font-bold text-[#0F2439] mb-1 flex items-center gap-1.5">
-                                <span>⚡</span> <span>Энергоэффективность</span>
-                            </div>
-                            <div class="text-[#5f5e5e] text-[11px] leading-relaxed">Проверка утепления контуров домов, исправности узлов учета (ОДПУ) и устранение утечек тепла и ресурсов.</div>
-                        </div>
-                        <div class="p-3.5 bg-white rounded-xl border border-[#E0E0E0] shadow-xs">
-                            <div class="font-bold text-[#0F2439] mb-1 flex items-center gap-1.5">
-                                <span>⚖️</span> <span>Юрсопровождение</span>
-                            </div>
-                            <div class="text-[#5f5e5e] text-[11px] leading-relaxed">Бесплатная юридическая помощь в проведении ОСС, согласовании честных смет ремонта с УК и защите соседей.</div>
-                        </div>
-                    </div>
-                    <div class="pt-2 text-xs text-[#2C3E50] border-t border-[#E8E7E2] flex items-center gap-1.5">
-                        <span class="text-[#8C6826] font-bold">🤝</span>
-                        <em>Вместе мы формируем Совет активных председателей Южного города для конструктивного диалога с УК и Администрацией.</em>
-                    </div>
-                </div>
-
-                <!-- 5. Форма обратной связи по вопросам ЖКХ -->
-                <div class="pt-4 border-t border-[#E8E7E2]">
-                    <h4 class="font-['Source_Serif_4'] text-base font-bold text-[#0F2439] mb-2">
-                        Присоединиться к инициативе / Сообщить о проблеме в ЖКХ:
-                    </h4>
-                    <p class="text-xs text-[#5f5e5e] mb-4">
-                        Если вы являетесь старшим по дому, членом Совета МКД или хотите навести порядок в своем дворе и защитить права соседей, направьте информацию в программу:
-                    </p>
-
-                    <form class="space-y-3 bg-[#FBF9F5] p-4 sm:p-5 rounded-xl border border-[#E8E0D0]" onsubmit="event.preventDefault(); showToast('Обращение принято! Куратор программы свяжется с вами.'); closeModal('modal-jkh-program');">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <input type="text" placeholder="Ваше имя и фамилия *" required class="text-xs rounded border border-[#E0E0E0] px-3.5 py-2.5 bg-white text-[#0F2439] focus:border-[#C5A059] outline-none">
-                            <input type="tel" placeholder="Телефон / Telegram для связи *" required class="text-xs rounded border border-[#E0E0E0] px-3.5 py-2.5 bg-white text-[#0F2439] focus:border-[#C5A059] outline-none">
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <input type="text" placeholder="Адрес в Южном городе (улица, дом, подъезд) *" required class="text-xs rounded border border-[#E0E0E0] px-3.5 py-2.5 bg-white text-[#0F2439] focus:border-[#C5A059] outline-none">
-                            <input type="text" placeholder="Название Управляющей компании (УК / ТСЖ)" class="text-xs rounded border border-[#E0E0E0] px-3.5 py-2.5 bg-white text-[#0F2439] focus:border-[#C5A059] outline-none">
-                        </div>
-                        <div class="p-2.5 bg-white rounded border border-[#E8E0D0]">
-                            <label class="flex items-center gap-2.5 text-xs text-[#0F2439] font-medium cursor-pointer">
-                                <input type="checkbox" class="accent-[#0F2439] w-4 h-4 rounded">
-                                <span>Я являюсь старшим по дому / членом Совета МКД / инициативным жителем</span>
-                            </label>
-                        </div>
-                        <textarea placeholder="Опишите вопрос, проблему или экологическую инициативу по вашему дому..." rows="3" class="w-full text-xs rounded border border-[#E0E0E0] p-3 bg-white text-[#0F2439] focus:border-[#C5A059] outline-none resize-none"></textarea>
-                        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
-                            <div class="text-[11px] text-[#5f5e5e]">
-                                🔒 Бесплатная правовая поддержка для жителей Южного города (212-ФЗ)
-                            </div>
-                            <button type="submit" class="w-full sm:w-auto px-6 py-2.5 bg-[#0F2439] text-white text-xs uppercase font-bold tracking-wider rounded hover:bg-[#1e3a5f] transition-all shadow-sm">
-                                Отправить в рабочую группу →
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-
-    <!-- ── MODAL: ПРОГРАММА «СРЕДА ДЛЯ ЛЮДЕЙ И ПИТОМЦЕВ: ПЛОЩАДКИ ДЛЯ ВЫГУЛА СОБАК» ── -->
-    <div class="modal-overlay" id="modal-dog-park-initiative">
-        <div class="modal-container p-6 sm:p-9 max-w-4xl max-h-[90vh] overflow-y-auto">
-            <button class="modal-close-btn" onclick="closeModal('modal-dog-park-initiative')" aria-label="Закрыть">
-                <span class="material-symbols-outlined">close</span>
-            </button>
-
-            <!-- Header -->
-            <div class="flex items-center gap-3 mb-4 pb-4 border-b border-[#E8E7E2]">
-                <div class="w-12 h-12 rounded-xl bg-[#0F2439] text-[#C5A059] flex items-center justify-center flex-shrink-0 shadow-md">
-                    <span class="material-symbols-outlined text-2xl">pets</span>
-                </div>
-                <div>
-                    <div class="flex flex-wrap items-center gap-2">
-                        <span class="text-xs font-mono font-bold text-[#8C6826] uppercase tracking-wider">Программа 03 • Код: PRG-DOG-2026</span>
-                        <span class="px-2 py-0.5 rounded-full bg-[#FAF4E6] text-[#8C6826] border border-[#E8DCC0] text-[10px] font-bold uppercase font-mono">Гражданская инициатива • Южный город</span>
-                    </div>
-                    <h3 class="font-['Source_Serif_4'] text-2xl sm:text-3xl font-bold text-[#0F2439] mt-1 leading-tight">
-                        «Среда для людей и питомцев: Выделение площадок для выгула собак в Южном городе и диалог с властью»
-                    </h3>
-                </div>
-            </div>
-
-            <!-- Regulatory & Urban Planning Framework Badge -->
-            <div class="p-4 rounded-xl bg-[#FAF8F5] border border-[#E5DFD5] mb-6">
-                <div class="text-[11px] font-mono font-bold text-[#8C6826] uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-sm">gavel</span>
-                    Нормативно-правовая база и градостроительные нормы:
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 text-xs text-[#2C3E50]">
-                    <div class="p-2 bg-white rounded border border-[#E8E7E2]">
-                        <span class="font-bold text-[#0F2439]">Ст. 13 ФЗ № 498-ФЗ:</span> Обязанность ОМСУ определить места для выгула
-                    </div>
-                    <div class="p-2 bg-white rounded border border-[#E8E7E2]">
-                        <span class="font-bold text-[#0F2439]">СП 42.13330 (п. 9.11):</span> Нормативы удаленности (25–40 м) и площади
-                    </div>
-                    <div class="p-2 bg-white rounded border border-[#E8E7E2]">
-                        <span class="font-bold text-[#0F2439]">Ст. 14, 27 ФЗ № 131-ФЗ:</span> Полномочия поселения и поддержка ТОС
-                    </div>
-                    <div class="p-2 bg-white rounded border border-[#E8E7E2]">
-                        <span class="font-bold text-[#0F2439]">Правила благоустройства:</span> Регламент содержания животных в с.п. Лопатино
-                    </div>
-                    <div class="p-2 bg-white rounded border border-[#E8E7E2]">
-                        <span class="font-bold text-[#0F2439]">Программа «СОдействие»:</span> Губернаторский проект софинансирования
-                    </div>
-                    <div class="p-2 bg-white rounded border border-[#E8E7E2]">
-                        <span class="font-bold text-[#0F2439]">ФЗ № 135-ФЗ:</span> Волонтёрские инициативы и культура собаководства
-                    </div>
-                </div>
-            </div>
-
-            <div class="space-y-6 text-sm text-[#2C3E50] leading-relaxed">
-
-                <!-- 1. Суть проблемы и миссия НКО -->
-                <div class="space-y-2">
-                    <h4 class="font-['Source_Serif_4'] text-lg font-bold text-[#0F2439] flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-[#8C6826]"></span>
-                        1. Суть проблемы в Южном городе и миссия правовой организации
-                    </h4>
-                    <p class="text-xs sm:text-sm text-[#2C3E50]">
-                        В микрорайоне «Южный город» проживают тысячи владельцев собак, однако при застройке специализированные огороженные площадки для выгула и дрессировки предусмотрены не были. Это приводит к постоянным конфликтам между жителями, загрязнению газонов и детских зон.
-                    </p>
-                    <p class="text-xs sm:text-sm text-[#2C3E50]">
-                        <strong>Наша миссия как НКО (АНО «ЦПЗ ЮГ-ПРАВО»):</strong> выступить официальным правовым организатором и мостом между жителями, Администрацией Волжского района / с.п. Лопатино, застройщиком («Древо») и управляющими компаниями для решения вопроса строго в правовом поле.
-                    </p>
-                </div>
-
-                <!-- 2. Цели и конкретные шаги реализации -->
-                <div class="space-y-2">
-                    <h4 class="font-['Source_Serif_4'] text-lg font-bold text-[#0F2439] flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-[#8C6826]"></span>
-                        2. Цели проекта и пошаговый юридический план
-                    </h4>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
-                        <div class="p-3 bg-[#F8F7F4] rounded-lg border border-[#E0E0E0]">
-                            <div class="font-bold text-[#0F2439] text-xs mb-1">1. Выделение земли</div>
-                            <div class="text-[11px] text-[#5f5e5e]">Подбор свободных муниципальных участков в Юг-1 и Юг-2 с соблюдением нормативов СП 42.13330 (удаленность 25–40 м от домов).</div>
-                        </div>
-                        <div class="p-3 bg-[#F8F7F4] rounded-lg border border-[#E0E0E0]">
-                            <div class="font-bold text-[#0F2439] text-xs mb-1">2. Диалог с властью и УК</div>
-                            <div class="text-[11px] text-[#5f5e5e]">Официальные ходатайства, рабочие встречи с Администрацией с.п. Лопатино и включение проекта в программу «СОдействие».</div>
-                        </div>
-                        <div class="p-3 bg-[#F8F7F4] rounded-lg border border-[#E0E0E0]">
-                            <div class="font-bold text-[#0F2439] text-xs mb-1">3. Обустройство и культура</div>
-                            <div class="text-[11px] text-[#5f5e5e]">Ограждение площадок, установка снарядов, урн с дог-пакетами и проведение волонтёрских экологических акций.</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 3. Взаимодействие с Администрацией, УК и волонтёрами -->
-                <div class="space-y-2">
-                    <h4 class="font-['Source_Serif_4'] text-lg font-bold text-[#0F2439] flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-[#8C6826]"></span>
-                        3. Системное взаимодействие и волонтёрские программы
-                    </h4>
-                    <ul class="list-disc pl-5 space-y-1.5 text-xs sm:text-sm text-[#2C3E50]">
-                        <li><strong>Взаимодействие с Администрацией района:</strong> согласование постановления главы поселения об определении официальных мест для выгула домашних животных (ст. 13 498-ФЗ).</li>
-                        <li><strong>Взаимодействие с Управляющими компаниями:</strong> установка дог-боксов на основных пешеходных маршрутах и согласование регламента регулярной уборки.</li>
-                        <li><strong>Волонтёрские программы (Добро.рф):</strong> уроки ответственного собаководства для детей и подростков, субботники по уборке придомовых территорий, кинологические консультации.</li>
-                        <li><strong>Баланс интересов всех жителей:</strong> чистые дворы без отходов для родителей с детьми и оборудованное безопасное пространство для собаководов.</li>
-                    </ul>
-                </div>
-
-                <!-- 4. Форма сбора подписей и участия в инициативе -->
-                <div class="pt-4 border-t border-[#E8E7E2]">
-                    <h4 class="font-['Source_Serif_4'] text-base font-bold text-[#0F2439] mb-2">
-                        Поддержать инициативу / Войти в рабочую группу по согласованию мест:
-                    </h4>
-                    <p class="text-xs text-[#5f5e5e] mb-4">
-                        Поставьте подпись под коллективным обращением в Администрацию Волжского района или присоединяйтесь к инициативной группе:
-                    </p>
-
-                    <form class="space-y-3 bg-[#FBF9F5] p-4 sm:p-5 rounded-xl border border-[#E8E0D0]" onsubmit="event.preventDefault(); showToast('Спасибо за поддержку! Ваша подпись добавлена в коллективное обращение.'); closeModal('modal-dog-park-initiative');">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <input type="text" placeholder="Ваше имя и фамилия *" required class="text-xs rounded border border-[#E0E0E0] px-3.5 py-2.5 bg-white text-[#0F2439] focus:border-[#C5A059] outline-none">
-                            <input type="tel" placeholder="Телефон / Telegram для связи *" required class="text-xs rounded border border-[#E0E0E0] px-3.5 py-2.5 bg-white text-[#0F2439] focus:border-[#C5A059] outline-none">
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <input type="text" placeholder="Улица / Очередь в Южном городе (Юг-1 / Юг-2) *" required class="text-xs rounded border border-[#E0E0E0] px-3.5 py-2.5 bg-white text-[#0F2439] focus:border-[#C5A059] outline-none">
-                            <input type="text" placeholder="Есть ли собака? (порода / или просто за чистые дворы)" class="text-xs rounded border border-[#E0E0E0] px-3.5 py-2.5 bg-white text-[#0F2439] focus:border-[#C5A059] outline-none">
-                        </div>
-                        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
-                            <div class="text-[11px] text-[#5f5e5e]">
-                                🔒 Подписи направляются в Администрацию м.р. Волжский (ФЗ № 59-ФЗ, 152-ФЗ)
-                            </div>
-                            <button type="submit" class="w-full sm:w-auto px-6 py-2.5 bg-[#0F2439] text-white text-xs uppercase font-bold tracking-wider rounded hover:bg-[#1e3a5f] transition-all shadow-sm">
-                                Поставить подпись под обращением →
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-
-    <!-- ── MODAL: ПРОГРАММА «ШКОЛА ПРАВА И ВОЛОНТЁРСТВА: ЮЖНЫЙ ГОРОД» (ЛЕКЦИИ, ДОБРО.РФ, БАЛЛЫ К ЕГЭ) ── -->
-    <div class="modal-overlay" id="modal-youth-legal">
-        <div class="modal-container p-6 sm:p-9 max-w-4xl max-h-[90vh] overflow-y-auto">
-            <button class="modal-close-btn" onclick="closeModal('modal-youth-legal')" aria-label="Закрыть">
-                <span class="material-symbols-outlined">close</span>
-            </button>
-
-            <!-- Header -->
-            <div class="flex items-center gap-3 mb-4 pb-4 border-b border-[#E8E7E2]">
-                <div class="w-12 h-12 rounded-xl bg-[#0F2439] text-[#C5A059] flex items-center justify-center flex-shrink-0 shadow-md">
-                    <span class="material-symbols-outlined text-2xl">school</span>
-                </div>
-                <div>
-                    <div class="flex flex-wrap items-center gap-2">
-                        <span class="text-xs font-mono font-bold text-[#8C6826] uppercase tracking-wider">Программа 05 • Код: PRG-VOL-2026</span>
-                        <span class="px-2 py-0.5 rounded-full bg-[#EBF5EE] text-[#1E5631] border border-[#C8E6C9] text-[10px] font-bold uppercase font-mono">Просвещение & Добро.рф</span>
-                    </div>
-                    <h3 class="font-['Source_Serif_4'] text-2xl sm:text-3xl font-bold text-[#0F2439] mt-1 leading-tight">
-                        «Школа Права и Волонтёрства: Серия правовых уроков для школьников, часы Добро.рф и поддержка молодёжного актива»
-                    </h3>
-                </div>
-            </div>
-
-            <!-- Regulatory & Educational Framework Badge -->
-            <div class="p-4 rounded-xl bg-[#FAF8F5] border border-[#E5DFD5] mb-6">
-                <div class="text-[11px] font-mono font-bold text-[#8C6826] uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-sm">gavel</span>
-                    Нормативно-правовая основа программы:
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 text-xs text-[#2C3E50]">
-                    <div class="p-2 bg-white rounded border border-[#E8E7E2]">
-                        <span class="font-bold text-[#0F2439]">ФЗ № 273-ФЗ (ст. 75):</span> Правовое просвещение и внеурочные курсы
-                    </div>
-                    <div class="p-2 bg-white rounded border border-[#E8E7E2]">
-                        <span class="font-bold text-[#0F2439]">ФЗ № 135-ФЗ:</span> О благотворительности и волонтерстве
-                    </div>
-                    <div class="p-2 bg-white rounded border border-[#E8E7E2]">
-                        <span class="font-bold text-[#0F2439]">Платформа Добро.рф:</span> Верифицированные часы в ЛЭКВ
-                    </div>
-                    <div class="p-2 bg-white rounded border border-[#E8E7E2]">
-                        <span class="font-bold text-[#0F2439]">Приказы Минобрнауки РФ:</span> Учет индивидуальных достижений к ЕГЭ (до +10 баллов)
-                    </div>
-                    <div class="p-2 bg-white rounded border border-[#E8E7E2]">
-                        <span class="font-bold text-[#0F2439]">Трудовой кодекс РФ (гл. 42):</span> Защита трудовых прав несовершеннолетних
-                    </div>
-                    <div class="p-2 bg-white rounded border border-[#E8E7E2]">
-                        <span class="font-bold text-[#0F2439]">Ст. 187, 159 УК РФ:</span> Профилактика киберпреступлений и антифрод
-                    </div>
-                </div>
-            </div>
-
-            <div class="space-y-6 text-sm text-[#2C3E50] leading-relaxed">
-
-                <!-- 1. Суть и цели программы -->
-                <div class="space-y-2">
-                    <h4 class="font-['Source_Serif_4'] text-lg font-bold text-[#0F2439] flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-[#8C6826]"></span>
-                        1. Повышение правовой грамотности школьников: серия интерактивных уроков
-                    </h4>
-                    <p class="text-xs sm:text-sm text-[#2C3E50]">
-                        Программа направлена на формирование устойчивого правосознания и правовой культуры у подрастающего поколения. Юристы и эксперты АНО «ЦПЗ ЮГ-ПРАВО» проводят в школах Южного города (ОЦ «Южный город») и Самарской области серию живых внеклассных уроков на понятном молодёжи языке:
-                    </p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                        <div class="p-3 bg-[#F8F7F4] rounded-lg border border-[#E0E0E0]">
-                            <div class="font-bold text-[#0F2439] text-xs mb-1">Лекция 1: Кибербезопасность и дропперы (ст. 187 УК РФ)</div>
-                            <div class="text-[11px] text-[#5f5e5e]">Как не стать соучастником преступления при продаже или аренде банковских карт, риски уголовной ответственности и блокировок 115-ФЗ.</div>
-                        </div>
-                        <div class="p-3 bg-[#F8F7F4] rounded-lg border border-[#E0E0E0]">
-                            <div class="font-bold text-[#0F2439] text-xs mb-1">Лекция 2: Первый трудовой договор и права подростка</div>
-                            <div class="text-[11px] text-[#5f5e5e]">Нормы ТК РФ для работающих с 14–16 лет, сокращенное рабочее время, обязательный медосмотр и защита от невыплаты зарплаты.</div>
-                        </div>
-                        <div class="p-3 bg-[#F8F7F4] rounded-lg border border-[#E0E0E0]">
-                            <div class="font-bold text-[#0F2439] text-xs mb-1">Лекция 3: Потребительская грамотность (ЗоЗПП)</div>
-                            <div class="text-[11px] text-[#5f5e5e]">Покупки на Wildberries и Ozon, возврат некачественных гаджетов, платные подписки и безопасные онлайн-платежи.</div>
-                        </div>
-                        <div class="p-3 bg-[#F8F7F4] rounded-lg border border-[#E0E0E0]">
-                            <div class="font-bold text-[#0F2439] text-xs mb-1">Лекция 4: Права гражданина при общении с полицией</div>
-                            <div class="text-[11px] text-[#5f5e5e]">Полномочия сотрудников МВД, ст. 51 Конституции РФ, правила составления протокола и запрет необоснованных досмотров.</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 2. Волонтерская деятельность и баллы к ЕГЭ -->
-                <div class="space-y-2">
-                    <h4 class="font-['Source_Serif_4'] text-lg font-bold text-[#0F2439] flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-[#8C6826]"></span>
-                        2. Волонтёрство на Добро.рф и дополнительные баллы к ЕГЭ при поступлении
-                    </h4>
-                    <p class="text-xs sm:text-sm text-[#2C3E50]">
-                        Мы привлекаем инициативных школьников к волонтёрской деятельности исключительно по их собственному желанию. Ребята помогают в реализации социально полезных программ:
-                    </p>
-                    <ul class="list-disc pl-5 space-y-1.5 text-xs sm:text-sm text-[#2C3E50]">
-                        <li><strong>Официальная верификация часов на Добро.рф:</strong> АНО «ЦПЗ ЮГ-ПРАВО» как верифицированный организатор проставляет официальные волонтёрские часы в Личную электронную книжку волонтёра (ЛЭКВ).</li>
-                        <li><strong>Дополнительные баллы к ЕГЭ:</strong> ведущие вузы России (включая Самарский университет, СамГТУ, СГЭУ, МГЮА, ВШЭ, МГУ) начисляют абитуриентам <strong>от +2 до +10 дополнительных конкурсных баллов к ЕГЭ</strong> за подтвержденный волонтерский стаж.</li>
-                        <li><strong>Направления волонтёрской практики:</strong> координация благотворительных сборов для приютов («Добрая лапа»), помощь в организации районных круглых столов, эко-субботники и правовой мониторинг городской среды.</li>
-                    </ul>
-                </div>
-
-                <!-- 3. Поощрение и организация мероприятий для молодёжного актива -->
-                <div class="space-y-2">
-                    <h4 class="font-['Source_Serif_4'] text-lg font-bold text-[#0F2439] flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-[#8C6826]"></span>
-                        3. Поощрение и содействие в развитии молодёжного актива
-                    </h4>
-                    <p class="text-xs sm:text-sm text-[#2C3E50] mb-2">
-                        Для ребят, активно участвующих в волонтёрской работе, Организация проводит поощрительные мероприятия и помогает строить профессиональный трек:
-                    </p>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                        <div class="p-3 bg-white rounded-lg border border-[#E0E0E0] shadow-xs">
-                            <div class="font-bold text-[#0F2439] mb-0.5">Экскурсии и встречи</div>
-                            <div class="text-[#5f5e5e]">Визиты в юридические институты, суды, Общественную палату и встречи с известными адвокатами.</div>
-                        </div>
-                        <div class="p-3 bg-white rounded-lg border border-[#E0E0E0] shadow-xs">
-                            <div class="font-bold text-[#0F2439] mb-0.5">Портфолио и рекомендации</div>
-                            <div class="text-[#5f5e5e]">Официальные благодарственные письма и рекомендательные письма руководителя АНО для поступления и грантов.</div>
-                        </div>
-                        <div class="p-3 bg-white rounded-lg border border-[#E0E0E0] shadow-xs">
-                            <div class="font-bold text-[#0F2439] mb-0.5">Командные мероприятия</div>
-                            <div class="text-[#5f5e5e]">Организация и содействие в проведении досуговых, интеллектуальных квизов и тимбилдингов для актива.</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 4. Форма записи для школьников, родителей и педагогов -->
-                <div class="pt-4 border-t border-[#E8E7E2]">
-                    <h4 class="font-['Source_Serif_4'] text-base font-bold text-[#0F2439] mb-2">
-                        Записаться в волонтёрский корпус / Пригласить юриста для проведения урока в школу:
-                    </h4>
-                    <p class="text-xs text-[#5f5e5e] mb-4">
-                        Заполните форму, и куратор молодёжных программ свяжется с вами для согласования даты урока или включения в волонтёрский реестр:
-                    </p>
-
-                    <form class="space-y-3 bg-[#FBF9F5] p-4 sm:p-5 rounded-xl border border-[#E8E0D0]" onsubmit="event.preventDefault(); showToast('Спасибо за заявку! Куратор молодежной программы свяжется с вами.'); closeModal('modal-youth-legal');">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <input type="text" placeholder="Ваше имя и фамилия *" required class="text-xs rounded border border-[#E0E0E0] px-3.5 py-2.5 bg-white text-[#0F2439] focus:border-[#C5A059] outline-none">
-                            <input type="tel" placeholder="Телефон / Telegram для связи *" required class="text-xs rounded border border-[#E0E0E0] px-3.5 py-2.5 bg-white text-[#0F2439] focus:border-[#C5A059] outline-none">
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <input type="text" placeholder="Школа / Класс / Статус (Школьник / Родитель / Педагог) *" required class="text-xs rounded border border-[#E0E0E0] px-3.5 py-2.5 bg-white text-[#0F2439] focus:border-[#C5A059] outline-none">
-                            <input type="text" placeholder="ID на Добро.рф (если есть, для начисления часов)" class="text-xs rounded border border-[#E0E0E0] px-3.5 py-2.5 bg-white text-[#0F2439] focus:border-[#C5A059] outline-none">
-                        </div>
-                        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
-                            <div class="text-[11px] text-[#5f5e5e]">
-                                🔒 Регистрация в соответствии с ФЗ № 135-ФЗ и ФЗ № 152-ФЗ
-                            </div>
-                            <button type="submit" class="w-full sm:w-auto px-6 py-2.5 bg-[#0F2439] text-white text-xs uppercase font-bold tracking-wider rounded hover:bg-[#1e3a5f] transition-all shadow-sm">
-                                Отправить заявку куратору →
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
+    <script src="js/effects.js?v=20260901_live8"></script>
+    <script src="js/initiative-dossier.js?v=20260901_live9"></script>
+    <script src="js/main.js?v=20260901_live8"></script>
+    <script src="js/forms.js?v=20260901_live8"></script>
 </body>
 </html>

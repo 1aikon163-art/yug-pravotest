@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <!-- Background Ambient Glow & Drop Shadow -->
+    <filter id="premium-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.5"/>
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#C5A059" flood-opacity="0.3"/>
+    </filter>
+
+    <!-- 3D Bevel for Gold Elements -->
+    <filter id="gold-emboss" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="2" flood-color="#000000" flood-opacity="0.4"/>
+      <feDropShadow dx="0" dy="-1" stdDeviation="1" flood-color="#FFF5D1" flood-opacity="0.8"/>
+    </filter>
+
+    <!-- Royal Sapphire Enamel Gradient -->
+    <linearGradient id="shield-base-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1A3654"/>
+      <stop offset="50%" stop-color="#0F2439"/>
+      <stop offset="100%" stop-color="#06121E"/>
+    </linearGradient>
+
+    <!-- 3D Metallic Gold Gradient (Specular Highlights) -->
+    <linearGradient id="gold-luxury-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF4D0"/>
+      <stop offset="25%" stop-color="#ECC675"/>
+      <stop offset="50%" stop-color="#C5A059"/>
+      <stop offset="75%" stop-color="#DFBA6E"/>
+      <stop offset="100%" stop-color="#8F6A28"/>
+    </linearGradient>
+
+    <!-- Glossy Glass Reflection Overlay -->
+    <linearGradient id="gloss-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.35"/>
+      <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Group with Drop Shadow -->
+  <g filter="url(#premium-shadow)">
+    
+    <!-- Outer 3D Gold Shield Bevel -->
+    <path d="M128 16L40 38V126C40 182 78 222 128 240C178 222 216 182 216 126V38L128 16Z" 
+          fill="url(#gold-luxury-grad)" 
+          stroke="#7A561B" 
+          stroke-width="2"/>
+
+    <!-- Inner Sapphire Navy Shield Body -->
+    <path d="M128 26L48 46V124C48 174 82 210 128 226C174 210 208 174 208 124V46L128 26Z" 
+          fill="url(#shield-base-grad)" 
+          stroke="#0A1826" 
+          stroke-width="2"/>
+
+    <!-- Inner Gold Filigree Trim -->
+    <path d="M128 34L56 52V122C56 166 86 198 128 214C170 198 200 166 200 122V52L128 34Z" 
+          fill="none" 
+          stroke="url(#gold-luxury-grad)" 
+          stroke-width="2" 
+          opacity="0.75"/>
+
+    <!-- Glossy Light Reflection across Top Shield -->
+    <path d="M128 26L48 46V96C80 80 160 80 208 96V46L128 26Z" 
+          fill="url(#gloss-grad)"/>
+
+    <!-- 3D Minted Scales of Justice (Exact Logo Geometry in High Relief) -->
+    <g filter="url(#gold-emboss)">
+      
+      <!-- Central Pillar / Axis -->
+      <path d="M128 58V166" 
+            stroke="url(#gold-luxury-grad)" 
+            stroke-width="8" 
+            stroke-linecap="round"/>
+
+      <!-- Crown Finial Pivot -->
+      <circle cx="128" cy="62" r="7.5" fill="url(#gold-luxury-grad)" stroke="#8F6A28" stroke-width="1.5"/>
+
+      <!-- Lower Chevron Spear Accent -->
+      <path d="M102 162L128 188L154 162" 
+            stroke="url(#gold-luxury-grad)" 
+            stroke-width="8" 
+            stroke-linecap="round" 
+            stroke-linejoin="round"/>
+
+      <!-- Crossbeam Balance Bar -->
+      <path d="M76 76L128 62L180 76" 
+            stroke="url(#gold-luxury-grad)" 
+            stroke-width="7" 
+            stroke-linecap="round"/>
+
+      <!-- Left Scale: Chains and 3D Bowl -->
+      <path d="M76 76L62 108M76 76L90 108" 
+            stroke="url(#gold-luxury-grad)" 
+            stroke-width="4" 
+            stroke-linecap="round"/>
+      <path d="M54 108C54 122 98 122 98 108Z" 
+            fill="url(#gold-luxury-grad)" 
+            stroke="#7A561B" 
+            stroke-width="1.5"/>
+
+      <!-- Right Scale: Chains and 3D Bowl -->
+      <path d="M180 76L166 108M180 76L194 108" 
+            stroke="url(#gold-luxury-grad)" 
+            stroke-width="4" 
+            stroke-linecap="round"/>
+      <path d="M158 108C158 122 202 122 202 108Z" 
+            fill="url(#gold-luxury-grad)" 
+            stroke="#7A561B" 
+            stroke-width="1.5"/>
+
+    </g>
+
+  </g>
+</svg>

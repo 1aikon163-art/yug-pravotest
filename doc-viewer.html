@@ -12,13 +12,13 @@
     <meta property="og:site_name" content="АНО «ЦПЗ ЮГ-ПРАВО»"/>
     <meta property="og:title" content="📄 Просмотр официальных документов — АНО «ЦПЗ ЮГ-ПРАВО»"/>
     <meta property="og:description" content="Интерактивный просмотрщик уставных документов, свидетельств и отчетов АНО «ЦПЗ ЮГ-ПРАВО»."/>
-    <meta property="og:url" content="https://yug-pravo.ru/doc-viewer.html"/>
-    <meta property="og:image" content="https://yug-pravo.ru/images/logo.png"/>
+    <meta property="og:url" content="https://yugpravo.ru/doc-viewer.html"/>
+    <meta property="og:image" content="https://yugpravo.ru/images/logo.png"/>
     <meta name="twitter:card" content="summary_large_image"/>
     <meta name="twitter:title" content="📄 Просмотр официальных документов — АНО «ЦПЗ ЮГ-ПРАВО»"/>
     <meta name="twitter:description" content="Интерактивный просмотрщик уставных документов, свидетельств и отчетов АНО «ЦПЗ ЮГ-ПРАВО»."/>
-    <meta name="twitter:image" content="https://yug-pravo.ru/images/logo.png"/>
-    <link rel="canonical" href="https://yug-pravo.ru/doc-viewer.html"/>
+    <meta name="twitter:image" content="https://yugpravo.ru/images/logo.png"/>
+    <link rel="canonical" href="https://yugpravo.ru/doc-viewer.html"/>
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
     <meta name="geo.region" content="RU-SAM"/>
     <meta name="geo.placename" content="Самара, Самарская область, Россия"/>
@@ -34,7 +34,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     
     <!-- Lex Renaissance Styles -->
-    <link rel="stylesheet" href="css/styles.css"/>
+    <link rel="stylesheet" href="css/styles.css?v=20260901_live7"/>
 
     <script type="application/ld+json">
     {
@@ -42,22 +42,41 @@
       "@type": "WebPage",
       "name": "📄 Просмотр официальных документов — АНО «ЦПЗ ЮГ-ПРАВО»",
       "description": "Интерактивный просмотрщик уставных документов, свидетельств и отчетов АНО «ЦПЗ ЮГ-ПРАВО».",
-      "url": "https://yug-pravo.ru/doc-viewer.html",
+      "url": "https://yugpravo.ru/doc-viewer.html",
       "publisher": {
         "@type": "NGO",
         "name": "АНО «ЦПЗ ЮГ-ПРАВО»",
-        "url": "https://yug-pravo.ru",
-        "logo": "https://yug-pravo.ru/images/logo.png"
+        "url": "https://yugpravo.ru",
+        "logo": "https://yugpravo.ru/images/logo.png"
       }
     }
     </script>
+    <script src="js/standby-lock.js?v=20260901_live7"></script>
+
+    <!-- Favicon & Icons -->
+    
+    
+    
+
+    <!-- Official Transparent Logo Favicons -->
+    <link rel="icon" type="image/png" href="favicon.png?v=8">
+    <link rel="apple-touch-icon" href="favicon.png?v=8">
+    
+    
+    
+    <script src="js/payment.js?v=20260901_live7"></script>
+    <script src="js/invoice-generator.js?v=20260901_live7"></script>
+
+    <!-- Telegram Mini App SDK 7.0+ -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="js/telegram-bridge.js" defer></script>
 </head>
 <body class="bg-[#F8F7F4] text-[#0F2439] antialiased min-h-screen flex flex-col justify-between">
 
         <!-- ── 1. LIQUID FROSTED GLASS HEADER ── -->
     <header class="glass-header" id="main-header">
         <div class="header-container">
-            <a class="brand-logo-btn group" href="index.html" title="АНО «ЮГ-ПРАВО» — Главная">
+            <a class="brand-logo-btn group" href="/" title="АНО «ЮГ-ПРАВО» — Главная">
                 <img alt="АНО «ЮГ-ПРАВО»" class="h-10 sm:h-11 w-auto" src="images/logo.png"/>
             </a>
 
@@ -69,14 +88,15 @@
                 <a class="text-xs uppercase font-semibold tracking-wider text-[#2C3E50] hover:text-[#0F2439] transition-colors py-1" href="calculator.html">Калькулятор</a>
                 <a class="text-xs uppercase font-semibold tracking-wider text-[#2C3E50] hover:text-[#0F2439] transition-colors py-1" href="about.html">Об организации</a>
                 <a class="text-xs uppercase font-bold tracking-wider text-[#0F2439] border-b-2 border-[#0F2439] py-1" href="disclosure.html">Раскрытие</a>
+                <a class="text-xs uppercase font-semibold tracking-wider text-[#2C3E50] hover:text-[#0F2439] transition-colors py-1" href="contacts.html">Контакты</a>
             </nav>
 
             <!-- Actions -->
             <div class="flex items-center gap-4">
-                <button class="hidden sm:inline-flex items-center justify-center px-5 py-2.5 bg-[#0F2439] text-white text-xs uppercase font-semibold tracking-wider hover:bg-[#1e3a5f] transition-all button-glow rounded shadow-sm" onclick="openModal('modal-donate')">
+                <button onclick="openModal('modal-donate')" class="hidden sm:inline-flex items-center justify-center px-5 py-2.5 bg-[#0F2439] text-white text-xs uppercase font-semibold tracking-wider hover:bg-[#1e3a5f] transition-all button-glow rounded shadow-sm">
                     Поддержать проект
                 </button>
-                <button aria-label="Меню" class="lg:hidden text-[#0F2439] p-2" id="mobile-menu-btn">
+                <button type="button" aria-label="Меню" class="lg:hidden text-[#0F2439] p-2 cursor-pointer" id="mobile-menu-btn" onclick="window.toggleMobileMenu ? window.toggleMobileMenu(event) : null">
                     <span class="material-symbols-outlined text-2xl">menu</span>
                 </button>
             </div>
@@ -90,7 +110,7 @@
             <a class="text-xs uppercase font-semibold text-[#2C3E50] hover:text-[#0F2439] py-2" href="calculator.html">Правовой калькулятор</a>
             <a class="text-xs uppercase font-semibold text-[#2C3E50] hover:text-[#0F2439] py-2" href="about.html">Об организации</a>
             <a class="text-xs uppercase font-bold text-[#0F2439] py-2 border-b border-[#0F2439]/20" href="disclosure.html">Раскрытие информации</a>
-            <button class="w-full mt-2 inline-flex items-center justify-center px-5 py-3 bg-[#0F2439] text-white text-xs uppercase font-semibold tracking-wider rounded" onclick="openModal('modal-donate'); document.getElementById('mobile-nav').classList.add('hidden');">
+            <button class="w-full mt-2 inline-flex items-center justify-center px-5 py-3 bg-[#0F2439] text-white text-xs uppercase font-semibold tracking-wider rounded">
                 Поддержать проект
             </button>
         </nav>
@@ -98,61 +118,125 @@
 
     <main class="max-w-5xl mx-auto px-4 sm:px-6 py-8 flex-grow w-full">
         <!-- ── TOOLBAR ── -->
-        <div class="material-glass-card p-4 sm:p-5 mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div class="flex items-center gap-3 min-w-0">
-                <button onclick="goBack()" class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-[#2C3E50] bg-white border border-[#E0E0E0] rounded hover:bg-[#0F2439] hover:text-white transition-all shadow-sm flex-shrink-0">
+        <div class="material-glass-card p-4 sm:p-5 mb-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div class="flex items-start sm:items-center gap-3 min-w-0 flex-1">
+                <button onclick="goBack()" class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-[#2C3E50] bg-white border border-[#E0E0E0] rounded hover:bg-[#0F2439] hover:text-white transition-all shadow-sm flex-shrink-0 mt-0.5 sm:mt-0">
                     <span class="material-symbols-outlined text-sm">arrow_back</span>
                     <span>Назад</span>
                 </button>
-                <div class="min-w-0">
-                    <h1 id="doc-title" class="font-['Source_Serif_4'] text-lg sm:text-xl font-bold text-[#0F2439] truncate">
+                <div class="min-w-0 flex-1">
+                    <h1 id="doc-title" class="font-['Source_Serif_4'] text-base sm:text-lg font-bold text-[#0F2439] leading-tight">
                         Загрузка документа...
                     </h1>
-                    <span id="doc-subtitle" class="text-xs text-[#5f5e5e] block truncate">
+                    <span id="doc-subtitle" class="text-xs text-[#5f5e5e] block mt-0.5">
                         Официальный электронный документ АНО «ЦПЗ ЮГ-ПРАВО»
                     </span>
                 </div>
             </div>
 
-            <div class="flex items-center gap-3 self-end sm:self-center flex-shrink-0">
+            <div class="flex flex-wrap items-center gap-2.5 self-end sm:self-center flex-shrink-0">
                 <span id="doc-size" class="text-xs font-mono text-[#5f5e5e] hidden sm:inline">PDF</span>
+                <a id="download-clean-btn" href="#" download class="hidden inline-flex items-center gap-1.5 px-3.5 py-2 bg-white text-[#0F2439] text-xs font-semibold rounded hover:bg-[#F8F7F4] border border-[#E0E0E0] transition-colors shadow-xs" title="Распечатать чистый бланк под живую подпись и печать для физической папки">
+                    <span class="material-symbols-outlined text-sm text-[#8C7A5B]">print</span>
+                    <span>Бланк для архива</span>
+                </a>
                 <a id="download-btn" href="#" download class="inline-flex items-center gap-2 px-4 py-2 bg-[#0F2439] text-white text-xs font-semibold uppercase tracking-wider rounded hover:bg-[#1e3a5f] transition-all shadow-sm">
                     <span class="material-symbols-outlined text-sm">download</span>
-                    <span id="download-btn-text">Скачать оригинал (PDF)</span>
+                    <span id="download-btn-text">Скачать DOCX</span>
                 </a>
             </div>
         </div>
 
+        <!-- ── VIEW MODE SWITCH (TEXT / PDF SCAN) ── -->
+        <div id="view-mode-toggle" class="hidden w-full flex justify-center sm:justify-start mb-3">
+            <div class="inline-flex items-center bg-[#E5E2DA] p-1 rounded-lg border border-[#D5D2CA] shadow-xs">
+                <button id="mode-text-btn" type="button" class="px-3.5 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-1.5 bg-white text-[#0F2439] shadow-xs cursor-pointer">
+                    <span class="material-symbols-outlined text-sm">article</span>
+                    <span>Текст документа</span>
+                </button>
+                <button id="mode-pdf-btn" type="button" class="px-3.5 py-1.5 rounded-md text-xs font-semibold text-[#5f5e5e] hover:text-[#0F2439] transition-all flex items-center gap-1.5 cursor-pointer">
+                    <span class="material-symbols-outlined text-sm">picture_as_pdf</span>
+                    <span>Официальный скан PDF</span>
+                </button>
+            </div>
+        </div>
+
         <!-- ── VIEWER CONTAINER ── -->
-        <div class="w-full bg-white rounded-lg border border-[#E0E0E0] shadow-sm overflow-hidden p-2 sm:p-4">
+        <div class="w-full bg-[#ECE9E3] rounded-lg border border-[#D5D2CA] shadow-inner overflow-hidden p-3 sm:p-8 flex flex-col items-center justify-center min-h-[500px]">
             
+            <!-- Loading Indicator -->
+            <div id="loading-indicator" class="flex flex-col items-center justify-center py-16 text-center">
+                <div class="w-10 h-10 border-3 border-[#0F2439]/20 border-t-[#0F2439] rounded-full animate-spin mb-3"></div>
+                <div class="text-sm font-bold text-[#0F2439]">Загрузка официального документа...</div>
+                <div class="text-xs text-[#5f5e5e] mt-1">Официальный реестр АНО «ЦПЗ ЮГ-ПРАВО»</div>
+            </div>
+
+            <!-- Error Container -->
+            <div id="error-container" class="hidden max-w-md mx-auto p-6 bg-white rounded-xl border border-red-200 text-center shadow-sm my-8">
+                <span class="material-symbols-outlined text-red-500 text-3xl mb-2">error_outline</span>
+                <h3 class="text-base font-bold text-[#0F2439] mb-1">Не удалось загрузить документ</h3>
+                <p id="error-message" class="text-xs text-[#5f5e5e] mb-4">Произошла ошибка при загрузке содержимого документа.</p>
+                <div class="flex flex-col sm:flex-row gap-2 justify-center">
+                    <button type="button" onclick="location.reload()" class="px-4 py-2 bg-[#0F2439] text-white text-xs font-semibold rounded-lg hover:bg-[#1e3a5f] cursor-pointer">
+                        Повторить попытку
+                    </button>
+                    <a id="error-download-btn" href="#" download class="px-4 py-2 border border-[#E0E0E0] text-[#0F2439] text-xs font-semibold rounded-lg hover:bg-[#F8F7F4] flex items-center justify-center gap-1.5">
+                        <span class="material-symbols-outlined text-sm">download</span>
+                        <span>Скачать файл напрямую</span>
+                    </a>
+                </div>
+            </div>
+
             <!-- Desktop / Tablet Embedded PDF Frame -->
-            <div id="pdf-container" class="w-full relative min-h-[500px] h-[82vh]">
+            <div id="pdf-container" class="hidden w-full relative min-h-[500px] h-[85vh]">
+                <div class="w-full flex justify-between items-center bg-[#F8F7F4] px-4 py-2 border border-b-0 border-[#DCD9D2] rounded-t text-xs text-[#2C3E50]">
+                    <span class="flex items-center gap-1.5 font-semibold">
+                        <span class="material-symbols-outlined text-[#8C7A5B] text-base">picture_as_pdf</span>
+                        <span>Официальный скан с подписью и печатью</span>
+                    </span>
+                    <a id="pdf-fullscreen-btn" href="#" target="_blank" class="text-[#0F2439] hover:underline font-bold flex items-center gap-1">
+                        <span>Во весь экран</span>
+                        <span class="material-symbols-outlined text-sm">open_in_new</span>
+                    </a>
+                </div>
                 <iframe 
                     id="pdf-frame" 
                     src="" 
-                    class="w-full h-full rounded border border-[#EBEAE5]" 
+                    class="w-full h-[calc(100%-36px)] rounded-b border border-[#DCD9D2] bg-white shadow-md" 
                     type="application/pdf"
                     title="Просмотр PDF документа"
                 ></iframe>
             </div>
 
-            <!-- Formatted Text Reader (for terms.txt) -->
-            <div id="text-container" class="hidden p-6 sm:p-10 max-w-4xl mx-auto font-serif text-[#1F2937] leading-relaxed">
-                <div id="text-content" class="whitespace-pre-wrap text-sm leading-relaxed space-y-4"></div>
-            </div>
-
-            <!-- Mobile Fallback / Direct Open Bar -->
-            <div id="direct-bar" class="mt-4 p-4 bg-[#F8F7F4] rounded border border-[#E0E0E0] flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
-                <div class="text-xs text-[#2C3E50]">
-                    <span class="font-semibold block sm:inline">Не открывается встроенный просмотрщик?</span>
-                    <span class="text-[#5f5e5e]"> Вы можете открыть файл напрямую в браузере или сохранить на устройство.</span>
-                </div>
-                <div class="flex gap-2">
-                    <a id="direct-open-btn" href="#" target="_blank" class="px-4 py-2 bg-[#0F2439] text-white text-xs font-semibold rounded hover:bg-[#1e3a5f] transition-colors">
-                        Открыть в новой вкладке
+            <!-- Mobile Enhanced PDF Viewer Container -->
+            <div id="pdf-mobile-container" class="hidden w-full flex flex-col gap-3">
+                <div class="w-full bg-[#F8F7F4] px-3 py-2 border border-[#DCD9D2] rounded text-xs text-[#2C3E50] flex items-center justify-between">
+                    <span class="font-bold flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm text-[#8C7A5B]">description</span>
+                        <span id="pdf-mobile-title">Скан документа PDF</span>
+                    </span>
+                    <a id="pdf-mobile-open-btn" href="#" target="_blank" class="text-[#0F2439] font-bold underline flex items-center gap-1">
+                        <span>В новой вкладке</span>
+                        <span class="material-symbols-outlined text-xs">open_in_new</span>
                     </a>
                 </div>
+                <iframe 
+                    id="pdf-mobile-frame" 
+                    src="" 
+                    class="w-full h-[68vh] rounded border border-[#DCD9D2] bg-white shadow-md" 
+                    title="Мобильный просмотр PDF"
+                ></iframe>
+                <div class="flex flex-col sm:flex-row gap-2">
+                    <a id="pdf-mobile-download-btn" href="#" download class="w-full py-2.5 bg-[#0F2439] text-white text-xs font-bold uppercase tracking-wider rounded-lg hover:bg-[#1e3a5f] transition-all flex items-center justify-center gap-2 shadow-sm">
+                        <span class="material-symbols-outlined text-base">download</span>
+                        <span>Скачать официальный PDF</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Formatted Text Reader — Физический лист А4 (210 x 297 мм) -->
+            <div id="text-container" class="hidden w-full max-w-[780px] min-h-[1075px] mx-auto bg-white rounded-xs shadow-xl border border-[#DCD9D2] p-6 sm:p-12 md:p-14 font-serif text-[#1F2937] leading-relaxed transition-all my-2">
+                <div id="text-content" class="text-[13px] leading-relaxed"></div>
             </div>
 
         </div>
@@ -180,7 +264,18 @@
                 <a href="contacts.html" class="text-[#0F2439] hover:underline transition-colors font-medium">Реквизиты и контакты</a>
             </div>
 
-            <div class="text-xs text-[#5f5e5e]">© 2026 АНО «ЦПЗ ЮГ-ПРАВО». Все права защищены.</div>
+            
+            
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#5F5E5E] pt-4 border-t border-[#E0E0E0]/60 max-w-4xl mx-auto">
+                <div>© 2026 АНО «ЦПЗ ЮГ-ПРАВО». Все права защищены.</div>
+                <div class="inline-flex items-center gap-1.5 text-xs text-[#5F5E5E]">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#C5A059]"></span>
+                    <span>Архитектура, код и дизайн:</span>
+                    <a href="https://t.me/aikon163" target="_blank" rel="noopener noreferrer" class="font-bold text-[#0F2439] hover:text-[#C5A059] transition-colors underline decoration-[#0F2439]/30 underline-offset-4 hover:decoration-[#C5A059]">
+                        П. В. Шарыпаев
+                    </a>
+                </div>
+            </div>
         </div>
     </footer>
 
@@ -191,15 +286,11 @@
             <h3 class="font-['Source_Serif_4'] text-2xl font-bold text-[#0F2439] mb-2">Конструктор заявлений</h3>
             <p class="text-xs text-[#8C6826] font-bold uppercase mb-4">В разработке</p>
             <p class="text-sm text-[#2C3E50] mb-4">Генератор документов находится в разработке. Подпишитесь на уведомление о запуске:</p>
-            <form class="space-y-3" onsubmit="event.preventDefault(); showToast('Вы успешно подписаны на уведомление о запуске!'); closeModal('modal-constructor');">
+            <form class="space-y-3" data-ajax-form data-source="Конструктор заявлений (Предзаказ)" data-alias="info@yugpravo.ru">
                 <div class="flex gap-3">
-                    <input class="flex-grow bg-[#F8F7F4] border border-[#E0E0E0] rounded px-4 py-2.5 text-sm text-[#0F2439]" placeholder="Ваш e-mail" required type="email"/>
-                    <button class="px-6 py-2.5 bg-[#0F2439] text-white text-xs uppercase font-bold rounded hover:bg-[#1e3a5f]" type="submit">Подписаться</button>
+                    <input name="email" class="flex-grow bg-[#F8F7F4] border border-[#E0E0E0] rounded px-4 py-2.5 text-sm text-[#0F2439]" placeholder="Ваш e-mail" required type="email"/>
+                    <button class="px-6 py-2.5 bg-[#0F2439] text-white text-xs uppercase font-bold rounded hover:bg-[#1e3a5f] transition-all button-glow" type="submit">Подписаться</button>
                 </div>
-                <label class="flex items-start gap-2 text-xs text-[#5f5e5e] mt-3 cursor-pointer select-none">
-                    <input type="checkbox" required checked class="mt-0.5 rounded border-[#E0E0E0] text-[#0F2439] focus:ring-[#0F2439]">
-                    <span>Я согласен на <a href="doc-viewer.html?doc=politika" target="_blank" class="underline text-[#0F2439] hover:text-[#C5A059]">обработку персональных данных</a> и принимаю условия <a href="doc-viewer.html?doc=terms" target="_blank" class="underline text-[#0F2439] hover:text-[#C5A059]">пользовательского соглашения</a></span>
-                </label>
             </form>
         </div>
     </div>
@@ -224,151 +315,330 @@
         </div>
     </div>
 
-        <!-- ── T-BANK (TINKOFF) ACQUIRING & DONATION MODAL ── -->
+    <!-- ── T-BANK ACQUIRING & LEGALTECH DONATION MODAL (ФИЗЛИЦА + ЮРЛИЦА) ── -->
     <div class="modal-overlay" id="modal-donate">
-        <div class="modal-container p-6 sm:p-8 max-w-xl">
+        <div class="modal-container p-6 sm:p-7 max-w-lg max-h-[92vh] overflow-y-auto">
             <button class="modal-close-btn" onclick="closeModal('modal-donate')">
                 <span class="material-symbols-outlined">close</span>
             </button>
             
-            <!-- Modal Header -->
-            <div class="flex items-center gap-2 mb-2">
-                <span class="px-2.5 py-0.5 rounded-full bg-[#FAF4E6] text-[#8C6826] border border-[#E8DCC0] text-[10px] font-bold uppercase font-mono">
-                    Т-Банк • Эквайринг & СБП
-                </span>
-                <span class="text-[10px] font-mono text-[#5f5e5e]">0% комиссия для донора</span>
-            </div>
-
-            <h3 class="font-['Source_Serif_4'] text-2xl sm:text-3xl font-bold text-[#0F2439] mb-2 leading-tight">
+            <h3 class="font-['Source_Serif_4'] text-2xl font-bold text-[#0F2439] mb-1.5 leading-tight">
                 Поддержать АНО «ЮГ-ПРАВО»
             </h3>
             
-            <p class="text-xs text-[#5f5e5e] mb-6 leading-relaxed">
-                Официальное благотворительное пожертвование на уставные некоммерческие программы правовой защиты граждан Самарской области.
+            <p class="text-xs text-[#5f5e5e] mb-4 leading-relaxed">
+                Добровольное пожертвование на развитие уставных правозащитных программ и бесплатной юридической помощи.
             </p>
 
-            <form class="space-y-5" onsubmit="window.TBankPayment.initiatePayment(event)">
-                
-                <!-- 1. Purpose Selector -->
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-2.5">
-                        1. Выберите цель пожертвования:
-                    </label>
-                    <div class="space-y-2">
-                        <div class="purpose-radio-btn border-2 border-[#0F2439] bg-[#F0EFEA] p-3 rounded-xl cursor-pointer transition-all flex items-start gap-3" data-purpose="statutory" onclick="window.TBankPayment.selectPurpose('statutory')">
-                            <input type="radio" name="donate_purpose" value="statutory" checked class="mt-1 text-[#0F2439] focus:ring-[#0F2439]">
-                            <div>
-                                <div class="text-xs font-bold text-[#0F2439]">Уставная деятельность и бесплатная помощь</div>
-                                <div class="text-[11px] text-[#5f5e5e] mt-0.5">Правовые консультации, LegalTech сервисы, доклады в ведомства</div>
-                            </div>
-                        </div>
+            <!-- Mode Switcher Tabs (Физлица / Юрлица) -->
+            <div class="flex p-1 bg-[#F0EFEA] rounded-xl mb-4 border border-[#E0E0E0]">
+                <button type="button" id="tab-btn-person" onclick="window.TBankPayment.switchTab('person')" class="flex-1 py-2 text-xs font-bold rounded-lg transition-all shadow-xs bg-[#0F2439] text-white flex items-center justify-center gap-1.5 cursor-pointer">
+                    <span class="material-symbols-outlined text-sm">person</span>
+                    <span>Гражданам (СБП / Карты)</span>
+                </button>
+                <button type="button" id="tab-btn-corp" onclick="window.TBankPayment.switchTab('corp')" class="flex-1 py-2 text-xs font-bold rounded-lg transition-all text-[#5f5e5e] hover:text-[#0F2439] flex items-center justify-center gap-1.5 cursor-pointer">
+                    <span class="material-symbols-outlined text-sm">business</span>
+                    <span>Организациям и ИП (Счёт)</span>
+                </button>
+            </div>
 
-                        <div class="purpose-radio-btn border border-[#E0E0E0] bg-white p-3 rounded-xl cursor-pointer transition-all flex items-start gap-3 hover:border-[#0F2439]/40" data-purpose="shelter" onclick="window.TBankPayment.selectPurpose('shelter')">
-                            <input type="radio" name="donate_purpose" value="shelter" class="mt-1 text-[#0F2439] focus:ring-[#0F2439]">
-                            <div>
-                                <div class="text-xs font-bold text-[#0F2439]">Программа «Добрая лапа» (Шефство над приютами)</div>
-                                <div class="text-[11px] text-[#5f5e5e] mt-0.5">Целевой сбор на корма, медикаменты и помощь животным (135-ФЗ)</div>
-                            </div>
+            <!-- ── PANEL 1: ФИЗИЧЕСКИМ ЛИЦАМ ── -->
+            <div id="panel-person" class="space-y-4">
+                <form class="space-y-3.5" onsubmit="return false;">
+                    
+                    <!-- Amount Selector -->
+                    <div>
+                        <label class="block text-xs font-bold text-[#0F2439] mb-2">
+                            Сумма пожертвования:
+                        </label>
+                        <div class="grid grid-cols-5 gap-2 mb-2">
+                            <button type="button" class="amount-chip-btn py-2 px-1 border border-[#E0E0E0] bg-[#F8F7F4] rounded-lg text-xs font-bold text-[#0F2439] hover:border-[#0F2439] transition-all cursor-pointer text-center" data-amount="300" onclick="window.TBankPayment.selectAmount(300)">300 ₽</button>
+                            <button type="button" class="amount-chip-btn py-2 px-1 border border-[#0F2439] bg-[#0F2439] text-white rounded-lg text-xs font-bold hover:border-[#0F2439] transition-all cursor-pointer text-center" data-amount="500" onclick="window.TBankPayment.selectAmount(500)">500 ₽</button>
+                            <button type="button" class="amount-chip-btn py-2 px-1 border border-[#E0E0E0] bg-[#F8F7F4] rounded-lg text-xs font-bold text-[#0F2439] hover:border-[#0F2439] transition-all cursor-pointer text-center" data-amount="1000" onclick="window.TBankPayment.selectAmount(1000)">1 000 ₽</button>
+                            <button type="button" class="amount-chip-btn py-2 px-1 border border-[#E0E0E0] bg-[#F8F7F4] rounded-lg text-xs font-bold text-[#0F2439] hover:border-[#0F2439] transition-all cursor-pointer text-center" data-amount="3000" onclick="window.TBankPayment.selectAmount(3000)">3 000 ₽</button>
+                            <button type="button" class="amount-chip-btn py-2 px-1 border border-[#E0E0E0] bg-[#F8F7F4] rounded-lg text-xs font-bold text-[#0F2439] hover:border-[#0F2439] transition-all cursor-pointer text-center" data-amount="5000" onclick="window.TBankPayment.selectAmount(5000)">5 000 ₽</button>
                         </div>
-
-                        <div class="purpose-radio-btn border border-[#E0E0E0] bg-white p-3 rounded-xl cursor-pointer transition-all flex items-start gap-3 hover:border-[#0F2439]/40" data-purpose="jkh" onclick="window.TBankPayment.selectPurpose('jkh')">
-                            <input type="radio" name="donate_purpose" value="jkh" class="mt-1 text-[#0F2439] focus:ring-[#0F2439]">
-                            <div>
-                                <div class="text-xs font-bold text-[#0F2439]">Народный аудит ЖКХ и экспертизы МКД</div>
-                                <div class="text-[11px] text-[#5f5e5e] mt-0.5">Общественный контроль (212-ФЗ), независимая строительная экспертиза</div>
-                            </div>
+                        
+                        <div class="relative">
+                            <input id="donate-custom-amount" type="number" min="10" value="500" class="w-full bg-[#F8F7F4] border border-[#E0E0E0] rounded-xl px-4 py-2.5 text-sm font-bold text-[#0F2439] focus:border-[#0F2439] focus:ring-0 pl-4 pr-12" placeholder="Своя сумма"/>
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-[#5f5e5e]">РУБ</span>
                         </div>
                     </div>
-                    
-                    <p class="text-[11px] text-[#8C6826] font-mono mt-2" id="payment-purpose-hint">
-                        Добровольное пожертвование на ведение уставной деятельности и бесплатную правовую помощь гражданам (ст. 582 ГК РФ, пп. 1 п. 2 ст. 251 НК РФ)
+
+                    <!-- Email for receipt -->
+                    <div>
+                        <label class="block text-xs font-bold text-[#0F2439] mb-1">
+                            Электронная почта для чека:
+                        </label>
+                        <input id="donate-email" type="email" placeholder="name@domain.ru" class="w-full bg-[#F8F7F4] border border-[#E0E0E0] rounded-xl px-4 py-2 text-xs text-[#0F2439] focus:border-[#0F2439] focus:ring-0"/>
+                    </div>
+
+                    <!-- Legal Terms Checkbox -->
+                    <div class="p-2.5 bg-[#F8F7F4] rounded-xl border border-[#E8E7E2]">
+                        <label class="flex items-start gap-2 text-[11px] text-[#5f5e5e] cursor-pointer select-none">
+                            <input id="donate-agree-terms" type="checkbox" required checked class="mt-0.5 rounded border-[#E0E0E0] text-[#0F2439] focus:ring-[#0F2439]"/>
+                            <span>Принимаю условия <a href="doc-viewer.html?doc=donation-offer" target="_blank" class="underline font-medium text-[#0F2439] hover:text-[#8C6826]">Публичной оферты</a> и согласен на <a href="doc-viewer.html?doc=politika" target="_blank" class="underline font-medium text-[#0F2439] hover:text-[#8C6826]">обработку персданных</a>.</span>
+                        </label>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button id="donate-submit-btn" onclick="window.TBankPayment.initiatePayment(event)" type="button" class="w-full py-3.5 bg-[#0F2439] text-white text-xs uppercase font-bold tracking-wider rounded-xl hover:bg-[#1e3a5f] transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer button-glow">
+                        <span class="material-symbols-outlined text-base">payments</span>
+                        <span>Перейти к оплате через Т-Банк</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- ── PANEL 2: ЮРИДИЧЕСКИМ ЛИЦАМ И ИП ── -->
+            <div id="panel-corp" class="hidden space-y-3.5">
+                
+                <!-- Налоговая льгота (ст. 265 НК РФ) -->
+                <div class="p-2.5 bg-[#FAF7F0] border border-[#E8DFC8] rounded-xl text-xs text-[#0F2439] flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[#8C6826] text-base shrink-0">account_balance</span>
+                    <p class="text-[11px] text-[#5f5e5e] leading-snug m-0">
+                        <strong class="text-[#8C6826]">Налоговая льгота (пп. 19.6 п. 1 ст. 265 НК РФ):</strong> пожертвование в пользу СО НКО уменьшает налог на прибыль (до 1% выручки).
                     </p>
                 </div>
 
-                <!-- 2. Amount Selector -->
+                <!-- Выбор суммы -->
                 <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-2.5">
-                        2. Выберите или укажите сумму:
+                    <label class="block text-xs font-bold text-[#0F2439] mb-2">
+                        Сумма пожертвования:
                     </label>
-                    <div class="grid grid-cols-4 gap-2 mb-3">
-                        <button type="button" class="amount-chip-btn py-2 px-3 border border-[#E0E0E0] bg-[#F8F7F4] rounded-lg text-xs font-bold text-[#0F2439] hover:border-[#0F2439] transition-all" data-amount="300" onclick="window.TBankPayment.selectAmount(300)">300 ₽</button>
-                        <button type="button" class="amount-chip-btn py-2 px-3 border border-[#0F2439] bg-[#0F2439] text-white rounded-lg text-xs font-bold hover:border-[#0F2439] transition-all" data-amount="500" onclick="window.TBankPayment.selectAmount(500)">500 ₽</button>
-                        <button type="button" class="amount-chip-btn py-2 px-3 border border-[#E0E0E0] bg-[#F8F7F4] rounded-lg text-xs font-bold text-[#0F2439] hover:border-[#0F2439] transition-all" data-amount="1000" onclick="window.TBankPayment.selectAmount(1000)">1 000 ₽</button>
-                        <button type="button" class="amount-chip-btn py-2 px-3 border border-[#E0E0E0] bg-[#F8F7F4] rounded-lg text-xs font-bold text-[#0F2439] hover:border-[#0F2439] transition-all" data-amount="3000" onclick="window.TBankPayment.selectAmount(3000)">3 000 ₽</button>
+                    <div class="grid grid-cols-5 gap-1.5 mb-2">
+                        <button type="button" class="corp-amount-chip py-1.5 px-1 border border-[#E0E0E0] bg-[#F8F7F4] rounded-lg text-xs font-bold text-[#0F2439] hover:border-[#0F2439] transition-all cursor-pointer text-center" data-amount="1000" onclick="window.CorporateDonation.selectAmount(1000)">1 000 ₽</button>
+                        <button type="button" class="corp-amount-chip py-1.5 px-1 border border-[#E0E0E0] bg-[#F8F7F4] rounded-lg text-xs font-bold text-[#0F2439] hover:border-[#0F2439] transition-all cursor-pointer text-center" data-amount="3000" onclick="window.CorporateDonation.selectAmount(3000)">3 000 ₽</button>
+                        <button type="button" class="corp-amount-chip py-1.5 px-1 border border-[#0F2439] bg-[#0F2439] text-white rounded-lg text-xs font-bold hover:border-[#0F2439] transition-all cursor-pointer text-center" data-amount="5000" onclick="window.CorporateDonation.selectAmount(5000)">5 000 ₽</button>
+                        <button type="button" class="corp-amount-chip py-1.5 px-1 border border-[#E0E0E0] bg-[#F8F7F4] rounded-lg text-xs font-bold text-[#0F2439] hover:border-[#0F2439] transition-all cursor-pointer text-center" data-amount="10000" onclick="window.CorporateDonation.selectAmount(10000)">10 000 ₽</button>
+                        <button type="button" class="corp-amount-chip py-1.5 px-1 border border-[#E0E0E0] bg-[#F8F7F4] rounded-lg text-xs font-bold text-[#0F2439] hover:border-[#0F2439] transition-all cursor-pointer text-center" data-amount="50000" onclick="window.CorporateDonation.selectAmount(50000)">50 000 ₽</button>
                     </div>
                     
                     <div class="relative">
-                        <input id="donate-custom-amount" type="number" min="10" value="500" class="w-full bg-[#F8F7F4] border border-[#E0E0E0] rounded-xl px-4 py-3 text-sm font-bold text-[#0F2439] focus:border-[#0F2439] focus:ring-0 pl-4 pr-12" placeholder="Своя сумма"/>
+                        <input id="corp-amount" type="number" min="100" value="5000" step="500" oninput="window.CorporateDonation.onAmountInput(this.value)" class="w-full bg-[#F8F7F4] border border-[#E0E0E0] rounded-xl px-4 py-2 text-sm font-bold text-[#0F2439] focus:border-[#0F2439] focus:ring-0 pl-4 pr-12 font-mono" placeholder="Своя сумма"/>
                         <span class="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-[#5f5e5e]">РУБ</span>
                     </div>
                 </div>
 
-                <!-- 3. Email (Optional for receipt / thank you) -->
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-[#0F2439] mb-1.5">
-                        3. Электронная почта (для квитанции):
-                    </label>
-                    <input id="donate-email" type="email" placeholder="example@mail.ru" class="w-full bg-[#F8F7F4] border border-[#E0E0E0] rounded-xl px-4 py-2.5 text-xs text-[#0F2439] focus:border-[#0F2439] focus:ring-0"/>
+                <!-- СЦЕНАРИЙ А: Сумма <= 3 000 ₽ (ст. 574 ГК РФ — без обязательного письменного договора) -->
+                <div id="corp-flow-card" class="hidden p-3 bg-[#F0F7F4] rounded-xl border border-[#C8E6D9] space-y-2.5">
+                    <div class="flex items-start gap-2">
+                        <span class="material-symbols-outlined text-[#1E5631] text-base shrink-0 mt-0.5">verified_user</span>
+                        <div class="text-[11px] text-[#2C3E50] leading-snug">
+                            <strong>До 3 000 ₽ (п. 2 ст. 574 ГК РФ):</strong> письменный договор не требуется. Доступна моментальная оплата корпоративной картой / T-Pay с получением электронного чека для бухгалтерии.
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-[#0F2439] mb-1">Email бухгалтерии / плательщика (для чека 54-ФЗ):</label>
+                        <input id="corp-card-email" type="email" placeholder="buhgalter@company.ru" class="w-full bg-white border border-[#E0E0E0] rounded-lg px-3 py-1.5 text-xs text-[#0F2439] focus:border-[#0F2439]"/>
+                    </div>
+                                        <!-- Оферта пожертвования для юрлиц (ст. 435, 437, 582 ГК РФ) -->
+                    <div class="p-2 bg-white/90 rounded-lg border border-[#C8E6D9]">
+                        <label class="flex items-start gap-2 text-[10px] text-[#2C3E50] cursor-pointer select-none">
+                            <input id="corp-card-agree-terms" type="checkbox" required checked class="mt-0.5 rounded border-[#C8E6D9] text-[#1E5631] focus:ring-[#1E5631]"/>
+                            <span>Принимаем условия <a href="doc-viewer.html?doc=donation-offer" target="_blank" class="underline font-bold text-[#1E5631] hover:text-[#0F2439]">Публичной оферты о добровольном пожертвовании</a> (ст. 435, 437, 582 ГК РФ). Без НДС (пп. 1 п. 2 ст. 251 НК РФ).</span>
+                        </label>
+                    </div>
+                    <button type="button" onclick="window.CorporateDonation.payByCard()" class="w-full py-2.5 bg-[#1E5631] hover:bg-[#164326] text-white text-xs uppercase font-bold tracking-wider rounded-xl transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer">
+                        <span class="material-symbols-outlined text-base">credit_card</span>
+                        <span>Оплатить через T-Pay / Бизнес-картой →</span>
+                    </button>
+                    <div class="text-center">
+                        <button type="button" onclick="window.CorporateDonation.forceShowInvoice()" class="text-[11px] text-[#8C6826] underline font-medium hover:text-[#0F2439] cursor-pointer">
+                            Или сформировать Счёт-оферту на безналичную оплату
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Legal Terms Checkbox -->
-                <div>
-                    <label class="flex items-start gap-2.5 text-xs text-[#5f5e5e] cursor-pointer select-none">
-                        <input id="donate-agree-terms" type="checkbox" required checked class="mt-0.5 rounded border-[#E0E0E0] text-[#0F2439] focus:ring-[#0F2439]"/>
-                        <span>Я принимаю условия <a href="doc-viewer.html?doc=terms" target="_blank" class="underline text-[#0F2439] hover:text-[#8C6826]">публичной оферты о добровольном пожертвовании</a> и даю согласие на <a href="doc-viewer.html?doc=politika" target="_blank" class="underline text-[#0F2439] hover:text-[#8C6826]">обработку персональных данных</a>.</span>
-                    </label>
+                <!-- СЦЕНАРИЙ Б: Сумма > 3 000 ₽ (ст. 574 ГК РФ — обязательна письменная форма / Счёт / Договор) -->
+                <div id="corp-flow-invoice" class="space-y-3">
+                    <div class="p-2.5 bg-[#F8F7F4] rounded-xl border border-[#E0E0E0] text-[11px] text-[#2C3E50] flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[#0F2439] text-base shrink-0">gavel</span>
+                        <span><strong>Свыше 3 000 ₽ (п. 2 ст. 574 ГК РФ):</strong> обязательна письменная форма. Оплата производится по счёту или договору.</span>
+                    </div>
+
+                    <div class="p-3 bg-[#F8F7F4] rounded-xl border border-[#E0E0E0] space-y-2">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-[11px] font-bold text-[#0F2439] mb-1">ИНН компании / ИП:</label>
+                                <input id="corp-inn" type="text" placeholder="6317000000" class="w-full bg-white border border-[#E0E0E0] rounded-lg px-3 py-1.5 text-xs text-[#0F2439] font-mono focus:border-[#0F2439]"/>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-[#0F2439] mb-1">Наименование компании:</label>
+                                <input id="corp-name" type="text" placeholder="ООО «Компания»" class="w-full bg-white border border-[#E0E0E0] rounded-lg px-3 py-1.5 text-xs text-[#0F2439] focus:border-[#0F2439]"/>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row gap-2 pt-1">
+                            <button type="button" onclick="window.CorporateDonation.generateInvoice()" class="flex-1 py-2 px-3 bg-[#0F2439] text-white text-xs font-bold uppercase rounded-lg hover:bg-[#1e3a5f] transition-all flex items-center justify-center gap-1.5 shadow-sm cursor-pointer">
+                                <span class="material-symbols-outlined text-sm">print</span>
+                                <span>Сформировать Счёт (PDF)</span>
+                            </button>
+                            <button type="button" onclick="window.CorporateDonation.downloadContractDocx()" class="flex-1 py-2 px-3 bg-white border border-[#0F2439] text-[#0F2439] text-xs font-bold uppercase rounded-lg hover:bg-[#F0EFEA] transition-all flex items-center justify-center gap-1.5 shadow-xs cursor-pointer">
+                                <span class="material-symbols-outlined text-sm text-[#8C6826]">description</span>
+                                <span>Скачать Договор (DOCX)</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Банковские реквизиты -->
+                    <div class="text-[10px] font-mono text-[#2C3E50] bg-[#F8F7F4] p-2.5 rounded-lg border border-[#E8E7E2] leading-relaxed">
+                        <div class="flex justify-between items-start mb-1">
+                            <strong class="font-sans text-[#0F2439]">Реквизиты для платёжного поручения:</strong>
+                            <button type="button" onclick="window.CorporateDonation.copyRequisites()" class="text-[10px] text-[#0F2439] font-sans font-bold underline hover:text-[#8C6826] cursor-pointer">
+                                Скопировать
+                            </button>
+                        </div>
+                        Получатель: АНО «ЦПЗ ЮГ-ПРАВО» | ИНН: 6317174776 | КПП: 631701001<br/>
+                        Банк: АО «ТБанк» | БИК: 044525974 | К/с: 30101810145250000974<br/>
+                        Р/с: 40703810600000751961 | Назначение: «Добровольное пожертвование на ведение уставной деятельности. Без НДС»
+                    </div>
                 </div>
 
-                <!-- Submit Button -->
-                <button id="donate-submit-btn" type="submit" class="w-full py-4 bg-[#0F2439] text-white text-xs uppercase font-bold tracking-wider rounded-xl hover:bg-[#1e3a5f] transition-all shadow-md flex items-center justify-center gap-2">
-                    <span class="material-symbols-outlined text-base">payments</span>
-                    Перейти к оплате через Т-Банк / СБП →
-                </button>
+            </div>
 
-                <!-- Payment Methods Badges -->
-                <div class="pt-3 border-t border-[#E8E7E2] flex items-center justify-center gap-4 text-[10px] text-[#5f5e5e] font-mono">
-                    <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-[#1E5631]"></span> СБП (QR в 1 клик)</span>
-                    <span>•</span>
-                    <span>T-Pay</span>
-                    <span>•</span>
-                    <span>SberPay</span>
-                    <span>•</span>
-                    <span>МИР / Visa / MC</span>
-                </div>
-            </form>
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="js/effects.js"></script>
+    <script src="js/effects.js?v=20260901_live7"></script>
     <script>
         const docsRegistry = {
             'ustav': {
                 title: 'Устав АНО «ЦПЗ ЮГ-ПРАВО»',
-                subtitle: 'Утвержден решением Единственного Учредителя • Действующая редакция',
-                file: 'docs/ustav.pdf',
+                subtitle: 'Утвержден решением Единственного Учредителя • Зарегистрирован Главным управлением Минюста РФ по Самарской области',
+                file: 'docs/ustav.txt',
+                pdfFile: 'docs/ustav.pdf',
+                downloadFile: 'docs/ustav.pdf',
                 size: '405 КБ',
-                type: 'pdf'
+                type: 'text'
             },
             'politika': {
                 title: 'Политика обработки персональных данных',
                 subtitle: 'В соответствии с Федеральным законом № 152-ФЗ и ПП РФ № 1119 (УЗ-4)',
-                file: 'docs/politika.pdf',
+                file: 'docs/politika.txt',
+                pdfFile: 'docs/politika.pdf',
+                downloadFile: 'docs/politika.pdf',
                 size: '345 КБ',
-                type: 'pdf'
+                type: 'text'
             },
             'list': {
-                title: 'Лист записи ЕГРЮЛ',
-                subtitle: 'Сведения о государственной регистрации юридического лица • ОГРН 1266300015080',
-                file: 'docs/list.pdf',
+                title: 'Лист записи ЕГРЮЛ (Сведения ФНС России)',
+                subtitle: 'Сведения о государственной регистрации юридического лица при создании • ОГРН 1266300015080',
+                file: 'docs/list-egrul.txt',
+                pdfFile: 'docs/list.pdf',
+                downloadFile: 'docs/list.pdf',
                 size: '1.8 МБ',
-                type: 'pdf'
+                type: 'text'
+            },
+            'donation-offer': {
+                title: 'Публичная оферта о добровольном пожертвовании',
+                subtitle: 'Редакция № 2 от 31.08.2026 • Утверждена Приказом № 04/ОД (первично Приказ № 02/ОД от 01.08.2026)',
+                file: 'docs/donation-offer.txt',
+                size: '13 КБ',
+                type: 'text'
             },
             'terms': {
                 title: 'Пользовательское соглашение и регламент сервисов',
-                subtitle: 'Правила использования онлайн-инструментов, конструктора документов и калькулятора',
+                subtitle: 'Редакция № 2 от 31.08.2026 • Утверждено Приказом № 04/ОД • Досудебное содействие и регламент ПЭП (63-ФЗ)',
                 file: 'docs/terms.txt',
-                size: '8 КБ',
+                size: '14 КБ',
+                type: 'text'
+            },
+            'donation-contract': {
+                title: 'Типовой договор добровольного пожертвования (для юридических лиц)',
+                subtitle: 'Утвержден Приказом № 02/ОД • Договор пожертвования по ст. 574, 582 ГК РФ (свыше 3 000 ₽)',
+                file: 'docs/dogovor-pozhertvovaniya-yurlicam.txt',
+                downloadFile: 'docs/dogovor-pozhertvovaniya-yurlicam.docx',
+                cleanFile: 'docs/dogovor-pozhertvovaniya-dlya-pechati-original.docx',
+                size: '202 КБ',
+                type: 'text'
+            },
+            'prikaz-01': {
+                title: 'Приказ № 01/ОД «Об утверждении локальных нормативных актов и порядка делопроизводства»',
+                subtitle: 'Утверждение Инструкции по делопроизводству, Номенклатуры дел и Регламента приёма граждан',
+                file: 'docs/prikaz-01.txt',
+                downloadFile: 'docs/prikaz-01-local-acts.docx',
+                cleanFile: 'docs/prikaz-01-dlya-pechati-original.docx',
+                size: '200 КБ',
+                type: 'text'
+            },
+            'prikaz-02': {
+                title: 'Приказ № 02/ОД «Об организации сбора пожертвований»',
+                subtitle: 'Утверждение Положения о пожертвованиях, Публичной оферты, Счёта и Договора',
+                file: 'docs/prikaz-02.txt',
+                downloadFile: 'docs/prikaz-02-donations.docx',
+                cleanFile: 'docs/prikaz-02-dlya-pechati-original.docx',
+                size: '200 КБ',
+                type: 'text'
+            },
+            'licenzionnyy-dogovor': {
+                title: 'Лицензионный договор № 01/РИД на интеллектуальную собственность',
+                subtitle: 'От 29.08.2026 • Безвозмездная лицензия на платформу и домен yugpravo.ru от автора • Софинансирование 750 000 ₽',
+                file: 'docs/licenzionnyy-dogovor.txt',
+                downloadFile: 'docs/licenzionnyy-dogovor-rid-sofinansirovanie.docx',
+                cleanFile: 'docs/licenzionnyy-dogovor-dlya-pechati-original.docx',
+                size: '200 КБ',
+                type: 'text'
+            },
+            'prikaz-03': {
+                title: 'Приказ № 03/ОД «Об утверждении Учетной политики на 2026 год»',
+                subtitle: 'От 01.08.2026 • УСН Доходы 6% • Раздельный учет пожертвований (счет 86) • Учет РИД на счете 012',
+                file: 'docs/prikaz-03.txt',
+                downloadFile: 'docs/prikaz-03-uchet-politika.docx',
+                cleanFile: 'docs/prikaz-03-dlya-pechati-original.docx',
+                size: '200 КБ',
+                type: 'text'
+            },
+            'prikaz-04': {
+                title: 'Приказ № 04/ОД «О вводе в эксплуатацию платформы yugpravo.ru, утверждении правил сайта и учете РИД»',
+                subtitle: 'От 31.08.2026 • Ввод веб-платформы • Утверждение правил сайта • Забалансовый счет 012 (750 000 ₽)',
+                file: 'docs/prikaz-04.txt',
+                downloadFile: 'docs/prikaz-04-rid.docx',
+                cleanFile: 'docs/prikaz-04-dlya-pechati-original.docx',
+                size: '200 КБ',
+                type: 'text'
+            },
+            'reshenie-02': {
+                title: 'Решение № 2 Единственного учредителя об одобрении сделки с заинтересованностью',
+                subtitle: 'От 29.08.2026 • Корпоративное одобрение сделки (ст. 27 7-ФЗ) • Софинансирование 750 000 ₽',
+                file: 'docs/reshenie-02-uchreditelya.txt',
+                downloadFile: 'docs/reshenie-02-uchreditelya.docx',
+                cleanFile: 'docs/reshenie-02-dlya-pechati-original.docx',
+                size: '200 КБ',
+                type: 'text'
+            },
+            'kartochka-012': {
+                title: 'Инвентарная карточка объекта НМА № ИНВ-012/01 (Счет 012)',
+                subtitle: 'От 31.08.2026 • Регистр забалансового учета прав использования веб-платформы yugpravo.ru • 750 000 ₽',
+                file: 'docs/kartochka-ucheta-nma-schet-012.txt',
+                downloadFile: 'docs/kartochka-ucheta-nma-schet-012.docx',
+                cleanFile: 'docs/kartochka-ucheta-nma-schet-012-dlya-pechati-original.docx',
+                size: '200 КБ',
+                type: 'text'
+            },
+            'reestr': {
+                title: 'Сводный Реестр документов и Номенклатуры дел на 2026 год',
+                subtitle: 'Сводная ведомость локальных нормативных актов, приказов и договоров Папок № 1–4',
+                file: 'docs/reestr-dokumentov.txt',
+                downloadFile: 'docs/REESTR_DOKUMENTOV_2026.docx',
+                size: '200 КБ',
+                type: 'text'
+            },
+            'prikaz-vstuplenie': {
+                title: 'Приказ № 1 «О вступлении в должность Директора»',
+                subtitle: 'Основополагающий приказ о назначении единоличного исполнительного органа (Шарыпаев П. В.)',
+                file: 'docs/prikaz-o-vstuplenii-v-dolzhnost.txt',
+                pdfFile: 'docs/prikaz-o-vstuplenii-v-dolzhnost.pdf',
+                downloadFile: 'docs/prikaz-o-vstuplenii-v-dolzhnost.pdf',
+                size: '51 КБ',
+                type: 'text'
+            },
+            'prikaz-pdn': {
+                title: 'Приказ № 01-ПДн по ГОСТ Р 7.0.97-2016 (об обработке ПДн)',
+                subtitle: 'Утверждение локальных актов по 152-ФЗ • Заверено КЭП ФНС России (сертификат 03820FB1009CB476AC45F98BFF74B5C54F)',
+                file: 'docs/prikaz-01-pdn-gost.txt',
+                pdfFile: 'docs/prikaz-01-pdn-gost.pdf',
+                downloadFile: 'docs/prikaz-01-pdn-gost.pdf',
+                size: '371 КБ',
                 type: 'text'
             }
         };
@@ -378,6 +648,178 @@
             return params.get('doc') || 'ustav';
         }
 
+        function escapeHtml(str) {
+            return str
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+        }
+
+        function formatDocumentSignatures(rawText) {
+            if (!rawText) return '<div class="p-8 text-center text-gray-500">Документ пуст.</div>';
+
+            // Split into main document and annexes if separated by '==='
+            const sections = rawText.split(/\n\s*={3,}\s*\n/);
+
+            function formatSection(secText, idx) {
+                let text = secText.trim();
+                if (!text) return '';
+
+                // Check if this section is an Annex
+                const isAnnex = text.startsWith('Приложение №') || /^[Пп]риложение №\s*\d+/m.test(text.substring(0, 100));
+
+                if (isAnnex) {
+                    const lines = text.split('\n');
+                    const annexHeader = lines.slice(0, 3).join('\n');
+                    const remaining = lines.slice(3).join('\n').trim();
+
+                    const blocks = remaining.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
+                    const blocksHtml = blocks.map(b => {
+                        if (/^[А-Я\s\d.,—«»()\-]{6,}$/m.test(b) && b.length < 120) {
+                            return `<div class="font-bold text-xs uppercase text-[#0F2439] my-3 text-center tracking-wide not-italic font-sans">${escapeHtml(b)}</div>`;
+                        }
+                        if (/^\d+\./.test(b)) {
+                            return `<p class="text-justify indent-6 text-[12.5px] leading-relaxed mb-2 text-[#1F2937]">${escapeHtml(b).replace(/\n/g, '<br/>')}</p>`;
+                        }
+                        return `<p class="text-justify indent-6 text-[12.5px] leading-relaxed mb-2 text-[#1F2937]">${escapeHtml(b).replace(/\n/g, '<br/>')}</p>`;
+                    }).join('');
+
+                    return `
+                        <div class="my-6 p-4 sm:p-6 bg-[#FBF9F5] rounded-lg border border-[#C5A880]/30 shadow-xs">
+                            <div class="text-right text-[11px] font-mono text-[#8C7A5B] mb-3 leading-snug whitespace-pre-line">${escapeHtml(annexHeader)}</div>
+                            <div class="pt-2 border-t border-[#0F2439]/10">${blocksHtml}</div>
+                        </div>
+                    `;
+                }
+
+                const isOrderOrDecision = text.includes('ПРИКАЗ №') || text.includes('РЕШЕНИЕ №');
+
+                if (isOrderOrDecision) {
+                    // Extract doc title
+                    let docTitle = '';
+                    const titleMatch = text.match(/(?:ПРИКАЗ|РЕШЕНИЕ) № [^\n]+/);
+                    if (titleMatch) {
+                        docTitle = titleMatch[0].trim();
+                        text = text.replace(titleMatch[0], '');
+                    }
+
+                    // Extract city & date
+                    let cityDateHtml = '';
+                    const cityMatch = text.match(/Самарская область, п\. Южный[\s\t]+«(?:01|29|31)» августа 2026 г\./);
+                    if (cityMatch) {
+                        const datePart = cityMatch[0].split(/[ \t]{2,}/).pop() || '«01» августа 2026 г.';
+                        cityDateHtml = `<div class="flex justify-between items-center text-xs font-semibold not-italic font-sans mb-3 text-[#2C3E50] border-b border-[#0F2439]/15 pb-1.5"><span>Самарская область, п. Южный</span><span>${datePart}</span></div>`;
+                        text = text.replace(cityMatch[0], '');
+                    }
+
+                    // Extract subtitle in quotes
+                    let subtitleHtml = '';
+                    const subMatch = text.match(/«(?:Об утверждении|О вводе|Об организации)[^»]+»/);
+                    if (subMatch) {
+                        subtitleHtml = `<div class="text-center font-bold text-xs text-[#0F2439] mb-3.5 max-w-xl mx-auto not-italic font-sans leading-snug">${escapeHtml(subMatch[0])}</div>`;
+                        text = text.replace(subMatch[0], '');
+                    }
+
+                    // Remove raw ASCII ANO header
+                    text = text.replace(/АВТОНОМНАЯ НЕКОММЕРЧЕСКАЯ ОРГАНИЗАЦИЯ[\s\S]*?Адрес:[^\n]*/i, '');
+                    text = text.replace(/ЕДИНСТВЕННОГО УЧРЕДИТЕЛЯ[\s\S]*?\(АНО «ЦПЗ ЮГ-ПРАВО»\)/i, '');
+
+                    // Extract signature line (only single line, don't consume rest of text!)
+                    const signerRole = rawText.includes('РЕШЕНИЕ №') ? 'Единственный учредитель АНО «ЦПЗ ЮГ-ПРАВО»' : 'Директор АНО «ЦПЗ ЮГ-ПРАВО»';
+                    text = text.replace(/(?:Директор|Единственный учредитель) АНО [«"']ЦПЗ ЮГ-ПРАВО[»"'][^\n]*/gi, '');
+                    text = text.replace(/_{3,}\s*\/\s*(?:Шарыпаев П\. ?В\.|П\.?В\.? ?Шарыпаев)[^\n]*/gi, '');
+                    text = text.replace(/\bМ\.?П\.?\b/gi, '');
+
+                    // Compact header
+                    const compactHeader = `
+                        <div class="text-center mb-4 not-italic font-sans border-b border-[#0F2439]/20 pb-3">
+                            <img src="images/ano-logo-order.jpg" alt="Логотип АНО «ЦПЗ ЮГ-ПРАВО»" class="h-10 w-auto mx-auto object-contain mb-1.5"/>
+                            <div class="font-bold text-xs uppercase tracking-wide text-[#0F2439] leading-tight max-w-lg mx-auto">
+                                АВТОНОМНАЯ НЕКОММЕРЧЕСКАЯ ОРГАНИЗАЦИЯ «ЦЕНТР ПРАВОВОЙ ЗАЩИТЫ И РАЗВИТИЯ ГРАЖДАНСКИХ ИНИЦИАТИВ ЮГ-ПРАВО» (АНО «ЦПЗ ЮГ-ПРАВО»)
+                            </div>
+                            <div class="text-[10px] text-[#5f5e5e] mt-0.5 font-mono">
+                                ОГРН: 1266300015080 | ИНН/КПП: 6317174776/631701001
+                            </div>
+                            <div class="text-[10px] text-[#5f5e5e]">
+                                446186, Самарская обл., Большеглушицкий р-н, п. Южный, ул. Центральная, д. 7, кв. 1
+                            </div>
+                        </div>
+                    `;
+
+                    const docTitleHtml = `<div class="text-center font-bold text-base text-[#0F2439] my-2 not-italic font-sans tracking-wide">${escapeHtml(docTitle)}</div>`;
+
+                    // Parse blocks
+                    const rawBlocks = text.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
+                    const paragraphs = [];
+                    rawBlocks.forEach(block => {
+                        if (block.includes('\n') && /^\d+\./m.test(block)) {
+                            const subLines = block.split(/\n+/).map(l => l.trim()).filter(Boolean);
+                            paragraphs.push(...subLines);
+                        } else {
+                            paragraphs.push(block);
+                        }
+                    });
+
+                    const bodyHtml = paragraphs.map(p => {
+                        if (p === 'ПРИКАЗЫВАЮ:' || p === 'ПРИНЯЛ РЕШЕНИЕ:') {
+                            return `<div class="font-bold text-xs my-2.5 not-italic font-sans tracking-wider text-[#0F2439]">${p}</div>`;
+                        }
+                        if (/^\d+\./.test(p)) {
+                            return `<p class="text-justify indent-6 text-[12.5px] leading-relaxed mb-1.5 text-[#1F2937]">${escapeHtml(p)}</p>`;
+                        }
+                        return `<p class="text-justify indent-6 text-[12.5px] leading-relaxed mb-2 text-[#1F2937]">${escapeHtml(p).replace(/\n/g, ' ')}</p>`;
+                    }).join('');
+
+                    const signHtml = `
+                        <div class="mt-8 pt-4 not-italic font-sans border-t border-[#0F2439]/20">
+                            <div class="flex justify-between items-center mb-3">
+                                <div class="font-bold text-xs text-[#0F2439]">${signerRole}</div>
+                                <div class="font-bold text-xs text-[#0F2439]">/ П. В. Шарыпаев /</div>
+                            </div>
+                            <div class="p-3 bg-[#FBF9F5] rounded border border-[#C5A880]/30 text-xs flex items-center justify-between gap-3 text-[#2C3E50]">
+                                <div class="flex items-center gap-2.5">
+                                    <span class="material-symbols-outlined text-[#1B365D] text-lg flex-shrink-0">verified</span>
+                                    <div>
+                                        <span class="font-bold text-[#0F2439] block sm:inline">Официальный электронный документ АНО «ЦПЗ ЮГ-ПРАВО»</span>
+                                        <span class="text-[11px] text-[#5f5e5e] block">Подлинник на бумажном носителе подписан и скреплен печатью. Хранится в Номенклатуре дел • ст. 32 7-ФЗ • 149-ФЗ</span>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-mono text-[#8C7A5B] whitespace-nowrap hidden sm:inline">ст. 32 7-ФЗ</span>
+                            </div>
+                        </div>
+                    `;
+
+                    return compactHeader + docTitleHtml + cityDateHtml + subtitleHtml + bodyHtml + signHtml;
+                }
+
+                // General document formatting (Contract, Offer, Registry, Inventory Card)
+                let html = escapeHtml(text);
+
+                // Inlined official signatures and seals
+                html = html.replace(
+                    /((?:Лицензиар|От Лицензиара|Подпись Лицензиара|Автор)[: \t]*)[_]{3,}([ \t]*\/[ \t]*(?:Шарыпаев П\. ?В\.|П\.?В\.? ?Шарыпаев)[ \t]*\/)/gi,
+                    '$1<span class="inline-block align-middle mx-2 relative" style="vertical-align: middle;"><img src="images/official-signature.png" alt="Подпись Лицензиара" class="h-10 w-auto inline-block -my-3 object-contain"/></span>$2'
+                );
+                html = html.replace(
+                    /((?:Директор(?: АНО [«"']ЦПЗ ЮГ-ПРАВО[»"'])?|От Лицензиата[^:\n]*|Главный бухгалтер[^:\n]*|\(лицо, ответственное за ведение бухучета\))[: \t]*)[_]{3,}([ \t]*\/[ \t]*(?:Шарыпаев П\. ?В\.|П\.?В\.? ?Шарыпаев)[ \t]*\/)(?:\s*\n*[ \t]*М\.?П\.?)?/gi,
+                    '$1<span class="inline-block align-middle mx-2 relative my-2" style="vertical-align: middle;"><img src="images/official-seal-with-signature.png" alt="Печать и подпись Директора" class="h-16 w-auto inline-block object-contain"/></span>$2'
+                );
+
+                const paragraphs = html.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
+                return paragraphs.map(p => {
+                    if (/^[А-Я\s\d.,—«»()\-]{6,}$/m.test(p) && p.length < 100) {
+                        return `<div class="font-bold text-xs uppercase text-[#0F2439] my-3 text-center tracking-wide not-italic font-sans">${p}</div>`;
+                    }
+                    if (/^\d+\./.test(p)) {
+                        return `<p class="text-justify indent-6 text-[12.5px] leading-relaxed mb-1.5 text-[#1F2937]">${p.replace(/\n/g, '<br/>')}</p>`;
+                    }
+                    return `<p class="text-justify indent-6 text-[12.5px] leading-relaxed mb-2 text-[#1F2937]">${p.replace(/\n/g, '<br/>')}</p>`;
+                }).join('');
+            }
+
+            return sections.map(formatSection).join('<div class="my-6 border-t-2 border-dashed border-[#C5A880]/40"></div>');
+        }
+
         async function initViewer() {
             const docKey = getDocKey();
             const doc = docsRegistry[docKey] || docsRegistry['ustav'];
@@ -385,39 +827,111 @@
             document.getElementById('page-title').textContent = `${doc.title} — АНО «ЦПЗ ЮГ-ПРАВО»`;
             document.getElementById('doc-title').textContent = doc.title;
             document.getElementById('doc-subtitle').textContent = doc.subtitle;
-            document.getElementById('doc-size').textContent = `${doc.type.toUpperCase()} • ${doc.size}`;
+            document.getElementById('doc-size').textContent = `${(doc.downloadFile ? 'DOCX' : doc.type).toUpperCase()} • ${doc.size}`;
             
+            const loadingIndicator = document.getElementById('loading-indicator');
+            const errorContainer = document.getElementById('error-container');
+            const errorMessage = document.getElementById('error-message');
+            const errorDownloadBtn = document.getElementById('error-download-btn');
             const pdfContainer = document.getElementById('pdf-container');
+            const pdfMobileContainer = document.getElementById('pdf-mobile-container');
+            const pdfMobileTitle = document.getElementById('pdf-mobile-title');
+            const pdfMobileFrame = document.getElementById('pdf-mobile-frame');
+            const pdfMobileOpenBtn = document.getElementById('pdf-mobile-open-btn');
+            const pdfMobileDownloadBtn = document.getElementById('pdf-mobile-download-btn');
             const textContainer = document.getElementById('text-container');
             const textContent = document.getElementById('text-content');
             const pdfFrame = document.getElementById('pdf-frame');
+            const pdfFullscreenBtn = document.getElementById('pdf-fullscreen-btn');
             const downloadBtn = document.getElementById('download-btn');
             const downloadBtnText = document.getElementById('download-btn-text');
-            const directOpenBtn = document.getElementById('direct-open-btn');
+            const downloadCleanBtn = document.getElementById('download-clean-btn');
+            const viewModeToggle = document.getElementById('view-mode-toggle');
+            const modeTextBtn = document.getElementById('mode-text-btn');
+            const modePdfBtn = document.getElementById('mode-pdf-btn');
 
-            downloadBtn.href = doc.file;
-            downloadBtn.setAttribute('download', doc.file.split('/').pop());
-            downloadBtnText.textContent = `Скачать ${doc.type.toUpperCase()}`;
-            directOpenBtn.href = doc.file;
+            // Reset visibility
+            loadingIndicator.classList.remove('hidden');
+            errorContainer.classList.add('hidden');
+            pdfContainer.classList.add('hidden');
+            if (pdfMobileContainer) pdfMobileContainer.classList.add('hidden');
+            textContainer.classList.add('hidden');
+            viewModeToggle.classList.add('hidden');
 
-            if (doc.type === 'text') {
-                pdfContainer.classList.add('hidden');
-                textContainer.classList.remove('hidden');
-                try {
-                    const resp = await fetch(doc.file);
-                    if (resp.ok) {
-                        const text = await resp.text();
-                        textContent.textContent = text;
-                    } else {
-                        textContent.textContent = 'Ошибка загрузки текста документа.';
-                    }
-                } catch (e) {
-                    textContent.textContent = 'Ошибка загрузки: ' + e.message;
-                }
+            const targetDownload = doc.downloadFile || doc.pdfFile || doc.file;
+            downloadBtn.href = targetDownload;
+            downloadBtn.setAttribute('download', targetDownload.split('/').pop());
+            downloadBtnText.textContent = targetDownload.endsWith('.docx') ? 'Скачать DOCX' : 'Скачать PDF';
+            errorDownloadBtn.href = targetDownload;
+
+            if (doc.cleanFile) {
+                downloadCleanBtn.href = doc.cleanFile;
+                downloadCleanBtn.setAttribute('download', doc.cleanFile.split('/').pop());
+                downloadCleanBtn.classList.remove('hidden');
             } else {
+                downloadCleanBtn.classList.add('hidden');
+            }
+
+            const isMobile = window.innerWidth < 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+            function showTextView() {
+                modeTextBtn.className = 'px-3.5 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-1.5 bg-white text-[#0F2439] shadow-xs cursor-pointer';
+                modePdfBtn.className = 'px-3.5 py-1.5 rounded-md text-xs font-semibold text-[#5f5e5e] hover:text-[#0F2439] transition-all flex items-center gap-1.5 cursor-pointer';
+                pdfContainer.classList.add('hidden');
+                if (pdfMobileContainer) pdfMobileContainer.classList.add('hidden');
+                textContainer.classList.remove('hidden');
+            }
+
+            function showPdfView() {
+                modePdfBtn.className = 'px-3.5 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-1.5 bg-white text-[#0F2439] shadow-xs cursor-pointer';
+                modeTextBtn.className = 'px-3.5 py-1.5 rounded-md text-xs font-semibold text-[#5f5e5e] hover:text-[#0F2439] transition-all flex items-center gap-1.5 cursor-pointer';
                 textContainer.classList.add('hidden');
-                pdfContainer.classList.remove('hidden');
-                pdfFrame.src = doc.file;
+
+                if (isMobile) {
+                    if (pdfMobileContainer) {
+                        pdfMobileTitle.textContent = doc.title;
+                        pdfMobileOpenBtn.href = doc.pdfFile;
+                        pdfMobileDownloadBtn.href = doc.pdfFile;
+                        // Google Docs mobile PDF viewer renders full pages on any iOS/Android device
+                        pdfMobileFrame.src = 'https://docs.google.com/viewer?embedded=true&url=' + encodeURIComponent('https://yugpravo.ru/' + doc.pdfFile);
+                        pdfMobileContainer.classList.remove('hidden');
+                    }
+                } else {
+                    pdfFullscreenBtn.href = doc.pdfFile;
+                    pdfFrame.src = doc.pdfFile;
+                    pdfContainer.classList.remove('hidden');
+                }
+            }
+
+            if (doc.pdfFile) {
+                viewModeToggle.classList.remove('hidden');
+                modeTextBtn.onclick = showTextView;
+                modePdfBtn.onclick = showPdfView;
+            }
+
+            // Always load the fast, beautiful text version first
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000);
+                const resp = await fetch(doc.file + '?v=' + Date.now(), { signal: controller.signal });
+                clearTimeout(timeoutId);
+
+                if (!resp.ok) {
+                    throw new Error(`Ошибка сети: HTTP ${resp.status}`);
+                }
+                const text = await resp.text();
+                textContent.innerHTML = formatDocumentSignatures(text);
+                loadingIndicator.classList.add('hidden');
+                showTextView();
+            } catch (e) {
+                loadingIndicator.classList.add('hidden');
+                if (doc.pdfFile) {
+                    // Fallback to PDF if text failed
+                    showPdfView();
+                } else {
+                    errorMessage.textContent = 'Не удалось загрузить документ: ' + e.message;
+                    errorContainer.classList.remove('hidden');
+                }
             }
         }
 
@@ -438,6 +952,6 @@
         }
     </script>
     <script src="https://securepay.tinkoff.ru/html/payForm/js/tinkoff_v2.js"></script>
-    <script src="js/payment.js"></script>
+    <script src="js/forms.js?v=20260901_live8"></script>
 </body>
 </html>

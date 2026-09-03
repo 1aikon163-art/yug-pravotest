@@ -10,7 +10,6 @@
     initHorizontalScrollTapes();
     initScrollReveal();
     initModals();
-    initForms();
     initCookieBanner();
     initFloatingMessengerWidget();
     // initMobileNavToggle() handled by main.js
@@ -357,6 +356,7 @@
   }
 
   window.openModal = function (modalId) {
+
     let modal = document.getElementById(modalId);
     if (!modal) {
       modal = createDynamicModal(modalId);
@@ -419,62 +419,6 @@
     }, 3500);
   };
 
-  function initForms() {
-    document.querySelectorAll('form').forEach((form) => {
-      const submitBtn = form.querySelector('button[type="submit"]');
-      const consentCheckbox = form.querySelector('input[type="checkbox"][required]');
-
-      if (consentCheckbox && submitBtn) {
-        const updateSubmitState = () => {
-          if (!consentCheckbox.checked) {
-            submitBtn.disabled = true;
-            submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
-          } else {
-            submitBtn.disabled = false;
-            submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-          }
-        };
-
-        consentCheckbox.addEventListener('change', updateSubmitState);
-        updateSubmitState();
-      }
-
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        if (consentCheckbox && !consentCheckbox.checked) {
-          alert('Для отправки необходимо дать согласие на обработку персональных данных и принять условия соглашения.');
-          return;
-        }
-
-        if (submitBtn) {
-          const originalText = submitBtn.innerHTML;
-          submitBtn.disabled = true;
-          submitBtn.innerHTML = 'Отправка...';
-
-          setTimeout(() => {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = originalText;
-            form.reset();
-
-            if (consentCheckbox) {
-              consentCheckbox.checked = true;
-              if (submitBtn) submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-            }
-
-            const parentModal = form.closest('.modal-overlay');
-            if (parentModal) {
-              closeModal(parentModal.id);
-            }
-
-            showToast('Заявка успешно отправлена! Дежурный юрист свяжется с вами.');
-          }, 600);
-        }
-      });
-    });
-  }
-
-  /* ── 6. SLEEK COOKIE BANNER (152-FZ / LOCALSTORAGE) ── */
   function initCookieBanner() {
     if (localStorage.getItem('cookieConsent') === 'true') {
       return;
@@ -567,37 +511,43 @@
 })();
 
 
-// Global helper for Stop Commission initiative modal
+// Global helpers for initiative modal dossiers
 window.openStopCommissionModal = function() {
-  if (typeof openModal === 'function') {
-    openModal('modal-stop-commission');
+  if (typeof window.openInitiativeDossier === 'function') {
+    window.openInitiativeDossier('stop_commission');
+  } else {
+    window.location.href = 'initiatives.html';
   }
 };
 
-// Global helper for Digital Law initiative modal
 window.openDigitalLawModal = function() {
-  if (typeof openModal === 'function') {
-    openModal('modal-digital-law');
+  if (typeof window.openInitiativeDossier === 'function') {
+    window.openInitiativeDossier('digital_law');
+  } else {
+    window.location.href = 'initiatives.html';
   }
 };
 
-// Global helper for JKH program modal
-window.openJkhProgramModal = function() {
-  if (typeof openModal === 'function') {
-    openModal('modal-jkh-program');
-  }
-};
-
-// Global helper for Dog Park initiative modal
 window.openDogParkInitiativeModal = function() {
-  if (typeof openModal === 'function') {
-    openModal('modal-dog-park-initiative');
+  if (typeof window.openInitiativeDossier === 'function') {
+    window.openInitiativeDossier('dog_park');
+  } else {
+    window.location.href = 'initiatives.html';
   }
 };
 
-// Global helper for Youth Legal program modal
+window.openJkhProgramModal = function() {
+  if (typeof window.openInitiativeDossier === 'function') {
+    window.openInitiativeDossier('jkh_program');
+  } else {
+    window.location.href = 'initiatives.html';
+  }
+};
+
 window.openYouthLegalModal = function() {
-  if (typeof openModal === 'function') {
-    openModal('modal-youth-legal');
+  if (typeof window.openInitiativeDossier === 'function') {
+    window.openInitiativeDossier('youth_legal');
+  } else {
+    window.location.href = 'initiatives.html';
   }
 };

@@ -292,6 +292,7 @@ window.openModal = function(id) {
     }
 };
 
+
 window.closeModal = function(id) {
     if (id) {
         const modal = document.getElementById(id);
@@ -410,3 +411,67 @@ window.filterItems = function(inputId, targetClass) {
         banner.remove();
     });
 })();
+
+// kb-all-btn-fix
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('kb-all-btn');
+  if (btn) {
+    btn.innerHTML = 'Все 15 правовых алгоритмов <span class="material-symbols-outlined ml-1.5 text-sm">arrow_forward</span>';
+  }
+});
+
+/* ========================================================
+   DYNAMIC SECTION REAL-TIME AUTO-COUNTER
+   Automatically counts published cards in carousels/sections
+   ======================================================== */
+function autoSyncSectionCounters() {
+  // 1. Knowledge Base Auto-Count
+  const kbTape = document.querySelector('#kb-section .horizontal-scroll-container') ||
+                 document.querySelectorAll('.horizontal-tape-wrapper')[1]?.querySelector('.horizontal-scroll-container');
+  if (kbTape) {
+    const count = kbTape.children.length;
+    const btn = document.getElementById('kb-all-btn');
+    if (btn && count > 0) {
+      btn.innerHTML = 'Все ' + count + ' правовых алгоритмов <span class="material-symbols-outlined ml-1.5 text-sm">arrow_forward</span>';
+    }
+  }
+
+  // 2. Events Auto-Count
+  const evTape = document.querySelector('#events-section .horizontal-scroll-container') ||
+                 document.querySelectorAll('.horizontal-tape-wrapper')[0]?.querySelector('.horizontal-scroll-container');
+  if (evTape) {
+    const count = evTape.children.length;
+    const btn = document.getElementById('events-all-btn');
+    if (btn && count > 0) {
+      btn.innerHTML = 'Все события и отчеты (' + count + ') <span class="material-symbols-outlined ml-1.5 text-sm">arrow_forward</span>';
+    }
+  }
+
+  // 3. Calculator Auto-Count
+  const calcTape = document.querySelector('#calc-section .horizontal-scroll-container') ||
+                   document.querySelectorAll('.horizontal-tape-wrapper')[2]?.querySelector('.horizontal-scroll-container');
+  if (calcTape) {
+    const count = calcTape.children.length;
+    const btn = document.getElementById('calc-all-btn');
+    if (btn && count > 0) {
+      btn.innerHTML = 'Все ' + count + ' модулей калькулятора <span class="material-symbols-outlined ml-1.5 text-sm">arrow_forward</span>';
+    }
+  }
+
+  // 4. Initiatives Auto-Count
+  const initTape = document.querySelector('#initiatives-section .horizontal-scroll-container') ||
+                   document.querySelectorAll('.horizontal-tape-wrapper')[3]?.querySelector('.horizontal-scroll-container');
+  if (initTape) {
+    const count = initTape.children.length;
+    const btn = document.getElementById('init-all-btn');
+    if (btn && count > 0) {
+      btn.innerHTML = 'Все ' + count + ' проектов развития <span class="material-symbols-outlined ml-1.5 text-sm">arrow_forward</span>';
+    }
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', autoSyncSectionCounters);
+} else {
+  autoSyncSectionCounters();
+}

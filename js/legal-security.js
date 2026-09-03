@@ -14,20 +14,10 @@
      * Auto-apply Russian phone mask +7 (XXX) XXX-XX-XX
      */
     initPhoneMasks() {
-      document.addEventListener('input', (e) => {
-        const target = e.target;
-        if (target.type === 'tel' || target.classList.contains('phone-mask') || target.name === 'phone') {
-          let matrix = '+7 (___) ___-__-__';
-          let i = 0;
-          let val = target.value.replace(/\D/g, '');
-          if (val.startsWith('8') || val.startsWith('7')) {
-            val = val.substring(1);
-          }
-          target.value = matrix.replace(/./g, function (a) {
-            return /[_\d]/.test(a) && i < val.length ? val.charAt(i++) : i >= val.length ? '' : a;
-          });
-        }
-      });
+      // Маска телефона централизованно управляется в js/forms.js
+      if (typeof window !== 'undefined' && typeof window.initPhoneMasks === 'function') {
+        window.initPhoneMasks();
+      }
     }
 
     /**

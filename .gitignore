@@ -10,8 +10,10 @@ Thumbs.db
 # 🔒 Железная безопасность (Zero-Leak Policy)
 .env
 .env.*
-bots/
+bots/.env
 *.key
 *.pem
 credentials.json
 config.json
+deploy.tar.gz
+certs/

@@ -1,0 +1,26 @@
+{
+  "appeals": [
+    {
+      "caseId": "ОБР-26/ЖКХ-001",
+      "docType": "audit",
+      "docTypeLabel": "Аудит ЖКХ",
+      "docPrefix": "🏢",
+      "name": "Иванов Иван",
+      "phone": "+7 (927) 123-45-67",
+      "phoneNorm": "+79271234567",
+      "email": "ivanov@example.com",
+      "alias": "jkh@yugpravo.ru",
+      "direction": "—",
+      "message": "Холодные батареи",
+      "source": "Сайт yugpravo.ru",
+      "status": "REGISTERED",
+      "statusText": "⏳ Принято канцелярией",
+      "assignedSpecialist": "Специалист канцелярии АНО «ЮГ-ПРАВО»",
+      "telegramId": null,
+      "telegramUsername": null,
+      "messages": [],
+      "createdAt": "03.09.2026, 12:21:44",
+      "updatedAt": "03.09.2026, 12:21:44"
+    }
+  ]
+}

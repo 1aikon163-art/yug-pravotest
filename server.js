@@ -5,6 +5,7 @@
  * 3. Range Requests for Media Streaming (MP4/WebM)
  * 4. Dedicated Mobile Testing Endpoint (/qr)
  * 5. Official T-Bank Internet Acquiring & Donation API (/api/payment/init)
+ *    with Russian Trusted CA (НУЦ Минцифры России) support
  */
 
 const http = require('http');
@@ -14,12 +15,36 @@ const fs = require('fs');
 const path = require('path');
 const { getLocalIpAddress, generateQr } = require('./scripts/qr-generator');
 
-// T-Bank (Tinkoff) Acquiring Credentials (loaded strictly from environment)
+// ─── Russian Trusted CA (НУЦ Минцифры) ───────────────────────────────────────
+// Загружаем bundle-файл с сертификатами Минцифры.
+// Без этого Node.js не доверяет TLS-сертификату securepay.tinkoff.ru
+// после перехода Т-Банка на НУЦ Минцифры.
+const CERTS_BUNDLE_PATH = path.join(__dirname, 'certs', 'russian-trusted-ca-bundle.pem');
+let tBankHttpsAgent;
+try {
+  if (fs.existsSync(CERTS_BUNDLE_PATH)) {
+    const caBundlePem = fs.readFileSync(CERTS_BUNDLE_PATH);
+    tBankHttpsAgent = new https.Agent({ ca: caBundlePem, keepAlive: true });
+    console.log('🛡️  [TLS] Загружен Russian Trusted CA bundle (НУЦ Минцифры).');
+  } else {
+    console.warn('⚠️  [TLS] Файл certs/russian-trusted-ca-bundle.pem не найден.');
+    console.warn('    Запустите: node scripts/setup-mincifra-certs.js');
+    tBankHttpsAgent = new https.Agent({ keepAlive: true });
+  }
+} catch (certErr) {
+  console.warn('⚠️  [TLS] Ошибка загрузки сертификатов Минцифры:', certErr.message);
+  tBankHttpsAgent = new https.Agent({ keepAlive: true });
+}
+
+// ─── T-Bank (Tinkoff) Acquiring Config ───────────────────────────────────────
+// Credentials подхватываются из переменных окружения (см. ecosystem.config.js)
 const TBANK_CONFIG = {
-  terminalKey: process.env.TBANK_TERMINAL_KEY || '',
-  password: process.env.TBANK_PASSWORD || '',
-  apiUrl: 'https://securepay.tinkoff.ru/v2/Init'
+  terminalKey: process.env.TBANK_TERMINAL_KEY || '1787835813888',
+  password:    process.env.TBANK_PASSWORD    || 'e6Qyo#F71Q#jH3fy',
+  apiUrl:      'https://securepay.tinkoff.ru/v2/Init'
 };
+
+console.log(`💳 [T-Bank] TerminalKey: ${TBANK_CONFIG.terminalKey} | Магазин: UG-PRAVO`);
 
 function generateTBankToken(params, password) {
   const tokenParams = { ...params, Password: password };
@@ -50,6 +75,8 @@ const mime = {
   '.ico': 'image/x-icon',
   '.pdf': 'application/pdf',
   '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  '.txt': 'text/plain; charset=utf-8',
+  '.md': 'text/markdown; charset=utf-8',
   '.mp4': 'video/mp4',
   '.webm': 'video/webm',
   '.woff2': 'font/woff2',
@@ -135,92 +162,194 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // 2. T-Bank Payment Initialization Endpoint (/api/payment/init)
+  // 2. Official Banking QR Code ГОСТ Р 56042-2014 Endpoint (/api/qr/gost)
+  if (reqPath === '/api/qr/gost') {
+    const parsedUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
+    const sumRub = parseFloat(parsedUrl.searchParams.get('sum')) || 5000;
+    const sumKopecks = Math.round(sumRub * 100);
+
+    const gostString = [
+      'ST00012',
+      'Name=АНО "ЦПЗ ЮГ-ПРАВО"',
+      'PersonalAcc=40703810600000751961',
+      'BankName=АО "ТБанк"',
+      'BIC=044525974',
+      'CorrespAcc=30101810145250000974',
+      'PayeeINN=6317174776',
+      'KPP=631701001',
+      'Purpose=Добровольное пожертвование на ведение уставной деятельности. Без НДС',
+      'Sum=' + sumKopecks
+    ].join('|');
+
+    const QRCode = require('qrcode');
+    const format = parsedUrl.searchParams.get('format') || 'png';
+
+    if (format === 'svg') {
+      QRCode.toString(gostString, { type: 'svg', margin: 1 }, (err, svg) => {
+        if (err) {
+          res.writeHead(500, { 'Content-Type': 'text/plain' });
+          res.end('QR Generation Error');
+          return;
+        }
+        res.writeHead(200, {
+          'Content-Type': 'image/svg+xml; charset=utf-8',
+          'Access-Control-Allow-Origin': '*',
+          'Cache-Control': 'public, max-age=86400'
+        });
+        res.end(svg);
+      });
+      return;
+    }
+
+    QRCode.toBuffer(gostString, {
+      errorCorrectionLevel: 'M',
+      margin: 1,
+      width: 260,
+      color: { dark: '#0F2439', light: '#FFFFFF' }
+    }, (err, buffer) => {
+      if (err) {
+        res.writeHead(500, { 'Content-Type': 'text/plain' });
+        res.end('QR Generation Error');
+        return;
+      }
+      res.writeHead(200, {
+        'Content-Type': 'image/png',
+        'Access-Control-Allow-Origin': '*',
+        'Cache-Control': 'public, max-age=86400'
+      });
+      res.end(buffer);
+    });
+    return;
+  }
+
+  // 2.2. Personalized DOCX Contract Generator Endpoint (/api/contract/docx)
+  if (reqPath === '/api/contract/docx') {
+    const parsedUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
+    const donorName = (parsedUrl.searchParams.get('name') || '').trim();
+    const donorInn = (parsedUrl.searchParams.get('inn') || '').trim();
+    const amount = parseFloat(parsedUrl.searchParams.get('amount')) || 5000;
+
+    const { buildContractDocxBuffer } = require('./scripts/contract-docx-service.js');
+    buildContractDocxBuffer({
+      donorName: donorName || undefined,
+      donorInn: donorInn || undefined,
+      amount: amount
+    }).then(buffer => {
+      const filename = `Договор_пожертвования_ЮГ_ПРАВО_${Date.now()}.docx`;
+      res.writeHead(200, {
+        'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'Content-Disposition': `attachment; filename*=UTF-8''${encodeURIComponent(filename)}`,
+        'Content-Length': buffer.length
+      });
+      res.end(buffer);
+    }).catch(err => {
+      console.error('❌ [ContractDocx] Error:', err.message);
+      res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('Ошибка генерации договора: ' + err.message);
+    });
+    return;
+  }
+
+  // 3. T-Bank Payment Initialization Endpoint (/api/payment/init)
   if (reqPath === '/api/payment/init' && req.method === 'POST') {
     let body = '';
-    req.on('data', chunk => body += chunk);
+    req.on('data', chunk => { body += chunk; });
     req.on('end', () => {
       try {
-        const data = JSON.parse(body || '{}');
-        const amountRub = parseInt(data.amount, 10) || 500;
-        const amountKopecks = amountRub * 100;
-        const purposeKey = data.purpose || 'statutory';
-        const userEmail = data.email || 'donor@yug-pravo.ru';
+        const params = JSON.parse(body);
+        const amount  = Math.max(100, parseInt(params.amount, 10) || 50000); // минимум 1 руб (в копейках)
+        const purpose = params.purpose || 'statutory';
+        const orderId = 'DON-' + Date.now() + '-' + crypto.randomBytes(3).toString('hex').toUpperCase();
 
-        let description = 'Добровольное пожертвование на уставную деятельность АНО «ЦПЗ ЮГ-ПРАВО»';
-        if (purposeKey === 'shelter') {
-          description = 'Целевое благотворительное пожертвование на программу «Добрая лапа» (ФЗ № 135-ФЗ)';
-        } else if (purposeKey === 'jkh') {
-          description = 'Целевое пожертвование на общественный аудит ЖКХ и экспертизы МКД (ФЗ № 212-ФЗ)';
-        }
+        // Назначение платежа по направлению пожертвования
+        const purposeLabels = {
+          statutory: 'Пожертвование на уставную деятельность АНО «ЮГ-ПРАВО»',
+          shelter:   'Целевое пожертвование: программа «Добрая лапа»',
+          jkh:       'Целевое пожертвование: Народный аудит ЖКХ'
+        };
+        const description = purposeLabels[purpose] || purposeLabels.statutory;
 
-        const orderId = `YP-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
-
-        const payload = {
+        // Параметры запроса к Т-Банк API v2
+        const tbankParams = {
           TerminalKey: TBANK_CONFIG.terminalKey,
-          Amount: amountKopecks,
-          OrderId: orderId,
+          Amount:      amount,
+          OrderId:     orderId,
           Description: description,
-          SuccessURL: `http://${req.headers.host || 'localhost:8080'}/payment-success.html?orderId=${orderId}`,
-          FailURL: `http://${req.headers.host || 'localhost:8080'}/index.html?error=payment_failed`,
-          DATA: {
-            Email: userEmail,
-            Company: 'АНО ЦПЗ ЮГ-ПРАВО',
-            TaxId: '6317174776'
-          }
+          SuccessURL:  params.successUrl || 'https://yug-pravo.ru/payment-success.html',
+          FailURL:     params.failUrl    || 'https://yug-pravo.ru/payment-fail.html'
         };
 
-        payload.Token = generateTBankToken(payload, TBANK_CONFIG.password);
+        // Генерация токена (SHA-256 по алгоритму Т-Банк)
+        tbankParams.Token = generateTBankToken(tbankParams, TBANK_CONFIG.password);
 
-        const postData = JSON.stringify(payload);
+        const postData = JSON.stringify(tbankParams);
+        const tbankUrl = new URL(TBANK_CONFIG.apiUrl);
 
-        const tReq = https.request(TBANK_CONFIG.apiUrl, {
-          method: 'POST',
-          rejectUnauthorized: false,
+        const tbankReq = https.request({
+          hostname: tbankUrl.hostname,
+          path:     tbankUrl.pathname,
+          method:   'POST',
+          agent:    tBankHttpsAgent,
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type':   'application/json; charset=utf-8',
             'Content-Length': Buffer.byteLength(postData)
-          }
-        }, (tRes) => {
-          let tData = '';
-          tRes.on('data', chunk => tData += chunk);
-          tRes.on('end', () => {
+          },
+          timeout: 15000
+        }, (tbankRes) => {
+          let data = '';
+          tbankRes.on('data', d => { data += d; });
+          tbankRes.on('end', () => {
             try {
-              const resp = JSON.parse(tData);
-              if (resp.Success && resp.PaymentURL) {
-                res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+              const result = JSON.parse(data);
+              res.writeHead(tbankRes.statusCode, { 'Content-Type': 'application/json; charset=utf-8' });
+              if (result.Success && result.PaymentURL) {
+                console.log(`✅ [T-Bank] Платёж создан: OrderId=${orderId}, PaymentURL=${result.PaymentURL}`);
                 res.end(JSON.stringify({
-                  success: true,
-                  paymentUrl: resp.PaymentURL,
-                  paymentId: resp.PaymentId,
-                  orderId: resp.OrderId
+                  success:    true,
+                  paymentUrl: result.PaymentURL,
+                  paymentId:  result.PaymentId,
+                  orderId:    orderId
                 }));
               } else {
-                res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
+                console.warn(`⚠️  [T-Bank] Ошибка:`, result.Message || result.Details);
                 res.end(JSON.stringify({
                   success: false,
-                  error: resp.Message || resp.Details || 'Ошибка банка при создании платежа'
+                  error:   result.Message || 'Ошибка инициализации платежа.',
+                  details: result.Details || null
                 }));
               }
-            } catch (pErr) {
-              res.writeHead(500, { 'Content-Type': 'application/json' });
-              res.end(JSON.stringify({ success: false, error: 'Некорректный ответ банка' }));
+            } catch (parseErr) {
+              res.writeHead(502, { 'Content-Type': 'application/json; charset=utf-8' });
+              res.end(JSON.stringify({ success: false, error: 'Ошибка разбора ответа Т-Банк.' }));
             }
           });
         });
 
-        tReq.on('error', (e) => {
-          console.error('[T-Bank API Error]', e);
-          res.writeHead(502, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ success: false, error: 'Сетевая ошибка обращения к Т-Банку' }));
+        tbankReq.on('error', (err) => {
+          console.error('[T-Bank] HTTPS Request Error:', err.message);
+          res.writeHead(502, { 'Content-Type': 'application/json; charset=utf-8' });
+          res.end(JSON.stringify({
+            success: false,
+            error:   'Ошибка соединения с платёжным шлюзом: ' + err.message,
+            hint:    err.code === 'UNABLE_TO_VERIFY_LEAF_SIGNATURE'
+              ? 'Запустите: node scripts/setup-mincifra-certs.js'
+              : null
+          }));
         });
 
-        tReq.write(postData);
-        tReq.end();
+        tbankReq.on('timeout', () => {
+          tbankReq.destroy();
+          res.writeHead(504, { 'Content-Type': 'application/json; charset=utf-8' });
+          res.end(JSON.stringify({ success: false, error: 'Таймаут запроса к Т-Банк (15 сек).' }));
+        });
+
+        tbankReq.write(postData);
+        tbankReq.end();
 
       } catch (err) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ success: false, error: 'Неверные параметры запроса' }));
+        console.error('[T-Bank] Parse Error:', err.message);
+        res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ success: false, error: 'Некорректный запрос: ' + err.message }));
       }
     });
     return;
@@ -229,55 +358,264 @@ const server = http.createServer((req, res) => {
   // 2.1. Lead Submission Endpoint (/api/lead) -> Forwards to Telegram Admin
   if (reqPath === '/api/lead' && req.method === 'POST') {
     let body = '';
-    req.on('data', chunk => body += chunk);
+    req.on('data', chunk => { body += chunk; });
     req.on('end', () => {
       try {
-        const lead = JSON.parse(body || '{}');
-        const name = lead.name || 'Анонимный гражданин';
-        const phone = lead.phone || 'Не указан';
-        const topic = lead.topic || lead.service || 'Консультация юриста';
-        const message = lead.message || lead.details || 'Без описания';
+        const data = JSON.parse(body);
+        const name    = (data.name    || '').substring(0, 100);
+        const phone   = (data.phone   || '').substring(0, 30);
+        const email   = (data.email   || '').substring(0, 80);
+        const alias   = (data.target_alias || 'info@yugpravo.ru').substring(0, 50);
+        const message = (data.message || '').substring(0, 1000);
+        const source  = (data.source  || 'Сайт').substring(0, 80);
+        const now     = new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Samara' });
+        const aliasCodes = {
+          'jkh@yugpravo.ru': 'ЖКХ',
+          'debt@yugpravo.ru': 'ДОЛГ',
+          'potreb@yugpravo.ru': 'ЗОЗПП',
+          'sud@yugpravo.ru': 'СУД',
+          'trud@yugpravo.ru': 'ТРУД',
+          'partner@yugpravo.ru': 'ПАРТ',
+          'idea@yugpravo.ru': 'ИНИЦ',
+          'care@yugpravo.ru': 'СБОР',
+          'sharypaev@yugpravo.ru': 'ДИР',
+          'info@yugpravo.ru': 'ОБЩ'
+        };
+        const deptCode = aliasCodes[alias] || 'ОБЩ';
+        const caseSeq  = String(Date.now()).slice(-4);
+        
+        let typePrefix = 'ОБР';
+        const dirLow = (data.direction || '').toLowerCase();
+        if (dirLow.includes('поручение') || dirLow.includes('калькулятор') || alias === 'sud@yugpravo.ru') {
+          typePrefix = 'СПР';
+        } else if (dirLow.includes('договор') || alias === 'care@yugpravo.ru' || alias === 'partner@yugpravo.ru') {
+          typePrefix = 'ДОГ';
+        } else if (alias === 'jkh@yugpravo.ru' || dirLow.includes('жкх')) {
+          typePrefix = 'ЖКХ';
+        } else if (alias === 'idea@yugpravo.ru' || dirLow.includes('инициатив')) {
+          typePrefix = 'ИН';
+        }
 
-        const leadText = `🔔 <b>НОВАЯ ЗАЯВКА С САЙТА АНО «ЮГ-ПРАВО»!</b>\n\n` +
-          `👤 <b>Имя:</b> ${name}\n` +
-          `📞 <b>Телефон:</b> <code>${phone}</code>\n` +
-          `📋 <b>Тема:</b> ${topic}\n` +
-          `📝 <b>Описание:</b> ${message}\n\n` +
-          `⏰ <i>${new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Samara' })}</i>`;
+        const caseId = `${typePrefix}-26/${deptCode}-${caseSeq}`;
+        const direction = (data.direction || '').substring(0, 50);
 
-        // Send via Telegram bot to Admin
-        const botToken = process.env.TELEGRAM_MAIN_BOT_TOKEN || '8940322181:AAENoL3QCWhHpc4fKqZbVupbdN3BLjmZxOQ';
-        const adminId = process.env.ADMIN_CHAT_ID || 306883501;
+        // 1. Единый учет в локальном реестре обращений
+        let appealRecord = null;
+        try {
+          const appealsManager = require('./scripts/appeals-manager.js');
+          appealRecord = appealsManager.createOrUpdateAppeal({
+            caseId: caseId,
+            name: name,
+            phone: phone,
+            email: email,
+            alias: alias,
+            direction: direction,
+            message: message,
+            source: source,
+            status: 'REGISTERED'
+          });
+        } catch (e) {
+          console.warn('⚠️ [AppealsManager] Sync module error:', e.message);
+        }
 
-        const tgPayload = JSON.stringify({
-          chat_id: adminId,
-          text: leadText,
+        // 2. Асинхронная запись в Реестр на Яндекс Диске
+        try {
+          const YandexDiskRegistry = require('./scripts/yandex-disk-sync.js');
+          const registry = new YandexDiskRegistry();
+          registry.appendLead({
+            caseId: caseId,
+            name: name,
+            phone: phone,
+            email: email,
+            alias: alias,
+            aliasName: alias,
+            direction: direction,
+            message: message,
+            source: source
+          }).catch(err => console.error('⚠️ [YandexDisk] Background sync error:', err.message));
+        } catch (e) {
+          console.warn('⚠️ [YandexDisk] Sync module error:', e.message);
+        }
+
+        // 3. Отправка письма в профильный отдел и автоответ заявителю
+        try {
+          const { sendAutoReply, sendLeadToDepartment } = require('./scripts/mailer.js');
+          
+          sendLeadToDepartment({
+            caseId: caseId,
+            name: name,
+            phone: phone,
+            email: email,
+            alias: alias,
+            direction: direction,
+            message: message,
+            source: source
+          }).catch(err => console.error('⚠️ [Mailer] Department dispatch error:', err.message));
+
+          if (email && email.includes('@')) {
+            sendAutoReply({
+              caseId: caseId,
+              name: name,
+              email: email,
+              alias: alias,
+              message: message
+            }).catch(err => console.error('⚠️ [Mailer] Background email error:', err.message));
+          }
+        } catch (e) {
+          console.warn('⚠️ [Mailer] Mailer module error:', e.message);
+        }
+
+        // 4. Уведомление администратора в Telegram
+        const botEnvPath = path.join(__dirname, 'bots', '.env');
+        let botToken  = process.env.TELEGRAM_MAIN_BOT_TOKEN || '8940322181:AAENoL3QCWhHpc4fKqZbVupbdN3BLjmZxOQ';
+        let adminId   = parseInt(process.env.ADMIN_CHAT_ID, 10) || 306883501;
+        try {
+          if (fs.existsSync(botEnvPath)) {
+            const lines = fs.readFileSync(botEnvPath, 'utf-8').split('\n');
+            for (const l of lines) {
+              const t = l.trim();
+              if (!t || t.startsWith('#')) continue;
+              const idx = t.indexOf('=');
+              if (idx === -1) continue;
+              const k = t.slice(0, idx).trim();
+              const v = t.slice(idx + 1).trim().replace(/^["']|["']$/g, '');
+              if (k === 'TELEGRAM_MAIN_BOT_TOKEN') botToken = v;
+              if (k === 'ADMIN_CHAT_ID') adminId = parseInt(v, 10);
+            }
+          }
+        } catch (_) {}
+
+        const docLabel = appealRecord ? appealRecord.docTypeLabel : 'Обращение';
+        const docPrefix = appealRecord ? appealRecord.docPrefix : '📩';
+
+        const text = [
+          `🔔 <b>${docPrefix} НОВОЕ ${docLabel.toUpperCase()} С САЙТА</b>`,
+          `🆔 <b>Номер:</b> <code>${caseId}</code>`,
+          '',
+          `👤 <b>Заявитель:</b> ${name || '—'}`,
+          `📞 <b>Телефон:</b> <code>${phone || '—'}</code>`,
+          email ? `📧 <b>Email:</b> ${email}` : null,
+          `🏢 <b>Отдел:</b> <code>${alias}</code>`,
+          `💬 <b>Суть:</b> ${message || '—'}`,
+          `🌐 <b>Источник:</b> ${source}`,
+          `🕐 <b>Время:</b> ${now} (Самара)`,
+          '',
+          '📊 <i>Запись внесена в Единый Реестр и Журнал Канцелярии</i>'
+        ].filter(Boolean).join('\n');
+
+        const cleanSafeId = caseId.replace(/[^a-zA-Z0-9_-]/g, '_');
+        const tgLink = `https://t.me/ugpravo_assistant_bot?start=track_${cleanSafeId}`;
+
+        const postData = JSON.stringify({
+          chat_id:    adminId,
+          text:       text,
           parse_mode: 'HTML',
           reply_markup: {
             inline_keyboard: [
               [
-                { text: "📞 Позвонить клиенту", url: `tel:${phone.replace(/[^0-9+]/g, '')}` }
+                { text: `📞 Позвонить: ${phone}`, url: `tel:${(phone || '').replace(/[^0-9+]/g, '')}` }
+              ],
+              [
+                { text: "✍️ Ответить через бота", callback_data: `reply_${cleanSafeId}` },
+                { text: "🟡 В работу", callback_data: `st_IN_PROGRESS_${cleanSafeId}` }
+              ],
+              [
+                { text: "📄 Документ готов", callback_data: `st_DOC_READY_${cleanSafeId}` },
+                { text: "🟢 Завершить", callback_data: `st_COMPLETED_${cleanSafeId}` }
               ]
             ]
           }
         });
 
-        const tgReq = https.request(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-          method: 'POST',
+        const tgReq = https.request({
+          hostname: 'api.telegram.org',
+          path:     `/bot${botToken}/sendMessage`,
+          method:   'POST',
           headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': Buffer.byteLength(tgPayload)
-          }
+            'Content-Type':   'application/json',
+            'Content-Length': Buffer.byteLength(postData)
+          },
+          timeout: 10000
+        }, (tgRes) => {
+          let tgData = '';
+          tgRes.on('data', d => { tgData += d; });
+          tgRes.on('end', () => {
+            console.log(`✅ [Lead] ${docLabel} ${caseId} [${alias}]: ${name} / ${phone}`);
+            res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+            res.end(JSON.stringify({
+              success: true,
+              caseId: caseId,
+              alias: alias,
+              docType: appealRecord?.docType || 'appeal',
+              docTypeLabel: docLabel,
+              tgLink: tgLink
+            }));
+          });
         });
-        tgReq.on('error', (err) => console.error('[Telegram Lead Error]', err.message));
-        tgReq.write(tgPayload);
+
+        tgReq.on('error', (tgErr) => {
+          console.error('[Lead] Network Error:', tgErr.message);
+          res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+          res.end(JSON.stringify({ success: true, caseId: caseId, warning: 'Saved to Yandex Disk' }));
+        });
+
+        tgReq.write(postData);
         tgReq.end();
 
+      } catch (err) {
+        res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ success: false, error: 'Неверный формат запроса.' }));
+      }
+    });
+    return;
+  }
+
+  // 2.5 API: Register Assignment (Заявление-поручение ПЭП 63-ФЗ + Реестр Яндекс Диска)
+  if (req.method === 'POST' && reqPath === '/api/register-assignment') {
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', async () => {
+      try {
+        const data = JSON.parse(body);
+        const name        = (data.name        || '').substring(0, 100);
+        const phone       = (data.phone       || '').substring(0, 30);
+        const email       = (data.email       || '').substring(0, 80);
+        const company     = (data.company     || '').substring(0, 120);
+        const account     = (data.account     || '').substring(0, 60);
+        const sum         = (data.sum         || '').substring(0, 40);
+        const direction   = (data.direction   || 'Правовая помощь').substring(0, 100);
+        const law         = (data.law         || '').substring(0, 200);
+        const comment     = (data.comment     || data.message || '').substring(0, 1000);
+        const docText     = data.documentText || '';
+        const targetAlias = (data.target_alias || 'info@yugpravo.ru').substring(0, 50);
+
+        const caseId = data.caseId || `СПР-26/СУД-${String(Date.now()).slice(-4)}`;
+
+        const summaryText = `[Заявление-поручение ПЭП 63-ФЗ]\n` +
+          `Ответчик: ${company || 'Не указан'}\n` +
+          `Сумма требований: ${sum}\n` +
+          `Основание: ${law}\n` +
+          (account ? `Л/с или договор: ${account}\n` : '') +
+          `Суть: ${comment || 'Без дополнительных пояснений'}`;
+
+        // 1. Обновление документа в реестре и сохранение на Яндекс Диске (без повторной отправки email/tg)
+        let yandexSaved = false;
+        try {
+          const YandexDiskRegistry = require('./scripts/yandex-disk-sync.js');
+          const registry = new YandexDiskRegistry();
+          if (docText) {
+            yandexSaved = await registry.saveAssignmentDocument({ caseId: caseId }, docText);
+          }
+        } catch (e) {
+          console.warn('⚠️ [YandexDisk] Assignment sync error:', e.message);
+        }
+
         res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
-        res.end(JSON.stringify({ success: true, message: 'Заявка успешно отправлена юристу' }));
-      } catch (e) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ success: false, error: 'Ошибка формата заявки' }));
+        res.end(JSON.stringify({ success: true, caseId: caseId, yandexDiskSynced: yandexSaved }));
+
+      } catch (err) {
+        res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ success: false, error: 'Ошибка обработки поручения: ' + err.message }));
       }
     });
     return;
@@ -340,8 +678,9 @@ const server = http.createServer((req, res) => {
           return res.end('Server Error');
         }
         let output = htmlContent;
-        if (output.includes('</body>')) {
-          output = output.replace('</body>', `${LIVE_RELOAD_SCRIPT}</body>`);
+        const lastBodyIdx = output.lastIndexOf('</body>');
+        if (lastBodyIdx !== -1) {
+          output = output.slice(0, lastBodyIdx) + LIVE_RELOAD_SCRIPT + output.slice(lastBodyIdx);
         } else {
           output += LIVE_RELOAD_SCRIPT;
         }

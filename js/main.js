@@ -1,43 +1,27 @@
 /**
  * ЮГ-ПРАВО — Высокопроизводительное управление Hero-видео
- * 
- * • ДЕСКТОП (> 768px):
- *   - Страницы со скроллом (Главная, База знаний, События, Раскрытие, Инициативы): кинематографичный скраббинг по скроллу.
- *   - Страницы Ping-Pong (Калькулятор, Об организации): гармонический синусоидальный цикл.
- *   - Автопауза через IntersectionObserver и Page Visibility API (0% CPU/GPU в фоне).
- * 
- * • МОБИЛЬНЫЕ (<= 768px):
- *   - Аппаратное нативное воспроизведение GPU (60–120 FPS без дерганий и лагов).
- *   - Умная автопауза при прокрутке вниз и переключении вкладок.
+ * Мобильные: естественное 1-кратное воспроизведение
+ * Десктоп: кинематографичный скролл-скруббинг и ambient-режимы
  */
 
 document.addEventListener('DOMContentLoaded', () => {
   const checkIsDesktop = () => {
-    const isWideScreen = window.innerWidth > 1024;
-    const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || window.matchMedia('(pointer: coarse)').matches;
-    return isWideScreen && !isTouch;
+    return window.innerWidth > 768;
   };
 
-  // 1. Поиск видео элементов
-  const pingPongVideo = document.getElementById('calc-hero-video') || 
-                        document.getElementById('about-hero-video') || 
-                        document.querySelector('video[data-video-mode="pingpong"]');
+  const activeVideo = document.getElementById('hands-video') ||
+                      document.getElementById('calc-hero-video') ||
+                      document.getElementById('events-hero-video') ||
+                      document.getElementById('initiatives-hero-video') ||
+                      document.getElementById('knowledge-hero-video') ||
+                      document.getElementById('disclosure-hero-video') ||
+                      document.getElementById('about-hero-video') ||
+                      document.querySelector('video');
 
-  const scrollVideo = document.getElementById('hands-video') || 
-                      document.getElementById('initiatives-hero-video') || 
-                      document.getElementById('dog-hero-video') || 
-                      document.getElementById('knowledge-hero-video') || 
-                      document.getElementById('events-hero-video') || 
-                      document.getElementById('disclosure-hero-video') || 
-                      document.querySelector('#hero-section video') ||
-                      document.querySelector('.hero-scroll-container video');
-
-  const activeVideo = pingPongVideo || scrollVideo;
   const heroSection = document.getElementById('hero-section') || document.querySelector('.hero-scroll-container');
 
   if (!activeVideo || !heroSection) return;
 
-  // Базовые атрибуты для всех мобильных браузеров (iOS Safari / Android Chrome)
   activeVideo.muted = true;
   activeVideo.defaultMuted = true;
   activeVideo.playsInline = true;
@@ -49,13 +33,13 @@ document.addEventListener('DOMContentLoaded', () => {
   let scrollListener = null;
   let resizeListener = null;
 
-  // ─── IntersectionObserver для экономии батареи (0% нагрузки вне экрана) ───
+  // IntersectionObserver для экономии батареи
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       isHeroVisible = entry.isIntersecting;
       if (!isHeroVisible) {
         if (activeLoopFrameId) cancelAnimationFrame(activeLoopFrameId);
-        activeVideo.pause();
+        if (checkIsDesktop()) activeVideo.pause();
       } else {
         initMode();
       }
@@ -64,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   observer.observe(heroSection);
 
-  // ─── Page Visibility API (Пауза при смене вкладки) ───
+  // Page Visibility API
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
       if (activeLoopFrameId) cancelAnimationFrame(activeLoopFrameId);
@@ -86,34 +70,33 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!isHeroVisible || document.hidden) return;
 
     const isDesktop = checkIsDesktop();
+    const isPingPong = (activeVideo.id === 'about-hero-video') || (activeVideo.id === 'calc-hero-video');
 
     if (!isDesktop) {
-      // ══════════════════════════════════════════════════════════════
-      // МОБИЛЬНЫЕ И ПЛАНШЕТЫ: 100% АППАРАТНЫЙ 60/120 FPS GPU LOOP
-      // ══════════════════════════════════════════════════════════════
-      activeVideo.loop = true;
-      activeVideo.setAttribute('loop', '');
+      // 📱 МОБИЛЬНЫЕ: Естественное 1-кратное воспроизведение (без скролла)
+      activeVideo.loop = false;
+      activeVideo.removeAttribute('loop');
       
       const playPromise = activeVideo.play();
       if (playPromise !== undefined) {
         playPromise.catch(() => {
-          const onFirstTouch = () => {
+          const onTouch = () => {
             activeVideo.play().catch(() => {});
-            document.removeEventListener('touchstart', onFirstTouch);
+            document.removeEventListener('touchstart', onTouch);
+            document.removeEventListener('click', onTouch);
           };
-          document.addEventListener('touchstart', onFirstTouch, { once: true, passive: true });
+          document.addEventListener('touchstart', onTouch, { once: true, passive: true });
+          document.addEventListener('click', onTouch, { once: true, passive: true });
         });
       }
     } else {
-      // ══════════════════════════════════════════════════════════════
-      // ДЕСКТОП С МЫШЬЮ (> 1024px)
-      // ══════════════════════════════════════════════════════════════
+      // 💻 ДЕСКТОП
       activeVideo.pause();
       activeVideo.loop = false;
       activeVideo.removeAttribute('loop');
 
-      if (pingPongVideo) {
-        // РЕЖИМ PING-PONG НА ДЕСКТОПЕ
+      if (isPingPong) {
+        // PING-PONG РЕЖИМ (Калькулятор, Об организации)
         let startTimestamp = performance.now();
 
         const runDesktopPingPong = (now) => {
@@ -138,12 +121,16 @@ document.addEventListener('DOMContentLoaded', () => {
         activeLoopFrameId = requestAnimationFrame(runDesktopPingPong);
 
       } else {
-        // РЕЖИМ СКРАББИНГА ПО СКРОЛЛУ НА ДЕСКТОПЕ (Плавная кинематографичная синхронизация)
+        // ⚡ РЕЖИМ СКРАББИНГА ПО СКРОЛЛУ (Главная, События, Инициативы, База знаний, Раскрытие)
+        const isHands = (activeVideo.id === 'hands-video');
+        const maxDuration = (activeVideo.duration && !isNaN(activeVideo.duration) && activeVideo.duration > 0.5) ? activeVideo.duration : (isHands ? 10.0 : 4.8);
+        
         let targetTime = 0;
         let smoothedTime = 0;
-        const maxDuration = (activeVideo.duration && !isNaN(activeVideo.duration) && activeVideo.duration > 0) ? activeVideo.duration : 4.8;
         let lastTimestamp = performance.now();
-        const speedMultiplier = parseFloat(heroSection.dataset.speedMultiplier || activeVideo.dataset.speedMultiplier || '1.0');
+        const speedMultiplier = parseFloat(heroSection.dataset.speedMultiplier || '1.0');
+
+        activeVideo.currentTime = 0;
 
         const onScroll = () => {
           const rect = heroSection.getBoundingClientRect();
@@ -154,6 +141,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const rawProgress = (currentScroll / maxScroll) * speedMultiplier;
             const progress = Math.min(Math.max(rawProgress, 0), 1);
             targetTime = progress * maxDuration;
+          } else {
+            targetTime = 0;
           }
         };
 
@@ -163,7 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
           const delta = Math.min((now - lastTimestamp) / 1000, 0.1);
           lastTimestamp = now;
 
-          // Мягкое экспоненциальное демпфирование для шелковистой плавности без рывков
           const lambda = 7.5;
           const t = 1.0 - Math.exp(-lambda * delta);
           smoothedTime += (targetTime - smoothedTime) * t;
@@ -193,30 +181,38 @@ document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
 });
 
-// ─── УНИВЕРСАЛЬНОЕ МОБИЛЬНОЕ МЕНЮ (ДЛЯ ВСЕХ СТРАНИЦ) ───
+// ─── УНИВЕРСАЛЬНОЕ МОБИЛЬНОЕ МЕНЮ ───
+window.toggleMobileMenu = function(e) {
+  if (e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  const mobileNav = document.getElementById('mobile-nav');
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  if (!mobileNav) return;
+
+  const isHidden = mobileNav.classList.contains('hidden');
+  if (isHidden) {
+    mobileNav.classList.remove('hidden');
+  } else {
+    mobileNav.classList.add('hidden');
+  }
+
+  if (menuBtn) {
+    const icon = menuBtn.querySelector('.material-symbols-outlined');
+    if (icon) {
+      icon.textContent = isHidden ? 'close' : 'menu';
+    }
+  }
+};
+
 function initMobileMenu() {
   const menuBtn = document.getElementById('mobile-menu-btn');
   const mobileNav = document.getElementById('mobile-nav');
   if (!menuBtn || !mobileNav) return;
-  if (menuBtn.dataset.menuBound === 'true') return;
-  menuBtn.dataset.menuBound = 'true';
 
-  menuBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const willOpen = mobileNav.classList.contains('hidden');
-    if (willOpen) {
-      mobileNav.classList.remove('hidden');
-    } else {
-      mobileNav.classList.add('hidden');
-    }
-    const icon = menuBtn.querySelector('.material-symbols-outlined');
-    if (icon) {
-      icon.textContent = willOpen ? 'close' : 'menu';
-    }
-  });
+  menuBtn.onclick = window.toggleMobileMenu;
 
-  // Закрытие при клике вне меню
   document.addEventListener('click', (e) => {
     if (!mobileNav.contains(e.target) && !menuBtn.contains(e.target)) {
       mobileNav.classList.add('hidden');
@@ -225,7 +221,6 @@ function initMobileMenu() {
     }
   });
 
-  // Закрытие при клике на любую ссылку в меню
   mobileNav.querySelectorAll('a, button').forEach(link => {
     link.addEventListener('click', () => {
       mobileNav.classList.add('hidden');
@@ -235,57 +230,82 @@ function initMobileMenu() {
   });
 }
 
-// ─── ДИНАМИЧЕСКИЙ СЧЕТЧИК СТАТЕЙ И ИНСТРУКЦИЙ ───
-function initDynamicCounters() {
-  function pluralize(n, forms) {
-    n = Math.abs(n) % 100;
-    const n1 = n % 10;
-    if (n > 10 && n < 20) return forms[2];
-    if (n1 > 1 && n1 < 5) return forms[1];
-    if (n1 === 1) return forms[0];
-    return forms[2];
-  }
+// ─── УНИВЕРСАЛЬНОЕ ОКНО СВЯЗИ С РАЗРАБОТЧИКОМ (БЕЗ БЛОКИРОВОК T.ME) ───
+window.openDeveloperModal = function(e) {
+  if (e) { e.preventDefault(); e.stopPropagation(); }
 
-  // 1. Подсчет карточек Базы Знаний
-  const kbCards = document.querySelectorAll('#knowledge .horizontal-scroll-container > .material-glass-card, #kb-container > .kb-item, .kb-article-card');
-  if (kbCards.length > 0) {
-    const count = kbCards.length;
-    const word = pluralize(count, ['инструкция', 'инструкции', 'инструкций']);
-    
-    const kbAllBtn = document.getElementById('kb-all-btn');
-    if (kbAllBtn) {
-      kbAllBtn.innerHTML = `Все ${count} ${word} <span class="material-symbols-outlined ml-1.5 text-sm">arrow_forward</span>`;
-    }
+  let modal = document.getElementById('modal-developer-contact');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'modal-developer-contact';
+    modal.className = 'fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-[#0F2439]/70 backdrop-blur-md transition-opacity duration-300';
+    modal.innerHTML = `
+      <div class="relative w-full max-w-md bg-[#F8F7F4] border border-[#E0E0E0] rounded-2xl shadow-2xl p-6 sm:p-8 text-[#0F2439] animate-in fade-in zoom-in-95 duration-200">
+        <!-- Close button -->
+        <button type="button" onclick="closeDeveloperModal()" class="absolute top-4 right-4 p-2 text-[#5F5E5E] hover:text-[#0F2439] transition-colors rounded-full hover:bg-[#EBEAE5]">
+          <span class="material-symbols-outlined text-xl">close</span>
+        </button>
 
-    document.querySelectorAll('[data-kb-counter]').forEach(el => {
-      el.textContent = `${count} ${word}`;
+        <!-- Header -->
+        <div class="flex items-center gap-3.5 mb-5 pb-4 border-b border-[#E0E0E0]">
+          <div class="w-12 h-12 rounded-xl bg-[#0F2439] text-[#C5A059] flex items-center justify-center font-bold text-lg shadow-sm">
+            ПШ
+          </div>
+          <div>
+            <h3 class="font-bold text-base text-[#0F2439] leading-tight">Шарыпаев П. В.</h3>
+            <p class="text-xs text-[#5F5E5E]">Архитектура, код и дизайн LegalTech</p>
+          </div>
+        </div>
+
+        <p class="text-xs text-[#2C3E50] leading-relaxed mb-6">
+          Разработка высокотехнологичных платформ, правовых калькуляторов, чат-ботов и веб-сервисов под ключ.
+        </p>
+
+        <!-- Actions -->
+        <div class="flex flex-col gap-3">
+          <!-- Direct App Link -->
+          <a href="tg://resolve?domain=aikon163" class="w-full inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#2AABEE] hover:bg-[#229ED9] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-sm transition-all group">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.52 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
+            <span>Открыть приложение Telegram</span>
+          </a>
+
+          <!-- Web Telegram Link -->
+          <a href="https://web.telegram.org/a/#?tgaddr=tg%3A%2F%2Fresolve%3Fdomain%3Daikon163" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-white border border-[#E0E0E0] hover:border-[#0F2439] text-[#0F2439] font-semibold text-xs tracking-wider rounded-xl transition-all">
+            <span class="material-symbols-outlined text-sm">open_in_new</span>
+            <span>Открыть в Telegram Web</span>
+          </a>
+
+          <!-- Copy Username Button -->
+          <button type="button" onclick="copyTelegramUsername()" id="copy-tg-btn" class="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-[#EBEAE5] hover:bg-[#E0DFD8] text-[#2C3E50] font-mono text-xs rounded-xl transition-all">
+            <span class="material-symbols-outlined text-sm">content_copy</span>
+            <span id="copy-tg-text">Скопировать @aikon163</span>
+          </button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    modal.addEventListener('click', (ev) => {
+      if (ev.target === modal) closeDeveloperModal();
     });
   }
 
-  // 2. Подсчет событий
-  const eventCards = document.querySelectorAll('#events-container > .event-card, [data-event-item]');
-  if (eventCards.length > 0) {
-    const eventCount = eventCards.length;
-    const allEventsFilter = document.querySelector('[data-category="all"]');
-    if (allEventsFilter) {
-      allEventsFilter.textContent = `Все события (${eventCount})`;
+  modal.classList.remove('hidden');
+};
+
+window.closeDeveloperModal = function() {
+  const modal = document.getElementById('modal-developer-contact');
+  if (modal) modal.classList.add('hidden');
+};
+
+window.copyTelegramUsername = function() {
+  navigator.clipboard.writeText('@aikon163').then(() => {
+    const btnText = document.getElementById('copy-tg-text');
+    if (btnText) {
+      btnText.innerText = '✅ Скопировано в буфер!';
+      setTimeout(() => { btnText.innerText = 'Скопировать @aikon163'; }, 3000);
     }
-  }
-}
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
-    initDynamicCounters();
-    initMobileMenu();
+  }).catch(() => {
+    prompt('Скопируйте никнейм в Telegram:', '@aikon163');
   });
-} else {
-  initDynamicCounters();
-  initMobileMenu();
-}
-
-// Service Worker Registration for Instant Offline Cache
-if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js').catch(() => {});
-  });
-}
+};

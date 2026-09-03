@@ -15,10 +15,12 @@
   - Интеграция чистых inline SVG иконок через `scripts/icons.js` (Lucide Icons).
   - Интеграция с Telegram Mini App через `js/telegram-bridge.js`.
 
-### 🛡️ QA / Reviewer Agent
-- **Зона ответственности**: Аудит кода перед сохранением, валидация верстки, проверка ссылок и соответствие дизайн-системе.
+### 🛡️ QA / Reviewer & DevOps Agent
+- **Зона ответственности**: Аудит кода перед сохранением, валидация верстки, проверка ссылок, соответствие дизайн-системе и деплой на боевой VPS.
+- **Главный регламент**: Полные правила администрирования описаны в [ADMIN_INSTRUCTIONS.md](file:///c:/Users/aikon/Downloads/stitch_yug_pravo_premium_legal_landing%20(2)/docs/ADMIN_INSTRUCTIONS.md).
 - **Инструменты проверки**:
   - `npm run qa` (`node scripts/qa-audit.js`) — автоматическая проверка всех HTML файлов.
+  - `node scripts/seo-validator.js` — валидация SEO, Schema.org и карты сайта.
   - Проверка отсутствия битых путей к изображениям, шрифтам и локальным скриптам.
   - Проверка контрастности по WCAG AA и соблюдение дизайн-токенов (`DESIGN.md`).
 
