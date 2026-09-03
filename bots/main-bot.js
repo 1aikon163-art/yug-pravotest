@@ -413,6 +413,48 @@ async function handleMessage(msg) {
     const parts = text.split(' ');
     const param = parts[1] || '';
 
+    // Deep link подписания ПЭП: /start sign_СПР-26_0001
+    if (param.startsWith('sign_')) {
+      const rawCaseId = param.replace('sign_', '');
+      const appeal = appealsManager.getAppeal(rawCaseId);
+
+      if (appeal) {
+        const signedAppeal = appealsManager.signAppealWithPep(appeal.caseId, {
+          authMethod: 'TELEGRAM_AUTH',
+          profileId: chatId,
+          username: username,
+          telegramId: chatId,
+          ip: 'Telegram Gateway'
+        });
+
+        const pep = signedAppeal.pepAudit || {};
+        const signSuccessText = `✅ <b>ЗАЯВЛЕНИЕ-ПОРУЧЕНИЕ № ${appeal.caseId} УСПЕШНО ПОДПИСАНО!</b>\n\n` +
+          `🔐 <b>Метаданные электронной подписи (63-ФЗ):</b>\n` +
+          `• <b>Способ ПЭП:</b> <code>TELEGRAM_AUTH</code>\n` +
+          `• <b>Идентификатор профиля:</b> <code>${chatId}</code> (${username || firstName})\n` +
+          `• <b>Дата и время:</b> <code>${pep.signedAt || 'Только что'}</code>\n` +
+          `• <b>Хеш токена авторизации:</b> <code>${(pep.authHash || '').slice(0, 32)}...</code>\n\n` +
+          `🏛️ <i>Документ официально зарегистрирован и принят в работу Единой приёмной АНО «ЦПЗ ЮГ-ПРАВО».</i>`;
+
+        const docUrl = `${WEB_APP_URL}assignment-viewer.html?caseId=${encodeURIComponent(appeal.caseId)}`;
+
+        await sendMsg(chatId, signSuccessText, {
+          inline_keyboard: [
+            [{ text: "📄 Открыть подписанный документ (ПЭП)", web_app: { url: docUrl } }],
+            [{ text: "« Главное меню", callback_data: "my_appeals" }]
+          ]
+        });
+
+        // Уведомление администратору
+        await sendMsg(ADMIN_ID, `🟢 <b>ДОКУМЕНТ ПОДПИСАН ПЭП ЧЕРЕЗ TELEGRAM!</b>\n\n` +
+          `🆔 <b>Дело:</b> <code>${appeal.caseId}</code>\n` +
+          `👤 <b>Подписант:</b> ${firstName} (${username || 'ID ' + chatId})\n` +
+          `📞 <b>Телефон:</b> <code>${appeal.phone}</code>\n` +
+          `🔐 <b>Хэш:</b> <code>${(pep.authHash || '').slice(0, 24)}...</code>`);
+        return;
+      }
+    }
+
     // Deep link отслеживания: /start track_ОБР-26_ЖКХ-0001
     if (param.startsWith('track_')) {
       const rawCaseId = param.replace('track_', '');

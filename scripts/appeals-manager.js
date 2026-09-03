@@ -243,6 +243,51 @@ class AppealsManager {
   }
 
   /**
+   * Фиксация подписания простой электронной подписью (ПЭП) по 63-ФЗ с фиксацией аудиторских метаданных
+   */
+  signAppealWithPep(caseId, auditInfo = {}) {
+    const db = loadAppealsDb();
+    const appeal = this.getAppeal(caseId);
+    if (!appeal) return null;
+
+    const crypto = require('crypto');
+    const nowStr = new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Samara' });
+    const profileId = String(auditInfo.profileId || auditInfo.telegramId || auditInfo.vkId || 'WEB_AUTH');
+    const authMethod = auditInfo.authMethod || (auditInfo.telegramId ? 'TELEGRAM_AUTH' : (auditInfo.vkId ? 'VK_ID' : 'WEB_DIRECT'));
+    
+    const authHash = crypto.createHash('sha256')
+      .update(`${appeal.caseId}:${profileId}:${authMethod}:${nowStr}:YUG_PRAVO_PEP_LEGALTECH_2026`)
+      .digest('hex');
+
+    const idx = db.appeals.findIndex(a => a.caseId === appeal.caseId);
+    if (idx !== -1) {
+      db.appeals[idx].pepAudit = {
+        signed: true,
+        caseId: appeal.caseId,
+        authMethod: authMethod,
+        profileId: profileId,
+        username: auditInfo.username || '',
+        signedAt: nowStr,
+        ip: auditInfo.ip || '127.0.0.1',
+        authHash: authHash
+      };
+      db.appeals[idx].status = 'SIGNED';
+      db.appeals[idx].statusText = '✅ Подписано ПЭП (в работе)';
+      db.appeals[idx].updatedAt = nowStr;
+
+      if (auditInfo.telegramId) {
+        db.appeals[idx].telegramId = auditInfo.telegramId;
+        if (auditInfo.username) db.appeals[idx].telegramUsername = auditInfo.username;
+      }
+
+      saveAppealsDb(db);
+      this.syncToYandexDisk();
+      return db.appeals[idx];
+    }
+    return null;
+  }
+
+  /**
    * Изменение статуса дела специалистом
    */
   updateStatus(caseId, newStatus, note = '', specialistName = 'Специалист АНО «ЮГ-ПРАВО»') {

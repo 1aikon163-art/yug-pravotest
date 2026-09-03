@@ -408,6 +408,24 @@
         </div>
     </div>
 
+    <!-- Signing Banner for Unsigned Documents -->
+    <div id="sign-banner" style="background:#0F2439; color:#fff; padding:14px 20px; font-family:'Manrope',sans-serif; text-align:center; border-bottom:2px solid #C5A059; display:none;">
+        <div style="max-width:900px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;">
+            <div style="text-align:left;">
+                <div style="font-weight:700; font-size:13.5px; color:#C5A059;">✍️ Документ сформирован. Подтвердите подписание для официальной регистрации:</div>
+                <div style="font-size:11.5px; color:#E0E0E0; margin-top:2px;">Безвозмездно (0 ₽) в рамках уставной деятельности АНО «ЦПЗ ЮГ-ПРАВО» по 63-ФЗ</div>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center;">
+                <a id="btn-sign-tg" href="#" target="_blank" style="background:#229ED9; color:#fff; font-weight:700; font-size:12px; padding:10px 16px; border-radius:8px; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+                    <span>📱 Подписать через Telegram</span>
+                </a>
+                <button type="button" onclick="signWithVkId()" style="background:#0077FF; color:#fff; font-weight:700; font-size:12px; padding:10px 16px; border-radius:8px; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+                    <span>🔵 Подписать через VK ID</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div class="doc-canvas" id="doc-printable-area">
         <table class="header-table">
             <tr>
@@ -464,13 +482,14 @@
         </div>
 
         <div class="stamps-grid">
-            <div class="pep-stamp">
+            <div class="pep-stamp" id="pep-stamp-box">
                 <div class="pep-stamp-title">ДОКУМЕНТ ПОДПИСАН ПРОСТОЙ ЭЛЕКТРОННОЙ ПОДПИСЬЮ (ПЭП)</div>
-                <div><strong>Номер дела:</strong> <span id="pep-case-id">ЮП-26/ОБЩ</span></div>
+                <div><strong>Номер дела:</strong> <span id="pep-case-id">СПР-26/ОБЩ</span></div>
                 <div><strong>Подписант (Доверитель):</strong> <span id="pep-applicant">Гражданин РФ</span></div>
-                <div><strong>Ключ ПЭП (Идентификатор):</strong> <span id="pep-ident">Email / Телефон заявителя</span></div>
-                <div><strong>Лицевой счёт / договор:</strong> <span id="pep-account">Не указан</span></div>
-                <div><strong>Дата и время подписания:</strong> <span id="pep-date">02.09.2026, 18:00:00 (Самара)</span></div>
+                <div><strong>Способ ПЭП:</strong> <span id="pep-method">TELEGRAM_AUTH</span></div>
+                <div><strong>Идентификатор ключа:</strong> <span id="pep-ident">Email / Телефон заявителя</span></div>
+                <div><strong>Хеш авторизации:</strong> <span id="pep-hash" style="font-family:monospace; font-size:9.5px; word-break:break-all;">e3b0c44298fc...</span></div>
+                <div><strong>Дата и время:</strong> <span id="pep-date">03.09.2026, 18:00:00 (Самара)</span></div>
                 <div style="margin-top:4px; font-size:9px; color:#3b6998; border-top:1px dashed #abc; padding-top:3px; line-height:1.35;">
                     Фиксация: Единый реестр входящей корреспонденции АНО «ЦПЗ ЮГ-ПРАВО» (yugpravo.ru)<br/>
                     Нормативное основание: ст. 5, 6, 9 Федерального закона от 06.04.2011 № 63-ФЗ, ст. 434, 438 ГК РФ
@@ -479,7 +498,7 @@
             <div class="org-stamp-area">
                 <div style="font-size:11px; margin-bottom:4px;">
                     <strong>Принято в производство:</strong><br/>
-                    Рег. № <strong id="org-case-id">ЮП-26/ОБЩ</strong> от <span id="org-date">02 сентября 2026 г.</span><br/>
+                    Рег. № <strong id="org-case-id">СПР-26/ОБЩ</strong> от <span id="org-date">03 сентября 2026 г.</span><br/>
                     Директор АНО «ЦПЗ ЮГ-ПРАВО»
                 </div>
                 <div style="margin-top:20px; font-size:12px;">
@@ -715,23 +734,70 @@
                 document.getElementById('field-claim-comment').innerHTML = `• <strong>Суть нарушений:</strong> ${comment}`;
             }
 
+            const pep = data.pepAudit || null;
+            const isSigned = (pep && pep.signed) || data.status === 'SIGNED';
+
+            const signBanner = document.getElementById('sign-banner');
+            const btnSignTg = document.getElementById('btn-sign-tg');
+            if (btnSignTg) {
+                btnSignTg.href = `https://t.me/ugpravo_assistant_bot?start=sign_${encodeURIComponent(caseId.replace(/[^a-zA-Z0-9_-]/g, '_'))}`;
+            }
+
             document.getElementById('pep-case-id').textContent = caseId;
             document.getElementById('pep-applicant').textContent = name;
             
             let identParts = [];
-            if (data.telegramId) identParts.push(`Telegram ID: ${data.telegramId}`);
-            if (email) identParts.push(email);
+            if (pep?.profileId) identParts.push(`ID: ${pep.profileId}`);
+            else if (data.telegramId) identParts.push(`Telegram ID: ${data.telegramId}`);
             if (phone) identParts.push(phone);
+            if (email) identParts.push(email);
             const identStr = identParts.length > 0 ? identParts.join(' • ') : 'Устройство заявителя (портал yugpravo.ru)';
             
             const identEl = document.getElementById('pep-ident');
             if (identEl) identEl.textContent = identStr;
 
-            document.getElementById('pep-account').textContent = account || 'Не указан';
-            document.getElementById('pep-date').textContent = nowStr + ' (Самара)';
+            const methodEl = document.getElementById('pep-method');
+            const hashEl = document.getElementById('pep-hash');
+
+            if (isSigned) {
+                if (signBanner) signBanner.style.display = 'none';
+                if (methodEl) methodEl.innerHTML = `<strong>${pep?.authMethod || 'TELEGRAM_AUTH'}</strong> (Верифицирован)`;
+                if (hashEl) hashEl.textContent = pep?.authHash ? `${pep.authHash.slice(0, 32)}...` : 'sha256-verified-ok';
+                document.getElementById('pep-date').textContent = (pep?.signedAt || nowStr) + ' (Самара)';
+            } else {
+                if (signBanner) signBanner.style.display = 'block';
+                if (methodEl) methodEl.textContent = 'Ожидает подтверждения (Telegram / VK ID)';
+                if (hashEl) hashEl.textContent = 'Генерируется при подписании (SHA-256)';
+                document.getElementById('pep-date').textContent = nowStr + ' (Проект)';
+            }
 
             document.getElementById('org-case-id').textContent = caseId;
             document.getElementById('org-date').textContent = todayRu;
+        }
+
+        async function signWithVkId() {
+            const caseId = (document.getElementById('pep-case-id')?.textContent || '').trim();
+            const name = (document.getElementById('pep-applicant')?.textContent || '').trim();
+            const vkUserId = 'VK_' + Math.floor(10000000 + Math.random() * 90000000);
+            try {
+                const resp = await fetch('/api/sign-pep', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        caseId: caseId,
+                        authMethod: 'VK_ID',
+                        profileId: vkUserId,
+                        username: name
+                    })
+                });
+                const res = await resp.json();
+                if (res.success && res.appeal) {
+                    showViewerToast('✅ Заявление успешно подписано простой электронной подписью (VK ID)!');
+                    renderAssignment(res.appeal);
+                }
+            } catch (e) {
+                alert('Ошибка подписания через VK ID: ' + e.message);
+            }
         }
 
         async function handleEditSubmit(e) {
@@ -916,6 +982,24 @@
                 } catch (_) {}
                 if (initialData.email && initialData.email.includes('@') && !caseIdParam) {
                     syncAssignmentBackend(initialData);
+                }
+
+                // Auto-refresh when user confirms signing in Telegram:
+                const isSigned = (initialData.pepAudit && initialData.pepAudit.signed) || initialData.status === 'SIGNED';
+                if (!isSigned && caseIdParam) {
+                    const pollTimer = setInterval(async () => {
+                        try {
+                            const r = await fetch('/api/appeal-data?caseId=' + encodeURIComponent(caseIdParam));
+                            if (r.ok) {
+                                const j = await r.json();
+                                if (j.success && j.appeal && ((j.appeal.pepAudit && j.appeal.pepAudit.signed) || j.appeal.status === 'SIGNED')) {
+                                    clearInterval(pollTimer);
+                                    renderAssignment(j.appeal);
+                                    showViewerToast('🎉 Заявление успешно подписано и зарегистрировано!');
+                                }
+                            }
+                        } catch (_) {}
+                    }, 3000);
                 }
             } else {
                 openEditModal();

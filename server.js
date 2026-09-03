@@ -401,6 +401,7 @@ const server = http.createServer((req, res) => {
             sum: sum,
             law: law,
             comment: comment || record.message,
+            pepAudit: record.pepAudit || null,
             status: record.status,
             statusText: record.statusText,
             createdAt: record.createdAt
@@ -417,6 +418,39 @@ const server = http.createServer((req, res) => {
       res.end(JSON.stringify({ success: false, error: err.message }));
       return;
     }
+  }
+
+  // 2.05. Sign Appeal with PEP Endpoint (/api/sign-pep)
+  if (reqPath === '/api/sign-pep' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', () => {
+      try {
+        const data = JSON.parse(body);
+        const caseId = data.caseId;
+        const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '127.0.0.1';
+        const appealsManager = require('./scripts/appeals-manager.js');
+        const signed = appealsManager.signAppealWithPep(caseId, {
+          authMethod: data.authMethod || 'VK_ID',
+          profileId: data.profileId || data.userId || 'WEB_USER',
+          username: data.username || '',
+          vkId: data.vkId || null,
+          telegramId: data.telegramId || null,
+          ip: clientIp
+        });
+        if (signed) {
+          res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
+          res.end(JSON.stringify({ success: true, appeal: signed, pepAudit: signed.pepAudit }));
+        } else {
+          res.writeHead(404, { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
+          res.end(JSON.stringify({ success: false, error: 'Обращение не найдено' }));
+        }
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
+        res.end(JSON.stringify({ success: false, error: err.message }));
+      }
+    });
+    return;
   }
 
   // 2.1. Lead Submission Endpoint (/api/lead & /api/register-assignment)
