@@ -424,26 +424,64 @@ const server = http.createServer((req, res) => {
   if (reqPath === '/api/sign-pep' && req.method === 'POST') {
     let body = '';
     req.on('data', chunk => { body += chunk; });
-    req.on('end', () => {
+    req.on('end', async () => {
       try {
         const data = JSON.parse(body);
-        const caseId = data.caseId;
+        let caseId = data.caseId;
         const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '127.0.0.1';
         const appealsManager = require('./scripts/appeals-manager.js');
+
+        // If caseId is empty or default, try to find the latest unsigned appeal
+        if (!caseId || caseId === 'СПР-26/0000') {
+          const db = appealsManager.loadAppealsDb();
+          const pending = db.appeals.find(a => a.caseId?.startsWith('СПР-') && (!a.pepAudit?.signed || a.status === 'PENDING_SIGNATURE'));
+          if (pending) caseId = pending.caseId;
+        }
+
+        let profileId = String(data.profileId || data.userId || 'VK_USER');
+        let username = data.username || '';
+        let realName = '';
+
+        // If VK ID verification is available, fetch real user data from VK API
+        const serviceKey = process.env.VK_SERVICE_KEY || '94dabd7d94dabd7d94dabd7d489799fefb994da94dabd7dfe4a26c38bf297341decdb69';
+        if (data.authMethod === 'VK_ID' && serviceKey && /^\d+$/.test(profileId)) {
+          try {
+            const https = require('https');
+            const vkUrl = `https://api.vk.com/method/users.get?user_ids=${profileId}&fields=first_name,last_name,photo_100&access_token=${serviceKey}&v=5.199`;
+            const vkData = await new Promise((resolve) => {
+              https.get(vkUrl, (res) => {
+                let vkBody = '';
+                res.on('data', d => vkBody += d);
+                res.on('end', () => {
+                  try { resolve(JSON.parse(vkBody)); } catch (_) { resolve(null); }
+                });
+              }).on('error', () => resolve(null));
+            });
+
+            if (vkData && vkData.response && vkData.response[0]) {
+              const u = vkData.response[0];
+              realName = `${u.first_name} ${u.last_name}`.trim();
+              username = `vk.com/id${u.id}`;
+            }
+          } catch (_) {}
+        }
+
         const signed = appealsManager.signAppealWithPep(caseId, {
           authMethod: data.authMethod || 'VK_ID',
-          profileId: data.profileId || data.userId || 'WEB_USER',
-          username: data.username || '',
-          vkId: data.vkId || null,
+          profileId: profileId,
+          username: username || ('vk.com/id' + profileId),
+          vkId: profileId,
+          verifiedName: realName,
           telegramId: data.telegramId || null,
           ip: clientIp
         });
+
         if (signed) {
           res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
           res.end(JSON.stringify({ success: true, appeal: signed, pepAudit: signed.pepAudit }));
         } else {
           res.writeHead(404, { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
-          res.end(JSON.stringify({ success: false, error: 'Обращение не найдено' }));
+          res.end(JSON.stringify({ success: false, error: 'Обращение не найдено в реестре' }));
         }
       } catch (err) {
         res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
