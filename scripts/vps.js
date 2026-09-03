@@ -26,6 +26,7 @@ conn.on('ready', () => {
         ['scripts/appeals-manager.js', '/var/www/yug-pravo/scripts/appeals-manager.js'],
         ['scripts/excel-registry-generator.js', '/var/www/yug-pravo/scripts/excel-registry-generator.js'],
         ['scripts/yandex-disk-sync.js', '/var/www/yug-pravo/scripts/yandex-disk-sync.js'],
+        ['scripts/sync-disk.js', '/var/www/yug-pravo/scripts/sync-disk.js'],
         ['scripts/mailer.js', '/var/www/yug-pravo/scripts/mailer.js'],
         ['server.js', '/var/www/yug-pravo/server.js'],
         ['js/forms.js', '/var/www/yug-pravo/js/forms.js'],
@@ -36,21 +37,24 @@ conn.on('ready', () => {
 
       // Также исправляем записи в appeals.json на VPS и сразу синхронизируем с Яндекс Диском
       const fixDbCommand = `node -e "
-        const fs = require('fs');
-        const p = '/var/www/yug-pravo/data/appeals.json';
-        if (fs.existsSync(p)) {
-          const db = JSON.parse(fs.readFileSync(p, 'utf-8'));
-          db.appeals.forEach(a => {
-            if (a.caseId && a.caseId.startsWith('ОБР')) {
-              a.docType = 'appeal';
-              a.docTypeLabel = 'Обращение';
-              a.docPrefix = '📩';
-            }
-          });
-          fs.writeFileSync(p, JSON.stringify(db, null, 2));
-        }
-        const m = require('./scripts/appeals-manager.js');
-        m.syncToYandexDisk();
+        (async () => {
+          const fs = require('fs');
+          const p = '/var/www/yug-pravo/data/appeals.json';
+          if (fs.existsSync(p)) {
+            const db = JSON.parse(fs.readFileSync(p, 'utf-8'));
+            db.appeals.forEach(a => {
+              if (a.caseId && a.caseId.startsWith('ОБР')) {
+                a.docType = 'appeal';
+                a.docTypeLabel = 'Обращение';
+                a.docPrefix = '📩';
+              }
+            });
+            fs.writeFileSync(p, JSON.stringify(db, null, 2));
+          }
+          const m = require('./scripts/appeals-manager.js');
+          await m.syncToYandexDisk();
+          console.log('✅ Live Yandex Disk Registry Synchronized from VPS DB!');
+        })();
       " && pm2 reload all`;
 
       let done = 0;
@@ -60,15 +64,28 @@ conn.on('ready', () => {
           else console.log('✅ VPS Updated:', loc);
           done++;
           if (done === files.length) {
-            conn.exec(fixDbCommand, (err, stream) => {
-              stream.on('data', d => process.stdout.write(d));
-              stream.on('close', () => {
-                console.log('⚡ All live services reloaded.');
-                conn.end();
+            // Also pull live database to local workspace:
+            sftp.fastGet('/var/www/yug-pravo/data/appeals.json', './data/appeals.json', (eGet) => {
+              if (!eGet) console.log('📥 Pulled live appeals.json to local workspace.');
+              conn.exec(fixDbCommand, (err, stream) => {
+                stream.on('data', d => process.stdout.write(d));
+                stream.on('close', () => {
+                  console.log('⚡ All live services reloaded.');
+                  conn.end();
+                });
               });
             });
           }
         });
+      });
+    });
+  } else if (action === 'pull-db') {
+    conn.sftp((err, sftp) => {
+      if (err) throw err;
+      sftp.fastGet('/var/www/yug-pravo/data/appeals.json', './data/appeals.json', (e) => {
+        if (e) console.error('Pull err:', e);
+        else console.log('✅ Live appeals.json successfully downloaded from VPS!');
+        conn.end();
       });
     });
   } else if (action === 'status') {

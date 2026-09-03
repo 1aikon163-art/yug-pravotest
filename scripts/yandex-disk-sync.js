@@ -160,7 +160,17 @@ class YandexDiskRegistry {
         res.on('data', c => data += c);
         res.on('end', () => {
           try {
-            const uploadUrl = JSON.parse(data).href;
+            const parsed = JSON.parse(data);
+            if (parsed.error) {
+              if (parsed.error === 'DiskResourceLockedError') {
+                console.warn(`⚠️ [YandexDisk] Файл ${diskFilePath} заблокирован (открыт во встроенном редакторе Яндекс Документов в браузере).`);
+              } else {
+                console.warn(`⚠️ [YandexDisk] Upload URL API error for ${diskFilePath}:`, parsed.message || parsed.error);
+              }
+              return resolve(false);
+            }
+
+            const uploadUrl = parsed.href;
             if (!uploadUrl) return resolve(false);
 
             const putReq = https.request(uploadUrl, {
@@ -170,17 +180,29 @@ class YandexDiskRegistry {
                 'Content-Length': buffer.length
               }
             }, (putRes) => {
-              resolve(putRes.statusCode === 201 || putRes.statusCode === 200);
+              if (putRes.statusCode === 201 || putRes.statusCode === 200) {
+                resolve(true);
+              } else {
+                console.warn(`⚠️ [YandexDisk] PUT status ${putRes.statusCode} for ${diskFilePath}`);
+                resolve(false);
+              }
             });
 
-            putReq.on('error', () => resolve(false));
+            putReq.on('error', (e) => {
+              console.warn(`⚠️ [YandexDisk] PUT request error:`, e.message);
+              resolve(false);
+            });
             putReq.write(buffer);
             putReq.end();
-          } catch (_) {
+          } catch (e) {
+            console.warn(`⚠️ [YandexDisk] Parse upload response error:`, e.message);
             resolve(false);
           }
         });
-      }).on('error', () => resolve(false));
+      }).on('error', (e) => {
+        console.warn(`⚠️ [YandexDisk] GET upload URL error:`, e.message);
+        resolve(false);
+      });
     });
   }
 
