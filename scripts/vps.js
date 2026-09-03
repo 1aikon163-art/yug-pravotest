@@ -35,7 +35,8 @@ conn.on('ready', () => {
         ['calculator.html', '/var/www/yug-pravo/calculator.html'],
         ['contacts.html', '/var/www/yug-pravo/contacts.html'],
         ['initiatives.html', '/var/www/yug-pravo/initiatives.html'],
-        ['events.html', '/var/www/yug-pravo/events.html'],
+        ['docs/terms.txt', '/var/www/yug-pravo/docs/terms.txt'],
+        ['docs/donation-offer.txt', '/var/www/yug-pravo/docs/donation-offer.txt'],
         ['index.html', '/var/www/yug-pravo/index.html']
       ];
 
