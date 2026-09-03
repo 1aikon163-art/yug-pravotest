@@ -413,9 +413,9 @@ async function handleMessage(msg) {
     const parts = text.split(' ');
     const param = parts[1] || '';
 
-    // Deep link подписания ПЭП: /start sign_СПР-26_0001
-    if (param.startsWith('sign_')) {
-      const rawCaseId = param.replace('sign_', '');
+    // Deep link подписания ПЭП: /start sign_2975 или /start sign_СПР-26_2975
+    if (param.toLowerCase().startsWith('sign')) {
+      const rawCaseId = param.replace(/^sign_?/i, '');
       const appeal = appealsManager.getAppeal(rawCaseId);
 
       if (appeal) {

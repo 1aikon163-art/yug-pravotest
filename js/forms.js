@@ -184,9 +184,9 @@ function showCaseReceiptModal(data) {
   const isContract   = data.isContract || (data.caseId && data.caseId.startsWith('ДОГ-'));
   const docTitle = isAssignment ? 'Заявление-поручение сформировано' : (data.docTypeLabel || 'Обращение зарегистрировано');
   
-  const cleanId = data.caseId.replace(/[^a-zA-Z0-9_-]/g, '_');
-  const signTgUrl = `https://t.me/ugpravo_assistant_bot?start=sign_${cleanId}`;
-  const trackTgUrl = data.tgLink || `https://t.me/ugpravo_assistant_bot?start=track_${cleanId}`;
+  const last4 = (data.caseId.match(/\d{4}$/) || [data.caseId.replace(/\D/g, '').slice(-4)])[0] || data.caseId;
+  const signTgUrl = `https://t.me/ugpravo_assistant_bot?start=sign_${last4}`;
+  const trackTgUrl = data.tgLink || `https://t.me/ugpravo_assistant_bot?start=track_${last4}`;
 
   modal.innerHTML = `
     <div class="modal-container p-6 sm:p-7 max-w-md shadow-xl relative animate-fade-in" style="background:#ffffff; border:1px solid #E0E0E0; border-radius:16px;">
