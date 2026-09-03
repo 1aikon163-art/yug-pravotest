@@ -420,9 +420,7 @@
                 <a id="btn-sign-tg" href="#" target="_blank" style="background:#229ED9; color:#fff; font-weight:700; font-size:12px; padding:10px 16px; border-radius:8px; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
                     <span>📱 Подписать через Telegram</span>
                 </a>
-                <button id="btn-sign-vk" type="button" onclick="signWithVkId()" style="background:#0077FF; color:#fff; font-weight:700; font-size:12px; padding:10px 16px; border-radius:8px; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
-                    <span>🔵 Подписать через VK ID</span>
-                </button>
+                <div id="vk-onetap-box" style="display:inline-block; vertical-align:middle; min-height:40px;"></div>
             </div>
         </div>
     </div>
@@ -797,20 +795,74 @@
             document.getElementById('org-date').textContent = todayRu;
         }
 
-        async function signWithVkId() {
-            const params = new URLSearchParams(window.location.search);
-            const caseId = (window._currentAssignmentData && window._currentAssignmentData.caseId) || params.get('caseId') || params.get('id') || (document.getElementById('pep-case-id')?.textContent || '').trim() || 'СПР-26/0000';
-            
-            const btn = document.getElementById('btn-sign-vk');
-            if (btn) {
-                btn.disabled = true;
-                btn.innerHTML = '<span>⏳ Переход в VK ID...</span>';
+        function renderVkOneTap() {
+            if (typeof window.VKIDSDK === 'undefined') {
+                console.warn('VKIDSDK not loaded');
+                return;
             }
+            const VKID = window.VKIDSDK;
+            const container = document.getElementById('vk-onetap-box');
+            if (!container) return;
 
-            const vkAuthUrl = `https://oauth.vk.com/authorize?client_id=54739846&display=page&redirect_uri=${encodeURIComponent('https://yugpravo.ru/assignment-viewer.html')}&response_type=code&v=5.199&state=${encodeURIComponent(caseId)}`;
-            window.location.href = vkAuthUrl;
+            try {
+                VKID.Config.init({
+                    app: 54739846,
+                    redirectUrl: 'https://yugpravo.ru/assignment-viewer.html',
+                    responseMode: VKID.ConfigResponseMode.Callback,
+                    source: VKID.ConfigSource.LOWCODE,
+                    scope: '',
+                });
+
+                const oneTap = new VKID.OneTap();
+                oneTap.render({
+                    container: container,
+                    showAlternativeLogin: true,
+                    styles: {
+                        width: 220,
+                        height: 40,
+                        borderRadius: 8
+                    }
+                })
+                .on(VKID.WidgetEvents.ERROR, function(err) {
+                    console.error('VKID Widget Error:', err);
+                })
+                .on(VKID.OneTapInternalEvents.LOGIN_SUCCESS, function(payload) {
+                    const code = payload.code;
+                    const deviceId = payload.device_id;
+                    showViewerToast('🔐 Верификация VK ID и подписание документа...');
+
+                    VKID.Auth.exchangeCode(code, deviceId)
+                        .then(async function(data) {
+                            const uId = data.user_id || (data.user && data.user.id) || '54739846';
+                            const params = new URLSearchParams(window.location.search);
+                            const caseId = (window._currentAssignmentData && window._currentAssignmentData.caseId) || params.get('caseId') || params.get('id') || 'СПР-26/0000';
+
+                            const resp = await fetch('/api/sign-pep', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json; charset=utf-8' },
+                                body: JSON.stringify({
+                                    caseId: caseId,
+                                    authMethod: 'VK_ID',
+                                    profileId: String(uId),
+                                    token: data.access_token || data.token || ''
+                                })
+                            });
+                            const res = await resp.json();
+                            if (res.success && res.appeal) {
+                                window._currentAssignmentData = res.appeal;
+                                renderAssignment(res.appeal);
+                                showViewerToast('🎉 Заявление успешно подписано ПЭП через VK ID!');
+                            }
+                        })
+                        .catch(function(err) {
+                            console.error('VKID exchangeCode error:', err);
+                        });
+                });
+            } catch (e) {
+                console.error('OneTap render error:', e);
+            }
         }
-        window.signWithVkId = signWithVkId;
+        window.addEventListener('load', renderVkOneTap);
 
         async function handleEditSubmit(e) {
             e.preventDefault();
