@@ -1548,7 +1548,7 @@
             <!-- Form (Scrollable) -->
             <form id="delegate-form" onsubmit="submitDelegationForm(event)" class="overflow-y-auto flex-1 pr-1 space-y-3">
                 <input type="hidden" id="delegate-calc-data" name="calculation_data" value="" />
-                <input type="hidden" name="direction" value="info@yugpravo.ru" />
+                <input type="hidden" id="delegate-target-alias" name="target_alias" value="info@yugpravo.ru" />
 
                 <div>
                     <label class="block text-[11px] font-semibold text-[#0F2439] mb-1" for="delegate-name">
@@ -2402,7 +2402,7 @@
             const email = document.getElementById('delegate-email').value.trim();
             const comment = document.getElementById('delegate-comment').value.trim();
             const accountNo = document.getElementById('delegate-account') ? document.getElementById('delegate-account').value.trim() : '';
-            const targetAlias = document.getElementById('delegate-target-alias').value || 'info@yugpravo.ru';
+            const targetAlias = document.getElementById('delegate-target-alias')?.value || 'info@yugpravo.ru';
             const calcData = document.getElementById('delegate-calc-data').value || '';
             const submitBtn = document.getElementById('delegate-submit-btn');
 
