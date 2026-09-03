@@ -32,6 +32,9 @@ conn.on('ready', () => {
         ['js/forms.js', '/var/www/yug-pravo/js/forms.js'],
         ['assignment-viewer.html', '/var/www/yug-pravo/assignment-viewer.html'],
         ['calculator.html', '/var/www/yug-pravo/calculator.html'],
+        ['contacts.html', '/var/www/yug-pravo/contacts.html'],
+        ['initiatives.html', '/var/www/yug-pravo/initiatives.html'],
+        ['events.html', '/var/www/yug-pravo/events.html'],
         ['index.html', '/var/www/yug-pravo/index.html']
       ];
 
