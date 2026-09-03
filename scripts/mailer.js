@@ -102,7 +102,11 @@ async function sendAutoReply(leadData) {
     </div>
     <div class="body">
       <p style="font-size: 16px; font-weight: 600; color: #0F2439; margin-top: 0;">${applicantGreeting}</p>
-      <p>Уведомляем, что ваше электронное обращение успешно зарегистрировано в едином реестре учета входящей корреспонденции Автономной некоммерческой организации «Центр правовой защиты и развития гражданских инициатив ЮГ-ПРАВО».</p>
+      ${isAssignment ? `
+      <p>Сформирован официальный проект Заявления-поручения на безвозмездное досудебное содействие в защиту нарушенных прав.</p>
+      ` : `
+      <p>Уведомляем, что ваше электронное обращение зарегистрировано в едином реестре учета корреспонденции Автономной некоммерческой организации «Центр правовой защиты и развития гражданских инициатив ЮГ-ПРАВО».</p>
+      `}
       
       <div class="case-box">
         <div class="case-title">Регистрационный номер ${docTypeTitle}:</div>
@@ -115,32 +119,26 @@ async function sendAutoReply(leadData) {
         </div>
       </div>
 
-      <p>Материалы переданы в работу для детального рассмотрения ситуации и правового анализа. Рассмотрение осуществляется в порядке процессуальной очерёдности поступления.</p>
-      
-      <div style="margin: 20px 0; padding: 14px 16px; background: #F8F7F4; border-radius: 8px; border: 1px solid #E0E0E0; font-size: 12px; color: #2C3E50; line-height: 1.55;">
-        <div style="font-weight: bold; color: #0F2439; margin-bottom: 8px; font-size: 12.5px;">⚖️ Регламент и условия содействия:</div>
-        <div style="margin-bottom: 6px;">
-          • <strong>Досудебное содействие — 0 ₽ (бесплатно):</strong> подготовка и направление требования с гербовой печатью АНО осуществляются безвозмездно в рамках уставной правозащитной деятельности СО НКО. Потребители и организация освобождены от госпошлины (пп. 4 п. 2 ст. 333.36 НК РФ).
-        </div>
-        <div style="margin-bottom: 6px;">
-          • <strong>Судебное представительство:</strong> в случае отказа или уклонения ответчика от добровольного удовлетворения требований судебная защита оформляется отдельным договором на индивидуальных условиях (расходы на представителя заявляются ко взысканию с виновного лица по ст. 100 ГПК РФ).
-        </div>
-        <div>
-          • <strong>Конфиденциальность (152-ФЗ):</strong> персональные данные и текст обращения обрабатываются в защищенном контуре в строгом соответствии с требованиями Федерального закона № 152-ФЗ.
-        </div>
-      </div>
-
+      ${isAssignment ? `
+      <p>Для официальной передачи поручения в производство подтвердите подписание простой электронной подписью (63-ФЗ) через Telegram либо откройте проект документа:</p>
       <div style="margin: 22px 0; text-align: center;">
-        ${(isAssignment || isContract) ? `
-        <a href="https://yugpravo.ru/assignment-viewer.html?caseId=${encodeURIComponent(caseId)}" style="display: inline-block; background: #0F2439; color: #ffffff; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 13px; margin-right: 6px; margin-bottom: 8px;">
-          ${isContract ? '📜 Открыть подписанный договор' : '📄 Скачать Заявление-поручение (ПЭП 63-ФЗ)'}
-        </a>` : ''}
+        <a href="https://t.me/ugpravo_assistant_bot?start=sign_${caseSeq}" style="display: inline-block; background: #229ED9; color: #ffffff; padding: 12px 22px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 13.5px; margin-bottom: 8px; margin-right: 6px;">
+          📱 Подписать через Telegram (в 1 клик)
+        </a>
+        <a href="https://yugpravo.ru/assignment-viewer.html?caseId=${encodeURIComponent(caseId)}" style="display: inline-block; background: #0F2439; color: #ffffff; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 13px; margin-bottom: 8px;">
+          📄 Открыть проект Заявления
+        </a>
+      </div>
+      ` : `
+      <p>Материалы переданы в работу для рассмотрения и правового анализа. Рассмотрение осуществляется в порядке процессуальной очерёдности поступления.</p>
+      <div style="margin: 22px 0; text-align: center;">
         <a href="https://t.me/ugpravo_assistant_bot?start=track_${caseSeq}" style="display: inline-block; background: #229ED9; color: #ffffff; padding: 12px 22px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 13.5px; margin-bottom: 8px;">
           📱 Отслеживать статус в Telegram
         </a>
       </div>
+      `}
 
-      <p>При необходимости уточнения деталей или запроса дополнительных материалов специалист организации свяжется с вами по указанным контактам. Вы также можете отправить дополнительные документы ответным письмом на этот адрес.</p>
+      <p style="font-size: 12.5px; color: #5F5E5E;">При необходимости уточнения деталей специалист организации свяжется с вами по указанным контактам. Вы также можете направить дополнительные материалы ответным письмом на этот адрес.</p>
       
       <div style="margin-top: 24px; padding: 12px; background: #F8F7F4; border-radius: 6px; font-size: 11px; color: #757575; line-height: 1.4; border: 1px solid #E8E7E2;">
         ℹ️ <strong>Информация об адресе:</strong> Данное системное уведомление направлено с адреса <code>info@yugpravo.ru</code> на почту <code>${email}</code>, указанную при подаче электронного обращения на официальном портале <a href="https://yugpravo.ru" style="color: #0F2439;">yugpravo.ru</a>. Если вы не подавали обращение и адрес был указан ошибочно, пожалуйста, проигнорируйте данное сообщение.
