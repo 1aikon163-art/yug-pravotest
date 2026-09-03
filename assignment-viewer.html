@@ -748,7 +748,11 @@
 
             const btnSignVk = document.getElementById('btn-sign-vk');
             if (btnSignVk) {
-                btnSignVk.href = `https://id.vk.com/auth?app_id=54739846&response_type=code&redirect_uri=${encodeURIComponent('https://yugpravo.ru/assignment-viewer.html')}&state=${encodeURIComponent(caseId)}`;
+                btnSignVk.onclick = function() {
+                    localStorage.setItem('yugpravo_signing_caseId', caseId);
+                };
+                const safeState = caseId.replace(/[^a-zA-Z0-9]/g, '_');
+                btnSignVk.href = `https://id.vk.com/auth?app_id=54739846&response_type=code&redirect_uri=${encodeURIComponent('https://yugpravo.ru/assignment-viewer.html')}&state=${safeState}`;
             }
 
             document.getElementById('pep-case-id').textContent = caseId;
@@ -1025,14 +1029,17 @@
 
             // 0. Check for VK OAuth return code (1-click verification)
             const vkCode = params.get('code');
-            const vkState = params.get('state') || caseIdParam;
+            const savedCaseId = localStorage.getItem('yugpravo_signing_caseId') || '';
+            const vkState = params.get('state') || '';
+            const targetCaseId = (caseIdParam && caseIdParam !== 'СПР-26/0000') ? caseIdParam : (savedCaseId || 'СПР-26/0000');
+
             if (vkCode) {
                 showViewerToast('🔐 Верификация VK ID и подписание документа...');
                 try {
                     const resp = await fetch('/api/vk-oauth-callback', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json; charset=utf-8' },
-                        body: JSON.stringify({ code: vkCode, caseId: vkState })
+                        body: JSON.stringify({ code: vkCode, caseId: targetCaseId })
                     });
                     const res = await resp.json();
                     if (res.success && res.appeal) {
