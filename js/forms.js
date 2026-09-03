@@ -272,42 +272,10 @@ function showCaseReceiptModal(data) {
   `;
 
   modal.classList.add('active');
-window.signModalWithVk = async function(caseId) {
-  try {
-    const clientProfile = JSON.parse(localStorage.getItem('yugpravo_client_profile') || '{}');
-    const vkUserId = clientProfile.vkId || String(Math.floor(70000000 + Math.random() * 29000000));
-    
-    const resp = await fetch('/api/sign-pep', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
-      body: JSON.stringify({
-        caseId: caseId,
-        authMethod: 'VK_ID',
-        profileId: vkUserId,
-        username: 'vk.com/id' + vkUserId
-      })
-    });
-    const res = await resp.json();
-    if (res.success) {
-      const statusRow = document.getElementById('receipt-status-row');
-      if (statusRow) {
-        statusRow.innerHTML = '<span class="text-[#7A7974]">Статус:</span><span class="font-bold text-emerald-700">✅ Подписано ПЭП (VK ID: ' + vkUserId + ')</span>';
-      }
-      const actionsBlock = document.getElementById('receipt-actions-block');
-      if (actionsBlock) {
-        actionsBlock.innerHTML = `
-          <a href="/assignment-viewer.html?caseId=${encodeURIComponent(caseId)}" style="display:block; text-align:center; background:#0F2439; color:#fff; font-weight:bold; font-size:13px; padding:12px; border-radius:8px; text-decoration:none; margin-top:10px;">
-            📄 Открыть подписанное Заявление (ПЭП 63-ФЗ)
-          </a>
-        `;
-      }
-      if (window.showToast) window.showToast('✅ Заявление успешно подписано ПЭП через VK ID!', 'success');
-    } else {
-      alert('Ошибка авторизации VK ID: ' + (res.error || 'Не удалось зарегистрировать'));
-    }
-  } catch (err) {
-    alert('Ошибка авторизации VK ID: ' + err.message);
-  }
+window.signModalWithVk = function(caseId) {
+  const redirectUri = encodeURIComponent('https://yugpravo.ru/assignment-viewer.html');
+  const vkAuthUrl = `https://oauth.vk.com/authorize?client_id=54739846&display=page&redirect_uri=${redirectUri}&response_type=code&scope=email,offline&v=5.199&state=${encodeURIComponent(caseId)}`;
+  window.location.href = vkAuthUrl;
 };
 
 window.closeReceiptModal = function() {
