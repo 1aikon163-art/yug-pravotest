@@ -1001,6 +1001,21 @@
             const params = new URLSearchParams(window.location.search);
             const caseIdParam = params.get('caseId') || params.get('id') || 'СПР-26/0000';
 
+            // Initialize VK ID SDK Config once
+            if (window.VKIDSDK) {
+                try {
+                    window.VKIDSDK.Config.init({
+                        app: 54739846,
+                        redirectUrl: 'https://yugpravo.ru/assignment-viewer.html',
+                        responseMode: window.VKIDSDK.ConfigResponseMode.Callback,
+                        source: window.VKIDSDK.ConfigSource.LOWCODE,
+                        scope: '',
+                    });
+                } catch(e) {
+                    console.error('VKID Config init error:', e);
+                }
+            }
+
             let initialData = null;
 
             // 0. Check for VK OAuth return code (1-click verification)
