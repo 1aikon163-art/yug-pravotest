@@ -416,14 +416,11 @@
                 <div style="font-weight:700; font-size:13.5px; color:#C5A059;">✍️ Документ сформирован. Подтвердите подписание для официальной регистрации:</div>
                 <div style="font-size:11.5px; color:#E0E0E0; margin-top:2px;">Безвозмездно (0 ₽) в рамках уставной деятельности АНО «ЦПЗ ЮГ-ПРАВО» по 63-ФЗ</div>
             </div>
-            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+            <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
                 <a id="btn-sign-tg" href="#" target="_blank" style="background:#229ED9; color:#fff; font-weight:700; font-size:12px; padding:10px 16px; border-radius:8px; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
                     <span>📱 Подписать через Telegram</span>
                 </a>
-                <div id="VkIdSdkOneTap" style="display:inline-block; vertical-align:middle; min-height:40px;"></div>
-                <button id="btn-sign-direct-pep" type="button" onclick="signDirectWebPep()" style="background:#1B7A4A; color:#fff; font-weight:700; font-size:12px; padding:10px 16px; border-radius:8px; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
-                    <span>✍️ Подписать на сайте (ПЭП 63-ФЗ)</span>
-                </button>
+                <div id="vk-onetap-holder" style="display:inline-block; vertical-align:middle; min-width:240px; min-height:40px;"></div>
             </div>
         </div>
     </div>
@@ -951,45 +948,6 @@
             showViewerToast('Документ скачан в формате Word (.DOC)!');
         }
 
-        async function signDirectWebPep() {
-            const params = new URLSearchParams(window.location.search);
-            const caseId = (window._currentAssignmentData && window._currentAssignmentData.caseId) || params.get('caseId') || params.get('id') || 'СПР-26/0000';
-            const btn = document.getElementById('btn-sign-direct-pep');
-            const origHtml = btn ? btn.innerHTML : '';
-            if (btn) {
-                btn.disabled = true;
-                btn.innerHTML = '<span>⏳ Формирование ПЭП...</span>';
-            }
-            try {
-                const resp = await fetch('/api/sign-pep', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json; charset=utf-8' },
-                    body: JSON.stringify({
-                        caseId: caseId,
-                        authMethod: 'WEB_AUTH_PEP',
-                        profileId: 'WEB_SESSION',
-                        username: 'Веб-портал yugpravo.ru'
-                    })
-                });
-                const res = await resp.json();
-                if (res.success && res.appeal) {
-                    window._currentAssignmentData = res.appeal;
-                    renderAssignment(res.appeal);
-                    showViewerToast('🎉 Заявление успешно подписано ПЭП прямо на сайте!');
-                } else {
-                    alert('Ошибка: ' + (res.error || 'Не удалось подписать'));
-                }
-            } catch (err) {
-                alert('Ошибка соединения: ' + err.message);
-            } finally {
-                if (btn) {
-                    btn.disabled = false;
-                    btn.innerHTML = origHtml;
-                }
-            }
-        }
-        window.signDirectWebPep = signDirectWebPep;
-
         document.addEventListener('DOMContentLoaded', async () => {
             const params = new URLSearchParams(window.location.search);
             const caseIdParam = params.get('caseId') || params.get('id') || 'СПР-26/0000';
@@ -1034,7 +992,7 @@
                         scope: '',
                     });
 
-                    const oneTapContainer = document.getElementById('VkIdSdkOneTap');
+                    const oneTapContainer = document.getElementById('vk-onetap-holder');
                     if (!oneTapContainer) return;
                     oneTapContainer.innerHTML = '';
 
