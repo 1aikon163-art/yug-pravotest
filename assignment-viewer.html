@@ -827,6 +827,7 @@
                 oneTap.render({
                     container: container,
                     showAlternativeLogin: true,
+                    fastAuthEnabled: false,
                     styles: {
                         width: 240
                     }
@@ -843,13 +844,28 @@
                         .then(async function(data) {
                             const uId = data.user_id || (data.user && data.user.id) || '54739846';
                             const params = new URLSearchParams(window.location.search);
-                            const caseId = (window._currentAssignmentData && window._currentAssignmentData.caseId) || params.get('caseId') || params.get('id') || 'СПР-26/0000';
+                            const curData = window._currentAssignmentData || {};
+                            const caseId = curData.caseId || 
+                                           (document.getElementById('org-case-id')?.textContent || '').trim() || 
+                                           (document.getElementById('pep-case-id')?.textContent || '').trim() || 
+                                           params.get('caseId') || 
+                                           params.get('id') || 
+                                           localStorage.getItem('yugpravo_signing_caseId') || 
+                                           'СПР-26/0000';
 
                             const resp = await fetch('/api/sign-pep', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json; charset=utf-8' },
                                 body: JSON.stringify({
                                     caseId: caseId,
+                                    name: curData.name || (document.getElementById('pep-applicant')?.textContent || '').trim(),
+                                    phone: curData.phone || '',
+                                    email: curData.email || '',
+                                    direction: curData.direction || '',
+                                    company: curData.company || '',
+                                    sum: curData.sum || '',
+                                    account: curData.account || '',
+                                    comment: curData.comment || '',
                                     authMethod: 'VK_ID',
                                     profileId: String(uId),
                                     token: data.access_token || data.token || ''

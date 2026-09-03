@@ -466,7 +466,7 @@ const server = http.createServer((req, res) => {
           } catch (_) {}
         }
 
-        const signed = appealsManager.signAppealWithPep(caseId, {
+        let signed = appealsManager.signAppealWithPep(caseId, {
           authMethod: data.authMethod || 'VK_ID',
           profileId: profileId,
           username: username || ('vk.com/id' + profileId),
@@ -476,12 +476,37 @@ const server = http.createServer((req, res) => {
           ip: clientIp
         });
 
+        if (!signed) {
+          appealsManager.createOrUpdateAppeal({
+            caseId: caseId,
+            name: data.name || realName || 'Гражданин (Доверитель)',
+            phone: data.phone || '—',
+            email: data.email || '—',
+            direction: data.direction || 'Правовое содействие',
+            company: data.company || '',
+            account: data.account || '',
+            sum: data.sum || '',
+            comment: data.comment || '',
+            source: 'Заявление-поручение (VK ID)',
+            status: 'SIGNED'
+          });
+          signed = appealsManager.signAppealWithPep(caseId, {
+            authMethod: data.authMethod || 'VK_ID',
+            profileId: profileId,
+            username: username || ('vk.com/id' + profileId),
+            vkId: profileId,
+            verifiedName: realName,
+            telegramId: data.telegramId || null,
+            ip: clientIp
+          });
+        }
+
         if (signed) {
           res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
           res.end(JSON.stringify({ success: true, appeal: signed, pepAudit: signed.pepAudit }));
         } else {
-          res.writeHead(404, { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
-          res.end(JSON.stringify({ success: false, error: 'Обращение не найдено в реестре' }));
+          res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
+          res.end(JSON.stringify({ success: false, error: 'Ошибка сохранения подписи' }));
         }
       } catch (err) {
         res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
