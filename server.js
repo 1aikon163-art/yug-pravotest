@@ -13,6 +13,7 @@ const https = require('https');
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
+const zlib = require('zlib');
 const { getLocalIpAddress, generateQr } = require('./scripts/qr-generator');
 
 // ─── Russian Trusted CA (НУЦ Минцифры) ───────────────────────────────────────
@@ -658,8 +659,18 @@ const server = http.createServer((req, res) => {
     const contentType = mime[ext] || 'application/octet-stream';
     const totalSize = stats.size;
     const range = req.headers.range;
+    const acceptEncoding = req.headers['accept-encoding'] || '';
+    const canGzip = acceptEncoding.includes('gzip') && /^(text\/|application\/javascript|application\/json|image\/svg\+xml)/i.test(contentType);
 
-    // Handle HTML files with auto-injected Live-Reload script
+    // Caching headers
+    let cacheControl = 'public, max-age=86400';
+    if (ext === '.html') {
+      cacheControl = 'public, max-age=60, stale-while-revalidate=300';
+    } else if (['.jpg', '.jpeg', '.png', '.webp', '.svg', '.woff2', '.woff', '.ttf', '.css', '.js'].includes(ext)) {
+      cacheControl = 'public, max-age=604800, immutable';
+    }
+
+    // Handle HTML files
     if (ext === '.html') {
       fs.readFile(filePath, 'utf8', (readErr, htmlContent) => {
         if (readErr) {
@@ -667,18 +678,45 @@ const server = http.createServer((req, res) => {
           return res.end('Server Error');
         }
         let output = htmlContent;
-        const lastBodyIdx = output.lastIndexOf('</body>');
-        if (lastBodyIdx !== -1) {
-          output = output.slice(0, lastBodyIdx) + LIVE_RELOAD_SCRIPT + output.slice(lastBodyIdx);
-        } else {
-          output += LIVE_RELOAD_SCRIPT;
+        // Inject Live-Reload only in dev mode
+        if (process.env.NODE_ENV !== 'production') {
+          const lastBodyIdx = output.lastIndexOf('</body>');
+          if (lastBodyIdx !== -1) {
+            output = output.slice(0, lastBodyIdx) + LIVE_RELOAD_SCRIPT + output.slice(lastBodyIdx);
+          } else {
+            output += LIVE_RELOAD_SCRIPT;
+          }
         }
-        res.writeHead(200, {
-          'Content-Type': contentType,
-          'Cache-Control': 'no-cache',
-          'Access-Control-Allow-Origin': '*'
-        });
-        res.end(output);
+
+        const outBuf = Buffer.from(output, 'utf8');
+        if (acceptEncoding.includes('gzip')) {
+          zlib.gzip(outBuf, (gzipErr, gzipped) => {
+            if (gzipErr) {
+              res.writeHead(200, {
+                'Content-Type': contentType,
+                'Cache-Control': cacheControl,
+                'Access-Control-Allow-Origin': '*'
+              });
+              return res.end(outBuf);
+            }
+            res.writeHead(200, {
+              'Content-Type': contentType,
+              'Content-Encoding': 'gzip',
+              'Vary': 'Accept-Encoding',
+              'Cache-Control': cacheControl,
+              'Access-Control-Allow-Origin': '*'
+            });
+            res.end(gzipped);
+          });
+        } else {
+          res.writeHead(200, {
+            'Content-Type': contentType,
+            'Content-Length': outBuf.length,
+            'Cache-Control': cacheControl,
+            'Access-Control-Allow-Origin': '*'
+          });
+          res.end(outBuf);
+        }
       });
       return;
     }
@@ -702,15 +740,30 @@ const server = http.createServer((req, res) => {
         'Accept-Ranges': 'bytes',
         'Content-Length': chunkSize,
         'Content-Type': contentType,
+        'Cache-Control': cacheControl,
         'Access-Control-Allow-Origin': '*'
       });
 
       fileStream.pipe(res);
+      return;
+    }
+
+    // Compress static assets (css, js, json, svg) if supported
+    if (canGzip) {
+      res.writeHead(200, {
+        'Content-Type': contentType,
+        'Content-Encoding': 'gzip',
+        'Vary': 'Accept-Encoding',
+        'Cache-Control': cacheControl,
+        'Access-Control-Allow-Origin': '*'
+      });
+      fs.createReadStream(filePath).pipe(zlib.createGzip()).pipe(res);
     } else {
       res.writeHead(200, {
         'Content-Length': totalSize,
         'Content-Type': contentType,
         'Accept-Ranges': 'bytes',
+        'Cache-Control': cacheControl,
         'Access-Control-Allow-Origin': '*'
       });
       fs.createReadStream(filePath).pipe(res);
