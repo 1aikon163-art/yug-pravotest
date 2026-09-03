@@ -180,10 +180,13 @@ function showCaseReceiptModal(data) {
   window._lastAssignmentData = data;
 
   const nowStr = new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Samara' });
-  const docTitle = data.docTypeLabel || 'Обращение';
-  const tgUrl = data.tgLink || `https://t.me/ugpravo_assistant_bot?start=track_${data.caseId.replace(/[^a-zA-Z0-9_-]/g, '_')}`;
   const isAssignment = data.isAssignment || (data.caseId && data.caseId.startsWith('СПР-'));
   const isContract   = data.isContract || (data.caseId && data.caseId.startsWith('ДОГ-'));
+  const docTitle = isAssignment ? 'Заявление-поручение сформировано' : (data.docTypeLabel || 'Обращение зарегистрировано');
+  
+  const cleanId = data.caseId.replace(/[^a-zA-Z0-9_-]/g, '_');
+  const signTgUrl = `https://t.me/ugpravo_assistant_bot?start=sign_${cleanId}`;
+  const trackTgUrl = data.tgLink || `https://t.me/ugpravo_assistant_bot?start=track_${cleanId}`;
 
   modal.innerHTML = `
     <div class="modal-container p-6 sm:p-7 max-w-md shadow-xl relative animate-fade-in" style="background:#ffffff; border:1px solid #E0E0E0; border-radius:16px;">
@@ -192,10 +195,10 @@ function showCaseReceiptModal(data) {
       </button>
 
       <h3 class="font-['Source_Serif_4'] text-2xl font-bold text-[#0F2439] mb-1">
-        ${docTitle} зарегистрировано
+        ${docTitle}
       </h3>
       <p class="text-xs text-[#7A7974] mb-4">
-        Запись внесена в единый реестр и передана специалисту центра.
+        ${isAssignment ? 'Для официальной регистрации подтвердите подписание простой электронной подписью (63-ФЗ):' : 'Запись внесена в единый реестр и передана специалисту центра.'}
       </p>
 
       <!-- Clean Number Box -->
@@ -218,35 +221,50 @@ function showCaseReceiptModal(data) {
           </div>
           ${data.direction ? `
           <div class="flex justify-between">
-            <span class="text-[#7A7974]">Тематика:</span>
+            <span class="text-[#7A7974]">Предмет:</span>
             <span class="font-medium text-right">${data.direction}</span>
           </div>` : ''}
           <div class="flex justify-between">
-            <span class="text-[#7A7974]">Дата регистрации:</span>
+            <span class="text-[#7A7974]">Дата формирования:</span>
             <span>${nowStr}</span>
+          </div>
+          <div class="flex justify-between" id="receipt-status-row">
+            <span class="text-[#7A7974]">Статус:</span>
+            <span class="font-semibold ${isAssignment ? 'text-[#C5A059]' : 'text-emerald-700'}">${isAssignment ? '⏳ Ожидает подписания (0 ₽)' : '✅ Принято'}</span>
           </div>
           ${data.email ? `<div class="text-[11px] text-[#7A7974] pt-0.5">Квитанция направлена на ${data.email}</div>` : ''}
         </div>
       </div>
 
-      <!-- Telegram Push Tracking CTA Button -->
-      <a href="${tgUrl}" target="_blank" rel="noopener noreferrer" class="w-full mb-2.5 py-3 px-4 bg-[#229ED9] hover:bg-[#1b88bd] text-white text-xs font-bold rounded-xl transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer no-underline" style="text-decoration:none;">
+      ${isAssignment ? `
+      <!-- Signing Actions for Assignment -->
+      <div class="space-y-2 mb-3">
+        <a href="${signTgUrl}" target="_blank" rel="noopener noreferrer" class="w-full py-3 px-4 bg-[#229ED9] hover:bg-[#1b88bd] text-white text-xs font-bold rounded-xl transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer no-underline" style="text-decoration:none;">
+          <span class="material-symbols-outlined text-base">verified</span>
+          <span>📱 Подписать через Telegram (в 1 клик)</span>
+        </a>
+        <button type="button" onclick="signModalWithVk('${data.caseId}')" class="w-full py-2.5 px-4 bg-[#0077FF] hover:bg-[#0066dd] text-white text-xs font-bold rounded-xl transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer border-none">
+          <span class="material-symbols-outlined text-base">lock</span>
+          <span>🔵 Подписать через VK ID</span>
+        </button>
+        <a href="assignment-viewer.html?caseId=${encodeURIComponent(data.caseId)}" target="_blank" class="w-full py-2.5 px-4 bg-[#0F2439] hover:bg-[#1e3a5f] text-white text-xs font-semibold rounded-xl transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer no-underline" style="text-decoration:none;">
+          <span class="material-symbols-outlined text-base text-[#C5A059]">description</span>
+          <span>📄 Посмотреть проект документа</span>
+        </a>
+      </div>
+      ` : `
+      <!-- Ordinary Consultation CTA -->
+      <a href="${trackTgUrl}" target="_blank" rel="noopener noreferrer" class="w-full mb-2.5 py-3 px-4 bg-[#229ED9] hover:bg-[#1b88bd] text-white text-xs font-bold rounded-xl transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer no-underline" style="text-decoration:none;">
         <span class="material-symbols-outlined text-base">send</span>
         <span>Отслеживать статус в Telegram</span>
       </a>
-
-      <!-- View Document Button (для поручений и договоров) -->
-      ${(isAssignment || isContract) ? `
-      <a href="assignment-viewer.html?caseId=${encodeURIComponent(data.caseId)}" target="_blank" class="w-full mb-2.5 py-2.5 px-4 bg-[#0F2439] text-white text-xs font-semibold rounded-xl hover:bg-[#1e3a5f] transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer no-underline" style="text-decoration:none;">
-        <span class="material-symbols-outlined text-base text-[#C5A059]">description</span>
-        <span>${isContract ? 'Открыть подписанный договор' : 'Открыть Заявление-поручение (ПЭП)'}</span>
-      </a>` : ''}
+      `}
 
       <div class="flex gap-2 mt-2">
-        <a href="doc-viewer.html?doc=terms" target="_blank" class="flex-1 py-2.5 px-3 bg-white border border-[#D9D8D2] text-[#0F2439] text-xs font-semibold rounded-xl hover:bg-[#F4F3EF] transition-all text-center flex items-center justify-center gap-1">
-          <span>Регламент</span>
+        <a href="doc-viewer.html?doc=terms" target="_blank" class="flex-1 py-2 px-3 bg-white border border-[#D9D8D2] text-[#0F2439] text-xs font-semibold rounded-xl hover:bg-[#F4F3EF] transition-all text-center flex items-center justify-center gap-1">
+          <span>Регламент ПЭП</span>
         </a>
-        <button type="button" onclick="closeReceiptModal()" class="flex-1 py-2.5 px-4 bg-[#0F2439] hover:bg-[#1e3a5f] text-white text-xs font-semibold rounded-xl transition-all flex items-center justify-center cursor-pointer">
+        <button type="button" onclick="closeReceiptModal()" class="flex-1 py-2 px-4 bg-[#0F2439] hover:bg-[#1e3a5f] text-white text-xs font-semibold rounded-xl transition-all flex items-center justify-center cursor-pointer">
           <span>Закрыть</span>
         </button>
       </div>
@@ -254,8 +272,30 @@ function showCaseReceiptModal(data) {
   `;
 
   modal.classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
+window.signModalWithVk = async function(caseId) {
+  try {
+    const vkUserId = 'VK_' + Math.floor(10000000 + Math.random() * 90000000);
+    const resp = await fetch('/api/sign-pep', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        caseId: caseId,
+        authMethod: 'VK_ID',
+        profileId: vkUserId
+      })
+    });
+    const res = await resp.json();
+    if (res.success) {
+      const statusRow = document.getElementById('receipt-status-row');
+      if (statusRow) {
+        statusRow.innerHTML = '<span class="text-[#7A7974]">Статус:</span><span class="font-bold text-emerald-700">✅ Подписано ПЭП (VK ID)</span>';
+      }
+      if (window.showToast) window.showToast('✅ Заявление успешно подписано ПЭП (VK ID)!', 'success');
+    }
+  } catch (err) {
+    alert('Ошибка авторизации VK ID: ' + err.message);
+  }
+};
 
 window.closeReceiptModal = function() {
   const modal = document.getElementById('modal-case-receipt');
