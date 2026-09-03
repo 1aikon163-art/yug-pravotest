@@ -560,14 +560,24 @@
       "comment": "ntcn",
       "message": "Обращение из калькулятора (Делегирование досудебного содействия)\n\nНаправление: ЖКХ: Перерасчёт за отопление ниже нормы (ПП РФ № 354)\nСумма расчёта: 3 240 ₽\nОснование: п. 15 Приложения № 1 к ПП РФ № 354, ч. 4 ст. 157 ЖК РФ (норма +18°C: стандартная климатическая зона РФ)\nЛицевой счёт / Номер договора: тест\nКомментарий заявителя: ntcn",
       "source": "Калькулятор (Досудебное содействие АНО)",
-      "status": "REGISTERED",
-      "statusText": "⏳ Принято канцелярией",
+      "status": "SIGNED",
+      "statusText": "✅ Подписано ПЭП (в работе)",
       "assignedSpecialist": "Специалист канцелярии АНО «ЮГ-ПРАВО»",
-      "telegramId": null,
-      "telegramUsername": null,
+      "telegramId": 5960058667,
+      "telegramUsername": "@ugpravo63",
       "messages": [],
       "createdAt": "03.09.2026, 17:17:52",
-      "updatedAt": "03.09.2026, 17:17:52"
+      "updatedAt": "03.09.2026, 17:23:57",
+      "pepAudit": {
+        "signed": true,
+        "caseId": "СПР-26/2975",
+        "authMethod": "TELEGRAM_AUTH",
+        "profileId": "5960058667",
+        "username": "@ugpravo63",
+        "signedAt": "03.09.2026, 17:23:57",
+        "ip": "Telegram Gateway",
+        "authHash": "bb725d003a83532aefb298e2f28cd3490b259395ffc7a9d8e0a8fe0dba4908e9"
+      }
     }
   ]
 }

@@ -282,6 +282,16 @@ class AppealsManager {
 
       saveAppealsDb(db);
       this.syncToYandexDisk();
+
+      // Автоматическая генерация и загрузка подписанного DOCX на Яндекс.Диск в Поручения_2026/
+      try {
+        const YandexDiskRegistry = require('./yandex-disk-sync.js');
+        const ydisk = new YandexDiskRegistry();
+        ydisk.saveAssignmentDocx(db.appeals[idx]);
+      } catch (e) {
+        console.warn('⚠️ [AppealsManager] Save assignment DOCX error:', e.message);
+      }
+
       return db.appeals[idx];
     }
     return null;

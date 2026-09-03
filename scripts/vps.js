@@ -24,6 +24,7 @@ conn.on('ready', () => {
       const files = [
         ['bots/main-bot.js', '/var/www/yug-pravo/bots/main-bot.js'],
         ['scripts/appeals-manager.js', '/var/www/yug-pravo/scripts/appeals-manager.js'],
+        ['scripts/generate-signed-assignment.js', '/var/www/yug-pravo/scripts/generate-signed-assignment.js'],
         ['scripts/excel-registry-generator.js', '/var/www/yug-pravo/scripts/excel-registry-generator.js'],
         ['scripts/yandex-disk-sync.js', '/var/www/yug-pravo/scripts/yandex-disk-sync.js'],
         ['scripts/sync-disk.js', '/var/www/yug-pravo/scripts/sync-disk.js'],

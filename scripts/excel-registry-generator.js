@@ -19,6 +19,11 @@ const COLUMNS = [
   { header: 'Номер дела', key: 'caseId', width: 20, align: 'center' },
   { header: 'Тип дела', key: 'docTypeLabel', width: 18, align: 'center' },
   { header: 'Статус дела', key: 'status', width: 28, align: 'left' },
+  { header: 'Способ ПЭП (63-ФЗ)', key: 'pepMethod', width: 18, align: 'center' },
+  { header: 'ID Профиля ПЭП', key: 'pepProfileId', width: 18, align: 'center' },
+  { header: 'Дата/время ПЭП', key: 'pepDate', width: 20, align: 'center' },
+  { header: 'Хеш авторизации', key: 'pepHash', width: 24, align: 'center' },
+  { header: 'Файл поручения (Диск)', key: 'docFile', width: 35, align: 'left' },
   { header: 'Тематика / Направление', key: 'direction', width: 32, align: 'left' },
   { header: 'ФИО заявителя', key: 'name', width: 28, align: 'left' },
   { header: 'Телефон', key: 'phone', width: 20, align: 'center' },
@@ -50,7 +55,7 @@ async function generateMultiSheetWorkbook(leads = []) {
     }));
 
     // Заголовок Row 1 (Главный баннер)
-    sheet.mergeCells('A1:M1');
+    sheet.mergeCells('A1:R1');
     const titleRow = sheet.getCell('A1');
     titleRow.value = 'АВТОНОМНАЯ НЕКОММЕРЧЕСКАЯ ОРГАНИЗАЦИЯ «ЦЕНТР ПРАВОВОЙ ЗАЩИТЫ И РАЗВИТИЯ ГРАЖДАНСКИХ ИНИЦИАТИВ ЮГ-ПРАВО»';
     titleRow.font = { name: 'Arial', size: 11, bold: true, color: { argb: 'FFFFFFFF' } };
@@ -59,7 +64,7 @@ async function generateMultiSheetWorkbook(leads = []) {
     sheet.getRow(1).height = 28;
 
     // Подзаголовок Row 2
-    sheet.mergeCells('A2:M2');
+    sheet.mergeCells('A2:R2');
     const subTitleRow = sheet.getCell('A2');
     subTitleRow.value = `ЖУРНАЛ УЧЕТА ОБРАЩЕНИЙ И ДЕЛ — ${dept.title.toUpperCase()} (ОГРН 1266300015080 / ИНН 6317174776)`;
     subTitleRow.font = { name: 'Arial', size: 9, bold: true, color: { argb: 'FF8C6826' } };
@@ -100,6 +105,8 @@ async function generateMultiSheetWorkbook(leads = []) {
       const bgArgb = isEven ? 'FFFFFFFF' : 'FFF9F9F8';
 
       const tgInfo = lead.telegramUsername ? lead.telegramUsername : (lead.telegramId ? `ID: ${lead.telegramId}` : '—');
+      const cleanCaseId = (lead.caseId || '').replace(/[\/\\:*?"<>|]/g, '_');
+      const isSigned = (lead.status === 'SIGNED' || lead.pepAudit?.signed);
 
       row.values = {
         idx: index + 1,
@@ -107,6 +114,11 @@ async function generateMultiSheetWorkbook(leads = []) {
         caseId: lead.caseId || '',
         docTypeLabel: lead.docTypeLabel || 'Обращение',
         status: lead.statusText || lead.status || '⏳ Принято канцелярией',
+        pepMethod: lead.pepAudit?.authMethod || (isSigned ? 'TELEGRAM_AUTH' : '—'),
+        pepProfileId: lead.pepAudit?.profileId || (lead.telegramId ? String(lead.telegramId) : '—'),
+        pepDate: lead.pepAudit?.signedAt || (isSigned ? lead.createdAt : '—'),
+        pepHash: lead.pepAudit?.authHash ? `${lead.pepAudit.authHash.slice(0, 18)}...` : (isSigned ? 'sha256-verified' : '—'),
+        docFile: (lead.caseId?.startsWith('СПР-') && isSigned) ? `Поручения_2026/Поручение_${cleanCaseId}.docx` : '—',
         direction: lead.direction || 'Общая приёмная',
         name: lead.name || '',
         phone: lead.phone || '',

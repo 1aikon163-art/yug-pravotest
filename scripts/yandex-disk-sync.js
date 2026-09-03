@@ -221,7 +221,26 @@ class YandexDiskRegistry {
     });
   }
 
-  // Save generated assignment file to Yandex Disk
+  // Save generated assignment file to Yandex Disk (DOCX & TXT)
+  async saveAssignmentDocx(appeal) {
+    if (!this.token) return false;
+    try {
+      await this.createFolder('/Юг-Право_Реестр');
+      await this.createFolder('/Юг-Право_Реестр/Поручения_2026');
+      const cleanCaseId = (appeal.caseId || 'СПР-26').replace(/[\/\\:*?"<>|]/g, '_');
+      const { generateSignedAssignmentDocx } = require('./generate-signed-assignment.js');
+      const docxBuffer = await generateSignedAssignmentDocx(appeal);
+      const filePath = `/Юг-Право_Реестр/Поручения_2026/Поручение_${cleanCaseId}.docx`;
+      await this.uploadBuffer(filePath, docxBuffer, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+      console.log(`📑 [YandexDisk] Подписанное Заявление-поручение (DOCX) загружено на Диск: ${filePath}`);
+      return true;
+    } catch (e) {
+      console.warn('⚠️ [YandexDisk] saveAssignmentDocx error:', e.message);
+      return false;
+    }
+  }
+
+  // Save text summary
   async saveAssignmentDocument(leadData, documentText) {
     if (!this.token) return false;
     try {
@@ -231,7 +250,6 @@ class YandexDiskRegistry {
       const filePath = `/Юг-Право_Реестр/Поручения_2026/Поручение_${cleanCaseId}.txt`;
       const buffer = Buffer.from('\uFEFF' + (documentText || ''), 'utf8');
       await this.uploadBuffer(filePath, buffer, 'text/plain; charset=utf-8');
-      console.log(`📑 [YandexDisk] Файл Заявления-поручения сохранен: ${filePath}`);
       return true;
     } catch (e) {
       console.warn('⚠️ [YandexDisk] saveAssignmentDocument error:', e.message);
