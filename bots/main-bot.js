@@ -301,24 +301,28 @@ async function handleMessage(msg) {
       userSessions.delete(chatId);
 
       const appeal = appealsManager.getAppeal(caseId);
-      const res = appealsManager.addMessage(caseId, 'applicant', firstName, text);
+      const exactCaseId = appeal ? appeal.caseId : caseId;
+      appealsManager.addMessage(exactCaseId, 'applicant', firstName, text);
 
-      await sendMsg(chatId, `✅ <b>Ваш вопрос по документу № ${caseId} передан специалисту!</b>\n\nСпециалист центра ответит вам здесь в ближайшее время.`, getMainReplyKeyboard());
+      await sendMsg(chatId, `✅ <b>Ваш вопрос по документу № ${exactCaseId} передан специалисту!</b>\n\nСпециалист центра ответит вам здесь в ближайшее время.`, getMainReplyKeyboard());
 
-      // Уведомление админу
-      const cleanId = caseId.replace(/[^a-zA-Z0-9_-]/g, '_');
+      // Уведомление администратору
+      const cleanSeq = exactCaseId.slice(-4);
+      const cleanUsername = (username || '').replace('@', '').trim();
+      const adminButtons = [
+        [{ text: "✍️ Ответить заявителю в чат", callback_data: `reply_${cleanSeq}` }]
+      ];
+      if (cleanUsername) {
+        adminButtons.push([{ text: `💬 Написать @${cleanUsername} в личку`, url: `https://t.me/${cleanUsername}` }]);
+      }
+
       const adminNotice = `💬 <b>ВОПРОС ОТ ЗАЯВИТЕЛЯ</b>\n` +
-        `🆔 <b>Дело:</b> <code>${caseId}</code> (${appeal?.docTypeLabel || 'Обращение'})\n` +
+        `🆔 <b>Дело:</b> <code>${exactCaseId}</code> (${appeal?.docTypeLabel || 'Обращение'})\n` +
         `👤 <b>Заявитель:</b> ${firstName} ${username} (ID: <code>${chatId}</code>)\n` +
         `📞 <b>Телефон:</b> <code>${appeal?.phone || '—'}</code>\n\n` +
         `📝 <b>Текст вопроса:</b>\n<i>${text}</i>`;
 
-      await sendMsg(ADMIN_ID, adminNotice, {
-        inline_keyboard: [
-          [{ text: "✍️ Ответить заявителю в чат", callback_data: `reply_${cleanId}` }],
-          [{ text: "💬 Написать в личку заявителю", url: username ? `https://t.me/${username.replace('@', '')}` : `tg://user?id=${chatId}` }]
-        ]
-      });
+      await sendMsg(ADMIN_ID, adminNotice, { inline_keyboard: adminButtons });
       return;
     }
 
@@ -328,28 +332,25 @@ async function handleMessage(msg) {
       userSessions.delete(chatId);
 
       const appeal = appealsManager.getAppeal(caseId);
-      if (!appeal) {
-        await sendMsg(chatId, `❌ Ошибка: обращение № ${caseId} не найдено.`);
-        return;
-      }
+      const exactCaseId = appeal ? appeal.caseId : caseId;
 
-      appealsManager.addMessage(caseId, 'specialist', 'Специалист АНО «ЮГ-ПРАВО»', text);
+      appealsManager.addMessage(exactCaseId, 'specialist', 'Специалист АНО «ЮГ-ПРАВО»', text);
 
-      await sendMsg(chatId, `✅ <b>Ответ успешно отправлен заявителю по делу № ${caseId}!</b>`);
+      await sendMsg(chatId, `✅ <b>Ответ успешно отправлен заявителю по делу № ${exactCaseId}!</b>`);
 
       // Отправляем заявителю, если привязан Telegram
-      if (appeal.telegramId) {
-        const cleanId = caseId.replace(/[^a-zA-Z0-9_-]/g, '_');
+      if (appeal && appeal.telegramId) {
+        const cleanSeq = exactCaseId.slice(-4);
         const userMsg = `⚖️ <b>СООБЩЕНИЕ ОТ СПЕЦИАЛИСТА АНО «ЮГ-ПРАВО»</b>\n` +
-          `📌 <i>К документу № ${caseId} (${appeal.docTypeLabel})</i>\n\n` +
-          `💬 <b>Текст:</b>\n${text}\n\n` +
+          `📌 <i>К документу № ${exactCaseId} (${appeal.docTypeLabel})</i>\n\n` +
+          `💬 <b>Текст ответа:</b>\n${text}\n\n` +
           `━━━━━━━━━━━━━━━━━━━━\n` +
           `<i>Вы можете ответить на это сообщение, нажав кнопку ниже:</i>`;
 
         await sendMsg(appeal.telegramId, userMsg, {
           inline_keyboard: [
-            [{ text: "💬 Ответить специалисту", callback_data: `ask_${cleanId}` }],
-            [{ text: "📱 Открыть в Mini App", web_app: { url: `${WEB_APP_URL}assignment-viewer.html?caseId=${encodeURIComponent(caseId)}` } }]
+            [{ text: "💬 Ответить специалисту", callback_data: `ask_${cleanSeq}` }],
+            [{ text: "📱 Открыть в Mini App", web_app: { url: `${WEB_APP_URL}assignment-viewer.html?caseId=${encodeURIComponent(exactCaseId)}` } }]
           ]
         });
       } else {
@@ -506,9 +507,11 @@ async function handleCallback(cb) {
   // Заявитель хочет задать вопрос специалисту: ask_<caseId>
   if (data.startsWith('ask_')) {
     const rawId = data.replace('ask_', '');
-    userSessions.set(chatId, { state: 'WAIT_APPLICANT_QUESTION', caseId: rawId });
+    const appeal = appealsManager.getAppeal(rawId);
+    const targetCaseId = appeal ? appeal.caseId : rawId;
+    userSessions.set(chatId, { state: 'WAIT_APPLICANT_QUESTION', caseId: targetCaseId });
 
-    await sendMsg(chatId, `📝 <b>Задайте вопрос специалисту по документу № ${rawId}:</b>\n\n` +
+    await sendMsg(chatId, `📝 <b>Задайте вопрос специалисту по документу № ${targetCaseId}:</b>\n\n` +
       `Напишите текст сообщения в ответ — оно будет мгновенно передано ответственному специалисту центра:`);
     return;
   }
@@ -516,14 +519,16 @@ async function handleCallback(cb) {
   // Запрос подтверждения отзыва: confirm_withdraw_<caseId>
   if (data.startsWith('confirm_withdraw_')) {
     const rawId = data.replace('confirm_withdraw_', '');
-    const cleanId = rawId.replace(/[^a-zA-Z0-9_-]/g, '_');
+    const appeal = appealsManager.getAppeal(rawId);
+    const targetCaseId = appeal ? appeal.caseId : rawId;
+    const cleanSeq = targetCaseId.slice(-4);
 
     await sendMsg(chatId, `⚠️ <b>Подтверждение отзыва документа</b>\n\n` +
-      `Вы действительно хотите отозвать документ <b>№ ${rawId}</b> и прекратить его рассмотрение в соответствии со ст. 5 ч. 5 Федерального закона № 59-ФЗ?`, {
+      `Вы действительно хотите отозвать документ <b>№ ${targetCaseId}</b> и прекратить его рассмотрение в соответствии со ст. 5 ч. 5 Федерального закона № 59-ФЗ?`, {
       inline_keyboard: [
         [
-          { text: "✅ Да, отозвать документ", callback_data: `do_withdraw_${cleanId}` },
-          { text: "❌ Отмена", callback_data: `view_${cleanId}` }
+          { text: "✅ Да, отозвать документ", callback_data: `do_withdraw_${cleanSeq}` },
+          { text: "❌ Отмена", callback_data: `view_${cleanSeq}` }
         ]
       ]
     });
@@ -533,7 +538,9 @@ async function handleCallback(cb) {
   // Исполнение отзыва: do_withdraw_<caseId>
   if (data.startsWith('do_withdraw_')) {
     const rawId = data.replace('do_withdraw_', '');
-    const res = appealsManager.withdrawAppeal(rawId, chatId);
+    const appeal = appealsManager.getAppeal(rawId);
+    const targetCaseId = appeal ? appeal.caseId : rawId;
+    const res = appealsManager.withdrawAppeal(targetCaseId, chatId);
 
     if (res.success) {
       await sendMsg(chatId, `🚫 <b>Документ № ${res.appeal.caseId} успешно отозван.</b>\n\nДело переведено в архив. Вы всегда можете подать новое обращение при необходимости.`, getMainReplyKeyboard());
@@ -552,9 +559,11 @@ async function handleCallback(cb) {
   // Специалист (Админ) хочет ответить заявителю: reply_<caseId>
   if (isAdmin && data.startsWith('reply_')) {
     const rawId = data.replace('reply_', '');
-    userSessions.set(chatId, { state: 'WAIT_SPECIALIST_REPLY', caseId: rawId });
+    const appeal = appealsManager.getAppeal(rawId);
+    const targetCaseId = appeal ? appeal.caseId : rawId;
+    userSessions.set(chatId, { state: 'WAIT_SPECIALIST_REPLY', caseId: targetCaseId });
 
-    await sendMsg(chatId, `✍️ <b>Режим ответа заявителю по документу № ${rawId}:</b>\n\n` +
+    await sendMsg(chatId, `✍️ <b>Режим ответа заявителю по документу № ${targetCaseId}:</b>\n\n` +
       `Напишите текст ответа. Бот отправит его заявителю от имени специалиста АНО «ЮГ-ПРАВО»:`);
     return;
   }
@@ -565,14 +574,17 @@ async function handleCallback(cb) {
     const newStatus = parts[1]; // IN_PROGRESS, DOC_READY, COMPLETED
     const rawCaseId = parts.slice(2).join('_');
 
-    const updatedAppeal = appealsManager.updateStatus(rawCaseId, newStatus, '', 'Специалист АНО «ЮГ-ПРАВО»');
+    const appeal = appealsManager.getAppeal(rawCaseId);
+    const targetCaseId = appeal ? appeal.caseId : rawCaseId;
+
+    const updatedAppeal = appealsManager.updateStatus(targetCaseId, newStatus, '', 'Специалист АНО «ЮГ-ПРАВО»');
 
     if (updatedAppeal) {
       await sendMsg(chatId, `✅ <b>Статус дела № ${updatedAppeal.caseId} изменен на:</b> ${updatedAppeal.statusText}`);
 
       // Push заявителю
       if (updatedAppeal.telegramId) {
-        const cleanId = updatedAppeal.caseId.replace(/[^a-zA-Z0-9_-]/g, '_');
+        const cleanSeq = updatedAppeal.caseId.slice(-4);
         const userNotice = `🔔 <b>ОБНОВЛЕНИЕ ПО ВАШЕМУ ДОКУМЕНТУ</b>\n\n` +
           `📌 <b>${updatedAppeal.docTypeLabel} № ${updatedAppeal.caseId}</b>\n` +
           `• <b>Новый статус:</b> ${updatedAppeal.statusText}\n` +
@@ -581,7 +593,7 @@ async function handleCallback(cb) {
 
         await sendMsg(updatedAppeal.telegramId, userNotice, {
           inline_keyboard: [
-            [{ text: "📂 Открыть карточку документа", callback_data: `view_${cleanId}` }],
+            [{ text: "📂 Открыть карточку документа", callback_data: `view_${cleanSeq}` }],
             [{ text: "📱 Открыть в Mini App", web_app: { url: `${WEB_APP_URL}assignment-viewer.html?caseId=${encodeURIComponent(updatedAppeal.caseId)}` } }]
           ]
         });
