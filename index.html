@@ -2034,17 +2034,31 @@
                                 <input class="w-full bg-[#F8F7F4] border border-[#E0E0E0] rounded px-4 py-2.5 text-sm text-[#0F2439] focus:border-[#0F2439] focus:ring-0" id="c-email" name="email" type="email" placeholder="ivanov@mail.ru"/>
                             </div>
                             <div>
-                                <label class="block text-xs uppercase font-bold text-[#0F2439] mb-1.5" for="c-alias">Профильный отдел *</label>
-                                <select class="w-full bg-[#F8F7F4] border border-[#E0E0E0] rounded px-3 py-2.5 text-xs text-[#0F2439] focus:border-[#0F2439] focus:ring-0 font-medium" id="c-alias" name="target_alias">
-                                    <option value="info@yugpravo.ru">Общая приёмная (info@yugpravo.ru)</option>
-                                    <option value="jkh@yugpravo.ru">ЖКХ и споры с УК (jkh@yugpravo.ru)</option>
-                                    <option value="debt@yugpravo.ru">Защита прав должников и 230-ФЗ (debt@yugpravo.ru)</option>
-                                    <option value="potreb@yugpravo.ru">Защита прав потребителей (potreb@yugpravo.ru)</option>
-                                    <option value="sud@yugpravo.ru">Судебная защита и иски (sud@yugpravo.ru)</option>
-                                    <option value="trud@yugpravo.ru">Трудовые споры и зарплаты (trud@yugpravo.ru)</option>
-                                    <option value="partner@yugpravo.ru">Сотрудничество & B2B (partner@yugpravo.ru)</option>
-                                    <option value="idea@yugpravo.ru">Гражданские инициативы & Идеи (idea@yugpravo.ru)</option>
-                                    <option value="care@yugpravo.ru">Целевые программы & Сборы (care@yugpravo.ru)</option>
+                                <label class="block text-xs uppercase font-bold text-[#0F2439] mb-1.5" for="c-direction">Тематика обращения *</label>
+                                <select class="w-full bg-[#F8F7F4] border border-[#E0E0E0] rounded px-3 py-2.5 text-xs text-[#0F2439] focus:border-[#0F2439] focus:ring-0 font-medium" id="c-direction" name="direction">
+                                    <optgroup label="⚖️ Правовая защита граждан">
+                                        <option value="Общий правовой вопрос" selected>Общий правовой вопрос / Консультация</option>
+                                        <option value="ЖКХ и споры с управляющими компаниями">ЖКХ и споры с управляющими компаниями</option>
+                                        <option value="Защита прав потребителей (ЗоЗПП)">Защита прав потребителей (ЗоЗПП)</option>
+                                        <option value="Защита должников и споры с банками (230-ФЗ)">Защита должников и споры с банками (230-ФЗ)</option>
+                                        <option value="Судебная защита и процессуальные иски">Судебная защита и процессуальные иски</option>
+                                        <option value="Трудовые споры и невыплата зарплаты">Трудовые споры и невыплата зарплаты</option>
+                                        <option value="Возмещение ущерба, заливы и споры">Возмещение ущерба, заливы и споры</option>
+                                    </optgroup>
+                                    <optgroup label="🤝 Сотрудничество и Партнерство">
+                                        <option value="Сотрудничество с организациями (B2B)">Сотрудничество с организациями (B2B)</option>
+                                        <option value="Взаимодействие с НКО и фондами">Взаимодействие с НКО и фондами</option>
+                                        <option value="Партнерство для адвокатов и юристов">Партнерство для адвокатов и юристов</option>
+                                        <option value="Информационное партнерство и СМИ">Информационное партнерство и СМИ</option>
+                                    </optgroup>
+                                    <optgroup label="💡 Гражданские инициативы">
+                                        <option value="Предложить гражданскую инициативу">Предложить гражданскую инициативу</option>
+                                        <option value="Программа «Народный аудит ЖКХ»">Программа «Народный аудит ЖКХ»</option>
+                                        <option value="Волонтерство и юридическая практика">Волонтерство и юридическая практика</option>
+                                    </optgroup>
+                                    <optgroup label="🏛️ Руководство организации">
+                                        <option value="Обращение к Директору (Шарыпаев П. В.)">Обращение к Директору (Шарыпаев П. В.)</option>
+                                    </optgroup>
                                 </select>
                             </div>
                         </div>
