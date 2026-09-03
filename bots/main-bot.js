@@ -144,7 +144,9 @@ function renderAppealCard(appeal) {
   const isWithdrawn = appeal.status === 'WITHDRAWN';
   const prefix = appeal.docPrefix || '📩';
   const label = appeal.docTypeLabel || 'Обращение';
+  const isContract = appeal.docType === 'contract' || (appeal.caseId && appeal.caseId.startsWith('ДОГ'));
   const isAssignment = appeal.docType === 'service' || (appeal.caseId && appeal.caseId.startsWith('СПР'));
+  const accusative = getDocTypeAccusative(appeal);
 
   const safeMsg = escapeHtml(appeal.message || '');
   const safeNote = escapeHtml(appeal.statusNote || '');
@@ -158,6 +160,7 @@ function renderAppealCard(appeal) {
     (safeDir && safeDir !== '—' ? `• <b>Направление:</b> ${safeDir}\n` : '') +
     (safeMsg && safeMsg !== '—' ? `• <b>Суть:</b> <i>${safeMsg.slice(0, 300)}</i>\n` : '') +
     (safeNote ? `\n💡 <b>Комментарий специалиста:</b> ${safeNote}\n` : '') +
+    (isWithdrawn ? `\n⚠️ <i>Рассмотрение прекращено по заявлению гражданина на основании ч. 5 ст. 5 59-ФЗ. Запись перенесена в архив.</i>\n` : '') +
     `━━━━━━━━━━━━━━━━━━━━`;
 
   const cleanSeq = appeal.caseId.slice(-4);
@@ -167,17 +170,25 @@ function renderAppealCard(appeal) {
     buttons.push([
       { text: "💬 Задать вопрос специалисту", callback_data: `ask_${cleanSeq}` }
     ]);
-    if (isAssignment) {
+    if (isContract) {
       buttons.push([
-        { text: "📱 Открыть материалы в Mini App", web_app: { url: `${WEB_APP_URL}assignment-viewer.html?caseId=${encodeURIComponent(appeal.caseId)}` } }
+        { text: "📜 Открыть подписанный договор", web_app: { url: `${WEB_APP_URL}assignment-viewer.html?caseId=${encodeURIComponent(appeal.caseId)}` } }
+      ]);
+    } else if (isAssignment) {
+      buttons.push([
+        { text: "📄 Открыть Заявление-поручение (ПЭП)", web_app: { url: `${WEB_APP_URL}assignment-viewer.html?caseId=${encodeURIComponent(appeal.caseId)}` } }
+      ]);
+    } else {
+      buttons.push([
+        { text: "📋 Электронный талон регистрации", web_app: { url: `${WEB_APP_URL}assignment-viewer.html?caseId=${encodeURIComponent(appeal.caseId)}` } }
       ]);
     }
     buttons.push([
-      { text: "🚫 Отозвать обращение", callback_data: `confirm_withdraw_${cleanSeq}` }
+      { text: `🚫 Отозвать ${accusative}`, callback_data: `confirm_withdraw_${cleanSeq}` }
     ]);
   } else {
     buttons.push([
-      { text: "ℹ️ Документ отозван и находится в архиве", callback_data: `noop` }
+      { text: "🚫 Документ отозван (в архиве)", callback_data: `noop` }
     ]);
   }
   buttons.push([

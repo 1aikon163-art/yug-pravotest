@@ -622,15 +622,20 @@
             const nowStr = now.toLocaleString('ru-RU', { timeZone: 'Europe/Samara' });
             const todayRu = now.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
 
-            const isAssignment = caseId.startsWith('СПР') || (data.sum && !caseId.startsWith('ОБР'));
+            const isContract = caseId.startsWith('ДОГ');
+            const isAssignment = caseId.startsWith('СПР') || (data.sum && !caseId.startsWith('ОБР') && !isContract);
 
-            document.title = isAssignment 
-                ? `Заявление-поручение ${caseId} — АНО «ЦПЗ ЮГ-ПРАВО»`
-                : `Электронный талон ${caseId} — АНО «ЮГ-ПРАВО»`;
+            document.title = isContract
+                ? `Договор ${caseId} — АНО «ЦПЗ ЮГ-ПРАВО»`
+                : (isAssignment 
+                    ? `Заявление-поручение ${caseId} — АНО «ЦПЗ ЮГ-ПРАВО»`
+                    : `Электронный талон ${caseId} — АНО «ЮГ-ПРАВО»`);
 
-            document.getElementById('field-doc-title').textContent = isAssignment
-                ? `ЗАЯВЛЕНИЕ-ПОРУЧЕНИЕ № ${caseId}`
-                : `ЭЛЕКТРОННЫЙ ТАЛОН РЕГИСТРАЦИИ № ${caseId}`;
+            document.getElementById('field-doc-title').textContent = isContract
+                ? `ДОГОВОР ПРАВОВОГО СОДЕЙСТВИЯ № ${caseId}`
+                : (isAssignment
+                    ? `ЗАЯВЛЕНИЕ-ПОРУЧЕНИЕ № ${caseId}`
+                    : `ЭЛЕКТРОННЫЙ ТАЛОН РЕГИСТРАЦИИ № ${caseId}`);
 
             document.getElementById('field-applicant-name').textContent = name;
             document.getElementById('field-applicant-phone').textContent = phone ? `Тел.: ${phone}` : 'Тел.: Не указан';
@@ -639,9 +644,11 @@
 
             // Dynamic Subtitle & Preamble based on direction and type:
             const dirLower = direction.toLowerCase();
-            let subtitleText = isAssignment
-                ? 'о безвозмездном досудебном правовом содействии в защиту прав потребителя'
-                : 'в Едином реестре входящей корреспонденции АНО «ЮГ-ПРАВО»';
+            let subtitleText = isContract
+                ? 'об оказании правовой помощи и содействии в защите законных прав'
+                : (isAssignment
+                    ? 'о безвозмездном досудебном правовом содействии в защиту прав потребителя'
+                    : 'в Едином реестре входящей корреспонденции АНО «ЮГ-ПРАВО»');
 
             let preambleLaw = isAssignment
                 ? 'ст. 45 Закона РФ от 07.02.1992 № 2300-1 «О защите прав потребителей»'
@@ -668,7 +675,9 @@
 
             const preambleEl = document.getElementById('field-body-preamble');
             if (preambleEl) {
-                if (isAssignment) {
+                if (isContract) {
+                    preambleEl.innerHTML = `Автономная некоммерческая организация «Центр правовой защиты и развития гражданских инициатив ЮГ-ПРАВО» (АНО «ЦПЗ ЮГ-ПРАВО») в лице Директора Шарыпаева П. В., с одной стороны, и гражданин(ка) <strong id="field-body-name">${name}</strong>, именуемый(ая) в дальнейшем «Заявитель», с другой стороны, руководствуясь ст. 434, 438 Гражданского кодекса РФ и ст. 5, 6, 9 Федерального закона от 06.04.2011 № 63-ФЗ «Об электронной подписи», заключили настоящий Договор о безвозмездном досудебном правовом содействии.`;
+                } else if (isAssignment) {
                     preambleEl.innerHTML = `Я, <strong id="field-body-name">${name}</strong>, руководствуясь ${preambleLaw}, ст. 434, 438 Гражданского кодекса РФ и ст. 5, 6, 9 Федерального закона от 06.04.2011 № 63-ФЗ «Об электронной подписи», настоящим поручаю Автономной некоммерческой организации «Центр правовой защиты и развития гражданских инициатив ЮГ-ПРАВО» (АНО «ЦПЗ ЮГ-ПРАВО») оказать мне безвозмездное досудебное содействие в целях восстановления моих нарушенных законных прав.`;
                 } else {
                     preambleEl.innerHTML = `Настоящим подтверждается, что электронное обращение гражданина <strong>${name}</strong> принято и официально зарегистрировано в Едином реестре корреспонденции Автономной некоммерческой организации «Центр правовой защиты и развития гражданских инициатив ЮГ-ПРАВО» (ОГРН 1266300015080 / ИНН 6317174776) в соответствии с нормами Федерального закона № 59-ФЗ.`;
