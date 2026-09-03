@@ -7,11 +7,10 @@ const ExcelJS = require('exceljs');
 
 const DEPARTMENTS = [
   { id: 'all', title: '📋 Сводный реестр', filter: () => true },
-  { id: 'jkh', title: '🏠 ЖКХ и УК', filter: (l) => (l.alias || '').includes('jkh') || (l.caseId || '').startsWith('ЖКХ') },
-  { id: 'potreb', title: '🛍️ Потребители & Споры', filter: (l) => (l.alias || '').includes('potreb') || (l.alias || '').includes('debt') },
-  { id: 'sud', title: '⚖️ Сопровождение & Суд', filter: (l) => (l.alias || '').includes('sud') || (l.caseId || '').startsWith('СПР') },
-  { id: 'partner', title: '🤝 Партнерство & Договоры', filter: (l) => (l.alias || '').includes('partner') || (l.caseId || '').startsWith('ДОГ') },
-  { id: 'idea_care', title: '💡 Инициативы & Сборы', filter: (l) => (l.alias || '').includes('idea') || (l.alias || '').includes('care') || (l.caseId || '').startsWith('ИН') }
+  { id: 'service', title: '🛡️ Сопровождение и Поручения', filter: (l) => (l.caseId || '').startsWith('СПР') || (l.caseId || '').startsWith('ЖКХ') || l.docType === 'service' },
+  { id: 'contract', title: '📜 Договоры и Партнерство', filter: (l) => (l.caseId || '').startsWith('ДОГ') || l.docType === 'contract' },
+  { id: 'appeal', title: '📩 Обращения и Приёмная', filter: (l) => (l.caseId || '').startsWith('ОБР') || l.docType === 'appeal' || (!l.caseId?.startsWith('СПР') && !l.caseId?.startsWith('ДОГ') && !l.caseId?.startsWith('ИН')) },
+  { id: 'initiative', title: '💡 Инициативы и Проекты', filter: (l) => (l.caseId || '').startsWith('ИН') || l.docType === 'initiative' }
 ];
 
 const COLUMNS = [

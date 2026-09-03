@@ -382,18 +382,17 @@ const server = http.createServer((req, res) => {
           'info@yugpravo.ru': 'ОБЩ'
         };
         const deptCode = aliasCodes[alias] || 'ОБЩ';
-        const caseSeq  = String(Date.now()).slice(-4);
-        
         let typePrefix = 'ОБР';
         const dirLow = (data.direction || '').toLowerCase();
-        if (dirLow.includes('поручение') || dirLow.includes('калькулятор') || alias === 'sud@yugpravo.ru') {
+        const srcLow = (data.source || '').toLowerCase();
+        if (srcLow.includes('delegate') || srcLow.includes('assignment') || srcLow.includes('calc') || dirLow.includes('поручен') || dirLow.includes('калькулятор') || dirLow.includes('перерасчет') || dirLow.includes('аудит')) {
           typePrefix = 'СПР';
-        } else if (dirLow.includes('договор')) {
+        } else if (dirLow.includes('договор') || srcLow.includes('contract') || srcLow.includes('partner')) {
           typePrefix = 'ДОГ';
-        } else if (alias === 'jkh@yugpravo.ru' || dirLow.includes('жкх')) {
-          typePrefix = 'ЖКХ';
-        } else if (alias === 'idea@yugpravo.ru' || dirLow.includes('инициатив')) {
+        } else if (alias === 'idea@yugpravo.ru' || dirLow.includes('инициатив') || srcLow.includes('initiative')) {
           typePrefix = 'ИН';
+        } else {
+          typePrefix = 'ОБР';
         }
 
         const caseId = `${typePrefix}-26/${deptCode}-${caseSeq}`;

@@ -56,11 +56,8 @@ function detectDocType(caseId, alias, direction) {
   if (cid.startsWith('ДОГ') || dir.includes('договор')) {
     return { type: 'contract', label: 'Договор', prefix: '📜' };
   }
-  if (cid.startsWith('СПР') || dir.includes('поручение') || dir.includes('калькулятор')) {
+  if (cid.startsWith('СПР') || cid.startsWith('ЖКХ') || dir.includes('поручение') || dir.includes('калькулятор') || dir.includes('аудит')) {
     return { type: 'service', label: 'Сопровождение', prefix: '🛡️' };
-  }
-  if (cid.startsWith('ЖКХ') || dir.includes('жкх')) {
-    return { type: 'audit', label: 'Аудит ЖКХ', prefix: '🏢' };
   }
   if (cid.startsWith('ИН') || dir.includes('инициатива')) {
     return { type: 'initiative', label: 'Инициатива', prefix: '💡' };
