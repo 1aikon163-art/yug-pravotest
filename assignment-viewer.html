@@ -955,15 +955,75 @@
             const caseId = (window._currentAssignmentData && window._currentAssignmentData.caseId) || params.get('caseId') || params.get('id') || 'СПР-26/0000';
             
             const btn = document.querySelector('button[onclick="signWithVkId()"]');
+            const origHtml = btn ? btn.innerHTML : '';
             if (btn) {
                 btn.disabled = true;
-                btn.innerHTML = '<span>⏳ Переход в VK ID...</span>';
+                btn.innerHTML = '<span>⏳ Запуск VK ID...</span>';
             }
 
-            // Official VK OAuth 1-click authorization
-            const redirectUri = encodeURIComponent('https://yugpravo.ru/assignment-viewer.html');
-            const vkAuthUrl = `https://oauth.vk.com/authorize?client_id=54739846&display=page&redirect_uri=${redirectUri}&response_type=code&scope=email,offline&v=5.199&state=${encodeURIComponent(caseId)}`;
-            window.location.href = vkAuthUrl;
+            async function submitVkSign(userId, username, token) {
+                try {
+                    const resp = await fetch('/api/sign-pep', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json; charset=utf-8' },
+                        body: JSON.stringify({
+                            caseId: caseId,
+                            authMethod: 'VK_ID',
+                            profileId: String(userId),
+                            username: username || ('vk.com/id' + userId),
+                            token: token || ''
+                        })
+                    });
+                    const res = await resp.json();
+                    if (res.success && res.appeal) {
+                        window._currentAssignmentData = res.appeal;
+                        renderAssignment(res.appeal);
+                        showViewerToast('🎉 Заявление успешно подписано ПЭП через VK ID!');
+                    } else {
+                        alert('Ошибка подписания: ' + (res.error || 'Не удалось авторизовать'));
+                    }
+                } catch (err) {
+                    alert('Ошибка соединения: ' + err.message);
+                } finally {
+                    if (btn) {
+                        btn.disabled = false;
+                        btn.innerHTML = origHtml;
+                    }
+                }
+            }
+
+            try {
+                if (window.VKIDSDK) {
+                    const VKID = window.VKIDSDK;
+                    VKID.Config.init({
+                        app: 54739846,
+                        redirectUrl: 'https://yugpravo.ru/assignment-viewer.html',
+                        state: 'sign_' + caseId,
+                        responseMode: VKID.ConfigResponseMode.CALLBACK,
+                        source: VKID.ConfigSource.LOWCODE
+                    });
+
+                    // Open VK ID modal dialog
+                    VKID.Auth.login()
+                        .then(authData => {
+                            const uId = authData.user?.id || authData.token?.user_id || '54739846';
+                            const uName = authData.user?.first_name ? `${authData.user.first_name} ${authData.user.last_name}` : `vk.com/id${uId}`;
+                            submitVkSign(uId, uName, authData.token?.access_token);
+                        })
+                        .catch(err => {
+                            console.warn('VKID popup fallback to id.vk.com redirect:', err);
+                            const vkDirectUrl = `https://id.vk.com/auth?app_id=54739846&response_type=code&redirect_uri=${encodeURIComponent('https://yugpravo.ru/assignment-viewer.html')}&state=${encodeURIComponent(caseId)}`;
+                            window.location.href = vkDirectUrl;
+                        });
+                } else {
+                    const vkDirectUrl = `https://id.vk.com/auth?app_id=54739846&response_type=code&redirect_uri=${encodeURIComponent('https://yugpravo.ru/assignment-viewer.html')}&state=${encodeURIComponent(caseId)}`;
+                    window.location.href = vkDirectUrl;
+                }
+            } catch (err) {
+                console.error('VK ID error:', err);
+                const vkDirectUrl = `https://id.vk.com/auth?app_id=54739846&response_type=code&redirect_uri=${encodeURIComponent('https://yugpravo.ru/assignment-viewer.html')}&state=${encodeURIComponent(caseId)}`;
+                window.location.href = vkDirectUrl;
+            }
         }
         window.signWithVkId = signWithVkId;
 
