@@ -391,10 +391,10 @@
       "updatedAt": "03.09.2026, 16:19:37"
     },
     {
-      "caseId": "ЖКХ-26/ЖКХ-5154",
-      "docType": "audit",
-      "docTypeLabel": "Аудит ЖКХ",
-      "docPrefix": "🏢",
+      "caseId": "СПР-26/5154",
+      "docType": "assignment",
+      "docTypeLabel": "Сопровождение",
+      "docPrefix": "🛡️",
       "name": "тест",
       "phone": "+7 (999) 999-99-9",
       "phoneNorm": "+77999999999",

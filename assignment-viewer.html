@@ -682,7 +682,23 @@
                 }
             }
 
-            document.getElementById('field-claim-direction').innerHTML = `• <strong>Категория спора:</strong> ${direction}`;
+            let cleanDirection = direction || 'Досудебная правовая помощь';
+            const dirLow = cleanDirection.toLowerCase();
+            if (isAssignment) {
+                if (dirLow.includes('госпошлин') || dirLow.includes('судебн') || dirLow.includes('гпк') || dirLow.includes('иск')) {
+                    cleanDirection = 'Досудебный правовой аудит имущественных требований и подготовка досудебной претензии';
+                } else if (dirLow.includes('жкх') || dirLow.includes('отоплен') || dirLow.includes('перерасчет')) {
+                    cleanDirection = 'Досудебное урегулирование спора в сфере ЖКХ / перерасчёт платы (ПП РФ № 354)';
+                } else if (dirLow.includes('потреб') || dirLow.includes('зозпп') || dirLow.includes('товар') || dirLow.includes('услуг')) {
+                    cleanDirection = 'Досудебная защита прав потребителей (Закон РФ № 2300-1)';
+                } else if (dirLow.includes('труд') || dirLow.includes('зарплат')) {
+                    cleanDirection = 'Досудебное урегулирование индивидуального трудового спора (ТК РФ)';
+                } else if (dirLow.includes('кредит') || dirLow.includes('страхов') || dirLow.includes('230-фз') || dirLow.includes('мфо')) {
+                    cleanDirection = 'Досудебный возврат навязанных финансовых услуг и защита прав заёмщика (353-ФЗ)';
+                }
+            }
+
+            document.getElementById('field-claim-direction').innerHTML = `• <strong>Предмет поручения:</strong> ${cleanDirection}`;
             document.getElementById('field-claim-company').innerHTML = `• <strong>Организация-нарушитель (Ответчик):</strong> ${company || 'Лицо по указанному договору / лицевому счету'}`;
             document.getElementById('field-claim-account').innerHTML = `• <strong>Лицевой счёт / договор:</strong> ${account || 'Не указан'}`;
             document.getElementById('field-claim-sum').innerHTML = `• <strong>Расчётная сумма требований:</strong> <strong>${sum ? (sum.includes('₽') ? sum : sum + ' ₽') : 'По расчёту калькулятора'}</strong>`;
@@ -703,6 +719,7 @@
             document.getElementById('pep-applicant').textContent = name;
             
             let identParts = [];
+            if (data.telegramId) identParts.push(`Telegram ID: ${data.telegramId}`);
             if (email) identParts.push(email);
             if (phone) identParts.push(phone);
             const identStr = identParts.length > 0 ? identParts.join(' • ') : 'Устройство заявителя (портал yugpravo.ru)';
