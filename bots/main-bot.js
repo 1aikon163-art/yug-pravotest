@@ -641,7 +641,8 @@ async function poll() {
   try {
     const res = await api('getUpdates', {
       offset: lastUpdateId + 1,
-      timeout: 25
+      timeout: 25,
+      allowed_updates: ['message', 'callback_query', 'my_chat_member', 'chat_member']
     });
 
     if (res.ok && res.result && res.result.length > 0) {
