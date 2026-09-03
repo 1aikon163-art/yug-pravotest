@@ -67,16 +67,14 @@ async function sendAutoReply(leadData) {
     }
   });
 
-  // Определяем точный алиас и подразделение, в которое обратился заявитель
-  const validAlias = (alias && typeof alias === 'string' && alias.includes('@yugpravo.ru') && aliasNames[alias.trim().toLowerCase()])
-    ? alias.trim().toLowerCase()
-    : 'info@yugpravo.ru';
-
-  const departmentName = aliasNames[validAlias] || 'Профильное направление АНО «ЦПЗ ЮГ-ПРАВО»';
-  const senderDisplayName = `${departmentName} | АНО «ЦПЗ ЮГ-ПРАВО»`;
+  const validAlias = 'info@yugpravo.ru';
+  const departmentName = 'Единая электронная приёмная';
+  const senderDisplayName = `Единая приёмная | АНО «ЦПЗ ЮГ-ПРАВО»`;
   const applicantGreeting = 'Уважаемый заявитель!';
   const isAssignment = (caseId || '').startsWith('СПР-');
-  const caseSeq = (caseId || '').slice(-4);
+  const isContract   = (caseId || '').startsWith('ДОГ-');
+  const caseSeq      = (caseId || '').slice(-4);
+  const docTypeTitle = isContract ? 'договора' : (isAssignment ? 'сопровождения' : 'обращения');
 
   const html = `
 <!DOCTYPE html>
@@ -99,7 +97,7 @@ async function sendAutoReply(leadData) {
 <body>
   <div class="card">
     <div class="header">
-      <div class="badge">Электронная приёмная</div>
+      <div class="badge">Единая электронная приёмная</div>
       <div class="title">АНО «ЦПЗ ЮГ-ПРАВО»</div>
     </div>
     <div class="body">
@@ -107,13 +105,13 @@ async function sendAutoReply(leadData) {
       <p>Уведомляем, что ваше электронное обращение успешно зарегистрировано в едином реестре учета входящей корреспонденции Автономной некоммерческой организации «Центр правовой защиты и развития гражданских инициатив ЮГ-ПРАВО».</p>
       
       <div class="case-box">
-        <div class="case-title">Регистрационный номер ${isAssignment ? 'сопровождения' : 'обращения'}:</div>
+        <div class="case-title">Регистрационный номер ${docTypeTitle}:</div>
         <div class="case-number">${caseId}</div>
         <div style="margin-top: 8px; font-size: 12px; color: #5F5E5E;">
-          <strong>Ответственное подразделение:</strong> ${departmentName}
+          <strong>Официальный орган:</strong> Единая приёмная АНО «ЦПЗ ЮГ-ПРАВО»
         </div>
         <div style="margin-top: 4px; font-size: 12px; color: #8C6826; font-family: monospace;">
-          <strong>Адрес приёма:</strong> ${validAlias}
+          <strong>Адрес приёма:</strong> info@yugpravo.ru
         </div>
       </div>
 
@@ -133,9 +131,9 @@ async function sendAutoReply(leadData) {
       </div>
 
       <div style="margin: 22px 0; text-align: center;">
-        ${isAssignment ? `
+        ${(isAssignment || isContract) ? `
         <a href="https://yugpravo.ru/assignment-viewer.html?caseId=${encodeURIComponent(caseId)}" style="display: inline-block; background: #0F2439; color: #ffffff; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 13px; margin-right: 6px; margin-bottom: 8px;">
-          📄 Скачать Заявление-поручение (ПЭП 63-ФЗ)
+          ${isContract ? '📜 Открыть подписанный договор' : '📄 Скачать Заявление-поручение (ПЭП 63-ФЗ)'}
         </a>` : ''}
         <a href="https://t.me/ugpravo_assistant_bot?start=track_${caseSeq}" style="display: inline-block; background: #229ED9; color: #ffffff; padding: 12px 22px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 13.5px; margin-bottom: 8px;">
           📱 Отслеживать статус в Telegram
@@ -145,12 +143,12 @@ async function sendAutoReply(leadData) {
       <p>При необходимости уточнения деталей или запроса дополнительных материалов специалист организации свяжется с вами по указанным контактам. Вы также можете отправить дополнительные документы ответным письмом на этот адрес.</p>
       
       <div style="margin-top: 24px; padding: 12px; background: #F8F7F4; border-radius: 6px; font-size: 11px; color: #757575; line-height: 1.4; border: 1px solid #E8E7E2;">
-        ℹ️ <strong>Информация об адресе:</strong> Данное системное уведомление направлено с адреса <code>${validAlias}</code> на почту <code>${email}</code>, указанную при подаче электронного обращения на официальном портале <a href="https://yugpravo.ru" style="color: #0F2439;">yugpravo.ru</a>. Если вы не подавали обращение и адрес был указан ошибочно, пожалуйста, проигнорируйте данное сообщение.
+        ℹ️ <strong>Информация об адресе:</strong> Данное системное уведомление направлено с адреса <code>info@yugpravo.ru</code> на почту <code>${email}</code>, указанную при подаче электронного обращения на официальном портале <a href="https://yugpravo.ru" style="color: #0F2439;">yugpravo.ru</a>. Если вы не подавали обращение и адрес был указан ошибочно, пожалуйста, проигнорируйте данное сообщение.
       </div>
     </div>
     <div class="footer">
       <strong>АНО «ЦПЗ ЮГ-ПРАВО»</strong><br>
-      ${departmentName} (${validAlias})<br>
+      Единая электронная приёмная (info@yugpravo.ru)<br>
       ОГРН: 1266300015080 | ИНН: 6317174776 | КПП: 631701001<br>
       Учетный номер Минюста России: 6314010192 | Самарская область<br>
       Телефон приемной: +7 (846) 989-07-68 | Официальный сайт: <a href="https://yugpravo.ru" style="color: #0F2439;">yugpravo.ru</a>

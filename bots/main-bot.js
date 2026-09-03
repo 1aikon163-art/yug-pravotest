@@ -207,7 +207,7 @@ async function showUserAppeals(chatId) {
       `К вашему Telegram-аккаунту пока не привязано ни одного обращения или договора.\n\n` +
       `<b>Как найти поданные ранее документы:</b>\n` +
       `1️⃣ Нажмите кнопку <b>«📱 Найти по номеру телефона»</b> ниже (бот сверит ваш номер с базой сайта);\n` +
-      `2️⃣ Либо просто напишите номер документа (например: <code>ОБР-26/ЖКХ-0001</code>).`;
+      `2️⃣ Либо просто напишите номер документа (например: <code>ОБР-26/0001</code>).`;
 
     const requestPhoneKb = {
       keyboard: [
@@ -299,7 +299,7 @@ async function handleMessage(msg) {
       await sendMsg(chatId, `✅ <b>Номер телефона успешно подтвержден!</b> Найдено документов: <b>${matchedAppeals.length}</b>. Все они привязаны к вашему Telegram.`, getMainReplyKeyboard());
       await showUserAppeals(chatId);
     } else {
-      await sendMsg(chatId, `ℹ️ По номеру <b>${phoneNumber}</b> в реестре пока нет зарегистрированных документов.\n\nЕсли вы подавали заявку с другим номером, напишите регистрационный номер документа (например: <code>ОБР-26/ЖКХ-0001</code>).`, getMainReplyKeyboard());
+      await sendMsg(chatId, `ℹ️ По номеру <b>${phoneNumber}</b> в реестре пока нет зарегистрированных документов.\n\nЕсли вы подавали заявку с другим номером, напишите регистрационный номер документа (например: <code>ОБР-26/0001</code>).`, getMainReplyKeyboard());
     }
     userSessions.delete(chatId);
     return;

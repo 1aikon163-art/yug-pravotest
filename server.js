@@ -364,36 +364,24 @@ const server = http.createServer((req, res) => {
         const data = JSON.parse(body);
         const name    = (data.name    || '').substring(0, 100);
         const phone   = (data.phone   || '').substring(0, 30);
-        const email   = (data.email   || '').substring(0, 80);
-        const alias   = (data.target_alias || 'info@yugpravo.ru').substring(0, 50);
+        const alias   = 'info@yugpravo.ru';
         const message = (data.message || '').substring(0, 1000);
         const source  = (data.source  || 'Сайт').substring(0, 80);
         const now     = new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Samara' });
-        const aliasCodes = {
-          'jkh@yugpravo.ru': 'ЖКХ',
-          'debt@yugpravo.ru': 'ДОЛГ',
-          'potreb@yugpravo.ru': 'ЗОЗПП',
-          'sud@yugpravo.ru': 'СУД',
-          'trud@yugpravo.ru': 'ТРУД',
-          'partner@yugpravo.ru': 'ПАРТ',
-          'idea@yugpravo.ru': 'ИНИЦ',
-          'care@yugpravo.ru': 'СБОР',
-          'sharypaev@yugpravo.ru': 'ДИР',
-          'info@yugpravo.ru': 'ОБЩ'
-        };
-        const deptCode = aliasCodes[alias] || 'ОБЩ';
-        const caseSeq  = String(Date.now()).slice(-4);
+        const caseSeq = String(Date.now()).slice(-4);
+        
         let typePrefix = 'ОБР';
         let docLabel   = 'Обращение';
         const dirLow = (data.direction || '').toLowerCase();
         const srcLow = (data.source || '').toLowerCase();
-        if (srcLow.includes('delegate') || srcLow.includes('assignment') || srcLow.includes('calc') || srcLow.includes('калькулятор') || dirLow.includes('поручен') || dirLow.includes('калькулятор') || dirLow.includes('перерасчет') || dirLow.includes('аудит')) {
+        
+        if (srcLow.includes('delegate') || srcLow.includes('assignment') || srcLow.includes('calc') || srcLow.includes('калькулятор') || dirLow.includes('поручен') || dirLow.includes('сопровожден') || dirLow.includes('перерасчет') || dirLow.includes('аудит')) {
           typePrefix = 'СПР';
           docLabel   = 'Сопровождение';
         } else if (dirLow.includes('договор') || srcLow.includes('contract') || srcLow.includes('partner')) {
           typePrefix = 'ДОГ';
           docLabel   = 'Договор';
-        } else if (alias === 'idea@yugpravo.ru' || dirLow.includes('инициатив') || srcLow.includes('initiative')) {
+        } else if (dirLow.includes('инициатив') || srcLow.includes('initiative')) {
           typePrefix = 'ИН';
           docLabel   = 'Инициатива';
         } else {
@@ -401,8 +389,8 @@ const server = http.createServer((req, res) => {
           docLabel   = 'Обращение';
         }
 
-        const caseId = `${typePrefix}-26/${deptCode}-${caseSeq}`;
-        const direction = (data.direction || '').substring(0, 50);
+        const caseId = `${typePrefix}-26/${caseSeq}`;
+        const direction = (data.direction || 'Общая приёмная').substring(0, 60);
 
         // 1. Единый учет в локальном реестре обращений
         let appealRecord = null;
@@ -591,10 +579,9 @@ const server = http.createServer((req, res) => {
         const direction   = (data.direction   || 'Правовая помощь').substring(0, 100);
         const law         = (data.law         || '').substring(0, 200);
         const comment     = (data.comment     || data.message || '').substring(0, 1000);
-        const docText     = data.documentText || '';
-        const targetAlias = (data.target_alias || 'info@yugpravo.ru').substring(0, 50);
+        const targetAlias = 'info@yugpravo.ru';
 
-        const caseId = data.caseId || `СПР-26/СУД-${String(Date.now()).slice(-4)}`;
+        const caseId = data.caseId || `СПР-26/${String(Date.now()).slice(-4)}`;
 
         const summaryText = `[Заявление-поручение ПЭП 63-ФЗ]\n` +
           `Ответчик: ${company || 'Не указан'}\n` +

@@ -177,24 +177,13 @@ function showCaseReceiptModal(data) {
     document.body.appendChild(modal);
   }
 
-  const aliasTitles = {
-    'jkh@yugpravo.ru': 'Отдел жилищного права и споров в сфере ЖКХ',
-    'debt@yugpravo.ru': 'Отдел защиты прав должников и кредитов (230-ФЗ)',
-    'potreb@yugpravo.ru': 'Отдел защиты прав потребителей (ЗоЗПП)',
-    'sud@yugpravo.ru': 'Отдел судебной защиты и процессуального представительства',
-    'trud@yugpravo.ru': 'Отдел трудового права и зарплат',
-    'partner@yugpravo.ru': 'Департамент партнерских программ & B2B',
-    'idea@yugpravo.ru': 'Центр поддержки гражданских инициатив и проектов',
-    'care@yugpravo.ru': 'Департамент целевых сборов и благотворительных программ',
-    'info@yugpravo.ru': 'Общая электронная приёмная'
-  };
-
   window._lastAssignmentData = data;
 
-  const deptTitle = aliasTitles[data.alias] || 'Профильный отдел правовой защиты';
   const nowStr = new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Samara' });
   const docTitle = data.docTypeLabel || 'Обращение';
   const tgUrl = data.tgLink || `https://t.me/ugpravo_assistant_bot?start=track_${data.caseId.replace(/[^a-zA-Z0-9_-]/g, '_')}`;
+  const isAssignment = data.isAssignment || (data.caseId && data.caseId.startsWith('СПР-'));
+  const isContract   = data.isContract || (data.caseId && data.caseId.startsWith('ДОГ-'));
 
   modal.innerHTML = `
     <div class="modal-container p-6 sm:p-7 max-w-md shadow-xl relative animate-fade-in" style="background:#ffffff; border:1px solid #E0E0E0; border-radius:16px;">
@@ -224,11 +213,16 @@ function showCaseReceiptModal(data) {
 
         <div class="text-xs text-[#4A4944] space-y-1.5 pt-2.5 border-t border-[#EAE9E4]">
           <div class="flex justify-between">
-            <span class="text-[#7A7974]">Отдел:</span>
-            <span class="font-medium text-right">${deptTitle}</span>
+            <span class="text-[#7A7974]">Приёмная:</span>
+            <span class="font-medium text-right">Единая приёмная (info@yugpravo.ru)</span>
           </div>
+          ${data.direction ? `
           <div class="flex justify-between">
-            <span class="text-[#7A7974]">Дата:</span>
+            <span class="text-[#7A7974]">Тематика:</span>
+            <span class="font-medium text-right">${data.direction}</span>
+          </div>` : ''}
+          <div class="flex justify-between">
+            <span class="text-[#7A7974]">Дата регистрации:</span>
             <span>${nowStr}</span>
           </div>
           ${data.email ? `<div class="text-[11px] text-[#7A7974] pt-0.5">Квитанция направлена на ${data.email}</div>` : ''}
@@ -236,19 +230,19 @@ function showCaseReceiptModal(data) {
       </div>
 
       <!-- Telegram Push Tracking CTA Button -->
-      <a href="${tgUrl}" target="_blank" rel="noopener noreferrer" class="w-full mb-3 py-3 px-4 bg-[#229ED9] hover:bg-[#1b88bd] text-white text-xs font-bold rounded-xl transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer no-underline" style="text-decoration:none;">
+      <a href="${tgUrl}" target="_blank" rel="noopener noreferrer" class="w-full mb-2.5 py-3 px-4 bg-[#229ED9] hover:bg-[#1b88bd] text-white text-xs font-bold rounded-xl transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer no-underline" style="text-decoration:none;">
         <span class="material-symbols-outlined text-base">send</span>
         <span>Отслеживать статус в Telegram</span>
       </a>
 
-      <!-- Download Assignment Action (ТОЛЬКО если это поручение из калькулятора) -->
-      ${data.isAssignment ? `
-      <button type="button" onclick="if(window.AssignmentGenerator){window.AssignmentGenerator.generateAssignmentPdf(window._lastAssignmentData);}else{alert('Генератор документа загружается...');}" class="w-full mb-2.5 py-2.5 px-4 bg-[#0F2439] text-white text-xs font-semibold rounded-xl hover:bg-[#1e3a5f] transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer">
+      <!-- View Document Button (для поручений и договоров) -->
+      ${(isAssignment || isContract) ? `
+      <a href="assignment-viewer.html?caseId=${encodeURIComponent(data.caseId)}" target="_blank" class="w-full mb-2.5 py-2.5 px-4 bg-[#0F2439] text-white text-xs font-semibold rounded-xl hover:bg-[#1e3a5f] transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer no-underline" style="text-decoration:none;">
         <span class="material-symbols-outlined text-base text-[#C5A059]">description</span>
-        <span>Скачать Заявление-поручение (ПЭП 63-ФЗ)</span>
-      </button>` : ''}
+        <span>${isContract ? 'Открыть подписанный договор' : 'Открыть Заявление-поручение (ПЭП)'}</span>
+      </a>` : ''}
 
-      <div class="flex gap-2">
+      <div class="flex gap-2 mt-2">
         <a href="doc-viewer.html?doc=terms" target="_blank" class="flex-1 py-2.5 px-3 bg-white border border-[#D9D8D2] text-[#0F2439] text-xs font-semibold rounded-xl hover:bg-[#F4F3EF] transition-all text-center flex items-center justify-center gap-1">
           <span>Регламент</span>
         </a>
