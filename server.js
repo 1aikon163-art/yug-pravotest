@@ -509,7 +509,8 @@ const server = http.createServer((req, res) => {
             comment: data.comment || '',
             message: message,
             source: source,
-            status: 'REGISTERED'
+            status: typePrefix === 'СПР' ? 'PENDING_SIGNATURE' : 'REGISTERED',
+            statusText: typePrefix === 'СПР' ? '⏳ Ожидает подписания (0 ₽)' : '⏳ Принято канцелярией'
           });
         } catch (e) {
           console.warn('⚠️ [AppealsManager] Sync module error:', e.message);

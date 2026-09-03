@@ -2472,7 +2472,7 @@
                         localStorage.setItem('yugpravo_client_profile', JSON.stringify({ name: name, phone: phone, email: email, account: accountNo }));
                     } catch (_) {}
 
-                    if (window.showCaseReceiptModal) {
+                    if (typeof window.showCaseReceiptModal === 'function') {
                         window.showCaseReceiptModal({
                             caseId: result.caseId,
                             alias: targetAlias,
@@ -2488,7 +2488,7 @@
                             isAssignment: true
                         });
                     } else {
-                        showToast(`✅ Обращение № ${result.caseId} принято и зарегистрировано!`, 'success');
+                        window.location.href = 'assignment-viewer.html?caseId=' + encodeURIComponent(result.caseId);
                     }
                 } else {
                     showToast('❌ ' + (result.error || 'Ошибка отправки обращения'), 'error');

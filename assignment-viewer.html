@@ -756,16 +756,34 @@
             const identEl = document.getElementById('pep-ident');
             if (identEl) identEl.textContent = identStr;
 
-            const methodEl = document.getElementById('pep-method');
-            const hashEl = document.getElementById('pep-hash');
+            const stampBox = document.getElementById('pep-stamp-box');
+            const stampTitle = stampBox?.querySelector('.pep-stamp-title');
 
             if (isSigned) {
                 if (signBanner) signBanner.style.display = 'none';
+                if (stampBox) {
+                    stampBox.style.border = '2px solid #004d99';
+                    stampBox.style.backgroundColor = '#F4F8FC';
+                    stampBox.style.color = '#004d99';
+                }
+                if (stampTitle) {
+                    stampTitle.textContent = '✅ ДОКУМЕНТ ПОДПИСАН ПРОСТОЙ ЭЛЕКТРОННОЙ ПОДПИСЬЮ (ПЭП)';
+                    stampTitle.style.color = '#004d99';
+                }
                 if (methodEl) methodEl.innerHTML = `<strong>${pep?.authMethod || 'TELEGRAM_AUTH'}</strong> (Верифицирован)`;
                 if (hashEl) hashEl.textContent = pep?.authHash ? `${pep.authHash.slice(0, 32)}...` : 'sha256-verified-ok';
                 document.getElementById('pep-date').textContent = (pep?.signedAt || nowStr) + ' (Самара)';
             } else {
                 if (signBanner) signBanner.style.display = 'block';
+                if (stampBox) {
+                    stampBox.style.border = '2px dashed #C5A059';
+                    stampBox.style.backgroundColor = '#FFFDF8';
+                    stampBox.style.color = '#8C6826';
+                }
+                if (stampTitle) {
+                    stampTitle.textContent = '⏳ ПРОЕКТ ДОКУМЕНТА (ОЖИДАЕТ ПОДПИСАНИЯ ПЭП)';
+                    stampTitle.style.color = '#8C6826';
+                }
                 if (methodEl) methodEl.textContent = 'Ожидает подтверждения (Telegram / VK ID)';
                 if (hashEl) hashEl.textContent = 'Генерируется при подписании (SHA-256)';
                 document.getElementById('pep-date').textContent = nowStr + ' (Проект)';
