@@ -177,6 +177,12 @@ function renderAppealCard(appeal) {
 
   const buttons = [];
   if (!isWithdrawn) {
+    if (appeal.status === 'PENDING_SIGNATURE' || !appeal.pepAudit?.signed) {
+      buttons.push([
+        { text: "✍️ ПОДТВЕРДИТЬ ПОДПИСАНИЕ (ПЭП 63-ФЗ)", callback_data: `sign_confirm_${cleanSeq}` }
+      ]);
+    }
+
     if (isContract) {
       buttons.push([
         { text: "📜 Открыть подписанный договор (ПЭП)", web_app: { url: docUrl } }
@@ -488,6 +494,32 @@ async function handleMessage(msg) {
       }
     }
 
+    // Проверка: есть ли неподписанные Заявления-поручения
+    const db = loadAppealsDb();
+    const pendingSign = db.appeals.find(a => 
+      a.caseId?.startsWith('СПР-') && 
+      (!a.pepAudit?.signed || a.status === 'PENDING_SIGNATURE') &&
+      (String(a.telegramId) === String(chatId) || !a.telegramId || (username && a.telegramUsername === username))
+    );
+
+    if (pendingSign) {
+      const cleanSeq = pendingSign.caseId.slice(-4);
+      const pendingNotice = `⏳ <b>У ВАС ЕСТЬ СФОРМИРОВАННОЕ ЗАЯВЛЕНИЕ-ПОРУЧЕНИЕ!</b>\n\n` +
+        `🆔 <b>Дело:</b> <code>${pendingSign.caseId}</code>\n` +
+        `⚖️ <b>Предмет:</b> ${pendingSign.direction || 'Досудебное содействие'}\n` +
+        `👤 <b>Заявитель:</b> ${pendingSign.name}\n` +
+        (pendingSign.sum ? `💰 <b>Сумма требований:</b> ${pendingSign.sum}\n` : '') +
+        `\nДля официальной регистрации и передачи в производство подтвердите подписание простой электронной подписью (63-ФЗ):`;
+
+      await sendMsg(chatId, pendingNotice, {
+        inline_keyboard: [
+          [{ text: `✍️ ПОДПИСАТЬ № ${pendingSign.caseId} (ПЭП 63-ФЗ)`, callback_data: `sign_confirm_${cleanSeq}` }],
+          [{ text: "📄 Открыть проект документа", web_app: { url: `${WEB_APP_URL}assignment-viewer.html?caseId=${encodeURIComponent(pendingSign.caseId)}` } }]
+        ]
+      });
+      return;
+    }
+
     // Стандартное приветствие
     const welcome = `👋 <b>Добро пожаловать в электронную приёмную АНО «ЮГ-ПРАВО»!</b>\n\n` +
       `Здравствуйте, <b>${firstName}</b>!\n\n` +
@@ -583,6 +615,48 @@ async function handleCallback(cb) {
   if (data === 'my_appeals') {
     await showUserAppeals(chatId);
     return;
+  }
+
+  // Подтверждение подписания ПЭП: sign_confirm_<caseId>
+  if (data.startsWith('sign_confirm_')) {
+    const rawId = data.replace('sign_confirm_', '');
+    const appeal = appealsManager.getAppeal(rawId);
+
+    if (appeal) {
+      const signedAppeal = appealsManager.signAppealWithPep(appeal.caseId, {
+        authMethod: 'TELEGRAM_AUTH',
+        profileId: chatId,
+        username: username,
+        telegramId: chatId,
+        ip: 'Telegram Gateway'
+      });
+
+      const pep = signedAppeal.pepAudit || {};
+      const signSuccessText = `✅ <b>ЗАЯВЛЕНИЕ-ПОРУЧЕНИЕ № ${appeal.caseId} УСПЕШНО ПОДПИСАНО!</b>\n\n` +
+        `🔐 <b>Метаданные электронной подписи (63-ФЗ):</b>\n` +
+        `• <b>Способ ПЭП:</b> <code>TELEGRAM_AUTH</code>\n` +
+        `• <b>Идентификатор профиля:</b> <code>${chatId}</code> (${username || firstName})\n` +
+        `• <b>Дата и время:</b> <code>${pep.signedAt || 'Только что'}</code>\n` +
+        `• <b>Хеш токена авторизации:</b> <code>${(pep.authHash || '').slice(0, 32)}...</code>\n\n` +
+        `🏛️ <i>Документ официально зарегистрирован и принят в работу Единой приёмной АНО «ЦПЗ ЮГ-ПРАВО».</i>`;
+
+      const docUrl = `${WEB_APP_URL}assignment-viewer.html?caseId=${encodeURIComponent(appeal.caseId)}`;
+
+      await sendMsg(chatId, signSuccessText, {
+        inline_keyboard: [
+          [{ text: "📄 Открыть подписанный документ (ПЭП)", web_app: { url: docUrl } }],
+          [{ text: "« Мои обращения", callback_data: "my_appeals" }]
+        ]
+      });
+
+      // Уведомление администратору
+      await sendMsg(ADMIN_ID, `🟢 <b>ДОКУМЕНТ ПОДПИСАН ПЭП ЧЕРЕЗ TELEGRAM!</b>\n\n` +
+        `🆔 <b>Дело:</b> <code>${appeal.caseId}</code>\n` +
+        `👤 <b>Подписант:</b> ${firstName} (${username || 'ID ' + chatId})\n` +
+        `📞 <b>Телефон:</b> <code>${appeal.phone}</code>\n` +
+        `🔐 <b>Хэш:</b> <code>${(pep.authHash || '').slice(0, 24)}...</code>`);
+      return;
+    }
   }
 
   // Просмотр конкретного обращения: view_<caseId>
