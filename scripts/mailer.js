@@ -75,6 +75,8 @@ async function sendAutoReply(leadData) {
   const departmentName = aliasNames[validAlias] || 'Профильное направление АНО «ЦПЗ ЮГ-ПРАВО»';
   const senderDisplayName = `${departmentName} | АНО «ЦПЗ ЮГ-ПРАВО»`;
   const applicantGreeting = 'Уважаемый заявитель!';
+  const isAssignment = (caseId || '').startsWith('СПР-');
+  const caseSeq = (caseId || '').slice(-4);
 
   const html = `
 <!DOCTYPE html>
@@ -105,7 +107,7 @@ async function sendAutoReply(leadData) {
       <p>Уведомляем, что ваше электронное обращение успешно зарегистрировано в едином реестре учета входящей корреспонденции Автономной некоммерческой организации «Центр правовой защиты и развития гражданских инициатив ЮГ-ПРАВО».</p>
       
       <div class="case-box">
-        <div class="case-title">Регистрационный номер обращения:</div>
+        <div class="case-title">Регистрационный номер ${isAssignment ? 'сопровождения' : 'обращения'}:</div>
         <div class="case-number">${caseId}</div>
         <div style="margin-top: 8px; font-size: 12px; color: #5F5E5E;">
           <strong>Ответственное подразделение:</strong> ${departmentName}
@@ -115,26 +117,27 @@ async function sendAutoReply(leadData) {
         </div>
       </div>
 
-      <p>Материалы обращения переданы в работу специалистам профильного направления для детального рассмотрения ситуации и правового анализа. Рассмотрение осуществляется в порядке процессуальной очерёдности поступления.</p>
+      <p>Материалы переданы в работу для детального рассмотрения ситуации и правового анализа. Рассмотрение осуществляется в порядке процессуальной очерёдности поступления.</p>
       
       <div style="margin: 20px 0; padding: 14px 16px; background: #F8F7F4; border-radius: 8px; border: 1px solid #E0E0E0; font-size: 12px; color: #2C3E50; line-height: 1.55;">
-        <div style="font-weight: bold; color: #0F2439; margin-bottom: 8px; font-size: 12.5px;">⚖️ Процессуальный регламент и условия содействия:</div>
+        <div style="font-weight: bold; color: #0F2439; margin-bottom: 8px; font-size: 12.5px;">⚖️ Регламент и условия содействия:</div>
         <div style="margin-bottom: 6px;">
           • <strong>Досудебное содействие — 0 ₽ (бесплатно):</strong> подготовка и направление требования с гербовой печатью АНО осуществляются безвозмездно в рамках уставной правозащитной деятельности СО НКО. Потребители и организация освобождены от госпошлины (пп. 4 п. 2 ст. 333.36 НК РФ).
         </div>
         <div style="margin-bottom: 6px;">
-          • <strong>Судебное представительство:</strong> в случае отказа или уклонения ответчика от добровольного удовлетворения требований судебная защита оформляется отдельным возмездным договором на индивидуальных условиях (расходы на судебного представителя заявляются ко взысканию с виновного лица по ст. 100 ГПК РФ).
+          • <strong>Судебное представительство:</strong> в случае отказа или уклонения ответчика от добровольного удовлетворения требований судебная защита оформляется отдельным договором на индивидуальных условиях (расходы на представителя заявляются ко взысканию с виновного лица по ст. 100 ГПК РФ).
         </div>
         <div>
-          • <strong>Конфиденциальность (152-ФЗ):</strong> в целях защиты персональных данных текст сформированного Заявления-поручения и ваши реквизиты не передаются в открытом виде по электронной почте. Документ доступен для скачивания и печати в вашем персональном сеансе на портале.
+          • <strong>Конфиденциальность (152-ФЗ):</strong> персональные данные и текст обращения обрабатываются в защищенном контуре в строгом соответствии с требованиями Федерального закона № 152-ФЗ.
         </div>
       </div>
 
       <div style="margin: 22px 0; text-align: center;">
+        ${isAssignment ? `
         <a href="https://yugpravo.ru/assignment-viewer.html?caseId=${encodeURIComponent(caseId)}" style="display: inline-block; background: #0F2439; color: #ffffff; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 13px; margin-right: 6px; margin-bottom: 8px;">
-          📄 Открыть талон на сайте
-        </a>
-        <a href="https://t.me/ugpravo_assistant_bot?start=track_${caseId.replace(/[^a-zA-Z0-9_-]/g, '_')}" style="display: inline-block; background: #229ED9; color: #ffffff; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 13px; margin-bottom: 8px;">
+          📄 Скачать Заявление-поручение (ПЭП 63-ФЗ)
+        </a>` : ''}
+        <a href="https://t.me/ugpravo_assistant_bot?start=track_${caseSeq}" style="display: inline-block; background: #229ED9; color: #ffffff; padding: 12px 22px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 13.5px; margin-bottom: 8px;">
           📱 Отслеживать статус в Telegram
         </a>
       </div>

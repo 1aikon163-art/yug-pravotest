@@ -26,8 +26,10 @@ conn.on('ready', () => {
         ['scripts/appeals-manager.js', '/var/www/yug-pravo/scripts/appeals-manager.js'],
         ['scripts/excel-registry-generator.js', '/var/www/yug-pravo/scripts/excel-registry-generator.js'],
         ['scripts/yandex-disk-sync.js', '/var/www/yug-pravo/scripts/yandex-disk-sync.js'],
+        ['scripts/mailer.js', '/var/www/yug-pravo/scripts/mailer.js'],
         ['server.js', '/var/www/yug-pravo/server.js'],
         ['js/forms.js', '/var/www/yug-pravo/js/forms.js'],
+        ['assignment-viewer.html', '/var/www/yug-pravo/assignment-viewer.html'],
         ['calculator.html', '/var/www/yug-pravo/calculator.html'],
         ['index.html', '/var/www/yug-pravo/index.html']
       ];

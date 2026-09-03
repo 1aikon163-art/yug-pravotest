@@ -622,36 +622,45 @@
             const nowStr = now.toLocaleString('ru-RU', { timeZone: 'Europe/Samara' });
             const todayRu = now.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
 
-            document.title = `Заявление-поручение ${caseId} — АНО «ЦПЗ ЮГ-ПРАВО»`;
-            document.getElementById('field-doc-title').textContent = `ЗАЯВЛЕНИЕ-ПОРУЧЕНИЕ № ${caseId}`;
+            const isAssignment = caseId.startsWith('СПР') || (data.sum && !caseId.startsWith('ОБР'));
+
+            document.title = isAssignment 
+                ? `Заявление-поручение ${caseId} — АНО «ЦПЗ ЮГ-ПРАВО»`
+                : `Электронный талон ${caseId} — АНО «ЮГ-ПРАВО»`;
+
+            document.getElementById('field-doc-title').textContent = isAssignment
+                ? `ЗАЯВЛЕНИЕ-ПОРУЧЕНИЕ № ${caseId}`
+                : `ЭЛЕКТРОННЫЙ ТАЛОН РЕГИСТРАЦИИ № ${caseId}`;
+
             document.getElementById('field-applicant-name').textContent = name;
             document.getElementById('field-applicant-phone').textContent = phone ? `Тел.: ${phone}` : 'Тел.: Не указан';
             document.getElementById('field-applicant-email').textContent = email ? `Email: ${email}` : 'Email: Не указан';
             document.getElementById('field-applicant-account').textContent = account ? `Лицевой счёт / договор: ${account}` : 'Лицевой счёт / договор: Не указан';
 
-            // Dynamic Subtitle & Preamble based on direction:
+            // Dynamic Subtitle & Preamble based on direction and type:
             const dirLower = direction.toLowerCase();
-            let subtitleText = 'о безвозмездном досудебном правовом содействии в защиту прав потребителя';
-            let preambleLaw = 'ст. 45 Закона РФ от 07.02.1992 № 2300-1 «О защите прав потребителей»';
+            let subtitleText = isAssignment
+                ? 'о безвозмездном досудебном правовом содействии в защиту прав потребителя'
+                : 'в Едином реестре входящей корреспонденции АНО «ЮГ-ПРАВО»';
 
-            if (dirLower.includes('жкх') || dirLower.includes('отоплен') || dirLower.includes('вод') || dirLower.includes('ипу') || dirLower.includes('тко')) {
-                subtitleText = 'о безвозмездном досудебном правовом содействии по перерасчёту и спорам в сфере ЖКХ';
-                preambleLaw = 'ч. 4 ст. 157 Жилищного кодекса РФ, Правилами предоставления коммунальных услуг (ПП РФ № 354)';
-            } else if (dirLower.includes('труд') || dirLower.includes('зарплат')) {
-                subtitleText = 'о безвозмездном досудебном правовом содействии в защиту трудовых прав работника';
-                preambleLaw = 'ст. 352, 381, 391 Трудового кодекса РФ (защита трудовых прав и взыскание невыплаченной заработной платы)';
-            } else if (dirLower.includes('страхов') || dirLower.includes('кредит') || dirLower.includes('допуслуг')) {
-                subtitleText = 'о безвозмездном досудебном содействии по возврату навязанных страховок и финансовых услуг';
-                preambleLaw = 'ч. 2.4 ст. 7 Федерального закона от 21.12.2013 № 353-ФЗ «О потребительском кредите (займе)», Федеральным законом от 04.06.2018 № 123-ФЗ';
-            } else if (dirLower.includes('залив') || dirLower.includes('ущерб')) {
-                subtitleText = 'о безвозмездном досудебном правовом содействии по возмещению имущественного ущерба';
-                preambleLaw = 'ст. 15, 1064 Гражданского кодекса РФ (полное возмещение убытков и причиненного вреда)';
-            } else if (dirLower.includes('395') || dirLower.includes('процент') || dirLower.includes('долг')) {
-                subtitleText = 'о безвозмездном досудебном правовом содействии по исполнению денежного обязательства';
-                preambleLaw = 'ст. 309, 395 Гражданского кодекса РФ (надлежащее исполнение обязательств и ответственность за пользование чужими средствами)';
-            } else if (dirLower.includes('судеб') || dirLower.includes('пошлин') || dirLower.includes('иск')) {
-                subtitleText = 'о содействии в подготовке процессуального расчёта цены иска и досудебном урегулировании';
-                preambleLaw = 'ст. 131, 132 Гражданского процессуального кодекса РФ, ст. 333.19 Налогового кодекса РФ';
+            let preambleLaw = isAssignment
+                ? 'ст. 45 Закона РФ от 07.02.1992 № 2300-1 «О защите прав потребителей»'
+                : 'Федеральный закон № 59-ФЗ «О порядке рассмотрения обращений граждан РФ», Федеральный закон № 152-ФЗ';
+
+            if (isAssignment) {
+                if (dirLower.includes('жкх') || dirLower.includes('отоплен') || dirLower.includes('вод') || dirLower.includes('ипу') || dirLower.includes('тко')) {
+                    subtitleText = 'о безвозмездном досудебном правовом содействии по перерасчёту и спорам в сфере ЖКХ';
+                    preambleLaw = 'ч. 4 ст. 157 Жилищного кодекса РФ, Правилами предоставления коммунальных услуг (ПП РФ № 354)';
+                } else if (dirLower.includes('труд') || dirLower.includes('зарплат')) {
+                    subtitleText = 'о безвозмездном досудебном правовом содействии в защиту трудовых прав работника';
+                    preambleLaw = 'ст. 352, 381, 391 Трудового кодекса РФ (защита трудовых прав и взыскание невыплаченной заработной платы)';
+                } else if (dirLower.includes('страхов') || dirLower.includes('кредит') || dirLower.includes('допуслуг')) {
+                    subtitleText = 'о безвозмездном досудебном содействии по возврату навязанных страховок и финансовых услуг';
+                    preambleLaw = 'ч. 2.4 ст. 7 Федерального закона от 21.12.2013 № 353-ФЗ «О потребительском кредите (займе)», Федеральным законом от 04.06.2018 № 123-ФЗ';
+                } else if (dirLower.includes('залив') || dirLower.includes('ущерб')) {
+                    subtitleText = 'о безвозмездном досудебном правовом содействии по возмещению имущественного ущерба';
+                    preambleLaw = 'ст. 15, 1064 Гражданского кодекса РФ (полное возмещение убытков и причиненного вреда)';
+                }
             }
 
             const subEl = document.getElementById('field-doc-subtitle');
@@ -659,7 +668,11 @@
 
             const preambleEl = document.getElementById('field-body-preamble');
             if (preambleEl) {
-                preambleEl.innerHTML = `Я, <strong id="field-body-name">${name}</strong>, руководствуясь ${preambleLaw}, ст. 434, 438 Гражданского кодекса РФ и ст. 5, 6, 9 Федерального закона от 06.04.2011 № 63-ФЗ «Об электронной подписи», настоящим поручаю Автономной некоммерческой организации «Центр правовой защиты и развития гражданских инициатив ЮГ-ПРАВО» (АНО «ЦПЗ ЮГ-ПРАВО») оказать мне безвозмездное досудебное содействие в целях восстановления моих нарушенных законных прав.`;
+                if (isAssignment) {
+                    preambleEl.innerHTML = `Я, <strong id="field-body-name">${name}</strong>, руководствуясь ${preambleLaw}, ст. 434, 438 Гражданского кодекса РФ и ст. 5, 6, 9 Федерального закона от 06.04.2011 № 63-ФЗ «Об электронной подписи», настоящим поручаю Автономной некоммерческой организации «Центр правовой защиты и развития гражданских инициатив ЮГ-ПРАВО» (АНО «ЦПЗ ЮГ-ПРАВО») оказать мне безвозмездное досудебное содействие в целях восстановления моих нарушенных законных прав.`;
+                } else {
+                    preambleEl.innerHTML = `Настоящим подтверждается, что электронное обращение гражданина <strong>${name}</strong> принято и официально зарегистрировано в Едином реестре корреспонденции Автономной некоммерческой организации «Центр правовой защиты и развития гражданских инициатив ЮГ-ПРАВО» (ОГРН 1266300015080 / ИНН 6317174776) в соответствии с нормами Федерального закона № 59-ФЗ.`;
+                }
             }
 
             document.getElementById('field-claim-direction').innerHTML = `• <strong>Категория спора:</strong> ${direction}`;
