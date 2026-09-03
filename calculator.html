@@ -2428,6 +2428,8 @@
                 (accountNo ? `Лицевой счёт / Номер договора: ${accountNo}\n` : '') +
                 `Комментарий заявителя: ${comment || 'Не указан'}`;
 
+            const recipientVal = (document.getElementById('claim-input-recipient')?.value || '').trim();
+
             try {
                 const resp = await fetch('/api/lead', {
                     method: 'POST',
@@ -2436,6 +2438,11 @@
                         name: name,
                         phone: phone,
                         email: email,
+                        account: accountNo,
+                        company: recipientVal,
+                        sum: parsedCalc ? parsedCalc.sum : '',
+                        law: parsedCalc ? parsedCalc.law : '',
+                        comment: comment,
                         message: messageText,
                         direction: directionTitle,
                         source: 'Калькулятор (Досудебное содействие АНО)',
@@ -2447,7 +2454,6 @@
                 if (result.success) {
                     closeModal('modal-claim-delegate');
                     form.reset();
-                    const recipientVal = (document.getElementById('claim-input-recipient')?.value || '').trim();
 
                     // Save full assignment data into localStorage:
                     try {

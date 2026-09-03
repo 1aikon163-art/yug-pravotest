@@ -356,6 +356,69 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  // 2.0. Appeal Data Endpoint (/api/appeal-data?caseId=...)
+  if (reqPath === '/api/appeal-data' && req.method === 'GET') {
+    const urlObj = new URL(req.url, 'http://localhost');
+    const caseId = urlObj.searchParams.get('caseId') || urlObj.searchParams.get('id');
+    try {
+      const appealsManager = require('./scripts/appeals-manager.js');
+      const record = appealsManager.getAppeal(caseId);
+      if (record) {
+        let sum = record.sum || '';
+        let law = record.law || '';
+        let account = record.account || '';
+        let company = record.company || '';
+        let comment = record.comment || '';
+
+        if (!sum && record.message) {
+          const sumMatch = record.message.match(/Сумма расчёта:\s*([^\n]+)/i);
+          if (sumMatch) sum = sumMatch[1].trim();
+        }
+        if (!law && record.message) {
+          const lawMatch = record.message.match(/Основание:\s*([^\n]+)/i);
+          if (lawMatch) law = lawMatch[1].trim();
+        }
+        if (!account && record.message) {
+          const accMatch = record.message.match(/Лицевой счёт[^\n:]*:\s*([^\n]+)/i);
+          if (accMatch) account = accMatch[1].trim();
+        }
+        if (!comment && record.message) {
+          const comMatch = record.message.match(/Комментарий заявителя:\s*([^\n]+)/i);
+          if (comMatch) comment = comMatch[1].trim();
+        }
+
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
+        res.end(JSON.stringify({
+          success: true,
+          appeal: {
+            caseId: record.caseId,
+            name: record.name,
+            phone: record.phone,
+            email: record.email,
+            direction: record.direction,
+            company: company,
+            account: account,
+            sum: sum,
+            law: law,
+            comment: comment || record.message,
+            status: record.status,
+            statusText: record.statusText,
+            createdAt: record.createdAt
+          }
+        }));
+        return;
+      } else {
+        res.writeHead(404, { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
+        res.end(JSON.stringify({ success: false, error: 'Обращение не найдено' }));
+        return;
+      }
+    } catch (err) {
+      res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
+      res.end(JSON.stringify({ success: false, error: err.message }));
+      return;
+    }
+  }
+
   // 2.1. Lead Submission Endpoint (/api/lead & /api/register-assignment)
   if ((reqPath === '/api/lead' || reqPath === '/api/register-assignment') && req.method === 'POST') {
     let body = '';
@@ -405,6 +468,11 @@ const server = http.createServer((req, res) => {
             email: email,
             alias: alias,
             direction: direction,
+            company: data.company || '',
+            account: data.account || data.account_number || data.accountNumber || '',
+            sum: data.sum || '',
+            law: data.law || '',
+            comment: data.comment || '',
             message: message,
             source: source,
             status: 'REGISTERED'

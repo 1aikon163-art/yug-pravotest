@@ -847,13 +847,29 @@
             showViewerToast('Документ скачан в формате Word (.DOC)!');
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             const params = new URLSearchParams(window.location.search);
-            const hasUrlParams = params.has('name') || params.has('sum') || params.has('caseId');
+            const caseIdParam = params.get('caseId') || params.get('id');
 
-            if (hasUrlParams) {
-                const data = {
-                    caseId: params.get('caseId') || params.get('id'),
+            let initialData = null;
+
+            // 1. If caseId is present, fetch live data from server
+            if (caseIdParam) {
+                try {
+                    const resp = await fetch('/api/appeal-data?caseId=' + encodeURIComponent(caseIdParam));
+                    if (resp.ok) {
+                        const json = await resp.json();
+                        if (json.success && json.appeal) {
+                            initialData = json.appeal;
+                        }
+                    }
+                } catch (_) {}
+            }
+
+            // 2. If params contain direct fields (e.g. from calculator redirect)
+            if (!initialData && (params.has('name') || params.has('sum'))) {
+                initialData = {
+                    caseId: caseIdParam,
                     name: params.get('name'),
                     phone: params.get('phone'),
                     email: params.get('email'),
@@ -864,24 +880,28 @@
                     comment: params.get('comment') || params.get('message'),
                     law: params.get('law')
                 };
-                renderAssignment(data);
-                localStorage.setItem('yugpravo_assignment_data', JSON.stringify(data));
-                if (data.email && data.email.includes('@')) {
-                    syncAssignmentBackend(data);
+            }
+
+            // 3. Fallback to localStorage if still not loaded
+            if (!initialData) {
+                try {
+                    const saved = JSON.parse(localStorage.getItem('yugpravo_assignment_data') || localStorage.getItem('yugpravo_client_profile'));
+                    if (saved && (saved.name || saved.sum || saved.caseId)) {
+                        initialData = saved;
+                    }
+                } catch (_) {}
+            }
+
+            if (initialData) {
+                renderAssignment(initialData);
+                try {
+                    localStorage.setItem('yugpravo_assignment_data', JSON.stringify(initialData));
+                } catch (_) {}
+                if (initialData.email && initialData.email.includes('@') && !caseIdParam) {
+                    syncAssignmentBackend(initialData);
                 }
             } else {
-                // Try to restore from localStorage:
-                let saved = null;
-                try {
-                    saved = JSON.parse(localStorage.getItem('yugpravo_assignment_data') || localStorage.getItem('yugpravo_client_profile'));
-                } catch (_) {}
-
-                if (saved && (saved.name || saved.sum)) {
-                    renderAssignment(saved);
-                } else {
-                    // No data present -> Open the prompt modal immediately so client can enter their real data!
-                    openEditModal();
-                }
+                openEditModal();
             }
         });
     </script>
