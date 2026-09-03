@@ -548,7 +548,9 @@ const server = http.createServer((req, res) => {
           }
         } catch (_) {}
 
-        const docLabel = appealRecord ? appealRecord.docTypeLabel : 'Обращение';
+        if (appealRecord && appealRecord.docTypeLabel) {
+          docLabel = appealRecord.docTypeLabel;
+        }
         const docPrefix = appealRecord ? appealRecord.docPrefix : '📩';
 
         const text = [
