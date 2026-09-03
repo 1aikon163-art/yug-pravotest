@@ -130,6 +130,7 @@ class AppealsManager {
     }
 
     saveAppealsDb(db);
+    this.syncToYandexDisk();
 
     // Фоновая запись в Журнал Канцелярии (Excel)
     try {
@@ -211,6 +212,7 @@ class AppealsManager {
 
     if (matched.length > 0) {
       saveAppealsDb(db);
+      this.syncToYandexDisk();
     }
     return matched;
   }
@@ -232,6 +234,7 @@ class AppealsManager {
       }
       db.appeals[idx].updatedAt = new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Samara' });
       saveAppealsDb(db);
+      this.syncToYandexDisk();
       return db.appeals[idx];
     }
     return null;
@@ -255,6 +258,7 @@ class AppealsManager {
       }
       db.appeals[idx].updatedAt = new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Samara' });
       saveAppealsDb(db);
+      this.syncToYandexDisk();
       return db.appeals[idx];
     }
     return null;
@@ -280,6 +284,7 @@ class AppealsManager {
       db.appeals[idx].withdrawReason = reason;
       db.appeals[idx].updatedAt = new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Samara' });
       saveAppealsDb(db);
+      this.syncToYandexDisk();
       return { success: true, appeal: db.appeals[idx] };
     }
     return { success: false, error: 'Ошибка сохранения' };
@@ -306,9 +311,56 @@ class AppealsManager {
       db.appeals[idx].messages.push(msgObj);
       db.appeals[idx].updatedAt = msgObj.date;
       saveAppealsDb(db);
+      this.syncToYandexDisk();
       return { appeal: db.appeals[idx], message: msgObj };
     }
     return null;
+  }
+
+  /**
+   * Полная синхронизация всей базы обращений с Яндекс Диском (XLSX + CSV)
+   */
+  async syncToYandexDisk() {
+    try {
+      const YandexDiskRegistry = require('./yandex-disk-sync.js');
+      const { generateMultiSheetWorkbook } = require('./excel-registry-generator.js');
+      const yd = new YandexDiskRegistry();
+      if (!yd.token) return;
+
+      const db = loadAppealsDb();
+      const leads = db.appeals || [];
+
+      // 1. Генерация и выгрузка Excel (XLSX)
+      const xlsxBuffer = await generateMultiSheetWorkbook(leads);
+      await yd.uploadBuffer('/Юг-Право_Реестр/Реестр_обращений_2026.xlsx', xlsxBuffer, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+      // 2. Генерация и выгрузка CSV
+      const headerRow = '\uFEFF№ п/п;Дата и время (Самара);Номер дела;Тип;Статус дела;Отдел / Алиас;ФИО заявителя;Телефон;Email;Telegram;Источник;Суть обращения;Заметки / Комментарий\n';
+      const csvRows = leads.map((l, i) => {
+        const tg = l.telegramUsername || (l.telegramId ? `ID: ${l.telegramId}` : '');
+        return [
+          i + 1,
+          yd.escapeCSV(l.createdAt || l.date || ''),
+          yd.escapeCSV(l.caseId || ''),
+          yd.escapeCSV(l.docTypeLabel || 'Обращение'),
+          yd.escapeCSV(l.statusText || l.status || ''),
+          yd.escapeCSV(l.alias || 'info@yugpravo.ru'),
+          yd.escapeCSV(l.name || ''),
+          yd.escapeCSV(l.phone || ''),
+          yd.escapeCSV(l.email || ''),
+          yd.escapeCSV(tg),
+          yd.escapeCSV(l.source || 'Сайт'),
+          yd.escapeCSV(l.message || ''),
+          yd.escapeCSV(l.statusNote || '')
+        ].join(';');
+      }).join('\n');
+
+      const csvBuffer = Buffer.from(headerRow + csvRows, 'utf8');
+      await yd.uploadBuffer('/Юг-Право_Реестр/Реестр_обращений_2026.csv', csvBuffer, 'text/csv; charset=utf-8');
+      console.log('📊 [AppealsManager] Реестр на Яндекс Диске (XLSX + CSV) успешно обновлен.');
+    } catch (e) {
+      console.warn('⚠️ [AppealsManager] syncToYandexDisk error:', e.message);
+    }
   }
 }
 

@@ -7,38 +7,37 @@ const ExcelJS = require('exceljs');
 
 const DEPARTMENTS = [
   { id: 'all', title: '📋 Сводный реестр', filter: () => true },
-  { id: 'jkh', title: '🏠 ЖКХ и УК', filter: (l) => (l.alias || '').includes('jkh') },
-  { id: 'debt', title: '💳 Долги и 230-ФЗ', filter: (l) => (l.alias || '').includes('debt') },
-  { id: 'potreb', title: '🛍️ Защита потребителей', filter: (l) => (l.alias || '').includes('potreb') },
-  { id: 'sud', title: '⚖️ Судебная защита', filter: (l) => (l.alias || '').includes('sud') },
-  { id: 'trud', title: '💼 Трудовые споры', filter: (l) => (l.alias || '').includes('trud') },
-  { id: 'partner', title: '🤝 Партнерство & B2B', filter: (l) => (l.alias || '').includes('partner') },
-  { id: 'idea_care', title: '💡 Инициативы и сборы', filter: (l) => (l.alias || '').includes('idea') || (l.alias || '').includes('care') }
+  { id: 'jkh', title: '🏠 ЖКХ и УК', filter: (l) => (l.alias || '').includes('jkh') || (l.caseId || '').startsWith('ЖКХ') },
+  { id: 'potreb', title: '🛍️ Потребители & Споры', filter: (l) => (l.alias || '').includes('potreb') || (l.alias || '').includes('debt') },
+  { id: 'sud', title: '⚖️ Сопровождение & Суд', filter: (l) => (l.alias || '').includes('sud') || (l.caseId || '').startsWith('СПР') },
+  { id: 'partner', title: '🤝 Партнерство & Договоры', filter: (l) => (l.alias || '').includes('partner') || (l.caseId || '').startsWith('ДОГ') },
+  { id: 'idea_care', title: '💡 Инициативы & Сборы', filter: (l) => (l.alias || '').includes('idea') || (l.alias || '').includes('care') || (l.caseId || '').startsWith('ИН') }
 ];
 
 const COLUMNS = [
   { header: '№ п/п', key: 'idx', width: 8, align: 'center' },
-  { header: 'Дата и время (Самара)', key: 'date', width: 22, align: 'center' },
-  { header: 'Номер дела', key: 'caseId', width: 20, align: 'center' },
-  { header: 'Статус обращения', key: 'status', width: 30, align: 'left' },
-  { header: 'Подразделение / Алиас', key: 'alias', width: 26, align: 'left' },
-  { header: 'ФИО заявителя', key: 'name', width: 32, align: 'left' },
+  { header: 'Дата и время', key: 'date', width: 20, align: 'center' },
+  { header: 'Номер дела', key: 'caseId', width: 22, align: 'center' },
+  { header: 'Тип', key: 'docTypeLabel', width: 18, align: 'center' },
+  { header: 'Статус дела', key: 'status', width: 28, align: 'left' },
+  { header: 'Отдел / Алиас', key: 'alias', width: 24, align: 'left' },
+  { header: 'ФИО заявителя', key: 'name', width: 28, align: 'left' },
   { header: 'Телефон', key: 'phone', width: 20, align: 'center' },
-  { header: 'Email заявителя', key: 'email', width: 28, align: 'left' },
-  { header: 'Источник обращения', key: 'source', width: 24, align: 'left' },
-  { header: 'Краткая суть обращения / Вопрос', key: 'message', width: 50, align: 'left' },
-  { header: 'Правовая позиция / Решение юриста', key: 'solution', width: 40, align: 'left' },
-  { header: 'Ответственный юрист', key: 'lawyer', width: 25, align: 'left' }
+  { header: 'Email заявителя', key: 'email', width: 26, align: 'left' },
+  { header: 'Telegram аккаунт', key: 'telegram', width: 22, align: 'center' },
+  { header: 'Источник', key: 'source', width: 22, align: 'left' },
+  { header: 'Суть обращения / Сообщение', key: 'message', width: 55, align: 'left' },
+  { header: 'Заметки / Комментарий', key: 'notes', width: 40, align: 'left' }
 ];
 
 async function generateMultiSheetWorkbook(leads = []) {
   const workbook = new ExcelJS.Workbook();
-  workbook.creator = 'АНО «ЦПЗ ЮГ-ПРАВО» LegalTech Engine';
-  workbook.lastModifiedBy = 'Yug-Pravo Automated CRM';
+  workbook.creator = 'АНО «ЦПЗ ЮГ-ПРАВО»';
+  workbook.lastModifiedBy = 'АНО «ЦПЗ ЮГ-ПРАВО»';
   workbook.created = new Date();
   workbook.modified = new Date();
 
-  // 1. Создаем листы по отделам
+  // 1. Создаем листы по категориям
   for (const dept of DEPARTMENTS) {
     const sheet = workbook.addWorksheet(dept.title, {
       views: [{ state: 'frozen', xSplit: 0, ySplit: 4, showGridLines: true }],
@@ -52,7 +51,7 @@ async function generateMultiSheetWorkbook(leads = []) {
     }));
 
     // Заголовок Row 1 (Главный баннер)
-    sheet.mergeCells('A1:L1');
+    sheet.mergeCells('A1:M1');
     const titleRow = sheet.getCell('A1');
     titleRow.value = 'АВТОНОМНАЯ НЕКОММЕРЧЕСКАЯ ОРГАНИЗАЦИЯ «ЦЕНТР ПРАВОВОЙ ЗАЩИТЫ И РАЗВИТИЯ ГРАЖДАНСКИХ ИНИЦИАТИВ ЮГ-ПРАВО»';
     titleRow.font = { name: 'Arial', size: 11, bold: true, color: { argb: 'FFFFFFFF' } };
@@ -61,9 +60,9 @@ async function generateMultiSheetWorkbook(leads = []) {
     sheet.getRow(1).height = 28;
 
     // Подзаголовок Row 2
-    sheet.mergeCells('A2:L2');
+    sheet.mergeCells('A2:M2');
     const subTitleRow = sheet.getCell('A2');
-    subTitleRow.value = `ЖУРНАЛ УЧЕТА ВХОДЯЩИХ ОБРАЩЕНИЙ — ${dept.title.toUpperCase()} (152-ФЗ / ОГРН 1266300015080 / ИНН 6317174776)`;
+    subTitleRow.value = `ЖУРНАЛ УЧЕТА ОБРАЩЕНИЙ И ДЕЛ — ${dept.title.toUpperCase()} (ОГРН 1266300015080 / ИНН 6317174776)`;
     subTitleRow.font = { name: 'Arial', size: 9, bold: true, color: { argb: 'FF8C6826' } };
     subTitleRow.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFAF4E6' } };
     subTitleRow.alignment = { vertical: 'middle', horizontal: 'center' };
@@ -89,7 +88,7 @@ async function generateMultiSheetWorkbook(leads = []) {
       };
     });
 
-    // Фильтруем лиды для данного листа
+    // Фильтруем записи для данного листа
     const deptLeads = leads.filter(dept.filter);
 
     // Добавляем строки данных
@@ -101,19 +100,22 @@ async function generateMultiSheetWorkbook(leads = []) {
       const isEven = index % 2 === 0;
       const bgArgb = isEven ? 'FFFFFFFF' : 'FFF9F9F8';
 
+      const tgInfo = lead.telegramUsername ? lead.telegramUsername : (lead.telegramId ? `ID: ${lead.telegramId}` : '—');
+
       row.values = {
         idx: index + 1,
-        date: lead.date || '',
+        date: lead.createdAt || lead.date || '',
         caseId: lead.caseId || '',
-        status: lead.status || '🟡 Зарегистрировано (Первичный анализ)',
-        alias: lead.alias || '',
+        docTypeLabel: lead.docTypeLabel || 'Обращение',
+        status: lead.statusText || lead.status || '⏳ Принято канцелярией',
+        alias: lead.alias || 'info@yugpravo.ru',
         name: lead.name || '',
         phone: lead.phone || '',
         email: lead.email || '',
+        telegram: tgInfo,
         source: lead.source || 'Сайт',
         message: lead.message || '',
-        solution: lead.solution || '',
-        lawyer: lead.lawyer || 'Юрисконсульт АНО'
+        notes: lead.statusNote || lead.solution || ''
       };
 
       COLUMNS.forEach((col, cIdx) => {
@@ -123,10 +125,17 @@ async function generateMultiSheetWorkbook(leads = []) {
           cell.font = { name: 'Consolas', size: 9, bold: true, color: { argb: 'FF0F2439' } };
         }
         if (col.key === 'status') {
-          cell.font = { name: 'Arial', size: 9, bold: true, color: { argb: 'FF1E5631' } };
+          const isComp = (lead.status === 'COMPLETED' || String(lead.status).includes('Завершено'));
+          const isWith = (lead.status === 'WITHDRAWN' || String(lead.status).includes('Отозвано'));
+          cell.font = {
+            name: 'Arial',
+            size: 9,
+            bold: true,
+            color: { argb: isWith ? 'FFC0392B' : (isComp ? 'FF1E5631' : 'FF8C6826') }
+          };
         }
         cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: bgArgb } };
-        cell.alignment = { vertical: 'middle', horizontal: col.align, wrapText: col.key === 'message' || col.key === 'solution' };
+        cell.alignment = { vertical: 'middle', horizontal: col.align, wrapText: col.key === 'message' || col.key === 'notes' };
         cell.border = {
           top: { style: 'thin', color: { argb: 'FFE0E0E0' } },
           bottom: { style: 'thin', color: { argb: 'FFE0E0E0' } },
@@ -138,9 +147,6 @@ async function generateMultiSheetWorkbook(leads = []) {
 
     // Включаем фильтры Excel на шапку
     sheet.autoFilter = {
-      from: { row: 4, column: 1 },
-      to: { row: 4, column: COLUMNS.length }
-    };
   }
 
   // 2. Информационный лист для Минюста и Роскомнадзора (152-ФЗ)

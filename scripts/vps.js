@@ -24,13 +24,15 @@ conn.on('ready', () => {
       const files = [
         ['bots/main-bot.js', '/var/www/yug-pravo/bots/main-bot.js'],
         ['scripts/appeals-manager.js', '/var/www/yug-pravo/scripts/appeals-manager.js'],
+        ['scripts/excel-registry-generator.js', '/var/www/yug-pravo/scripts/excel-registry-generator.js'],
+        ['scripts/yandex-disk-sync.js', '/var/www/yug-pravo/scripts/yandex-disk-sync.js'],
         ['server.js', '/var/www/yug-pravo/server.js'],
         ['js/forms.js', '/var/www/yug-pravo/js/forms.js'],
         ['calculator.html', '/var/www/yug-pravo/calculator.html'],
         ['index.html', '/var/www/yug-pravo/index.html']
       ];
 
-      // Также исправляем записи в appeals.json на VPS
+      // Также исправляем записи в appeals.json на VPS и сразу синхронизируем с Яндекс Диском
       const fixDbCommand = `node -e "
         const fs = require('fs');
         const p = '/var/www/yug-pravo/data/appeals.json';
@@ -45,6 +47,8 @@ conn.on('ready', () => {
           });
           fs.writeFileSync(p, JSON.stringify(db, null, 2));
         }
+        const m = require('./scripts/appeals-manager.js');
+        m.syncToYandexDisk();
       " && pm2 reload all`;
 
       let done = 0;
