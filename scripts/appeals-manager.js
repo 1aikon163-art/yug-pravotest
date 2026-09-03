@@ -152,13 +152,31 @@ class AppealsManager {
   }
 
   /**
-   * Получить обращение по номеру
+   * Получить обращение по номеру (поддерживает точный номер, транслит и 4-значный код)
    */
   getAppeal(caseId) {
     if (!caseId) return null;
     const db = loadAppealsDb();
-    const cleanId = caseId.trim().toUpperCase();
-    return db.appeals.find(a => a.caseId.toUpperCase() === cleanId || a.caseId.replace(/[^A-Za-zА-Яа-я0-9]/g, '').toUpperCase() === cleanId.replace(/[^A-Za-zА-Яа-я0-9]/g, '').toUpperCase()) || null;
+    const cleanId = String(caseId).trim().toUpperCase();
+
+    // 1. Прямое совпадение
+    let found = db.appeals.find(a => a.caseId.toUpperCase() === cleanId);
+    if (found) return found;
+
+    // 2. Очищенное сравнение (без знаков препинания)
+    const normSearch = cleanId.replace(/[^A-Za-zА-Яа-я0-9]/g, '');
+    found = db.appeals.find(a => a.caseId.replace(/[^A-Za-zА-Яа-я0-9]/g, '').toUpperCase() === normSearch);
+    if (found) return found;
+
+    // 3. Сравнение по 4-значному цифровому коду в конце (например, 9704)
+    const digitsOnly = cleanId.replace(/\D/g, '');
+    if (digitsOnly.length >= 4) {
+      const last4 = digitsOnly.slice(-4);
+      found = db.appeals.find(a => a.caseId.endsWith(last4));
+      if (found) return found;
+    }
+
+    return null;
   }
 
   /**

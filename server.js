@@ -503,7 +503,7 @@ const server = http.createServer((req, res) => {
           '📊 <i>Запись внесена в Единый Реестр и Журнал Канцелярии</i>'
         ].filter(Boolean).join('\n');
 
-        const cleanSafeId = caseId.replace(/[^a-zA-Z0-9_-]/g, '_');
+        const cleanSafeId = caseSeq;
         const tgLink = `https://t.me/ugpravo_assistant_bot?start=track_${cleanSafeId}`;
 
         const postData = JSON.stringify({
