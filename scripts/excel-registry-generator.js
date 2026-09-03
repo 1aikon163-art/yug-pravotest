@@ -147,6 +147,9 @@ async function generateMultiSheetWorkbook(leads = []) {
 
     // Включаем фильтры Excel на шапку
     sheet.autoFilter = {
+      from: { row: 4, column: 1 },
+      to: { row: 4, column: COLUMNS.length }
+    };
   }
 
   // 2. Информационный лист для Минюста и Роскомнадзора (152-ФЗ)
