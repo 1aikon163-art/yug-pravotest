@@ -388,7 +388,7 @@ const server = http.createServer((req, res) => {
         const dirLow = (data.direction || '').toLowerCase();
         if (dirLow.includes('поручение') || dirLow.includes('калькулятор') || alias === 'sud@yugpravo.ru') {
           typePrefix = 'СПР';
-        } else if (dirLow.includes('договор') || alias === 'care@yugpravo.ru' || alias === 'partner@yugpravo.ru') {
+        } else if (dirLow.includes('договор')) {
           typePrefix = 'ДОГ';
         } else if (alias === 'jkh@yugpravo.ru' || dirLow.includes('жкх')) {
           typePrefix = 'ЖКХ';
