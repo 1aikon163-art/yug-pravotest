@@ -382,17 +382,23 @@ const server = http.createServer((req, res) => {
           'info@yugpravo.ru': 'ОБЩ'
         };
         const deptCode = aliasCodes[alias] || 'ОБЩ';
+        const caseSeq  = String(Date.now()).slice(-4);
         let typePrefix = 'ОБР';
+        let docLabel   = 'Обращение';
         const dirLow = (data.direction || '').toLowerCase();
         const srcLow = (data.source || '').toLowerCase();
-        if (srcLow.includes('delegate') || srcLow.includes('assignment') || srcLow.includes('calc') || dirLow.includes('поручен') || dirLow.includes('калькулятор') || dirLow.includes('перерасчет') || dirLow.includes('аудит')) {
+        if (srcLow.includes('delegate') || srcLow.includes('assignment') || srcLow.includes('calc') || srcLow.includes('калькулятор') || dirLow.includes('поручен') || dirLow.includes('калькулятор') || dirLow.includes('перерасчет') || dirLow.includes('аудит')) {
           typePrefix = 'СПР';
+          docLabel   = 'Сопровождение';
         } else if (dirLow.includes('договор') || srcLow.includes('contract') || srcLow.includes('partner')) {
           typePrefix = 'ДОГ';
+          docLabel   = 'Договор';
         } else if (alias === 'idea@yugpravo.ru' || dirLow.includes('инициатив') || srcLow.includes('initiative')) {
           typePrefix = 'ИН';
+          docLabel   = 'Инициатива';
         } else {
           typePrefix = 'ОБР';
+          docLabel   = 'Обращение';
         }
 
         const caseId = `${typePrefix}-26/${deptCode}-${caseSeq}`;

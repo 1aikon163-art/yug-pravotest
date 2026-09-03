@@ -55,7 +55,7 @@ conn.on('ready', () => {
           await m.syncToYandexDisk();
           console.log('✅ Live Yandex Disk Registry Synchronized from VPS DB!');
         })();
-      " && pm2 reload all`;
+      " && pm2 restart all`;
 
       let done = 0;
       files.forEach(([loc, rem]) => {

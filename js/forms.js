@@ -50,8 +50,8 @@ function initPhoneMasks() {
 function initAllForms() {
   const forms = document.querySelectorAll('form');
   forms.forEach((form) => {
-    // Игнорируем форму пожертвований (она обрабатывается TBankPayment)
-    if (form.closest('#modal-donate')) return;
+    // Игнорируем форму пожертвований и форму калькулятора (она обрабатывается своим методом)
+    if (form.closest('#modal-donate') || form.id === 'delegate-form') return;
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
