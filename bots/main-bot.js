@@ -327,9 +327,10 @@ async function handleMessage(msg) {
 
       const appeal = appealsManager.getAppeal(caseId);
       const exactCaseId = appeal ? appeal.caseId : caseId;
+      const dative = getDocTypeDative(appeal);
       appealsManager.addMessage(exactCaseId, 'applicant', firstName, text);
 
-      await sendMsg(chatId, `✅ <b>Ваш вопрос по документу № ${exactCaseId} передан специалисту!</b>\n\nСпециалист центра ответит вам здесь в ближайшее время.`, getMainReplyKeyboard());
+      await sendMsg(chatId, `✅ <b>Ваш вопрос по ${dative} № ${exactCaseId} передан специалисту!</b>\n\nСпециалист центра ответит вам здесь в ближайшее время.`, getMainReplyKeyboard());
 
       // Уведомление администратору
       const cleanSeq = exactCaseId.slice(-4);
@@ -345,7 +346,7 @@ async function handleMessage(msg) {
         `🆔 <b>Дело:</b> <code>${exactCaseId}</code> (${appeal?.docTypeLabel || 'Обращение'})\n` +
         `👤 <b>Заявитель:</b> ${firstName} ${username} (ID: <code>${chatId}</code>)\n` +
         `📞 <b>Телефон:</b> <code>${appeal?.phone || '—'}</code>\n\n` +
-        `📝 <b>Текст вопроса:</b>\n<i>${text}</i>`;
+        `📝 <b>Текст вопроса:</b>\n<i>${escapeHtml(text)}</i>`;
 
       await sendMsg(ADMIN_ID, adminNotice, { inline_keyboard: adminButtons });
       return;
@@ -358,17 +359,18 @@ async function handleMessage(msg) {
 
       const appeal = appealsManager.getAppeal(caseId);
       const exactCaseId = appeal ? appeal.caseId : caseId;
+      const dative = getDocTypeDative(appeal);
 
       appealsManager.addMessage(exactCaseId, 'specialist', 'Специалист АНО «ЮГ-ПРАВО»', text);
 
-      await sendMsg(chatId, `✅ <b>Ответ успешно отправлен заявителю по делу № ${exactCaseId}!</b>`);
+      await sendMsg(chatId, `✅ <b>Ответ успешно отправлен заявителю по ${dative} № ${exactCaseId}!</b>`);
 
       // Отправляем заявителю, если привязан Telegram
       if (appeal && appeal.telegramId) {
         const cleanSeq = exactCaseId.slice(-4);
         const userMsg = `⚖️ <b>СООБЩЕНИЕ ОТ СПЕЦИАЛИСТА АНО «ЮГ-ПРАВО»</b>\n` +
-          `📌 <i>К документу № ${exactCaseId} (${appeal.docTypeLabel})</i>\n\n` +
-          `💬 <b>Текст ответа:</b>\n${text}\n\n` +
+          `📌 <i>К ${dative} № ${exactCaseId} (${appeal.docTypeLabel})</i>\n\n` +
+          `💬 <b>Текст ответа:</b>\n${escapeHtml(text)}\n\n` +
           `━━━━━━━━━━━━━━━━━━━━\n` +
           `<i>Вы можете ответить на это сообщение, нажав кнопку ниже:</i>`;
 
@@ -539,9 +541,10 @@ async function handleCallback(cb) {
     const rawId = data.replace('ask_', '');
     const appeal = appealsManager.getAppeal(rawId);
     const targetCaseId = appeal ? appeal.caseId : rawId;
+    const dative = getDocTypeDative(appeal);
     userSessions.set(chatId, { state: 'WAIT_APPLICANT_QUESTION', caseId: targetCaseId });
 
-    await sendMsg(chatId, `📝 <b>Задайте вопрос специалисту по документу № ${targetCaseId}:</b>\n\n` +
+    await sendMsg(chatId, `📝 <b>Задайте вопрос специалисту по ${dative} № ${targetCaseId}:</b>\n\n` +
       `Напишите текст сообщения в ответ — оно будет мгновенно передано ответственному специалисту центра:`);
     return;
   }
@@ -552,12 +555,14 @@ async function handleCallback(cb) {
     const appeal = appealsManager.getAppeal(rawId);
     const targetCaseId = appeal ? appeal.caseId : rawId;
     const cleanSeq = targetCaseId.slice(-4);
+    const genitive = getDocTypeGenitive(appeal);
+    const accusative = getDocTypeAccusative(appeal);
 
-    await sendMsg(chatId, `⚠️ <b>Подтверждение отзыва документа</b>\n\n` +
-      `Вы действительно хотите отозвать документ <b>№ ${targetCaseId}</b> и прекратить его рассмотрение в соответствии со ст. 5 ч. 5 Федерального закона № 59-ФЗ?`, {
+    await sendMsg(chatId, `⚠️ <b>Подтверждение отзыва ${genitive}</b>\n\n` +
+      `Вы действительно хотите отозвать ${accusative} <b>№ ${targetCaseId}</b> и прекратить его рассмотрение в соответствии со ст. 5 ч. 5 Федерального закона № 59-ФЗ?`, {
       inline_keyboard: [
         [
-          { text: "✅ Да, отозвать документ", callback_data: `do_withdraw_${cleanSeq}` },
+          { text: "✅ Да, отозвать", callback_data: `do_withdraw_${cleanSeq}` },
           { text: "❌ Отмена", callback_data: `view_${cleanSeq}` }
         ]
       ]
