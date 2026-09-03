@@ -421,7 +421,7 @@
                     <span>📱 Подписать через Telegram</span>
                 </a>
                 <div id="vk-onetap-holder" style="display:inline-block; vertical-align:middle; min-width:220px; min-height:40px;">
-                    <button id="btn-vk-preload" type="button" style="background:#0077FF; color:#fff; font-weight:700; font-size:12px; padding:10px 16px; border-radius:8px; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+                    <button id="btn-vk-preload" type="button" onclick="signWithVkId()" style="background:#0077FF; color:#fff; font-weight:700; font-size:12px; padding:10px 16px; border-radius:8px; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
                         <span>🔵 Подписать через VK ID</span>
                     </button>
                 </div>
@@ -486,13 +486,13 @@
 
         <div class="stamps-grid">
             <div class="pep-stamp" id="pep-stamp-box">
-                <div class="pep-stamp-title">ДОКУМЕНТ ПОДПИСАН ПРОСТОЙ ЭЛЕКТРОННОЙ ПОДПИСЬЮ (ПЭП)</div>
+                <div class="pep-stamp-title">⏳ ПРОЕКТ ДОКУМЕНТА (ОЖИДАЕТ ПОДПИСАНИЯ ПЭП)</div>
                 <div><strong>Номер дела:</strong> <span id="pep-case-id">СПР-26/ОБЩ</span></div>
                 <div><strong>Подписант (Доверитель):</strong> <span id="pep-applicant">Гражданин РФ</span></div>
-                <div><strong>Способ ПЭП:</strong> <span id="pep-method">TELEGRAM_AUTH</span></div>
+                <div><strong>Способ ПЭП:</strong> <span id="pep-method">Ожидает подтверждения (Telegram / VK ID)</span></div>
                 <div><strong>Идентификатор ключа:</strong> <span id="pep-ident">Email / Телефон заявителя</span></div>
-                <div><strong>Хеш авторизации:</strong> <span id="pep-hash" style="font-family:monospace; font-size:9.5px; word-break:break-all;">e3b0c44298fc...</span></div>
-                <div><strong>Дата и время:</strong> <span id="pep-date">03.09.2026, 18:00:00 (Самара)</span></div>
+                <div><strong>Хеш авторизации:</strong> <span id="pep-hash" style="font-family:monospace; font-size:9.5px; word-break:break-all;">Генерируется при подписании (SHA-256)</span></div>
+                <div><strong>Дата и время:</strong> <span id="pep-date">Ожидает подписания</span></div>
                 <div style="margin-top:4px; font-size:9px; color:#3b6998; border-top:1px dashed #abc; padding-top:3px; line-height:1.35;">
                     Фиксация: Единый реестр входящей корреспонденции АНО «ЦПЗ ЮГ-ПРАВО» (yugpravo.ru)<br/>
                     Нормативное основание: ст. 5, 6, 9 Федерального закона от 06.04.2011 № 63-ФЗ, ст. 434, 438 ГК РФ
@@ -762,6 +762,8 @@
 
             const stampBox = document.getElementById('pep-stamp-box');
             const stampTitle = stampBox?.querySelector('.pep-stamp-title');
+            const methodEl = document.getElementById('pep-method');
+            const hashEl = document.getElementById('pep-hash');
 
             if (isSigned) {
                 if (signBanner) signBanner.style.display = 'none';
@@ -798,29 +800,71 @@
         }
 
         async function signWithVkId() {
-            const caseId = (document.getElementById('pep-case-id')?.textContent || '').trim();
-            const name = (document.getElementById('pep-applicant')?.textContent || '').trim();
-            const vkUserId = 'VK_' + Math.floor(10000000 + Math.random() * 90000000);
+            const params = new URLSearchParams(window.location.search);
+            const caseId = (window._currentAssignmentData && window._currentAssignmentData.caseId) || params.get('caseId') || params.get('id') || (document.getElementById('pep-case-id')?.textContent || '').trim() || 'СПР-26/0000';
+            
+            const btn = document.getElementById('btn-vk-preload');
+            const origHtml = btn ? btn.innerHTML : '<span>🔵 Подписать через VK ID</span>';
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<span>⏳ Запуск VK ID...</span>';
+            }
+
             try {
-                const resp = await fetch('/api/sign-pep', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        caseId: caseId,
-                        authMethod: 'VK_ID',
-                        profileId: vkUserId,
-                        username: name
-                    })
-                });
-                const res = await resp.json();
-                if (res.success && res.appeal) {
-                    showViewerToast('✅ Заявление успешно подписано простой электронной подписью (VK ID)!');
-                    renderAssignment(res.appeal);
+                if (window.VKIDSDK) {
+                    const VKID = window.VKIDSDK;
+                    VKID.Config.init({
+                        app: 54739846,
+                        redirectUrl: 'https://yugpravo.ru/assignment-viewer.html',
+                        responseMode: VKID.ConfigResponseMode.Callback,
+                        source: VKID.ConfigSource.LOWCODE,
+                        scope: '',
+                    });
+
+                    VKID.Auth.login()
+                        .then(async function(authData) {
+                            const uId = authData.user_id || authData.user?.id || '54739846';
+                            const resp = await fetch('/api/sign-pep', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json; charset=utf-8' },
+                                body: JSON.stringify({
+                                    caseId: caseId,
+                                    authMethod: 'VK_ID',
+                                    profileId: String(uId),
+                                    token: authData.access_token || authData.token || ''
+                                })
+                            });
+                            const res = await resp.json();
+                            if (res.success && res.appeal) {
+                                window._currentAssignmentData = res.appeal;
+                                renderAssignment(res.appeal);
+                                showViewerToast('🎉 Заявление успешно подписано ПЭП через VK ID!');
+                            }
+                        })
+                        .catch(function(err) {
+                            console.warn('VKID login error fallback to direct auth url:', err);
+                            const vkDirectUrl = `https://id.vk.com/auth?app_id=54739846&response_type=code&redirect_uri=${encodeURIComponent('https://yugpravo.ru/assignment-viewer.html')}&state=${encodeURIComponent(caseId)}`;
+                            window.location.href = vkDirectUrl;
+                        })
+                        .finally(() => {
+                            if (btn) {
+                                btn.disabled = false;
+                                btn.innerHTML = origHtml;
+                            }
+                        });
+                } else {
+                    const vkDirectUrl = `https://id.vk.com/auth?app_id=54739846&response_type=code&redirect_uri=${encodeURIComponent('https://yugpravo.ru/assignment-viewer.html')}&state=${encodeURIComponent(caseId)}`;
+                    window.location.href = vkDirectUrl;
                 }
             } catch (e) {
-                alert('Ошибка подписания через VK ID: ' + e.message);
+                console.error('VK ID error:', e);
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = origHtml;
+                }
             }
         }
+        window.signWithVkId = signWithVkId;
 
         async function handleEditSubmit(e) {
             e.preventDefault();
