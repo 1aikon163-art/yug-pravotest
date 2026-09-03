@@ -796,13 +796,15 @@
         }
 
         function renderVkOneTap() {
-            if (typeof window.VKIDSDK === 'undefined') {
-                console.warn('VKIDSDK not loaded');
-                return;
-            }
-            const VKID = window.VKIDSDK;
             const container = document.getElementById('vk-onetap-box');
             if (!container) return;
+            if (container.getAttribute('data-rendered') === 'true') return;
+
+            const VKID = window.VKIDSDK;
+            if (!VKID) {
+                setTimeout(renderVkOneTap, 200);
+                return;
+            }
 
             try {
                 VKID.Config.init({
@@ -813,14 +815,13 @@
                     scope: '',
                 });
 
+                container.setAttribute('data-rendered', 'true');
                 const oneTap = new VKID.OneTap();
                 oneTap.render({
                     container: container,
                     showAlternativeLogin: true,
                     styles: {
-                        width: 220,
-                        height: 40,
-                        borderRadius: 8
+                        width: 240
                     }
                 })
                 .on(VKID.WidgetEvents.ERROR, function(err) {
@@ -862,7 +863,9 @@
                 console.error('OneTap render error:', e);
             }
         }
+        window.addEventListener('DOMContentLoaded', renderVkOneTap);
         window.addEventListener('load', renderVkOneTap);
+        setTimeout(renderVkOneTap, 500);
 
         async function handleEditSubmit(e) {
             e.preventDefault();
