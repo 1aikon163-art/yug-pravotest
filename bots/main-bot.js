@@ -139,13 +139,22 @@ function getMainReplyKeyboard() {
   };
 }
 
+// Склонение типа документа в винительном падеже
+function getDocTypeAccusative(appeal) {
+  if (!appeal) return 'обращение';
+  if (appeal.docType === 'contract' || (appeal.caseId && appeal.caseId.startsWith('ДОГ'))) return 'договор';
+  if (appeal.docType === 'service' || (appeal.caseId && appeal.caseId.startsWith('СПР')) || (appeal.caseId && appeal.caseId.startsWith('ЖКХ'))) return 'поручение';
+  if (appeal.docType === 'initiative' || (appeal.caseId && appeal.caseId.startsWith('ИН'))) return 'инициативу';
+  return 'обращение';
+}
+
 // Карточка одного обращения/договора для заявителя
 function renderAppealCard(appeal) {
   const isWithdrawn = appeal.status === 'WITHDRAWN';
   const prefix = appeal.docPrefix || '📩';
   const label = appeal.docTypeLabel || 'Обращение';
   const isContract = appeal.docType === 'contract' || (appeal.caseId && appeal.caseId.startsWith('ДОГ'));
-  const isAssignment = appeal.docType === 'service' || (appeal.caseId && appeal.caseId.startsWith('СПР'));
+  const isAssignment = appeal.docType === 'service' || (appeal.caseId && appeal.caseId.startsWith('СПР')) || (appeal.caseId && appeal.caseId.startsWith('ЖКХ'));
   const accusative = getDocTypeAccusative(appeal);
 
   const safeMsg = escapeHtml(appeal.message || '');
@@ -155,7 +164,7 @@ function renderAppealCard(appeal) {
   let text = `<b>${prefix} ${label.toUpperCase()} № ${appeal.caseId}</b>\n` +
     `━━━━━━━━━━━━━━━━━━━━\n` +
     `• <b>Текущий статус:</b> ${appeal.statusText}\n` +
-    `• <b>Ответственный:</b> ${appeal.assignedSpecialist || 'Специалист центра'}\n` +
+    `• <b>Ответственный:</b> ${appeal.assignedSpecialist || 'Специалист канцелярии'}\n` +
     `• <b>Дата регистрации:</b> ${appeal.createdAt}\n` +
     (safeDir && safeDir !== '—' ? `• <b>Направление:</b> ${safeDir}\n` : '') +
     (safeMsg && safeMsg !== '—' ? `• <b>Суть:</b> <i>${safeMsg.slice(0, 300)}</i>\n` : '') +
@@ -164,25 +173,26 @@ function renderAppealCard(appeal) {
     `━━━━━━━━━━━━━━━━━━━━`;
 
   const cleanSeq = appeal.caseId.slice(-4);
+  const docUrl = `${WEB_APP_URL}assignment-viewer.html?caseId=${encodeURIComponent(appeal.caseId)}`;
 
   const buttons = [];
   if (!isWithdrawn) {
-    buttons.push([
-      { text: "💬 Задать вопрос специалисту", callback_data: `ask_${cleanSeq}` }
-    ]);
     if (isContract) {
       buttons.push([
-        { text: "📜 Открыть подписанный договор", web_app: { url: `${WEB_APP_URL}assignment-viewer.html?caseId=${encodeURIComponent(appeal.caseId)}` } }
+        { text: "📜 Открыть подписанный договор (ПЭП)", web_app: { url: docUrl } }
       ]);
-    } else if (isAssignment || (appeal.caseId && appeal.caseId.startsWith('ЖКХ')) || appeal.source === 'delegate-form') {
+    } else if (isAssignment || appeal.source === 'delegate-form' || appeal.direction?.includes('ЖКХ') || appeal.direction?.includes('Перерасчет')) {
       buttons.push([
-        { text: "📄 Открыть Заявление-поручение (ПЭП)", web_app: { url: `${WEB_APP_URL}assignment-viewer.html?caseId=${encodeURIComponent(appeal.caseId)}` } }
+        { text: "📄 Открыть Заявление-поручение (ПЭП)", web_app: { url: docUrl } }
       ]);
     } else {
       buttons.push([
-        { text: "📋 Электронный талон регистрации", web_app: { url: `${WEB_APP_URL}assignment-viewer.html?caseId=${encodeURIComponent(appeal.caseId)}` } }
+        { text: "📋 Электронный талон регистрации", web_app: { url: docUrl } }
       ]);
     }
+    buttons.push([
+      { text: "💬 Задать вопрос специалисту", callback_data: `ask_${cleanSeq}` }
+    ]);
     buttons.push([
       { text: `🚫 Отозвать ${accusative}`, callback_data: `confirm_withdraw_${cleanSeq}` }
     ]);
