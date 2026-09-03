@@ -174,7 +174,7 @@ function renderAppealCard(appeal) {
       buttons.push([
         { text: "📜 Открыть подписанный договор", web_app: { url: `${WEB_APP_URL}assignment-viewer.html?caseId=${encodeURIComponent(appeal.caseId)}` } }
       ]);
-    } else if (isAssignment) {
+    } else if (isAssignment || (appeal.caseId && appeal.caseId.startsWith('ЖКХ')) || appeal.source === 'delegate-form') {
       buttons.push([
         { text: "📄 Открыть Заявление-поручение (ПЭП)", web_app: { url: `${WEB_APP_URL}assignment-viewer.html?caseId=${encodeURIComponent(appeal.caseId)}` } }
       ]);

@@ -623,7 +623,7 @@
             const todayRu = now.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
 
             const isContract = caseId.startsWith('ДОГ');
-            const isAssignment = caseId.startsWith('СПР') || (data.sum && !caseId.startsWith('ОБР') && !isContract);
+            const isAssignment = caseId.startsWith('СПР') || caseId.startsWith('ЖКХ') || (data.sum && !caseId.startsWith('ОБР') && !isContract);
 
             document.title = isContract
                 ? `Договор ${caseId} — АНО «ЦПЗ ЮГ-ПРАВО»`
