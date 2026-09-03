@@ -616,26 +616,24 @@
             const company = data.company || '';
             const comment = data.comment || data.message || '';
             const law = data.law || '';
-            const caseId = data.caseId || ('ЮП-26/ОБЩ-' + String(Date.now()).slice(-4));
+            let caseId = data.caseId || '';
+            if (!caseId || caseId.startsWith('ЖКХ') || caseId.startsWith('ЗОЗПП') || caseId.startsWith('ЮП-') || caseId.includes('ОБЩ')) {
+                const seq = (caseId || '').slice(-4) || String(Date.now()).slice(-4);
+                caseId = 'СПР-26/' + seq;
+            }
 
             const now = new Date();
             const nowStr = now.toLocaleString('ru-RU', { timeZone: 'Europe/Samara' });
             const todayRu = now.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
 
             const isContract = caseId.startsWith('ДОГ');
-            const isAssignment = caseId.startsWith('СПР') || caseId.startsWith('ЖКХ') || (data.sum && !caseId.startsWith('ОБР') && !isContract);
+            const isAssignment = true; // All assignment forms are official procedural assignments
 
-            document.title = isContract
-                ? `Договор ${caseId} — АНО «ЦПЗ ЮГ-ПРАВО»`
-                : (isAssignment 
-                    ? `Заявление-поручение ${caseId} — АНО «ЦПЗ ЮГ-ПРАВО»`
-                    : `Электронный талон ${caseId} — АНО «ЮГ-ПРАВО»`);
+            document.title = `Заявление-поручение ${caseId} — АНО «ЦПЗ ЮГ-ПРАВО»`;
 
             document.getElementById('field-doc-title').textContent = isContract
                 ? `ДОГОВОР ПРАВОВОГО СОДЕЙСТВИЯ № ${caseId}`
-                : (isAssignment
-                    ? `ЗАЯВЛЕНИЕ-ПОРУЧЕНИЕ № ${caseId}`
-                    : `ЭЛЕКТРОННЫЙ ТАЛОН РЕГИСТРАЦИИ № ${caseId}`);
+                : `ЗАЯВЛЕНИЕ-ПОРУЧЕНИЕ № ${caseId}`;
 
             document.getElementById('field-applicant-name').textContent = name;
             document.getElementById('field-applicant-phone').textContent = phone ? `Тел.: ${phone}` : 'Тел.: Не указан';

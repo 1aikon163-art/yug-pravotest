@@ -46,7 +46,12 @@ conn.on('ready', () => {
           if (fs.existsSync(p)) {
             const db = JSON.parse(fs.readFileSync(p, 'utf-8'));
             db.appeals.forEach(a => {
-              if (a.caseId && a.caseId.startsWith('ОБР')) {
+              if (a.caseId && (a.caseId.startsWith('ЖКХ') || a.caseId.startsWith('ЗОЗПП') || a.caseId.startsWith('ЮП-'))) {
+                a.caseId = 'СПР-26/' + a.caseId.slice(-4);
+                a.docType = 'assignment';
+                a.docTypeLabel = 'Сопровождение';
+                a.docPrefix = '🛡️';
+              } else if (a.caseId && a.caseId.startsWith('ОБР')) {
                 a.docType = 'appeal';
                 a.docTypeLabel = 'Обращение';
                 a.docPrefix = '📩';

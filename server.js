@@ -356,8 +356,8 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // 2.1. Lead Submission Endpoint (/api/lead) -> Forwards to Telegram Admin
-  if (reqPath === '/api/lead' && req.method === 'POST') {
+  // 2.1. Lead Submission Endpoint (/api/lead & /api/register-assignment)
+  if ((reqPath === '/api/lead' || reqPath === '/api/register-assignment') && req.method === 'POST') {
     let body = '';
     req.on('data', chunk => { body += chunk; });
     req.on('end', () => {
@@ -365,9 +365,10 @@ const server = http.createServer((req, res) => {
         const data = JSON.parse(body);
         const name    = (data.name    || '').substring(0, 100);
         const phone   = (data.phone   || '').substring(0, 30);
+        const email   = (data.email   || '').substring(0, 100);
         const alias   = 'info@yugpravo.ru';
-        const message = (data.message || '').substring(0, 1000);
-        const source  = (data.source  || 'Сайт').substring(0, 80);
+        const message = (data.message || data.comment || '').substring(0, 1000);
+        const source  = (data.source  || (reqPath === '/api/register-assignment' ? 'Заявление-поручение (ПЭП)' : 'Сайт')).substring(0, 80);
         const now     = new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Samara' });
         const caseSeq = String(Date.now()).slice(-4);
         
@@ -376,7 +377,7 @@ const server = http.createServer((req, res) => {
         const dirLow = (data.direction || '').toLowerCase();
         const srcLow = (data.source || '').toLowerCase();
         
-        if (srcLow.includes('delegate') || srcLow.includes('assignment') || srcLow.includes('calc') || srcLow.includes('калькулятор') || dirLow.includes('поручен') || dirLow.includes('сопровожден') || dirLow.includes('перерасчет') || dirLow.includes('аудит')) {
+        if (reqPath === '/api/register-assignment' || srcLow.includes('delegate') || srcLow.includes('assignment') || srcLow.includes('calc') || srcLow.includes('калькулятор') || dirLow.includes('поручен') || dirLow.includes('сопровожден') || dirLow.includes('перерасчет') || dirLow.includes('аудит')) {
           typePrefix = 'СПР';
           docLabel   = 'Сопровождение';
         } else if (dirLow.includes('инициатив') || srcLow.includes('initiative')) {
@@ -387,7 +388,10 @@ const server = http.createServer((req, res) => {
           docLabel   = 'Обращение';
         }
 
-        const caseId = `${typePrefix}-26/${caseSeq}`;
+        let caseId = `${typePrefix}-26/${caseSeq}`;
+        if (data.caseId && data.caseId.startsWith(`${typePrefix}-26/`)) {
+          caseId = data.caseId;
+        }
         const direction = (data.direction || 'Общая приёмная').substring(0, 60);
 
         // 1. Единый учет в локальном реестре обращений
