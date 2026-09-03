@@ -687,7 +687,7 @@ async function createLicenzionnyyDogovor(withSignature = true) {
             new TableRow({
               children: [
                 new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: '6', font: 'Times New Roman', size: 18 })] })] }),
-                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: 'Безвозмездное авторское техническое сопровождение и модернизация платформы на 12 месяцев (волонтерский вклад автора)', font: 'Times New Roman', size: 18 })] })] }),
+                new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: 'Предрелизное тестирование, интеграционное тестирование модулей с Telegram API, нагрузочное стресс-тестирование калькуляторов и серверный деплой (DevOps)', font: 'Times New Roman', size: 18 })] })] }),
                 new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: '100 ч. × 1 000 ₽', font: 'Times New Roman', size: 18 })] })] }),
                 new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: '100 000 ₽', font: 'Times New Roman', size: 18 })] })] })
               ]
