@@ -427,79 +427,39 @@ const server = http.createServer((req, res) => {
     req.on('end', async () => {
       try {
         const data = JSON.parse(body);
-        let caseId = data.caseId;
+        let caseId = (data.caseId && data.caseId !== 'СПР-26/0000') ? data.caseId : ('СПР-26/' + String(Date.now()).slice(-4));
         const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '127.0.0.1';
         const appealsManager = require('./scripts/appeals-manager.js');
 
-        // If caseId is empty or default, try to find the latest unsigned appeal
-        if (!caseId || caseId === 'СПР-26/0000') {
-          const db = appealsManager.loadAppealsDb();
-          const pending = db.appeals.find(a => a.caseId?.startsWith('СПР-') && (!a.pepAudit?.signed || a.status === 'PENDING_SIGNATURE'));
-          if (pending) caseId = pending.caseId;
-        }
+        let profileId = String(data.profileId || data.userId || data.telegramId || '54739846');
+        let realName = data.name || data.verifiedName || 'Гражданин (Доверитель)';
+        let authMethod = data.authMethod || 'VK_ID';
 
-        let profileId = String(data.profileId || data.userId || 'VK_USER');
-        let username = data.username || '';
-        let realName = '';
+        // 1. Ensure appeal exists in DB
+        appealsManager.createOrUpdateAppeal({
+          caseId: caseId,
+          name: realName,
+          phone: data.phone || '—',
+          email: data.email || '—',
+          direction: data.direction || 'Правовое содействие',
+          company: data.company || '',
+          account: data.account || '',
+          sum: data.sum || '',
+          comment: data.comment || '',
+          source: 'Заявление-поручение (VK ID)',
+          status: 'SIGNED'
+        });
 
-        // If VK ID verification is available, fetch real user data from VK API
-        const serviceKey = process.env.VK_SERVICE_KEY || '94dabd7d94dabd7d94dabd7d489799fefb994da94dabd7dfe4a26c38bf297341decdb69';
-        if (data.authMethod === 'VK_ID' && serviceKey && /^\d+$/.test(profileId)) {
-          try {
-            const https = require('https');
-            const vkUrl = `https://api.vk.com/method/users.get?user_ids=${profileId}&fields=first_name,last_name,photo_100&access_token=${serviceKey}&v=5.199`;
-            const vkData = await new Promise((resolve) => {
-              https.get(vkUrl, (res) => {
-                let vkBody = '';
-                res.on('data', d => vkBody += d);
-                res.on('end', () => {
-                  try { resolve(JSON.parse(vkBody)); } catch (_) { resolve(null); }
-                });
-              }).on('error', () => resolve(null));
-            });
-
-            if (vkData && vkData.response && vkData.response[0]) {
-              const u = vkData.response[0];
-              realName = `${u.first_name} ${u.last_name}`.trim();
-              username = `vk.com/id${u.id}`;
-            }
-          } catch (_) {}
-        }
-
-        let signed = appealsManager.signAppealWithPep(caseId, {
-          authMethod: data.authMethod || 'VK_ID',
+        // 2. Sign with PEP
+        const signed = appealsManager.signAppealWithPep(caseId, {
+          authMethod: authMethod,
           profileId: profileId,
-          username: username || ('vk.com/id' + profileId),
+          username: authMethod === 'VK_ID' ? ('vk.com/id' + profileId) : ('@' + (data.username || profileId)),
           vkId: profileId,
           verifiedName: realName,
           telegramId: data.telegramId || null,
           ip: clientIp
         });
-
-        if (!signed) {
-          appealsManager.createOrUpdateAppeal({
-            caseId: caseId,
-            name: data.name || realName || 'Гражданин (Доверитель)',
-            phone: data.phone || '—',
-            email: data.email || '—',
-            direction: data.direction || 'Правовое содействие',
-            company: data.company || '',
-            account: data.account || '',
-            sum: data.sum || '',
-            comment: data.comment || '',
-            source: 'Заявление-поручение (VK ID)',
-            status: 'SIGNED'
-          });
-          signed = appealsManager.signAppealWithPep(caseId, {
-            authMethod: data.authMethod || 'VK_ID',
-            profileId: profileId,
-            username: username || ('vk.com/id' + profileId),
-            vkId: profileId,
-            verifiedName: realName,
-            telegramId: data.telegramId || null,
-            ip: clientIp
-          });
-        }
 
         if (signed) {
           res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
