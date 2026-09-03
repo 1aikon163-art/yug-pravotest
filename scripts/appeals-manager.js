@@ -51,19 +51,18 @@ function normalizePhone(phone) {
 // Определение типа документа и читаемого названия
 function detectDocType(caseId, alias, direction) {
   const cid = (caseId || '').toUpperCase();
-  const al = (alias || '').toLowerCase();
   const dir = (direction || '').toLowerCase();
 
-  if (cid.startsWith('ДОГ') || dir.includes('договор') || al.includes('care') || al.includes('partner')) {
+  if (cid.startsWith('ДОГ') || dir.includes('договор')) {
     return { type: 'contract', label: 'Договор', prefix: '📜' };
   }
-  if (cid.startsWith('СПР') || dir.includes('поручение') || dir.includes('калькулятор') || al.includes('sud')) {
+  if (cid.startsWith('СПР') || dir.includes('поручение') || dir.includes('калькулятор')) {
     return { type: 'service', label: 'Сопровождение', prefix: '🛡️' };
   }
-  if (cid.startsWith('ЖКХ') || dir.includes('жкх') || al.includes('jkh')) {
+  if (cid.startsWith('ЖКХ') || dir.includes('жкх')) {
     return { type: 'audit', label: 'Аудит ЖКХ', prefix: '🏢' };
   }
-  if (cid.startsWith('ИН') || dir.includes('инициатива') || al.includes('idea')) {
+  if (cid.startsWith('ИН') || dir.includes('инициатива')) {
     return { type: 'initiative', label: 'Инициатива', prefix: '💡' };
   }
   return { type: 'appeal', label: 'Обращение', prefix: '📩' };

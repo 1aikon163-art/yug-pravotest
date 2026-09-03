@@ -137,18 +137,18 @@ function renderAppealCard(appeal) {
     (appeal.statusNote ? `\n💡 <b>Комментарий специалиста:</b> ${appeal.statusNote}\n` : '') +
     `━━━━━━━━━━━━━━━━━━━━`;
 
-  const cleanCaseId = appeal.caseId.replace(/[^a-zA-Z0-9_-]/g, '_');
+  const cleanSeq = appeal.caseId.slice(-4);
 
   const buttons = [];
   if (!isWithdrawn) {
     buttons.push([
-      { text: "💬 Задать вопрос специалисту", callback_data: `ask_${cleanCaseId}` }
+      { text: "💬 Задать вопрос специалисту", callback_data: `ask_${cleanSeq}` }
     ]);
     buttons.push([
       { text: "📱 Открыть материалы в Mini App", web_app: { url: `${WEB_APP_URL}assignment-viewer.html?caseId=${encodeURIComponent(appeal.caseId)}` } }
     ]);
     buttons.push([
-      { text: "🚫 Отозвать обращение", callback_data: `confirm_withdraw_${cleanCaseId}` }
+      { text: "🚫 Отозвать обращение", callback_data: `confirm_withdraw_${cleanSeq}` }
     ]);
   } else {
     buttons.push([
@@ -197,9 +197,9 @@ async function showUserAppeals(chatId) {
       `   ↳ <i>Статус:</i> ${a.statusText}\n` +
       `   ↳ <i>Дата:</i> ${a.createdAt}\n\n`;
 
-    const cleanId = a.caseId.replace(/[^a-zA-Z0-9_-]/g, '_');
+    const cleanSeq = a.caseId.slice(-4);
     inlineButtons.push([
-      { text: `${pfx} ${lbl} № ${a.caseId}`, callback_data: `view_${cleanId}` }
+      { text: `${pfx} ${lbl} № ${a.caseId}`, callback_data: `view_${cleanSeq}` }
     ]);
   });
 
